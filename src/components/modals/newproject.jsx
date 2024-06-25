@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '@clerk/nextjs';
 import { useMutation } from 'convex/react';
 import { api } from '../../../convex/_generated/api';
+import SelectDemo from '../dropdowns/newprojects';
 
 const NewProjectModal = ({ onClose }) => {
   const { userId, isLoaded, isSignedIn, error } = useAuth();
@@ -49,8 +50,8 @@ const NewProjectModal = ({ onClose }) => {
   if (!isLoaded || !isSignedIn) return null;
 
   return (
-    <div id="outerclickclose" className="absolute modalmain top-0 justify-end items-center flex h-[100%] w-[100%] dark:bg-neutral-950/40 bg-neutral-400/40 z-[1000000]">
-      <div className="flex flex-col px-5 py-5 slide-in-right bg--400 bg-zinc-200 shadow-lg rounded-tl-[1rem] border-neutral-600 border-l shadow-black dark:bg-neutral-900 h-[100%] md:w-[540px] w-[100%]">
+    <div id="outerclickclose" className="absolute modalmain top-0 justify-end items-center flex h-[100%] w-[100%] bg-neutral-950/40  z-[1000000]">
+      <div className="flex flex-col px-5 py-5 slide-in-right bg--400shadow-lg rounded-tl-[1rem] border-neutral-600 border-l shadow-black bg-neutral-900 h-[100%] md:w-[540px] w-[100%]">
         <div className="flex items-center flex-row justify-between">
           <h1 className="text-2xl font-bold dark:text-white text-dark">Add a Project</h1>
           <p onClick={onClose} className="text-2xl text-red-600 cursor-pointer hover:text-red-400 transition-all-300">x</p>
@@ -58,7 +59,7 @@ const NewProjectModal = ({ onClose }) => {
         <form onSubmit={handleFormSubmit} className="flex flex-col gap-4 mt-10">
           <div className="flex flex-col gap-5 border-b border-neutral-100/20 pb-4">
             <input
-              className="dark:bg-neutral-800 dark:border-neutral-800 dark:text-white bg-white border-neutral-500 text-black border rounded-lg px-3 py-2"
+              className="bg-neutral-800 border-neutral-800 text-white border rounded-lg px-3 py-2"
               id="projectname"
               name="nameproject"
               placeholder="Project Name"
@@ -67,7 +68,7 @@ const NewProjectModal = ({ onClose }) => {
               required
             />
             <input
-              className="dark:bg-neutral-800 dark:border-neutral-800 dark:text-white bg-white border-neutral-500 text-black border rounded-lg px-3 py-2"
+              className="bg-neutral-800 border-neutral-800 text-white border rounded-lg px-3 py-2"
               placeholder="Project Description"
               value={projectDescription}
               onChange={(e) => setProjectDescription(e.target.value)}
@@ -80,14 +81,8 @@ const NewProjectModal = ({ onClose }) => {
               <p className="font-semibold">Link Github</p>
             </a>
           </div>
-          <div className="flex flex-col gap-5 pb-4">
-            <input
-              className="dark:bg-neutral-800 dark:border-neutral-800 dark:text-white bg-white border-neutral-500 text-black border rounded-lg px-3 py-2"
-              placeholder="Project Status"
-              value={projectStatus}
-              onChange={(e) => setProjectStatus(e.target.value)}
-              required
-            />
+          <div className="flex flex-col gap-5 ">
+            <SelectDemo  />
           </div>
           <button type="submit" className="dark:bg-cyan-600 dark:text-white bg-cyan-600 text-white rounded-lg px-3 py-2">
             Add Project

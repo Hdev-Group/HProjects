@@ -65,7 +65,7 @@ export default function Home() {
           </div>
         )}
         </div>
-        <div className='flex flex-col relative items-center md:p-1 dark:bg-neutral-100/10 bg-neutral-900/5 rounded-xl z-5'>
+        <div className='flex flex-col relative items-center md:p-1 bg-neutral-100/10 rounded-xl z-5'>
           <img src='/logo.png' alt='Chat' className='w-10 md:w-[100%] h-auto rounded-xl' />
         </div>
         <div className='flex flex-col gap-8 p-4 md:p-12 mt-20 md:w-[90rem] md:w-max-[50rem]'>
@@ -75,8 +75,8 @@ export default function Home() {
           </div>
           <div className='flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4 w-[91%] md:w-full'>
             <div className='flex flex-col border border-red-500 dark:bg-red-500/10 bg-red-500/40 w-[100%] md:w-full px-4 md:px-6 py-6 md:py-8 rounded'>
-              <h2 className='text-xl md:text-2xl font-bold font-sans text-black dark:text-white'>Without HProjects</h2>
-              <p className='text-sm dark:text-zinc-400 text-zinc-900'>you get:</p>
+              <h2 className='text-xl md:text-2xl font-bold font-sans '>Without HProjects</h2>
+              <p className='text-sm text-zinc-400'>you get:</p>
               <ul className='list-none pl-0 mt-2'>
                 <li className='text-xs md:text-sm flex items-center gap-1'>
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className='xnono' fill="currentColor"><path d="M11.9997 10.5865L16.9495 5.63672L18.3637 7.05093L13.4139 12.0007L18.3637 16.9504L16.9495 18.3646L11.9997 13.4149L7.04996 18.3646L5.63574 16.9504L10.5855 12.0007L5.63574 7.05093L7.04996 5.63672L11.9997 10.5865Z"></path></svg> <p className='text-lg dark:text-stone-100 font-bold'>Overwhelmed by projects</p>
@@ -99,8 +99,8 @@ export default function Home() {
               </ul>
             </div>
             <div className='flex flex-col border border-emerald-600 bg-emerald-600/10 w-[100%] md:w-full px-4 md:px-6 py-6 md:py-8 rounded'>
-            <h2 className='text-xl md:text-2xl font-bold font-sans text-black dark:text-white'>With HProjects</h2>
-            <p className='text-sm dark:text-zinc-400 text-zinc-900'>you get:</p>
+            <h2 className='text-xl md:text-2xl font-bold font-sans '>With HProjects</h2>
+            <p className='text-sm text-zinc-400'>you get:</p>
               <ul className='list-none pl-0 mt-2'>
                 <li className='text-xs md:text-sm flex items-center'>
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className='yesyes' fill="currentColor"><path d="M10.9996 16.1719L19.1924 7.97914L20.6066 9.39336L10.9996 19.0003L3.99957 12.0003L5.41379 10.5861L10.9996 16.1719Z"></path></svg> <p className='text-lg dark:text-stone-100 font-bold'>Easy project management</p>
