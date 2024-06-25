@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '@clerk/nextjs';
 import { useMutation } from 'convex/react';
 import { api } from '../../../convex/_generated/api';
-import SelectDemo from '../dropdowns/newprojects';
+import StatusSelect from '../dropdowns/newprojects';
 
 const NewProjectModal = ({ onClose }) => {
   const { userId, isLoaded, isSignedIn, error } = useAuth();
@@ -20,7 +20,7 @@ const NewProjectModal = ({ onClose }) => {
       return;
     }
     try {
-      await addProject({ userId, projectName, projectDescription, projectStatus });
+      await addProject({ userId, projectName, projectDescription, projectStatus});
       onClose();
     } catch (error) {
       console.error('Error adding project:', error);
@@ -82,7 +82,11 @@ const NewProjectModal = ({ onClose }) => {
             </a>
           </div>
           <div className="flex flex-col gap-5 ">
-            <SelectDemo  />
+            <StatusSelect 
+              value={projectStatus}
+              onChange={(value) => setProjectStatus(value)}
+              required
+             />
           </div>
           <button type="submit" className="dark:bg-cyan-600 dark:text-white bg-cyan-600 text-white rounded-lg px-3 py-2">
             Add Project

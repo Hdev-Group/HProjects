@@ -67,13 +67,13 @@ const DashboardHeader = ({ activeSection, onSectionChange }) => {
       </div>
       <div className="flex items-center gap-1 w-[100%] mt-7 mb-[-26px]">
         <div className="flex items-center justify-center gap-5">
-        <a href="/dashboard" className={`cursor-pointer text-[13px] font-medium ${activeSection === 'projects' ? 'dark:text-white text-black underline underline-offset-8 decoration-2 font-bold' : 'text-black dark:text-gray-500'}`}>
+        <a href="/dashboard" className={`cursor-pointer text-[13px] font-medium ${activeSection === 'projects' ? 'text-white  underline underline-offset-8 decoration-2 font-bold' : 'text-gray-500'}`}>
             <strong>{activeSection === 'projectspage' ? 'Projects' : 'Projects'}</strong>
           </a>
-          <a href="/teams" className={`cursor-pointer text-[13px] font-medium ${activeSection === 'teams' ? 'dark:text-white text-black underline underline-offset-8 decoration-2 font-bold' : 'text-black dark:text-gray-500'}`}>
+          <a href="/teams" className={`cursor-pointer text-[13px] font-medium ${activeSection === 'teams' ? 'text-white underline underline-offset-8 decoration-2 font-bold' : 'text-gray-500'}`}>
             <strong>{activeSection === 'teams' ? 'Teams' : 'Teams'}</strong>
           </a>
-          <a href="/settings" className={`cursor-pointer text-[13px] font-medium ${activeSection === 'settings' ? 'dark:text-white text-black underline underline-offset-8 decoration-2 font-bold' : 'text-black dark:text-gray-500'}`}>
+          <a href="/settings" className={`cursor-pointer text-[13px] font-medium ${activeSection === 'settings' ? 'text-white underline underline-offset-8 decoration-2 font-bold' : 'text-gray-500'}`}>
             <strong>{activeSection === 'settings' ? 'Settings' : 'Settings'}</strong>
           </a>
 

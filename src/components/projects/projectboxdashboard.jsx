@@ -1,6 +1,6 @@
 const BoxProjectBuilding = () => {
     return (
-        <div className="flex flex-col bg-neutral-200/30 dark:bg-neutral-900/70 w-[300px] px-4 py-5 rounded-lg border-2 border-neutral-500 dark:border-neutral-800">
+        <div className="flex flex-col bg-neutral-900/70 w-[300px] px-4 py-5 rounded-lg border-2 border-neutral-500 dark:border-neutral-800">
             <div className="flex flex-row items-center justify-between">
                 <h1 className="text-2xl font-bold">PROJECT NAME</h1>
                 <div className="gap-1 flex flex-col">
@@ -24,7 +24,7 @@ const BoxProjectBuilding = () => {
 
 const BoxProjectlive = () => {
     return (
-        <div className="flex flex-col bg-neutral-200/30 dark:bg-neutral-900/70 w-[300px] px-4 py-5 rounded-lg border-2 border-neutral-500 dark:border-neutral-800">
+        <div className="flex flex-col bg-neutral-900/70 w-[300px] px-4 py-5 rounded-lg border-2 border-neutral-800">
             <div className="flex flex-row items-center justify-between">
                 <h1 className="text-2xl font-bold">PROJECT NAME</h1>
                 <div className="gap-1 flex flex-col">

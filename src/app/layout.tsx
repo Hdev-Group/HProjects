@@ -27,6 +27,7 @@ export default function RootLayout({
       <ConvexProvider client={new ConvexReactClient(convexUrl)}>
         <html lang="en">
           <head>
+            <link rel="icon" href="../../public/favicon.ico" />
             <title>HProjects</title>
           </head>
           <body

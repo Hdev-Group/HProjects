@@ -20,13 +20,13 @@ const Settings = () => {
       <DashboardHeader />
       <main className='flex gap-20 flex-col items-center justify-center mt-20 py-14 px-0 md:w-[100%]'>
         <div className="flex flex-col w-[80%] gap-4">
-            <h2 className='flex text-3xl font-bold mb-2 mt-4 '>Settings</h2>
+            <h2 className='flex text-3xl font-bold mb-2 mt-4' id='settings'>Settings</h2>
             <div className='flex flex-col gap-5 border-neutral-800 rounded-lg border-[1px]'>
-                <div className='flex dark:bg-neutral-800/30 bg-neutral-300/50 px-6 py-5 rounded-t-lg border-neutral-800 border-b-[1px]'>
+                <div className='flex bg-neutral-800/10 px-6 py-5 rounded-t-lg border-neutral-800 border-b-[1px]'>
                     <p className='font-medium text-xl'>Display Name</p>
                 </div>
                 <div className='px-6 flex flex-col gap-3'>
-                    <p className='dark:text-neutral-500 text-neutral-800'>
+                    <p className='text-neutral-500'>
                         To update your display name, fill out the form below and click the "Save" button.
                     </p>
                     <form className='flex flex-row mb-4 w-[100%]'>

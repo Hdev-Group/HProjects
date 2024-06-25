@@ -7,6 +7,7 @@ import DashboardHeader from "../../components/header/dashboardheader";
 import NoProjects from "../../components/noitems/projectsnone"; 
 import { useQuery, useMutation } from "convex/react";
 import { api } from "../../../convex/_generated/api";
+import {BoxProjectlive} from "../../components/projects/projectboxdashboard";
 import NewProjectModal from "../../components/modals/newproject";
 
 function Dashboard() {
@@ -53,7 +54,7 @@ function Dashboard() {
             <h1 className="flex text-4xl font-bold mb-9 mt-2" id="projectspage">Projects</h1>
             <div className="w-full flex-wrap overflow-y-scroll scroll-barproject justify-start items-center flex py-10 px-10 gap-3 flex-row border-neutral-800 bg-neutral-900/50 border rounded ">
               <div className="flex flex-wrap items-start gap-4 min-w-[100%] ">
-                <NoProjects />
+                <BoxProjectlive />
               </div>
             </div>
           </div>
