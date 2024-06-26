@@ -3,6 +3,9 @@ import React from "react";
 import { ClerkProvider } from "@clerk/nextjs";
 import { ConvexProvider, ConvexReactClient } from 'convex/react';
 import { Inter as FontSans } from "next/font/google"
+import type { Metadata } from "next";
+import ConvexClientProvider from "./ConvexClientProvider";
+
  
 import { cn } from "../@/lib/utils"
  
@@ -35,7 +38,9 @@ export default function RootLayout({
           "min-h-screen font-sans antialiased",
           fontSans.variable
         )}
-      >{children}</body>
+      >
+        <ConvexClientProvider>{children}</ConvexClientProvider>
+        </body>
         </html>
       </ConvexProvider>
     </ClerkProvider>

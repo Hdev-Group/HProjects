@@ -1,24 +1,19 @@
-"use client"
+"use client";
 import { useAuth } from "@clerk/nextjs";
 import dynamic from 'next/dynamic';
 import Head from "next/head";
 import React, { useState, useEffect } from "react";
-import DashboardHeader from "../../components/header/dashboardheader"; 
-import NoProjects from "../../components/noitems/projectsnone"; 
-import { useQuery, useMutation } from "convex/react";
-import { api } from "../../../convex/_generated/api";
-import {BoxProjectlive} from "../../components/projects/projectboxdashboard";
-import NewProjectModal from "../../components/modals/newproject";
-
+import DashboardHeader from "../../components/header/dashboardheader";
+import NoProjects from "../../components/noitems/projectsnone";
+import { useQuery } from "convex/react";
+import { api } from '../../../convex/_generated/api';
+import AddProjectButton from "../../components/buttons/projectsmodalopen";
+import ProjectsDataAdder from "../../components/projects/datastuff";
 function Dashboard() {
-  const addProject = useMutation(api.projects.create);
-  const tasks = useQuery(api.tasks.get);
-  tasks?.map(({ _id, text }) => (
-    console.log(_id, text, "a")
-  ));
-
+  const projectsholder = useQuery(api.projectsget.get);
   const { userId, isLoaded, isSignedIn, error } = useAuth();
   const [activeSection, setActiveSection] = useState('projects');
+  const [isModalOpen, setModalOpen] = useState(false);
 
   useEffect(() => {
     const router = require("next/router").default;
@@ -37,9 +32,9 @@ function Dashboard() {
   const handleSectionChange = (section) => {
     setActiveSection(section);
   };
-  
+
   if (!isLoaded || !isSignedIn) {
-    return;
+    return null;
   }
 
   return (
@@ -52,15 +47,16 @@ function Dashboard() {
         <main className="flex gap-20 flex-col items-center justify-center mt-20 py-14 px-0 md:w-[100%]">
           <div className="flex flex-col sm:w-[100%] md:w-[80%]">
             <h1 className="flex text-4xl font-bold mb-9 mt-2" id="projectspage">Projects</h1>
-            <div className="w-full flex-wrap overflow-y-scroll scroll-barproject justify-start items-center flex py-10 px-10 gap-3 flex-row border-neutral-800 bg-neutral-900/50 border rounded ">
-              <div className="flex flex-wrap items-start gap-4 min-w-[100%] ">
-                <BoxProjectlive />
+            <AddProjectButton />
+            <div className="w-full flex-wrap overflow-y-scroll scroll-barproject justify-start items-center flex py-10 px-10 gap-3 flex-row border-neutral-800 rounded-tl-[0] bg-neutral-900/50 border rounded">
+              <div className="flex flex-wrap items-start gap-4 min-w-[100%]">
+                <ProjectsDataAdder />
               </div>
             </div>
           </div>
         </main>
       </div>
-      </>
+    </>
   );
 }
 
