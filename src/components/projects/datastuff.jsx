@@ -21,11 +21,11 @@ function ProjectsDataAdder() {
       {userProjects.length > 0 ? (
         userProjects.map((project, index) => {
           if (project.projectStatus === 'developing') {
-            return <BoxProjectBuilding key={index} name={project.projectName}/>;
+            return <BoxProjectBuilding key={index} name={project.projectName} id={project._id}/>;
           } else if (project.projectStatus === 'live') {
-            return <BoxProjectlive key={index} name={project.projectName} />;
+            return <BoxProjectlive key={index} name={project.projectName} id={project._id}/>;
           } else if (project.projectStatus === 'planning') {
-            return <BoxProjectPlanning key={index} name={project.projectName} />;
+            return <BoxProjectPlanning key={index} name={project.projectName} id={project._id}/>;
           } else {
             return <div key={index}>Unknown status</div>;
           }

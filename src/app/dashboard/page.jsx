@@ -4,16 +4,11 @@ import dynamic from 'next/dynamic';
 import Head from "next/head";
 import React, { useState, useEffect } from "react";
 import DashboardHeader from "../../components/header/dashboardheader";
-import NoProjects from "../../components/noitems/projectsnone";
-import { useQuery } from "convex/react";
-import { api } from '../../../convex/_generated/api';
 import AddProjectButton from "../../components/buttons/projectsmodalopen";
 import ProjectsDataAdder from "../../components/projects/datastuff";
 function Dashboard() {
-  const projectsholder = useQuery(api.projectsget.get);
-  const { userId, isLoaded, isSignedIn, error } = useAuth();
+  const { isLoaded, isSignedIn, error } = useAuth();
   const [activeSection, setActiveSection] = useState('projects');
-  const [isModalOpen, setModalOpen] = useState(false);
 
   useEffect(() => {
     const router = require("next/router").default;
