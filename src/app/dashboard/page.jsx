@@ -6,7 +6,9 @@ import React, { useState, useEffect } from "react";
 import DashboardHeader from "../../components/header/dashboardheader";
 import AddProjectButton from "../../components/buttons/projectsmodalopen";
 import ProjectsDataAdder from "../../components/projects/datastuff";
+import router from "next/router";
 function Dashboard() {
+  
   const { isLoaded, isSignedIn, error } = useAuth();
   const [activeSection, setActiveSection] = useState('projects');
 
@@ -14,15 +16,16 @@ function Dashboard() {
     const router = require("next/router").default;
     if (!isLoaded) return;
 
-    if (error) {
-      console.error(error);
-      return;
-    }
 
-    if (!isSignedIn) {
-      router.push("/");
-    }
-  }, [isLoaded, isSignedIn, error]);
+      if (error) {
+        console.error(error);
+        return;
+      }
+
+      if (!isSignedIn) {
+        router.push("/");
+      }
+  }, [isLoaded, isSignedIn, error, router]);
 
   const handleSectionChange = (section) => {
     setActiveSection(section);

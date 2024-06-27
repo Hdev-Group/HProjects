@@ -1,6 +1,7 @@
-const BoxProjectBuilding = ({ name }) => {
+const BoxProjectBuilding = ({ name, id }) => {
     return (
-      <div className="flex flex-col bg-neutral-900/70 w-[300px] px-4 py-5 rounded-lg border-2 border-neutral-800">
+      <a href={`/projects/${id}`}>
+        <div className="flex flex-col bg-neutral-900/70 w-[300px] px-4 py-5 rounded-lg border-2 border-neutral-800">
         <div className="flex flex-row items-center justify-between">
           <h1 className="text-2xl font-bold">{name}</h1>
           <div className="gap-1 flex flex-col cursor-pointer">
@@ -22,11 +23,13 @@ const BoxProjectBuilding = ({ name }) => {
           </div>
         </div>
       </div>
+      </a>
     );
   };
   
   const BoxProjectlive = ({ name }) => {
     return (
+      <a href={`/projects/${projectId}`}>
       <div className="flex flex-col bg-neutral-900/70 w-[300px] px-4 py-5 rounded-lg border-2 border-neutral-800">
         <div className="flex flex-row items-center justify-between">
           <h1 className="text-2xl font-bold">{name}</h1>
@@ -49,11 +52,13 @@ const BoxProjectBuilding = ({ name }) => {
           </div>
         </div>
       </div>
+      </a>
     );
   };
   
   const BoxProjectPlanning = ({ name }) => {
     return (
+      <a href={`/projects/${projectId}`}>
       <div className="flex flex-col bg-neutral-900/70 w-[300px] px-4 py-5 rounded-lg border-2 border-neutral-800">
         <div className="flex flex-row items-center justify-between">
           <h1 className="text-2xl font-bold">{name}</h1>
@@ -76,6 +81,7 @@ const BoxProjectBuilding = ({ name }) => {
           </div>
         </div>
       </div>
+      </a>
     );
   };
   
