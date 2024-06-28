@@ -1,8 +1,8 @@
 "use client";
 import { useState } from 'react';
 import { SignedOut, SignedIn, SignUp, UserButton } from '@clerk/nextjs';
-import HeaderIndex from '../components/header/header';
-import '../styles/globals.css';
+import HeaderIndex from '../../components/header/header';
+import '../../styles/globals.css';
 import { dark } from '@clerk/themes';
 
 export default function Home() {

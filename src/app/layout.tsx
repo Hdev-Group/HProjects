@@ -31,7 +31,7 @@ export default function RootLayout({
         <html lang="en">
           <head>
             <link rel="icon" href="../../public/favicon.ico" />
-            <title>HProjects</title>
+
           </head>
           <body
         className={cn(

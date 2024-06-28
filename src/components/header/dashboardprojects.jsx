@@ -1,3 +1,4 @@
+"use client"
 import { useEffect } from 'react';
 import Image from 'next/image';
 import { useClerk, useUser, UserButton } from '@clerk/clerk-react';
