@@ -1,6 +1,6 @@
 function SideBar() {
     return (
-        <article className="w-[15%] min-w-[200px] max-h-screen overflow-y-auto border border-transparent border-b-neutral-600/40 border-r-neutral-600/40">
+        <article className="w-[15%] min-w-[200px] overflow-y-auto border border-transparent border-b-neutral-600/40 border-r-neutral-600/40">
             <div className="p-5 pt-3">
                 <h2 className="font-bold">Information</h2>
                 <ul className="mt-4 space-y-2 pb-4">
@@ -25,7 +25,7 @@ function SideBar() {
                     <li className="text-sm text-neutral-300 transition-colors font-semibold w-[100%] hover:bg-neutral-600/30 cursor-pointer p-1 rounded-md">Chat</li>
                 </ul>
                 <h2 className="font-bold pt-3 border border-transparent border-t-neutral-300/30">Settings</h2>
-                <ul className="mt-4 space-y-2">
+                <ul className="mt-4 space-y-2 mb-[8rem]">
                     <li className="text-sm text-neutral-300 transition-colors font-semibold w-[100%] hover:bg-neutral-600/30 cursor-pointer p-1 rounded-md">Project settings</li>
                     <li className="text-sm text-neutral-300 transition-colors font-semibold w-[100%] hover:bg-neutral-600/30 cursor-pointer p-1 rounded-md">Team settings</li>
                     <li className="text-sm text-neutral-300 transition-colors font-semibold w-[100%] hover:bg-neutral-600/30 cursor-pointer p-1 rounded-md">Billing</li>

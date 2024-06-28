@@ -3,36 +3,39 @@ import { useAuth } from "@clerk/nextjs";
 import dynamic from 'next/dynamic';
 import Head from "next/head";
 import React, { useState, useEffect } from "react";
+import { useRouter } from 'next/navigation';
 import DashboardHeader from "../../components/header/dashboardheader";
 import AddProjectButton from "../../components/buttons/projectsmodalopen";
 import ProjectsDataAdder from "../../components/projects/datastuff";
-import router from "next/router";
+
 function Dashboard() {
-  
   const { isLoaded, isSignedIn, error } = useAuth();
   const [activeSection, setActiveSection] = useState('projects');
+  const router = useRouter();
 
   useEffect(() => {
-    const router = require("next/router").default;
-    if (!isLoaded) return;
+    if (!isLoaded) return; // Wait until authentication state is loaded
 
+    if (error) {
+      console.error(error);
+      return;
+    }
 
-      if (error) {
-        console.error(error);
-        return;
-      }
-
-      if (!isSignedIn) {
-        router.push("/");
-      }
+    if (!isSignedIn) {
+      router.push('/sign-in'); // Redirect to sign-in page if not signed in
+    }
   }, [isLoaded, isSignedIn, error, router]);
 
   const handleSectionChange = (section) => {
     setActiveSection(section);
   };
 
-  if (!isLoaded || !isSignedIn) {
-    return null;
+  if (!isLoaded) {
+    return <div>Loading...</div>; // Show a loading message while authentication state is being checked
+  }
+
+  if (!isSignedIn) {
+    return <div>Unauthorised</div>; // This will never be shown due to the redirect
   }
 
   return (

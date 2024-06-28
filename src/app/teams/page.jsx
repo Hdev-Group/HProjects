@@ -1,15 +1,40 @@
-"use client"
-import React, { useState } from 'react';
+"use client";
+import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
+import { useRouter } from 'next/navigation';
 import DashboardHeader from '../../components/header/dashboardheader';
 import NoTeams from '../../components/noitems/teamsnone';
+import { useAuth } from "@clerk/nextjs";
 
 const Teams = () => {
+  const { isLoaded, isSignedIn, error } = useAuth();
   const [activeSection, setActiveSection] = useState('teams'); 
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!isLoaded) return; // Wait until authentication state is loaded
+
+    if (error) {
+      console.error(error);
+      return;
+    }
+
+    if (!isSignedIn) {
+      router.push('/sign-in'); // Redirect to sign-in page if not signed in
+    }
+  }, [isLoaded, isSignedIn, error, router]);
 
   const handleSectionChange = (section) => {
     setActiveSection(section);
   };
+
+  if (!isLoaded) {
+    return <div>Loading...</div>; // Show a loading message while authentication state is being checked
+  }
+
+  if (!isSignedIn) {
+    return <div>Unauthorised</div>; // This will never be shown due to the redirect
+  }
 
   return (
     <>

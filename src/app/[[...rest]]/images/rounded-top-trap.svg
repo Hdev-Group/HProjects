@@ -1,0 +1,7 @@
+<svg width="0" height="0" viewBox="0 0 100 10" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <clipPath id="roundedTrapezoid">
+      <path d="M 5 0 L 95 0 Q 100 0 100 5 L 100 5 L 95 10 L 5 10 Q 0 10 0 5 Z" />
+    </clipPath>
+  </defs>
+</svg>

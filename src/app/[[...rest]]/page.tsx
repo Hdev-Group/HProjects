@@ -4,6 +4,8 @@ import { SignedOut, SignedIn, SignUp, UserButton } from '@clerk/nextjs';
 import HeaderIndex from '../../components/header/header';
 import '../../styles/globals.css';
 import { dark } from '@clerk/themes';
+import { add } from '../../../convex/projects';
+import { useEffect } from 'react';
 
 export default function Home() {
   const [showSignUp, setShowSignUp] = useState(false);
@@ -21,11 +23,33 @@ export default function Home() {
       handleCloseModal();
     }
   };
+  // if white section turn header to dark text
+  useEffect(() => {
+    const whitesection = document.getElementById('whitesection');
+    const header = document.querySelector('header');
 
+    const handleScroll = () => {
+      if (whitesection) {
+      if (window.scrollY > whitesection.offsetTop - 100) {
+        header.classList.add('text-black');
+        console.log('yes');
+      } else {
+        header.classList.remove('text-black');
+        console.log('no');
+      }
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, true);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll, true);
+    };
+  }, []);
   return (
     <>
       <HeaderIndex />
-      <main className="flex gap-20 flex-col items-center justify-center mt-20 p-12 md:p-12 w-[100%]">
+      <main className="flex gap-20 flex-col items-center justify-center mt-20 w-[100%]">
 
         <div className='top-[9rem] grid-background z-[-20] absolute'></div>
         <div className='flex flex-col justify-center items-center p-4 md:p-12 gap-1 md:gap-7 mt-6'>
@@ -68,13 +92,13 @@ export default function Home() {
         <div className='flex flex-col relative items-center md:p-1 bg-neutral-100/10 rounded-xl z-5'>
           <img src='/logo.png' alt='Chat' className='w-10 md:w-[100%] h-auto rounded-xl' />
         </div>
-        <div className='flex flex-col gap-8 p-4 md:p-12 mt-20 md:w-[90rem] md:w-max-[50rem]'>
+        <div className='flex flex-col gap-8 p-4 md:p-12 mt-20 lg:w-[70rem] w-[100%]'>
           <div className='flex-col gap-4'>
             <h1 className='text-4xl md:text-4xl font-bold font-sans'>Github projects everywhere?</h1>
             <p className='text-sm md:text-base text-zinc-300'>We get <span className='text-cyan-400 font-bold'>you.</span></p>
           </div>
-          <div className='flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4 w-[91%] md:w-full'>
-            <div className='flex flex-col border border-red-500 dark:bg-red-500/10 bg-red-500/40 w-[100%] md:w-full px-4 md:px-6 py-6 md:py-8 rounded'>
+          <div className='flex flex-col lg:flex-row space-y-4 lg:space-y-0 lg:space-x-4 w-[100%] lg:w-full'>
+            <div className='flex flex-col border border-red-500 bg-red-500/10 w-[100%] lg:w-full px-4 lg:px-6 py-6 lg:py-8 rounded'>
               <h2 className='text-xl md:text-2xl font-bold font-sans '>Without HProjects</h2>
               <p className='text-sm text-zinc-400'>you get:</p>
               <ul className='list-none pl-0 mt-2'>
@@ -98,7 +122,7 @@ export default function Home() {
                 </li>
               </ul>
             </div>
-            <div className='flex flex-col border border-emerald-600 bg-emerald-600/10 w-[100%] md:w-full px-4 md:px-6 py-6 md:py-8 rounded'>
+            <div className='flex flex-col border border-emerald-600 bg-emerald-600/10 w-[100%] lg:w-full px-4 lg:px-6 py-6 lg:py-8 rounded'>
             <h2 className='text-xl md:text-2xl font-bold font-sans '>With HProjects</h2>
             <p className='text-sm text-zinc-400'>you get:</p>
               <ul className='list-none pl-0 mt-2'>
@@ -122,6 +146,13 @@ export default function Home() {
                 </li>
               </ul>
             </div>
+          </div>
+        </div>
+        <div className='bg-white w-[100%] h-[100rem] relative flex justify-center' id='whitesection'>
+          <div className='innerholdtransitioner'></div>
+          <div className='flex flex-col md:max-w-[1250px] w-[100%] p-4 md:p-12 z-30  mt-6'>
+            <p className='text-blue-800 font-semibold md:text-sm'>Scaleable project building</p>
+            <h1 className='text-black font-semibold md:text-3xl text-xl'>The easy project planning solution</h1>
           </div>
         </div>
       </main>

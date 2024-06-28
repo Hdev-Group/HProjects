@@ -9,8 +9,9 @@ const Settings = () => {
     const { isLoaded, isSignedIn, user: userInfo } = useUser();
 
     if (!isLoaded || !isSignedIn) {
-        return null;
-    }
+        window.location.href = '/sign-in';
+        return <div>Unauthorised</div>;
+      }
 
   return (
     <div>

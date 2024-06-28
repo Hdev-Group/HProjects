@@ -14,7 +14,7 @@ export default function ProjectPage({ params }: { params: { _id: string } }) {
   const projectuserid = project?.userId;
 
   if (!project) {
-    return <div>Project not found</div>;
+     return  <div>Project not found</div>;
   }
 
   if (projectuserid !== userId) {
