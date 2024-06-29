@@ -27,9 +27,9 @@ const BoxProjectBuilding = ({ name, id }) => {
     );
   };
   
-  const BoxProjectlive = ({ name }) => {
+  const BoxProjectlive = ({ name, id }) => {
     return (
-      <a href={`/projects/${projectId}`}>
+      <a href={`/projects/${id}`}>
       <div className="flex flex-col bg-neutral-900/70 w-[300px] px-4 py-5 rounded-lg border-2 border-neutral-800">
         <div className="flex flex-row items-center justify-between">
           <h1 className="text-2xl font-bold">{name}</h1>
@@ -56,9 +56,9 @@ const BoxProjectBuilding = ({ name, id }) => {
     );
   };
   
-  const BoxProjectPlanning = ({ name }) => {
+  const BoxProjectPlanning = ({ name, id }) => {
     return (
-      <a href={`/projects/${projectId}`}>
+      <a href={`/projects/${id}`}>
       <div className="flex flex-col bg-neutral-900/70 w-[300px] px-4 py-5 rounded-lg border-2 border-neutral-800">
         <div className="flex flex-row items-center justify-between">
           <h1 className="text-2xl font-bold">{name}</h1>

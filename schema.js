@@ -9,5 +9,6 @@ export default defineSchema({
         projectName: v.string(),
         projectStatus: v.string(),
         userId: v.string(),
+        otherusers: v.array(v.string())
     }),
 });

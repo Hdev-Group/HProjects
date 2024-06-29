@@ -29,7 +29,7 @@ const Teams = () => {
   };
 
   if (!isLoaded) {
-    return <div>Loading...</div>; // Show a loading message while authentication state is being checked
+    return; // Show a loading message while authentication state is being checked
   }
 
   if (!isSignedIn) {

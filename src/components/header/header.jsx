@@ -6,28 +6,12 @@ import { UserButton, useClerk } from '@clerk/clerk-react';
 
 const Header = () => {
   const { user, signOut } = useClerk();
-  useEffect(() => {
-    const handleScroll = () => {
-      const header = document.querySelector('header');
-      if (header) {
-        if (window.scrollY > 45) {
-          header.classList.add('scrolled');
-        } else {
-          header.classList.remove('scrolled');
-        }
-      }
-    };
-
-    document.addEventListener('scroll', handleScroll);
-
-    return () => {
-      document.removeEventListener('scroll', handleScroll);
-    };
-  }, []);
 
   return (
-    <header className={`fixed z-70 top-0  max-[460px]:block backdrop-blur-md sm:block md:flex left-0 right-0 z-50 flex items-center justify-center p-8 dark:bg-cyan-950 light:bg-white transition-colors duration-300 ${user ? 'scrolled' : ''}`}>
-      <div className="flex items-center gap-10 justify-between md:w-[90rem]">
+    <header className="z-70 top-0 w-[100%] border-b-neutral-200 max-[460px]:block backdrop-blur-md sm:block md:flex left-0 right-0 z-50 flex items-center justify-center p-8 pb-5 dark:bg-cyan-950 light:bg-white transition-colors duration-300">
+      <div className='borderhold'></div>
+      <div className="flex items-center gap-10  justify-between md:w-[90rem]">
+        <div className='flex items-center gap-8 justify-center'>
         <a href='/'>
           <div className="flex items-center">
             <Image
@@ -42,16 +26,17 @@ const Header = () => {
         <nav>
           <ul className="space-x-4 md:flex hidden">
             <li>
-              <a href="/help/" className="ease-in-out duration-300 border border-gunmetal/20 hover:border-sky-800 bg-gunmetal/10 px-4 py-2 rounded hover:bg-sky-800/40 transform light:bg-gray-400/10 light:border-slate-400">Help</a>
+              <a href="/help/" className="ease-in-out duration-300 text-neutral-300 flex items-center justify-center  font-semibold hover:text-neutral-50">Product<svg className='height-[30px] w-4' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 16L6 10H18L12 16Z"></path></svg></a>
             </li>
             <li>
-              <a href="/download" className="ease-in-out duration-300 border border-gunmetal/20 hover:border-sky-800 bg-gunmetal/10 px-4 py-2 rounded hover:bg-sky-800/40 transform">Download</a>
+              <a href="/download" className="ease-in-out duration-300 text-neutral-300 font-semibold hover:text-neutral-50">Docs</a>
             </li>
             <li>
-              <a href="/blog" className="ease-in-out duration-300 border border-gunmetal/20 hover:border-sky-800 bg-gunmetal/10 px-4 py-2 rounded hover:bg-sky-800/40 transform">Blog</a>
+              <a href="/blog" className="ease-in-out duration-300 text-neutral-300 font-semibold hover:text-neutral-50">Changelog</a>
             </li>
           </ul>
         </nav>
+        </div>
         <nav className='max-[460px]:hidden'>
           <ul className="flex space-x-4">
             {user ? (
@@ -65,13 +50,13 @@ const Header = () => {
                         }
                       }}
                   />
-                  <a href="/dashboard" className="ease-in-out duration-300 border dark:border-cyan-700 border-cyan-300 bg-cyan-600/30 hover:border-teal-700 hover:bg-teal-400/40 dark:hover:border-teal-500 dark:bg-cyan-600/30 px-4 py-2 rounded-2xl dark:hover:bg-teal-300/40">Dashboard</a>
+                  <a href="/dashboard" className="cursor-pointer hovmain flex pl-2 border border-white/40 hover:border-white transition-all items-center p-1 rounded-lg hover:bg-neutral-500/10 hover:ring-2 hover:ring-neutral-500/30">Dashboard <svg xmlns="http://www.w3.org/2000/svg" className='h-[30px] w-5 hovericon' viewBox="0 0 24 24" fill="currentColor"><path d="M16 12L10 18V6L16 12Z"></path></svg></a>
                 </li>
               </>
             ) : (
               <li className='gap-5 flex items-center'>
-                <a href="/sign-in" className="ease-in-out duration-300 rounded-2xl dark:text-white text-black">Login</a>
-                <a href="/sign-up" className="cursor-pointer ease-in-out duration-300 border dark:border-neutral-800 border-slate-500 bg-cyan-600/100 hover:border-teal-700 hover:bg-teal-400/40 dark:hover:border-teal-300 dark:bg-cyan-600/100 px-4 py-2 rounded-2xl dark:hover:bg-teal-300/40">Get Started</a>
+                <a href="/sign-in" className="ease-in-out duration-300 rounded-2xl text-white">Login</a>
+                <a href="/sign-up" className="cursor-pointer flex pl-2 border border-white/40 hover:border-white transition-all items-center p-1 rounded-lg hover:bg-neutral-500/10 hover:ring-2 hover:ring-neutral-500/30 hovmain">Get Started <svg  xmlns="http://www.w3.org/2000/svg" className='h-[30px] w-5 hovericon' viewBox="0 0 24 24" fill="currentColor"><path d="M16 12L10 18V6L16 12Z"></path></svg></a>
               </li>
             )}
           </ul>

@@ -10,7 +10,7 @@ const NewProjectModal = ({ onClose }) => {
   const [projectName, setProjectName] = useState('');
   const [projectDescription, setProjectDescription] = useState('');
   const [projectStatus, setProjectStatus] = useState('');
-
+  const [otherusers] = useState([]);
   const addProject = useMutation(api.projects.add);
 
   const handleFormSubmit = async (e) => {
@@ -20,7 +20,7 @@ const NewProjectModal = ({ onClose }) => {
       return;
     }
     try {
-      await addProject({ userId, projectName, projectDescription, projectStatus});
+      await addProject({ userId, projectName, projectDescription, projectStatus, otherusers });
       onClose();
     } catch (error) {
       console.error('Error adding project:', error);

@@ -23,33 +23,10 @@ export default function Home() {
       handleCloseModal();
     }
   };
-  // if white section turn header to dark text
-  useEffect(() => {
-    const whitesection = document.getElementById('whitesection');
-    const header = document.querySelector('header');
-
-    const handleScroll = () => {
-      if (whitesection) {
-      if (window.scrollY > whitesection.offsetTop - 100) {
-        header.classList.add('text-black');
-        console.log('yes');
-      } else {
-        header.classList.remove('text-black');
-        console.log('no');
-      }
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll, true);
-
-    return () => {
-      window.removeEventListener('scroll', handleScroll, true);
-    };
-  }, []);
   return (
-    <>
+    <div className='flex items-center justify-center w-[100%] flex-col'>
       <HeaderIndex />
-      <main className="flex gap-20 flex-col items-center justify-center mt-20 w-[100%]">
+      <main className="flex gap-5 flex-col items-center justify-center mt-2 w-[100%]">
 
         <div className='top-[9rem] grid-background z-[-20] absolute'></div>
         <div className='flex flex-col justify-center items-center p-4 md:p-12 gap-1 md:gap-7 mt-6'>
@@ -59,16 +36,16 @@ export default function Home() {
           </p>
           <SignedOut>
           <div className='flex flex-row mt-6 gap-2 md:gap-6'>
-            <button onClick={handleSignUpClick} className='ease-in-out duration-300 border dark:border-gunmetal cta hover:border-teal-300 bg-gunmetal/30 px-10 md:px-20 py-4 md:py-4 rounded-2xl hover:bg-teal-300/40 transform shadow-gunmetal text-xs md:text-sm flex items-center justify-center'>
-            <h1 className='font-bold text-[20px]'>Get Started</h1>
+            <button onClick={handleSignUpClick} className='ease-in-out duration-300 hovmain flex items-center justify-center border p-2 w-[20rem] bg-neutral-500/10 rounded hover:border-neutral-100 hover:bg-neutral-300/20'>
+            <h1 className='font-bold flex text-[20px]'>Get Started  <svg xmlns="http://www.w3.org/2000/svg" className='h-[30px] w-5 hovericon' viewBox="0 0 24 24" fill="currentColor"><path d="M16 12L10 18V6L16 12Z"></path></svg></h1>
             </button>
           </div>
         </SignedOut>
         <SignedIn>
-        <div className='flex flex-row mt-6 gap-2 md:gap-6'>
+        <div className='flex  flex-row mt-2 gap-2 md:gap-6'>
           <a href='/dashboard'>
-          <button className='ease-in-out duration-300 border dark:border-gunmetal cta hover:border-teal-300 bg-gunmetal/10 px-10 md:px-20 py-4 md:py-4 rounded-2xl hover:bg-teal-300/40 transform shadow-gunmetal text-xs md:text-sm flex items-center justify-center'>
-            <h1 className='font-bold text-[20px]'>Dashboard</h1>
+          <button className='ease-in-out duration-300 hovmain flex items-center justify-center border p-2 w-[20rem] bg-neutral-500/10 rounded hover:border-neutral-100 hover:bg-neutral-300/20'>
+            <h1 className='font-bold text-[20px] flex'>Dashboard <svg xmlns="http://www.w3.org/2000/svg" className='h-[30px] w-5 hovericon' viewBox="0 0 24 24" fill="currentColor"><path d="M16 12L10 18V6L16 12Z"></path></svg></h1>
           </button>
           </a>
           </div>
@@ -89,10 +66,8 @@ export default function Home() {
           </div>
         )}
         </div>
-        <div className='flex flex-col relative items-center md:p-1 bg-neutral-100/10 rounded-xl z-5'>
-          <img src='/logo.png' alt='Chat' className='w-10 md:w-[100%] h-auto rounded-xl' />
-        </div>
-        <div className='flex flex-col gap-8 p-4 md:p-12 mt-20 lg:w-[70rem] w-[100%]'>
+
+        <div className='flex flex-col gap-8 p-4 md:p-12 mt-20 lg:w-[90rem] w-[100%] mb-12'>
           <div className='flex-col gap-4'>
             <h1 className='text-4xl md:text-4xl font-bold font-sans'>Github projects everywhere?</h1>
             <p className='text-sm md:text-base text-zinc-300'>We get <span className='text-cyan-400 font-bold'>you.</span></p>
@@ -148,14 +123,22 @@ export default function Home() {
             </div>
           </div>
         </div>
-        <div className='bg-white w-[100%] h-[100rem] relative flex justify-center' id='whitesection'>
+        <div className='bg-white w-[100%] h-[60rem] relative flex justify-center' id='whitesection'>
           <div className='innerholdtransitioner'></div>
-          <div className='flex flex-col md:max-w-[1250px] w-[100%] p-4 md:p-12 z-30  mt-6'>
-            <p className='text-blue-800 font-semibold md:text-sm'>Scaleable project building</p>
+          <div className='flex flex-col md:max-w-[1533px] w-[100%] p-4 md:p-12 z-30 border-l-black/15 border-r-black/15 border border-dashed border-transparent'>
+            <p className='text-blue-800 font-semibold md:text-sm mt-9'>Scaleable project building</p>
             <h1 className='text-black font-semibold md:text-3xl text-xl'>The easy project planning solution</h1>
+            <div className='mt-20'>
+            <p className='text-blue-800 font-semibold md:text-sm mt-9'>Simplicity at its best</p>
+              <h2 className='text-black font-semibold text-lg md:text-2xl'>Track your progress with a glance</h2>
+              <p className='text-black'>With HProjects</p>
+            </div>
           </div>
+          <div className='outerholdtransitioner'></div>
         </div>
+        <div className='flex flex-col gap-8 p-4 md:p-12 mt-20 lg:w-[70rem] w-[100%]'>
+          </div>
       </main>
-    </>
+    </div>
   );
 }

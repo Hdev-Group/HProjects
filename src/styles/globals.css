@@ -123,8 +123,8 @@
     width: 40px;
   }
   .cl-userButtonAvatarBox{
-    height: 25px !important;
-    width: 25px !important;
+    height: 30px !important;
+    width: 30px !important;
   }
    utilities {
     .text-balance {
@@ -280,14 +280,53 @@
     clip-path: polygon(0 100%, 100% 100%, 90% 0%, 10% 0%);
     left: 50%;
     transform: translate(-50%, -50%);
-    max-width: 1350px;
+    max-width: 1700px;
     width: 100%;
     height: 80px;
     background-color: white;
     border-radius: 20px 20px 0 0; /* Adds rounded corners to the top */
 }
+.outerholdtransitioner {
+  position: absolute;
+  clip-path: polygon(100% 0, 0% 0%, 10% 100%, 90% 100%);
+  left: 50%;
+  bottom: 0;
+  transform: translate(-50%, 50%);
+  max-width: 1700px;
+  width: 100%;
+  height: 80px;
+  background-color: white;
+  border-radius: 20px 20px 0 0;
+}
 @media screen and (max-width: 768px) {
   .innerholdtransitioner {
     height: 100px;
   }
+}
+.borderhold{
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  bottom: 0;
+  background-image: linear-gradient(to right, transparent,  #262626, transparent);
+}
+.spinnerloader{
+  border: 4px solid rgba(0, 0, 0, 0.1);
+  border-left-color: var(--maincta);
+  border-radius: 50%;
+  width: 25px;
+  height: 25px;
+  animation: spin 1s linear infinite;
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.hovericon{
+  transition: all ease-in-out 0.3s;
+}
+.hovmain:hover .hovericon{
+  transform: translateX(5px);
+  transition: all ease-in-out 0.3s;
 }
