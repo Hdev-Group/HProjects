@@ -8,7 +8,7 @@ const Header = () => {
   const { user, signOut } = useClerk();
 
   return (
-    <header className="z-70 top-0 w-[100%] border-b-neutral-200 max-[460px]:block backdrop-blur-md sm:block md:flex left-0 right-0 z-50 flex items-center justify-center p-8 pb-5 dark:bg-cyan-950 light:bg-white transition-colors duration-300">
+    <header className="z-70 top-0 w-[100%] border-b-neutral-200 max-[460px]:block backdrop-blur-md sm:block md:flex left-0 right-0 z-50 flex items-center justify-center p-8 pb-5 dark:bg-transparent light:bg-white transition-colors duration-300">
       <div className='borderhold'></div>
       <div className="flex items-center gap-10  justify-between md:w-[90rem]">
         <div className='flex items-center gap-8 justify-center'>

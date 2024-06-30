@@ -2,20 +2,16 @@ import DropdownMenuMain from '../dropdowns/dropdown'
 
 const BoxProjectBuilding = ({ name, id }) => {
     return (
+      <div className="relative">
       <a href={`/projects/${id}`}>
-        <div className="flex flex-col bg-neutral-900/70 w-[300px] px-4 py-5 rounded-lg border-2 border-neutral-800">
+      <div className="flex flex-col bg-neutral-900/70 w-[300px] px-4 py-5 rounded-lg border-2 border-neutral-800">
         <div className="flex flex-row items-center justify-between">
           <h1 className="text-2xl font-bold">{name}</h1>
-          <div className="gap-1 flex flex-col cursor-pointer">
-            <div className="h-[5px] w-[5px] rounded-full bg-white" />
-            <div className="h-[5px] w-[5px] rounded-full bg-white" />
-            <div className="h-[5px] w-[5px] rounded-full bg-white" />
-          </div>
         </div>
         <div className="flex flex-row items-center justify-between mt-4">
           <div className="flex items-center gap-2 justify-between  px-4 rounded-[4rem] developing border-2">
             <div className="developingdot" />
-            Building
+            Developing
           </div>
         </div>
         <div className="flex flex-col justify-between mt-1 w-[100%]">
@@ -26,20 +22,18 @@ const BoxProjectBuilding = ({ name, id }) => {
         </div>
       </div>
       </a>
+      <DropdownMenuMain id={id} pname={name} />
+      </div>
     );
   };
   
   const BoxProjectlive = ({ name, id }) => {
     return (
+      <div className="relative">
       <a href={`/projects/${id}`}>
       <div className="flex flex-col bg-neutral-900/70 w-[300px] px-4 py-5 rounded-lg border-2 border-neutral-800">
         <div className="flex flex-row items-center justify-between">
           <h1 className="text-2xl font-bold">{name}</h1>
-          <div className="gap-1 flex flex-col cursor-pointer">
-          <div className="h-[5px] w-[5px] rounded-full bg-white" />
-            <div className="h-[5px] w-[5px] rounded-full bg-white" />
-            <div className="h-[5px] w-[5px] rounded-full bg-white" />
-          </div>
         </div>
         <div className="flex flex-row items-center justify-between mt-4">
           <div className="flex items-center gap-2 justify-between  px-4 rounded-[4rem] live border-2">
@@ -55,6 +49,8 @@ const BoxProjectBuilding = ({ name, id }) => {
         </div>
       </div>
       </a>
+      <DropdownMenuMain id={id} pname={name} />
+      </div>
     );
   };
   
@@ -80,7 +76,7 @@ const BoxProjectBuilding = ({ name, id }) => {
         </div>
       </div>
       </a>
-      <DropdownMenuMain />
+      <DropdownMenuMain id={id} pname={name} />
       </div>
     );
   };
