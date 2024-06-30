@@ -7,7 +7,6 @@ export const add = mutation({
     projectName: v.string(),
     projectDescription: v.string(),
     projectStatus: v.string(),
-    otherusers: v.array(v.string())
   },
   handler: async (ctx, { userId, projectName, projectDescription, projectStatus }) => {
     // Business logic to add a project
@@ -16,7 +15,6 @@ export const add = mutation({
       projectName,
       projectDescription,
       projectStatus,
-      otherusers: []
     };
 
     // Insert the project into the "project" table
