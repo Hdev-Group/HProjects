@@ -19,7 +19,7 @@ export default function ProjectPage({ params }: { params: { _id: string } }) {
   console.log(user?.firstName, project?.projectName, projectuserid, userId);
 
   useEffect(() => {
-    if (document.getElementById('Tasks')) {
+    if (document.getElementById('tasksproject')) {
       setActiveSection('Tasks');
     }
   }, []);
@@ -43,13 +43,13 @@ export default function ProjectPage({ params }: { params: { _id: string } }) {
       <div className="overflow-hidden h-screen">
         <DashboardHeaderProjects projectname={project.projectName} />
         <div className="flex mt-[130px] h-full">
-          <SideBar activeSection={activeSection} />
+          <SideBar _id={params._id} activeSection={activeSection} />
           <div className="w-full p-5 overflow-y-auto">
             <div className="flex-row justify-between flex">
-            <h1 className="flex text-2xl  font-bold mb-3" id="Tasks">Tasks</h1>
-            <div>
+              <h1 className="flex text-2xl font-bold mb-3" id="tasksproject">Tasks</h1>
+              <div>
                 <button className="bg-primary-500 text-white rounded-md p-2 border w-60 hover:bg-neutral-300/20 hover:border-neutral-200 transition-all bg-neutral-400/10 border-neutral-800">Add Task</button>
-            </div>
+              </div>
             </div>
             <div className="w-full items-start flex py-5 justify-start px-5 gap-3 flex-col border-neutral-800 bg-neutral-900/50 border rounded">
             </div>

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useToast } from "../ui/use-toast"
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -31,7 +32,24 @@ function DropdownMenuMain({ id, pname, pinned }) {
             console.error('Error updating project:', error);
         }
     };
-
+    
+        const ToastDemo = () => {
+            const { toast } = useToast()
+        
+            return (
+            <DropdownMenuItem className="text-orange-300 cursor-pointer" id="pinproject" 
+                onClick={() => {
+                handlePinProject();
+                toast({
+                    description: pinned ? 'Unpinned Project' : 'Pinned Project',
+                });
+                }}
+            >
+                {pinned ? 'Unpin Project' : 'Pin Project'}
+            </DropdownMenuItem>
+            )
+        }
+      
     return (
         <>
             <DropdownMenu>
@@ -43,12 +61,10 @@ function DropdownMenuMain({ id, pname, pinned }) {
                     </div>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="absolute top-[-9rem] left-[13rem]">
-                    <DropdownMenuItem className="text-orange-300" onClick={handlePinProject}>
-                        {pinned ? 'Unpin Project' : 'Pin Project'}
-                    </DropdownMenuItem>
-                    <DropdownMenuItem>Settings</DropdownMenuItem>
+                    <ToastDemo />
+                    <DropdownMenuItem className='cursor-pointer'>Settings</DropdownMenuItem>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem className="text-red-400" onClick={deleteclick} id={`delete${id}`}>
+                    <DropdownMenuItem className="text-red-400 cursor-pointer" onClick={deleteclick} id={`delete${id}`}>
                         Delete
                     </DropdownMenuItem>
                 </DropdownMenuContent>
