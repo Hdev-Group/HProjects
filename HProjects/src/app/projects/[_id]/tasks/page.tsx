@@ -45,8 +45,8 @@ export default function ProjectPage({ params }: { params: { _id: string } }) {
         <div className="flex mt-[130px] h-full">
           <SideBar _id={params._id} activeSection={activeSection} />
           <div className="w-full p-5 overflow-y-auto">
-            <div className="flex-row justify-between flex">
-              <h1 className="flex text-2xl font-bold mb-3" id="tasksproject">Tasks</h1>
+            <div className="flex-row justify-between mb-10 mt-5 flex">
+              <h1 className="flex text-2xl font-bold" id="tasksproject">Tasks</h1>
               <div>
                 <button className="bg-primary-500 text-white rounded-md p-2 border w-60 hover:bg-neutral-300/20 hover:border-neutral-200 transition-all bg-neutral-400/10 border-neutral-800">Add Task</button>
               </div>
