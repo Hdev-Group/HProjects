@@ -7,9 +7,12 @@ import {
     DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import DeleteProject from '../modals/deleteproject';
+import { useMutation } from 'convex/react';
+import { api } from '../../../convex/_generated/api';
 
-function DropdownMenuMain({ id, pname }) {
+function DropdownMenuMain({ id, pname, pinned }) {
     const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const pinProjectMutation = useMutation(api.pinProject.pinProject);
 
     function deleteclick() {
         console.log(id);
@@ -19,6 +22,15 @@ function DropdownMenuMain({ id, pname }) {
     function closeDeleteModal() {
         setShowDeleteModal(false);
     }
+
+    const handlePinProject = async () => {
+        try {
+            const updatedProject = await pinProjectMutation({ id, pinned: !pinned });
+            console.log('Project updated:', updatedProject);
+        } catch (error) {
+            console.error('Error updating project:', error);
+        }
+    };
 
     return (
         <>
@@ -31,7 +43,9 @@ function DropdownMenuMain({ id, pname }) {
                     </div>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="absolute top-[-9rem] left-[13rem]">
-                    <DropdownMenuItem className="text-orange-300">Pin</DropdownMenuItem>
+                    <DropdownMenuItem className="text-orange-300" onClick={handlePinProject}>
+                        {pinned ? 'Unpin' : 'Pin'}
+                    </DropdownMenuItem>
                     <DropdownMenuItem>Settings</DropdownMenuItem>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem className="text-red-400" onClick={deleteclick} id={`delete${id}`}>

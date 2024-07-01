@@ -30,10 +30,8 @@ function DeleteProject({ id, onClose, pname }) {
     }, [pname]);
 
     const handleDeleteProject = async () => {
-        console.log(`Deleting project with ID ${id}`);
         try {
             await deleteProjectMutation({ id });
-            console.log(`Deleted project with ID ${id}`);
             onClose();
         } catch (error) {
             console.error(`Failed to delete project with ID ${id}:`, error);

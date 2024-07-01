@@ -1,6 +1,6 @@
 import DropdownMenuMain from '../dropdowns/dropdown'
 
-const BoxProjectBuilding = ({ name, id }) => {
+const BoxProjectBuilding = ({ name, id, pinned }) => {
     return (
       <div className="relative">
       <a href={`/projects/${id}`}>
@@ -22,12 +22,12 @@ const BoxProjectBuilding = ({ name, id }) => {
         </div>
       </div>
       </a>
-      <DropdownMenuMain id={id} pname={name} />
+      <DropdownMenuMain pinned={pinned}  id={id} pname={name} />
       </div>
     );
   };
   
-  const BoxProjectlive = ({ name, id }) => {
+  const BoxProjectlive = ({ name, id, pinned }) => {
     return (
       <div className="relative">
       <a href={`/projects/${id}`}>
@@ -49,12 +49,12 @@ const BoxProjectBuilding = ({ name, id }) => {
         </div>
       </div>
       </a>
-      <DropdownMenuMain id={id} pname={name} />
+      <DropdownMenuMain pinned={pinned} id={id} pname={name} />
       </div>
     );
   };
   
-  const BoxProjectPlanning = ({ name, id }) => {
+  const BoxProjectPlanning = ({ name, id, pinned }) => {
     return (
       <div className="relative">
       <a href={`/projects/${id}`}>
@@ -76,7 +76,7 @@ const BoxProjectBuilding = ({ name, id }) => {
         </div>
       </div>
       </a>
-      <DropdownMenuMain id={id} pname={name} />
+      <DropdownMenuMain pinned={pinned} id={id} pname={name} />
       </div>
     );
   };
