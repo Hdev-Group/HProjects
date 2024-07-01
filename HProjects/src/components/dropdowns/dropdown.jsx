@@ -44,7 +44,7 @@ function DropdownMenuMain({ id, pname, pinned }) {
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="absolute top-[-9rem] left-[13rem]">
                     <DropdownMenuItem className="text-orange-300" onClick={handlePinProject}>
-                        {pinned ? 'Unpin' : 'Pin'}
+                        {pinned ? 'Unpin Project' : 'Pin Project'}
                     </DropdownMenuItem>
                     <DropdownMenuItem>Settings</DropdownMenuItem>
                     <DropdownMenuSeparator />
