@@ -22,6 +22,7 @@ const NewProjectModal = ({ onClose }) => {
     }
     try {
       await addProject({ userId, projectName, projectDescription, projectStatus, otherusers, pinned });
+      document.getElementById
       onClose();
     } catch (error) {
       console.error('Error adding project:', error);
@@ -30,10 +31,13 @@ const NewProjectModal = ({ onClose }) => {
 
   useEffect(() => {
     const outerclickclose = document.getElementById('outerclickclose');
-
+    const innercloser = document.getElementById('innercloser');
     const handleClickOutside = (e) => {
       if (e.target.id === 'outerclickclose') {
-        onClose();
+        innercloser.classList.add('slide-out-right');
+        setTimeout(() => {
+          onClose();
+        }, 500);
       }
     };
 
@@ -52,7 +56,7 @@ const NewProjectModal = ({ onClose }) => {
 
   return (
     <div id="outerclickclose" className="absolute modalmain top-0 justify-end items-center flex h-[100%] w-[100%] bg-neutral-950/40  z-[1000000]">
-      <div className="flex flex-col px-5 py-5 slide-in-right bg--400shadow-lg rounded-tl-[1rem] border-neutral-600 border-l shadow-black bg-neutral-900 h-[100%] md:w-[540px] w-[100%]">
+      <div id='innercloser' className="flex flex-col px-5 py-5 slide-in-right bg--400shadow-lg rounded-tl-[1rem] border-neutral-600 border-l shadow-black bg-neutral-900 h-[100%] md:w-[540px] w-[100%]">
         <div className="flex items-center flex-row justify-between">
           <h1 className="text-2xl font-bold dark:text-white text-dark">Add a Project</h1>
           <p onClick={onClose} className="text-2xl text-red-600 cursor-pointer hover:text-red-400 transition-all-300">x</p>

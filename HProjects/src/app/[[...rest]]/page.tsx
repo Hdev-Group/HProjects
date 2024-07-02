@@ -6,6 +6,7 @@ import '../../styles/globals.css';
 import { dark } from '@clerk/themes';
 import { add } from '../../../convex/projects';
 import { useEffect } from 'react';
+import Footer from '../../components/footer/footer';
 
 export default function Home() {
   const [showSignUp, setShowSignUp] = useState(false);
@@ -17,26 +18,23 @@ export default function Home() {
     setShowSignUp(false); // Set showSignUp state to false to hide the modal
   };
 
-  const handleModalClick = (e) => {
+  const handleModalClick = (e: any) => {
     if (e.target === e.currentTarget) {
-      // Click on the outer section of modal (background)
       handleCloseModal();
     }
   };
   return (
-    <div className='flex items-center justify-center w-[100%] flex-col'>
+    <div className='flex items-center justify-center w-[100%] flex-col pt-20'>
       <HeaderIndex />
-      <main className="flex gap-5 flex-col items-center justify-center mt-2 w-[100%]">
-
-        <div className='top-[9rem] grid-background z-[-20] absolute'></div>
-        <div className='flex flex-col justify-center items-center p-4 md:p-12 gap-1 md:gap-7 mt-6'>
-          <h1 className='w-full text-3xl md:text-7xl flex-1 font-bold font-mono text-center'>Start your next big thing</h1>
-          <p className='text-1xl md:text-2xl mt-4 text-zinc-300 w-11/12 md:w-[92%] text-center font-sans'>
-            <span className='text-cyan-400 font-bold'>Track, Build, and maintain</span> every part of your projects, With HProjects!
+      <main className="flex gap-5 flex-col items-center justify-center w-[100%]">
+        <div className='flex flex-col w-full justify-center items-center mt-20 p-4 md:p-12 gap-1 md:gap-6 border-b'>
+          <h1 className='text-3xl md:text-7xl flex-1 font-extrabold font-sans text-center fontmain'>The Project Planning Tool <br></br> For Your Next Project.</h1>
+          <p className='text-xl md:text-2xl mt-4 text-zinc-300 w-full md:w-[40%] text-center fontmain font-medium '>
+            <span className='text-cyan-400 font-bold '>HProjects</span> is the project planning tool that helps you manage your projects with ease.
           </p>
           <SignedOut>
           <div className='flex flex-row mt-6 gap-2 md:gap-6'>
-            <button onClick={handleSignUpClick} className='ease-in-out duration-300 hovmain flex items-center justify-center border p-2 w-[20rem] bg-neutral-500/10 rounded hover:border-neutral-100 hover:bg-neutral-300/20'>
+            <button onClick={handleSignUpClick} className='ease-in-out duration-300 hovmain flex items-center justify-center border p-2 w-[20rem] bg-neutral-900 rounded-2xl hover:border-neutral-100 hover:bg-neutral-800'>
             <h1 className='font-bold flex text-[20px]'>Get Started  <svg xmlns="http://www.w3.org/2000/svg" className='h-[30px] w-5 hovericon' viewBox="0 0 24 24" fill="currentColor"><path d="M16 12L10 18V6L16 12Z"></path></svg></h1>
             </button>
           </div>
@@ -44,7 +42,7 @@ export default function Home() {
         <SignedIn>
         <div className='flex  flex-row mt-2 gap-2 md:gap-6'>
           <a href='/dashboard'>
-          <button className='ease-in-out duration-300 hovmain flex items-center justify-center border p-2 w-[20rem] bg-neutral-500/10 rounded hover:border-neutral-100 hover:bg-neutral-300/20'>
+          <button className='ease-in-out duration-300 hovmain mb-20 flex items-center justify-center border p-2 w-[20rem] bg-neutral-900 rounded-2xl hover:border-neutral-100 hover:bg-neutral-800'>
             <h1 className='font-bold text-[20px] flex'>Dashboard <svg xmlns="http://www.w3.org/2000/svg" className='h-[30px] w-5 hovericon' viewBox="0 0 24 24" fill="currentColor"><path d="M16 12L10 18V6L16 12Z"></path></svg></h1>
           </button>
           </a>
@@ -66,8 +64,9 @@ export default function Home() {
           </div>
         )}
         </div>
+        <div className='top-[40rem] grid-background z-[-20] absolute'></div>
+        <div className='flex flex-col gap-8 p-4 md:p-12 mt-40 lg:w-[90rem] w-[100%] mb-40'>
 
-        <div className='flex flex-col gap-8 p-4 md:p-12 mt-20 lg:w-[90rem] w-[100%] mb-12'>
           <div className='flex-col gap-4'>
             <h1 className='text-4xl md:text-4xl font-bold font-sans'>Github projects everywhere?</h1>
             <p className='text-sm md:text-base text-zinc-300'>We get <span className='text-cyan-400 font-bold'>you.</span></p>
@@ -139,6 +138,7 @@ export default function Home() {
         <div className='flex flex-col gap-8 p-4 md:p-12 mt-20 lg:w-[70rem] w-[100%]'>
           </div>
       </main>
+      <Footer />
     </div>
   );
 }

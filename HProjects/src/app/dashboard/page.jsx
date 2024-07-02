@@ -31,11 +31,11 @@ function Dashboard() {
   };
 
   if (!isLoaded) {
-    return; // Show a loading message while authentication state is being checked
+    return; 
   }
 
   if (!isSignedIn) {
-    return <div>Unauthorised</div>; // This will never be shown due to the redirect
+    return <div>Unauthorised</div>;
   }
 
   return (

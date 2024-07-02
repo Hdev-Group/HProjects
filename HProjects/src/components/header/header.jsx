@@ -6,10 +6,26 @@ import { UserButton, useClerk } from '@clerk/clerk-react';
 
 const Header = () => {
   const { user, signOut } = useClerk();
+  useEffect(() => {
+    const handleScroll = () => {
+      const header = document.querySelector('header');
+      if (header) {
+        if (window.scrollY > 15) {
+          header.classList.add('scrolled');
+        } else {
+          header.classList.remove('scrolled');
+        }
+      }
+    };
 
+    document.addEventListener('scroll', handleScroll);
+
+    return () => {
+      document.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
   return (
-    <header className="z-70 top-0 w-[100%] border-b-neutral-200 max-[460px]:block backdrop-blur-md sm:block md:flex left-0 right-0 z-50 flex items-center justify-center p-8 pb-5 dark:bg-transparent light:bg-white transition-colors duration-300">
-      <div className='borderhold'></div>
+    <header className="fixed z-70 top-0 w-[100%] max-[460px]:block sm:block md:flex left-0 right-0 z-50 flex items-center justify-center p-8 pb-5 transition-colors duration-300">
       <div className="flex items-center gap-10  justify-between md:w-[90rem]">
         <div className='flex items-center gap-8 justify-center'>
         <a href='/'>

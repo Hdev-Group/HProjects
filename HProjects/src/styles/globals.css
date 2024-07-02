@@ -1,7 +1,7 @@
 @tailwind base;
   @tailwind components;
   @tailwind utilities;
-
+  @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
   @layer base {
     :root {
       --background: 0 0% 100%;
@@ -80,15 +80,10 @@
       @apply bg-background text-foreground;
     }
   }
-  header{
-    color: rgb(var(--foreground-rgb));
-    background: linear-gradient(
-        to transparent,
-        transparent,
-        hsl(var(--background-end-rgb))
-      )
-      rgb(var(--background-start-lowers));
+  .fontmain{
+    font-family: 'Roboto', sans-serif;
   }
+
   body {
     color: rgb(var(--foreground-rgb));
     background: linear-gradient(
@@ -298,11 +293,7 @@
   background-color: white;
   border-radius: 20px 20px 0 0;
 }
-@media screen and (max-width: 768px) {
-  .innerholdtransitioner {
-    height: 100px;
-  }
-}
+
 .borderhold{
   position: absolute;
   width: 100%;
