@@ -10,7 +10,6 @@ interface SideBarProps {
 function SideBar({ activeSection, _id }: SideBarProps) {
   const getItemClass = (section: string) =>
     `text-sm text-neutral-300 transition-colors font-semibold w-[100%] hover:bg-neutral-600/30 cursor-pointer p-1 rounded-md ${activeSection === section ? "bg-neutral-600/20 text-white" : ""}`;
-  console.log(_id)
   return (
     <article className="w-[15%] min-w-[200px] overflow-y-auto border border-transparent border-b-neutral-600/40 border-r-neutral-600/40">
       <div className="p-5 pt-3">

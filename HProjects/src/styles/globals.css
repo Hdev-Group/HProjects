@@ -110,8 +110,12 @@
   .scrolledwhite{
     backdrop-filter: blur(10px) !important;
     transform: all 0.3s;
+    color: #000;
     background-color: transparent !important;
     border-bottom: solid 1px rgba(0, 0, 0, 0.9) !important;
+  }
+  .scrolledwhite li{
+    color: #000 !important;
   }
   .cl-avatarBox{
     height: 40px;
@@ -320,4 +324,46 @@
 .hovmain:hover .hovericon{
   transform: translateX(5px);
   transition: all ease-in-out 0.3s;
+}
+.critical{
+  background-color: #8b00003f;
+  border: solid 1px #d15353;
+  color: #d15353;
+  font-weight: 600;
+}
+.high{
+  background-color: #ff00003f;
+  border: solid 1px #FF0000;
+  color: #FF0000;
+  font-weight: 600;
+}
+.medium{
+  background-color: #ff8c003f;
+  border: solid 1px #ff8c00;
+  color: #ff8c00;
+  font-weight: 600;
+}
+.low{
+  background-color: #0080003f;
+  border: solid 1px #008000;
+  color: #76e476;
+  font-weight: 600;
+}
+.feature{
+  background-color: #0000ff3f;
+  border: solid 1px #fff;
+  color: #fff;
+  font-weight: 600;
+}
+.security{
+  background-color: #8000803f;
+  border: solid 1px #800080;
+  color: #be28be;
+  font-weight: 600;
+}
+.backlog{
+  background-color: #0000003f;
+  border: solid 1px #000;
+  color: #fff;
+  font-weight: 600;
 }

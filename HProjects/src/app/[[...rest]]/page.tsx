@@ -131,6 +131,9 @@ export default function Home() {
             <p className='text-blue-800 font-semibold md:text-sm mt-9'>Simplicity at its best</p>
               <h2 className='text-black font-semibold text-lg md:text-2xl'>Track your progress with a glance</h2>
               <p className='text-black'>With HProjects</p>
+              <div className='flex flex-wrap flex-row'>
+                
+              </div>
             </div>
           </div>
           <div className='outerholdtransitioner'></div>

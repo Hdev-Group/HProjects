@@ -3,17 +3,28 @@ import Image from 'next/image';
 import '../../styles/globals.css';
 import { UserButton, useClerk } from '@clerk/clerk-react';
 
-
 const Header = () => {
   const { user, signOut } = useClerk();
   useEffect(() => {
     const handleScroll = () => {
       const header = document.querySelector('header');
-      if (header) {
+      const whitesection = document.getElementById('whitesection');
+      if (header && whitesection) {
         if (window.scrollY > 15) {
           header.classList.add('scrolled');
         } else {
           header.classList.remove('scrolled');
+        }
+
+        const whitesectionRect = whitesection.getBoundingClientRect();
+        const headerRect = header.getBoundingClientRect();
+
+        if (whitesectionRect.top - headerRect.bottom <= 10) {
+          header.classList.add('scrolledwhite');
+          console.log('scrolledwhite');
+        } else {
+          header.classList.remove('scrolledwhite');
+          console.log('not scrolledwhite');
         }
       }
     };
@@ -42,13 +53,13 @@ const Header = () => {
         <nav>
           <ul className="space-x-4 md:flex hidden">
             <li>
-              <a href="/help/" className="ease-in-out duration-300 text-neutral-300 flex items-center justify-center  font-semibold hover:text-neutral-50">Product<svg className='height-[30px] w-4' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 16L6 10H18L12 16Z"></path></svg></a>
+              <a href="/help/" className="ease-in-out duration-300 flex items-center justify-center  font-semibold hover:text-neutral-50">Product<svg className='height-[30px] w-4' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 16L6 10H18L12 16Z"></path></svg></a>
             </li>
             <li>
-              <a href="/download" className="ease-in-out duration-300 text-neutral-300 font-semibold hover:text-neutral-50">Docs</a>
+              <a href="/download" className="ease-in-out duration-300 font-semibold hover:text-neutral-50">Docs</a>
             </li>
             <li>
-              <a href="/blog" className="ease-in-out duration-300 text-neutral-300 font-semibold hover:text-neutral-50">Changelog</a>
+              <a href="/blog" className="ease-in-out duration-300 font-semibold hover:text-neutral-50">Changelog</a>
             </li>
           </ul>
         </nav>
