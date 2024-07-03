@@ -20,6 +20,7 @@ import type * as pinProject from "../pinProject.js";
 import type * as projects from "../projects.js";
 import type * as projectsget from "../projectsget.js";
 import type * as tasks from "../tasks.js";
+import type * as tasksget from "../tasksget.js";
 import type * as taskssender from "../taskssender.js";
 
 /**
@@ -37,6 +38,7 @@ declare const fullApi: ApiFromModules<{
   projects: typeof projects;
   projectsget: typeof projectsget;
   tasks: typeof tasks;
+  tasksget: typeof tasksget;
   taskssender: typeof taskssender;
 }>;
 export declare const api: FilterApi<

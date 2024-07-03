@@ -17,6 +17,7 @@ export default function ProjectPage({ params }: { params: { _id: string } }) {
   const projectuserid = project?.userId;
   const [activeSection, setActiveSection] = useState("Dashboard");
   const router = useRouter();
+  const projectname = project?.projectName
 
   console.log(user?.firstName, project?.projectName, projectuserid, userId);
 
@@ -51,10 +52,11 @@ export default function ProjectPage({ params }: { params: { _id: string } }) {
       </Head>
 
       <div className="overflow-hidden h-screen">
-        <DashboardHeaderProjects projectname={project.projectName} />
+        <DashboardHeaderProjects projectname={projectname} />
         <div className="flex mt-[130px] h-full">
           <SideBar _id={params._id} activeSection={activeSection} />
-          <div className="w-full p-5 overflow-y-auto">
+          <div className="flex w-full justify-center">
+          <div className="max-w-10/12 w-[100%] p-5 overflow-y-auto">
             <h1 className="flex text-2xl font-bold mb-3" id="dashboardprojects">Dashboard</h1>
             <div className="w-full items-start flex py-5 justify-start px-5 gap-3 flex-col border-neutral-800 bg-neutral-900/50 border rounded">
               <h2 className="text-lg font-semibold">Hello {user?.firstName}! Your work queue.</h2>
@@ -81,6 +83,7 @@ export default function ProjectPage({ params }: { params: { _id: string } }) {
                 </table>
               </div>
             </div>
+          </div>
           </div>
         </div>
       </div>

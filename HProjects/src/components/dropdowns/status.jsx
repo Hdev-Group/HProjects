@@ -10,9 +10,15 @@ import {
 } from "../ui/select";
 import { InProgress, Done, Todo, BackLog } from "./status/status";
 
-export default function StatusTime({ value, onChange }) {
+export default function StatusTime({ value, onValueChange }) {
+  const handleChange = (newValue) => {
+    if (onValueChange) {
+      onValueChange(newValue);
+    }
+  };
+
   return (
-    <Select value={value} onValueChange={onChange}>
+    <Select value={value} onValueChange={handleChange}>
       <SelectTrigger>
         <SelectValue placeholder="Project Status" />
       </SelectTrigger>

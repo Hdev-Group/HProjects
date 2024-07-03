@@ -8,7 +8,7 @@ export const add = mutation({
     taskTitle: v.string(),
     taskDescription: v.string(),
     taskPriority: v.string(),
-    taskStatus: v.boolean(),
+    taskStatus: v.string(),
     taskAssignee: v.string(),
   },
   handler: async (ctx, { projectid, userId, taskTitle, taskDescription, taskPriority, taskStatus, taskAssignee }) => {

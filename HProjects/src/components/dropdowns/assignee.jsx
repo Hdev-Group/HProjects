@@ -16,7 +16,6 @@ export default function AssigneeSelect({ value, onValueChange, id }) {
   const { user } = useUser();
   const projectsholder = useQuery(api.idgetprojects.get, { _id: id.id });
   const userId = projectsholder?.userId;
-  console.log("projectsholder:", projectsholder);
 
   if (!projectsholder || !user) {
     return <div>Loading...</div>;
@@ -29,7 +28,6 @@ export default function AssigneeSelect({ value, onValueChange, id }) {
   }
 
   const renderUser = (user) => {
-    console.log("rendering user:", user);
     return (
       <SelectItem key={user.id} value={user.id}>
         <div className="flex flex-row items-center gap-2 p-1">
