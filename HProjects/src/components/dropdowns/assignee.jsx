@@ -32,9 +32,9 @@ export default function AssigneeSelect({ value, onValueChange, id }) {
     console.log("rendering user:", user);
     return (
       <SelectItem key={user.id} value={user.id}>
-        <div className="flex flex-row items-center gap-4">
+        <div className="flex flex-row items-center gap-2 p-1">
           <img src={user.imageUrl} alt="avatar" className="h-8 w-8 rounded-full" />
-          <h2 className="text-white ml-2">{user.firstName} {user.lastName}</h2>
+          <h2 className="text-white ml-2 font-semibold">{user.firstName} {user.lastName}</h2>
         </div>
       </SelectItem>
     );

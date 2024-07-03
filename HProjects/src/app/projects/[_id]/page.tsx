@@ -6,15 +6,17 @@ import { useQuery } from "convex/react";
 import DashboardHeaderProjects from "../../../components/header/dashboardprojects";
 import { api } from '../../../../convex/_generated/api';
 import Head from "next/head";
+import { useRouter } from 'next/navigation';
 import SideBar from "../../../components/projectscontents/sidebar";
 
 export default function ProjectPage({ params }: { params: { _id: string } }) {
-  const { userId } = useAuth();
+  const { userId, isLoaded, isSignedIn } = useAuth();
   const { user } = useUser();
   const projectsholder = useQuery(api.projectsget.get);
   const project = projectsholder?.find(project => project._id === params._id);
   const projectuserid = project?.userId;
   const [activeSection, setActiveSection] = useState("Dashboard");
+  const router = useRouter();
 
   console.log(user?.firstName, project?.projectName, projectuserid, userId);
 
@@ -24,14 +26,22 @@ export default function ProjectPage({ params }: { params: { _id: string } }) {
     }
   }, []);
 
-  if (!project) {
-    return <div>Project not found</div>;
+  useEffect(() => {
+    if (!isLoaded) return; // Wait until authentication state is loaded
+
+
+    if (!isSignedIn) {
+      router.push('/sign-in'); // Redirect to sign-in page if not signed in
+    }
+  }, [isLoaded, isSignedIn, router]);
+
+
+  if (!isLoaded) {
+    return; 
   }
-  if (projectuserid !== userId) {
-    return <div>Unauthorized</div>;
-  }
-  if (!user) {
-    return <div>Not signed in</div>;
+
+  if (!isSignedIn) {
+    return <div>Unauthorised</div>;
   }
 
   return (

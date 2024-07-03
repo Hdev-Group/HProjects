@@ -58,7 +58,7 @@ const NewTaskModal = ({ onClose, id }) => {
 
   return (
     <div id="outerclickclose" className="absolute modalmain top-0 justify-end items-center flex overflow-y-auto min-h-[100%] h-full w-[100%] bg-neutral-950/40 z-[1000000]">
-      <div id='innercloser' className="flex flex-col px-5 py-5 slide-in-right bg--400shadow-lg rounded-tl-[1rem] border-neutral-600 border-l shadow-black bg-neutral-900 h-[100%] md:w-[540px] w-[100%]">
+      <div id='innercloser' className="flex flex-col px-5 py-5 slide-in-right overflow-y-auto bg--400shadow-lg rounded-tl-[1rem] border-neutral-600 border-l shadow-black bg-neutral-900 h-[100%] md:w-[540px] w-[100%]">
         <div className="flex items-center flex-row justify-between">
           <h1 className="text-2xl font-bold dark:text-white text-dark">Add a Task</h1>
           <p onClick={onClose} className="text-2xl text-red-600 cursor-pointer hover:text-red-400 transition-all-300">x</p>
