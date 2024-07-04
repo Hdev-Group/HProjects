@@ -10,7 +10,7 @@ export function BackLog(){
 export function Todo(){
     return(
         <div className="flex items-center gap-4 justify-start">
-        <div className="flex h-[20px] items-center justify-center p-3 rounded-xl critical live gap-2">
+        <div className="flex h-[20px] items-center justify-center p-3 rounded-xl todo live gap-2">
         To-Do
         </div>
         </div>

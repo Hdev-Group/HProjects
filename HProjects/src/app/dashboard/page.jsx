@@ -50,7 +50,7 @@ function Dashboard() {
             <h1 className="flex text-4xl font-bold mb-9 mt-2" id="projectspage">Projects</h1>
             <AddProjectButton />
             <div className="w-full flex-wrap overflow-y-scroll scroll-barproject justify-start items-center flex py-10 px-10 gap-3 flex-row border-neutral-800 rounded-tl-[0] bg-neutral-900/50 border rounded">
-              <div className="flex flex-wrap flex-row items-start gap-4 min-w-[100%]">
+              <div className="flex flex-wrap flex-col items-start gap-4 min-w-[100%]">
                 <ProjectsDataAdder />
               </div>
             </div>

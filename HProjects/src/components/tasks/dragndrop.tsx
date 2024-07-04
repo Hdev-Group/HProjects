@@ -1,13 +1,17 @@
+"use client"
 import { Critical, High, Medium, Low, Security, Feature } from '../dropdowns/priorities/critical';
 import { BackLog, Todo, InProgress, Done } from '../dropdowns/status/status';
 import { api } from '../../../convex/_generated/api';
 import { useUser } from '@clerk/nextjs';
 import { useQuery } from "convex/react";
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { add } from '../../../convex/projects';
 
-function CardFrame({ taskName, taskPriority, taskStatus, taskAssignee, taskDescription }: any) {
+function CardFrame({ taskId, taskName, taskPriority, taskStatus, taskAssignee, taskDescription }: { taskId: string, taskName: string, taskPriority: string, taskStatus: string, taskAssignee: string, taskDescription: string }) {
     const { user } = useUser();
     const [assigneeImageUrl, setAssigneeImageUrl] = useState<string | null>(null);
+    const router = useRouter();
 
     useEffect(() => {
         const fetchAssigneeImage = async () => {
@@ -25,8 +29,15 @@ function CardFrame({ taskName, taskPriority, taskStatus, taskAssignee, taskDescr
         fetchAssigneeImage();
     }, [taskAssignee]);
 
+    function taskmainmenu(taskId: string) {
+        router.push(`./${taskId}`);
+    }
+
     return (
-        <div className='border-neutral-800 bg-neutral-900/60 py-2 border gap-3 flex flex-col rounded-md w-full'>
+        <div 
+            className='border-neutral-800 bg-neutral-900/60 cursor-pointer hover:border-neutral-300 transition-all py-2 border gap-3 flex flex-col rounded-md w-full'
+            onDoubleClick={() => taskmainmenu(taskId)} 
+        >
             <div className='flex gap-3 pl-4'>
                 <h1 className='font-bold'>
                     {taskName}
@@ -68,7 +79,8 @@ export default function MainHolder({ _id }: { _id: string }) {
         projectTasks.filter(task => task.taskStatus === status).map(task => (
             <CardFrame 
                 key={task._id}
-                taskName={task.taskTitle} // Ensure to use taskTitle
+                taskId={task._id}
+                taskName={task.taskTitle}
                 taskPriority={task.taskPriority}
                 taskStatus={task.taskStatus}
                 taskAssignee={task.taskAssignee}
@@ -76,6 +88,7 @@ export default function MainHolder({ _id }: { _id: string }) {
             />
         ))
     );
+
     console.log("Project tasks:", projectTasks);
     return (
         <div className="flex-row justify-between mb-5 flex lg:flex-nowrap flex-wrap w-full sm:gap-5 gap-1">

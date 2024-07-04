@@ -330,11 +330,13 @@
   border: solid 1px #d15353;
   color: #d15353;
   font-weight: 600;
+  animation: ping 2s infinite;
 }
 .high{
   background-color: #ff00003f;
   border: solid 1px #FF0000;
   color: #FF0000;
+  animation: pinghigh 2s infinite;
   font-weight: 600;
 }
 .medium{
@@ -360,10 +362,41 @@
   border: solid 1px #800080;
   color: #be28be;
   font-weight: 600;
+  animation: pingsecurity 2s infinite;
 }
 .backlog{
   background-color: #0000003f;
   border: solid 1px #000;
   color: #fff;
   font-weight: 600;
+}
+.todo{
+  background-color: rgba(241, 188, 13, 0.466);
+  border: solid 1px #f1bc0d;
+  color: #f1bc0d;
+  font-weight: 600;
+}
+@keyframes ping{
+  0%{
+    box-shadow: 0 0 0 0px #d15353;
+  }
+  100%{
+    box-shadow: 0 0 0 5px rgba(0, 0, 0, 0);
+  }
+}
+@keyframes pinghigh{
+  0%{
+    box-shadow: 0 0 0 0px #FF0000;
+  }
+  100%{
+    box-shadow: 0 0 0 5px rgba(0, 0, 0, 0);
+  }
+}
+@keyframes pingsecurity{
+  0%{
+    box-shadow: 0 0 0 0px #800080;
+  }
+  100%{
+    box-shadow: 0 0 0 5px rgba(0, 0, 0, 0);
+  }
 }
