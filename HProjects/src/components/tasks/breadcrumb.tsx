@@ -14,7 +14,7 @@ export default function BreadcrumbWithCustomSeparator() {
     <Breadcrumb>
       <BreadcrumbList>
         <BreadcrumbItem>
-          <BreadcrumbLink href="/test" className="font-bold text-white">All Tasks</BreadcrumbLink>
+          <BreadcrumbLink href=".\" className="font-bold text-white">All Tasks</BreadcrumbLink>
         </BreadcrumbItem>
         <BreadcrumbSeparator>
           <Slash />
