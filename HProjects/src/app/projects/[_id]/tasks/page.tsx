@@ -16,8 +16,10 @@ export default function ProjectPage({ params }: { params: { _id: string } }) {
   const { user } = useUser();
   const projectsholder = useQuery(api.projectsget.get);
   const project = projectsholder?.find(project => project._id === params._id);
+  console.log(project);
+  console.log(project?.userId, "userId");
   const projectname = project?.projectName;
-  const projectuserid = project?.userId;
+  const projectUserId = project?.userId;
   const router = useRouter();
   const _id = params._id;
   const [activeSection, setActiveSection] = useState("Tasks");
@@ -29,21 +31,34 @@ export default function ProjectPage({ params }: { params: { _id: string } }) {
   }, []);
 
   useEffect(() => {
-    if (!isLoaded) return; // Wait until authentication state is loaded
-
+    if (!isLoaded || !projectsholder) return; // Wait until authentication state and project data are loaded
 
     if (!isSignedIn) {
       router.push('/sign-in'); // Redirect to sign-in page if not signed in
+    } else if (!project) {
+      console.log('Project not found');
+      router.push('/projects');
+    } else if (projectUserId !== userId) {
+      console.log('User is not the project owner', projectUserId, userId);
+      router.push('/projects');
     }
-  }, [isLoaded, isSignedIn, router]);
+  }, [isLoaded, isSignedIn, projectsholder, project, projectUserId, userId, router]);
 
-
-  if (!isLoaded) {
-    return; 
+  if (!isLoaded || !projectsholder) {
+    return <div>Loading...</div>;
   }
 
   if (!isSignedIn) {
-    return <div>Unauthorised</div>;
+    return <div>Unauthorized</div>;
+  }
+
+  if (!project) {
+    return <div>Project not found</div>;
+  }
+
+  if (projectUserId !== userId) {
+    console.log('User is not the project owner', projectUserId, userId);
+    return <div>Unauthorized</div>;
   }
 
   return (
@@ -62,7 +77,7 @@ export default function ProjectPage({ params }: { params: { _id: string } }) {
                 <AddTaskButton id={params._id} />
               </div>
               <div className="w-full items-center flex py-5 justify-start px-5 gap-1 flex-col rounded">
-                  <MainHolder _id={_id} />
+                <MainHolder _id={_id} />
               </div>
             </div>
           </div>

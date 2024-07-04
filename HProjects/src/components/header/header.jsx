@@ -36,8 +36,8 @@ const Header = () => {
     };
   }, []);
   return (
-    <header className="fixed z-70 top-0 w-[100%] max-[460px]:block sm:block md:flex left-0 right-0 z-50 flex items-center justify-center p-8 pb-5 transition-colors duration-300">
-      <div className="flex items-center gap-10  justify-between md:w-[90rem]">
+    <header className="absolute z-70 top-0 w-[100%] max-[460px]:block sm:block md:flex left-0 right-0 z-50 flex items-center justify-center p-8 pb-5 transition-colors duration-300">
+      <div className="flex items-center gap-10  justify-between md:w-[110rem] w-[94%]">
         <div className='flex items-center gap-8 justify-center'>
         <a href='/'>
           <div className="flex items-center">

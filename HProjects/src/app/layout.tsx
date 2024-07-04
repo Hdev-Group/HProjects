@@ -36,7 +36,7 @@ export default function RootLayout({
           </head>
           <body
         className={cn(
-          "min-h-screen font-sans antialiased",
+          "min-h-screen font-sans antialiased overflow-x-hidden",
           fontSans.variable
         )}
       >

@@ -18,8 +18,10 @@ export function Todo(){
 }
 export function InProgress(){
     return(
-        <div className="flex h-[20px] items-center justify-center p-3 medium rounded-xl live gap-2">
+        <div className="flex items-center gap-4 justify-start">
+        <div className="flex h-[20px] items-center justify-center p-3 rounded-xl inprogress live gap-2">
         In Progress
+        </div>
         </div>
     )
 }

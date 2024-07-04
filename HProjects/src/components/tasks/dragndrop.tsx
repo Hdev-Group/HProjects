@@ -50,7 +50,7 @@ function CardFrame({ taskId, taskName, taskPriority, taskStatus, taskAssignee, t
                     {taskPriority === 'medium' && <Medium />}
                     {taskPriority === 'low' && <Low />}
                     {taskPriority === 'security' && <Security />}
-                    {taskPriority === 'feature' && <Feature />}
+                    {taskPriority === 'Feature' && <Feature />}
                     {taskStatus === 'backlog' && <BackLog />}
                     {taskStatus === 'todo' && <Todo />}
                     {taskStatus === 'inprogress' && <InProgress />}
