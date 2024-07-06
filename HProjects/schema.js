@@ -1,15 +1,22 @@
-// schema.js
-
-import { defineSchema, defineTable } from "convex/server";
+import { defineSchema, defineTable, defineIndex } from "convex/server";
 import { v } from "convex/values";
 
 export default defineSchema({
-    project: defineTable({
-        _id: v.string(),
-        projectDescription: v.string(),
-        projectName: v.string(),
-        projectStatus: v.string(),
-        userId: v.string(),
-        otherusers: v.array(v.string())
-    }),
+  project: defineTable({
+    otherusers: v.array(v.any()),
+    pinned: v.boolean(),
+    projectDescription: v.string(),
+    projectName: v.string(),
+    projectStatus: v.string(),
+    userId: v.string(),
+  }),
+  tasks: defineTable({
+    projectid: v.id("project"),
+    taskAssignee: v.string(),
+    taskDescription: v.string(),
+    taskPriority: v.string(),
+    taskStatus: v.string(),
+    taskTitle: v.string(),
+    userId: v.string(),
+  }).index("by_project", ["projectid"]),
 });

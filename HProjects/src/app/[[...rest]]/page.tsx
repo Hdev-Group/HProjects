@@ -33,13 +33,13 @@ export default function Home() {
           <img src='/logo.png' alt='logo' className='w-[50px] h-[50px]' />
           <div className='flex flex-col gap-4'>
             <div className='flex items-center gap-4'>
-            <h1 className='bg-indigo-600/30 border border-indigo-500/40 text-indigo-400 font-semibold text-sm rounded-xl max-w-[8rem] flex items-center justify-center px-2 py-1'>Latest Updates</h1> <h1 className='text-neutral-500 font-semibold text-sm flex items-center justify-center'>Just deployed HProjects <svg className='h-6' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M13.1717 12.0007L8.22192 7.05093L9.63614 5.63672L16.0001 12.0007L9.63614 18.3646L8.22192 16.9504L13.1717 12.0007Z"></path></svg></h1>
+            <h1 className='bg-indigo-600/30 border border-indigo-500/40 ping-purple text-indigo-400 font-semibold text-sm rounded-xl max-w-[8rem] flex items-center justify-center px-2 py-1'>Latest Updates</h1> <h1 className='text-neutral-500 font-semibold text-sm flex items-center justify-center'>Just deployed HProjects <svg className='h-6' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M13.1717 12.0007L8.22192 7.05093L9.63614 5.63672L16.0001 12.0007L9.63614 18.3646L8.22192 16.9504L13.1717 12.0007Z"></path></svg></h1>
             </div>
             <h1 className='font-bold text-5xl font-sans'>Plan Build and Push with confidence</h1>
             <p className='font-medium text-sm text-neutral-400'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci provident blanditiis dolor repellendus error non quae velit eum et ex repellat quisquam, id inventore quibusdam hic numquam unde. Eligendi, assumenda?</p>
             <SignedOut>
           <div className='flex flex-row mt-6 gap-2 md:gap-6'>
-            <button onClick={handleSignUpClick} className='ease-in-out duration-300 hovmain mb-20 flex items-center justify-center border border-sky-600 p-2 w-[15rem] bg-sky-900 rounded-xl hover:border-neutral-100 hover:bg-sky-800'>
+            <button onClick={handleSignUpClick}className='ease-in-out duration-300 hovmain mb-20 flex items-center justify-center border border-neutral-600 p-1 px-5  bg-neutral-900/30 rounded-md hover:border-neutral-400 hover:bg-neutral-800'>
             <h1 className='font-bold text-[20px] flex'>Get Started <svg xmlns="http://www.w3.org/2000/svg" className='h-[30px] w-5 hovericon' viewBox="0 0 24 24" fill="currentColor"><path d="M16 12L10 18V6L16 12Z"></path></svg></h1>
           </button>
           </div>
@@ -47,7 +47,7 @@ export default function Home() {
         <SignedIn>
         <div className='flex  flex-row mt-2 gap-2 md:gap-6'>
           <a href='/dashboard'>
-          <button className='ease-in-out duration-300 hovmain mb-20 flex items-center justify-center border border-sky-400 p-2 w-[15rem] bg-sky-900 rounded-xl hover:border-neutral-100 hover:bg-sky-800'>
+          <button className='ease-in-out duration-300 hovmain mb-20 flex items-center justify-center border border-neutral-600 p-1 px-5  bg-neutral-900/30 rounded-md hover:border-neutral-400 hover:bg-neutral-800'>
             <h1 className='font-bold text-[20px] flex'>Dashboard <svg xmlns="http://www.w3.org/2000/svg" className='h-[30px] w-5 hovericon' viewBox="0 0 24 24" fill="currentColor"><path d="M16 12L10 18V6L16 12Z"></path></svg></h1>
           </button>
           </a>

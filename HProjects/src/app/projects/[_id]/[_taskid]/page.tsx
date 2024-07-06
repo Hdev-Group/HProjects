@@ -34,10 +34,14 @@ export default function TaskFullView({ params }: { params: { _id: string, _taski
 
     const [assigneeData, setAssigneeData] = useState<{ firstName: string, lastName: string, imageUrl: string } | null>(null);
     const [creatorData, setCreatorData] = useState<{ firstName: string, lastName: string, imageUrl: string } | null>(null);
+    const [isLoadingAssignee, setIsLoadingAssignee] = useState(false);
+    const [isLoadingCreator, setIsLoadingCreator] = useState(false);
+
     useEffect(() => {
         async function fetchAssigneeData() {
             if (taskAssignee) {
                 try {
+                    setIsLoadingAssignee(true);
                     const response = await fetch(`/api/get-user?userId=${taskAssignee}`);
                     if (!response.ok) {
                         throw new Error(`HTTP error! status: ${response.status}`);
@@ -47,6 +51,8 @@ export default function TaskFullView({ params }: { params: { _id: string, _taski
                 } catch (error) {
                     console.error('Error fetching assignee data:', error);
                     setAssigneeData(null);
+                } finally {
+                    setIsLoadingAssignee(false);
                 }
             }
         }
@@ -55,9 +61,10 @@ export default function TaskFullView({ params }: { params: { _id: string, _taski
     }, [taskAssignee]);
 
     useEffect(() => {
-        async function fetchcreatorData() {
+        async function fetchCreatorData() {
             if (taskstarter) {
                 try {
+                    setIsLoadingCreator(true);
                     const response = await fetch(`/api/get-user?userId=${taskstarter}`);
                     if (!response.ok) {
                         throw new Error(`HTTP error! status: ${response.status}`);
@@ -65,12 +72,14 @@ export default function TaskFullView({ params }: { params: { _id: string, _taski
                     const data = await response.json();
                     setCreatorData(data);
                 } catch (error) {
-                    console.error('Error fetching assignee data:', error);
+                    console.error('Error fetching creator data:', error);
                     setCreatorData(null);
+                } finally {
+                    setIsLoadingCreator(false);
                 }
             }
         }
-        fetchcreatorData();
+        fetchCreatorData();
     }, [taskstarter]);
 
 
@@ -91,9 +100,10 @@ export default function TaskFullView({ params }: { params: { _id: string, _taski
         }
     }, [isLoaded, isSignedIn, projectsholder, project, tasks, task, projectUserId, userId, router]);
 
-    if (!isLoaded || !projectsholder || !tasks) {
+    if (isLoadingAssignee || isLoadingCreator) {
         return <div>Loading...</div>;
     }
+
 
     if (!isSignedIn) {
         return <div>Unauthorized</div>;
@@ -157,8 +167,8 @@ export default function TaskFullView({ params }: { params: { _id: string, _taski
                                             <div className='flex flex-col gap-1'>
                                                 <p className='font-bold'>Task Created By:</p>
                                                 <div className='flex items-center gap-2'>
-                                                <img src={creatorData?.imageUrl} className='w-8 h-8 rounded-full' alt="Assignee" />
-                                                <p className='font-semibold'>{creatorData?.firstName} {creatorData?.lastName}</p>
+                                                <img src={creatorData?.imageUrl} className='w-8 h-8 rounded-full' alt="Assignee" id='loadingidassignee' />
+                                                <p className='font-semibold' id='loadingidassigneenames'>{creatorData?.firstName} {creatorData?.lastName}</p>
                                                 </div>
                                             </div>
                                             <div className='flex flex-col gap-1'>

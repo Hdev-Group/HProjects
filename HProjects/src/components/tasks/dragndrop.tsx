@@ -66,7 +66,7 @@ function CardFrame({ taskId, taskName, taskPriority, taskStatus, taskAssignee, t
                             <img src={assigneeData.imageUrl} className='w-6 h-6 rounded-full' alt="Assignee" />
                         </>
                     ) : (
-                        <div className='w-6 h-6 rounded-full bg-gray-300'></div> // Placeholder if no data
+                        <div className='w-6 h-6 rounded-full bg-neutral-800 animate-pulse'></div>
                     )}
                 </div>
             </div>
