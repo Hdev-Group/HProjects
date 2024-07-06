@@ -80,6 +80,10 @@
       @apply bg-background text-foreground;
     }
   }
+  body{
+    margin: 0 !important;
+
+  }
   .fontmain{
     font-family: 'Roboto', sans-serif;
   }
