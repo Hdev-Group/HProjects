@@ -1,15 +1,16 @@
-"use client"
+"use client";
 import { Critical, High, Medium, Low, Security, Feature } from '../../../../components/dropdowns/priorities/critical';
 import { BackLog, Todo, InProgress, Done } from '../../../../components/dropdowns/status/status';
 import SideBar from "../../../../components/projectscontents/sidebar";
 import DashboardHeaderProjects from "../../../../components/header/dashboardprojects";
 import Head from "next/head";
-import { useState, useEffect, use } from "react";
+import { useState, useEffect } from "react";
 import { api } from '../../../../../convex/_generated/api';
 import { useQuery } from "convex/react";
 import { useUser, useAuth } from "@clerk/nextjs";
 import { useRouter } from 'next/navigation';
 import BreadcrumbWithCustomSeparator from "../../../../components/tasks/breadcrumb";
+import DeleteTask from '../../../../components/modals/deleteTask';
 
 export default function TaskFullView({ params }: { params: { _id: string, _taskid: string } }) {
     const { userId, isLoaded, isSignedIn } = useAuth();
@@ -31,11 +32,11 @@ export default function TaskFullView({ params }: { params: { _id: string, _taski
     const taskid = params._taskid;
     const [activeSection, setActiveSection] = useState("Tasks");
 
-
     const [assigneeData, setAssigneeData] = useState<{ firstName: string, lastName: string, imageUrl: string } | null>(null);
     const [creatorData, setCreatorData] = useState<{ firstName: string, lastName: string, imageUrl: string } | null>(null);
     const [isLoadingAssignee, setIsLoadingAssignee] = useState(false);
     const [isLoadingCreator, setIsLoadingCreator] = useState(false);
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
 
     useEffect(() => {
         async function fetchAssigneeData() {
@@ -82,7 +83,6 @@ export default function TaskFullView({ params }: { params: { _id: string, _taski
         fetchCreatorData();
     }, [taskstarter]);
 
-
     useEffect(() => {
         if (!isLoaded || !projectsholder || !tasks) return; // Wait until authentication state and data are loaded
 
@@ -104,7 +104,6 @@ export default function TaskFullView({ params }: { params: { _id: string, _taski
         return <div>Loading...</div>;
     }
 
-
     if (!isSignedIn) {
         return <div>Unauthorized</div>;
     }
@@ -120,6 +119,33 @@ export default function TaskFullView({ params }: { params: { _id: string, _taski
     function edittask() {
         // Implement edit task functionality
     }
+    function deletetasktrigger() {
+        setShowDeleteModal(true);
+    }
+    function closeDeleteModal() {
+        setShowDeleteModal(false);
+    }
+
+    function formatTimeAgo(date: Date): JSX.Element {
+        const now = new Date();
+        const diff = Math.abs(now.getTime() - date.getTime());
+        const seconds = Math.floor(diff / 1000);
+        const minutes = Math.floor(seconds / 60);
+        const hours = Math.floor(minutes / 60);
+        const days = Math.floor(hours / 24);
+    
+        if (seconds < 60) {
+            return <p className='font-semibold critical rounded-md p-1' id='loadingidassigneenames'>{seconds} seconds ago</p>;
+        } else if (minutes < 20) {
+            return <p className='font-semibold critical rounded-md p-1' id='loadingidassigneenames'>{minutes} minutes ago</p>;
+        } else if (minutes < 60) {
+            return <span>{`${minutes} minutes ago`}</span>;
+        } else if (hours < 24) {
+            return <span>{`${hours} hours ago`}</span>;
+        } else {
+            return <span>{`${days} days ago`}</span>;
+        }
+    }
 
     return (
         <>
@@ -133,37 +159,46 @@ export default function TaskFullView({ params }: { params: { _id: string, _taski
                     <div className="flex w-full justify-center h-full scroll-pb-10">
                         <div className="max-w-9/12 w-[100%] p-5 flex flex-col items-center overflow-y-auto">
                             <div className='w-full flex pb-5 border border-transparent justify-center border-b-neutral-700/40'>
-                            <div className='flex flex-col w-full gap-4 items-center'>
-                            <div className="flex w-10/12 pt-4 gap-4 flex-row justify-between">
-                                <div className='w-max flex flex-col gap-5'>
-                                <BreadcrumbWithCustomSeparator projectid={_id} />
-                                    <div className='flex flex-col gap-2'>
-                                        <div className='flex flex-col'>
-                                            <h1 className="font-bold text-3xl">{taskName}</h1>
+                                <div className='flex flex-col w-full gap-4 items-center'>
+                                    <div className="flex w-10/12 pt-4 gap-4 flex-row justify-between">
+                                        <div className='w-max flex flex-col gap-5'>
+                                            <BreadcrumbWithCustomSeparator projectid={_id} />
+                                            <div className='flex flex-col gap-2'>
+                                                <div className='flex flex-col'>
+                                                    <h1 className="font-bold text-3xl">{taskName}</h1>
+                                                </div>
+                                                <div className='flex gap-3 mt-1'>
+                                                    {taskPriority === 'critical' && <Critical />}
+                                                    {taskPriority === 'high' && <High />}
+                                                    {taskPriority === 'medium' && <Medium />}
+                                                    {taskPriority === 'low' && <Low />}
+                                                    {taskPriority === 'security' && <Security />}
+                                                    {taskPriority === 'Feature' && <Feature />}
+                                                    {taskStatus === 'backlog' && <BackLog />}
+                                                    {taskStatus === 'todo' && <Todo />}
+                                                    {taskStatus === 'inprogress' && <InProgress />}
+                                                    {taskStatus === 'done' && <Done />}
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div className='flex gap-3 mt-1'>
-                                            {taskPriority === 'critical' && <Critical />}
-                                            {taskPriority === 'high' && <High />}
-                                            {taskPriority === 'medium' && <Medium />}
-                                            {taskPriority === 'low' && <Low />}
-                                            {taskPriority === 'security' && <Security />}
-                                            {taskPriority === 'Feature' && <Feature />}
-                                            {taskStatus === 'backlog' && <BackLog />}
-                                            {taskStatus === 'todo' && <Todo />}
-                                            {taskStatus === 'inprogress' && <InProgress />}
-                                            {taskStatus === 'done' && <Done />}
+                                        <div className='flex flex-row gap-3 mt-3'>
+                                            <div className='flex justify-center items-center cursor-pointer hover:bg-neutral-500/60 bg-neutral-500/20 border hover:border-neutral-300 h-7 p-0.5 rounded-lg w-7 transition-all' onClick={edittask}>
+                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M15.7279 9.57627L14.3137 8.16206L5 17.4758V18.89H6.41421L15.7279 9.57627ZM17.1421 8.16206L18.5563 6.74785L17.1421 5.33363L15.7279 6.74785L17.1421 8.16206ZM7.24264 20.89H3V16.6473L16.435 3.21231C16.8256 2.82179 17.4587 2.82179 17.8492 3.21231L20.6777 6.04074C21.0682 6.43126 21.0682 7.06443 20.6777 7.45495L7.24264 20.89Z"></path></svg>
+                                            </div>
+                                            <div className='flex justify-center items-center cursor-pointer hover:bg-red-500/60 bg-red-500/80 border hover:border-neutral-300 h-7 p-0.5 rounded-lg w-7 transition-all' onClick={deletetasktrigger}>
+                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M17 6H22V8H20V21C20 21.5523 19.5523 22 19 22H5C4.44772 22 4 21.5523 4 21V8H2V6H7V3C7 2.44772 7.44772 2 8 2H16C16.5523 2 17 2.44772 17 3V6ZM18 8H6V20H18V8ZM9 4V6H15V4H9Z"></path></svg>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div className='flex flex-row gap-3 mt-3'>
-                                    <div className='flex justify-center items-center cursor-pointer hover:bg-neutral-500/60 bg-neutral-500/20 border hover:border-neutral-300 h-7 p-0.5 rounded-lg w-7 transition-all' onClick={edittask}>
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M15.7279 9.57627L14.3137 8.16206L5 17.4758V18.89H6.41421L15.7279 9.57627ZM17.1421 8.16206L18.5563 6.74785L17.1421 5.33363L15.7279 6.74785L17.1421 8.16206ZM7.24264 20.89H3V16.6473L16.435 3.21231C16.8256 2.82179 17.4587 2.82179 17.8492 3.21231L20.6777 6.04074C21.0682 6.43126 21.0682 7.06443 20.6777 7.45495L7.24264 20.89Z"></path></svg>
-                                    </div>
-                                </div>
-                                </div>
-                                <div className='w-full flex items-center justify-center pb-80'>
-                                    <div className='flex flex-col justify-start w-10/12 gap-2 mt-3'>
-                                        <div className='flex flex-col gap-3'>
+                                    <div className='w-full flex items-center justify-center pb-80'>
+                                        <div className='flex flex-col justify-start w-10/12 gap-2 mt-3'>
+                                            <div className='flex flex-col gap-3'>
+                                                <div className='flex flex-col gap-1'>
+                                                    <p className='font-bold'>Created:</p>
+                                                    <div className='flex items-center gap-2'>
+                                                        {formatTimeAgo(new Date(task._creationTime))}
+                                                </div>
+                                            </div>                                        
                                             <div className='flex flex-col gap-1'>
                                                 <p className='font-bold'>Task Created By:</p>
                                                 <div className='flex items-center gap-2'>
@@ -207,6 +242,7 @@ export default function TaskFullView({ params }: { params: { _id: string, _taski
                     </div>
                 </div>
             </div>
+            {showDeleteModal && <DeleteTask onClose={closeDeleteModal} _taskid={taskid} taskname={taskName}/>}
         </>
     );
 }

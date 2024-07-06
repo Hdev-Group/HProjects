@@ -15,6 +15,7 @@ import type {
   FunctionReference,
 } from "convex/server";
 import type * as deleteProject from "../deleteProject.js";
+import type * as deleteTask from "../deleteTask.js";
 import type * as idgetprojects from "../idgetprojects.js";
 import type * as pinProject from "../pinProject.js";
 import type * as projects from "../projects.js";
@@ -33,6 +34,7 @@ import type * as taskssender from "../taskssender.js";
  */
 declare const fullApi: ApiFromModules<{
   deleteProject: typeof deleteProject;
+  deleteTask: typeof deleteTask;
   idgetprojects: typeof idgetprojects;
   pinProject: typeof pinProject;
   projects: typeof projects;
