@@ -1,33 +1,37 @@
-"use client"
 import { Critical, High, Medium, Low, Security, Feature } from '../dropdowns/priorities/critical';
 import { BackLog, Todo, InProgress, Done } from '../dropdowns/status/status';
 import { api } from '../../../convex/_generated/api';
 import { useUser } from '@clerk/nextjs';
 import { useQuery } from "convex/react";
 import { useState, useEffect } from 'react';
+import { clerkClient } from '@clerk/nextjs/server';
 import { useRouter } from 'next/navigation';
 import { add } from '../../../convex/projects';
 
 function CardFrame({ taskId, taskName, taskPriority, taskStatus, taskAssignee, taskDescription }: { taskId: string, taskName: string, taskPriority: string, taskStatus: string, taskAssignee: string, taskDescription: string }) {
     const { user } = useUser();
-    const [assigneeImageUrl, setAssigneeImageUrl] = useState<string | null>(null);
+    const [assigneeData, setAssigneeData] = useState<{ firstName: string, lastName: string, imageUrl: string } | null>(null);
     const router = useRouter();
 
     useEffect(() => {
-        const fetchAssigneeImage = async () => {
-            if (taskAssignee) {
-                try {
-                    const response = await fetch(`/api/getAssigneeImage?userId=${taskAssignee}`);
-                    const data = await response.json();
-                    setAssigneeImageUrl(data.imageUrl);
-                } catch (error) {
-                    console.error('Error fetching assignee image:', error);
-                }
+        async function fetchAssigneeData() {
+          if (taskAssignee) {
+            try {
+              const response = await fetch(`/api/get-user?userId=${taskAssignee}`);
+              if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+              }
+              const data = await response.json();
+              setAssigneeData(data);
+            } catch (error) {
+              console.error('Error fetching assignee data:', error);
+              setAssigneeData(null);
             }
-        };
-
-        fetchAssigneeImage();
-    }, [taskAssignee]);
+          }
+        }
+      
+        fetchAssigneeData();
+      }, [taskAssignee]);
 
     function taskmainmenu(taskId: string) {
         router.push(`./${taskId}`);
@@ -57,7 +61,13 @@ function CardFrame({ taskId, taskName, taskPriority, taskStatus, taskAssignee, t
                     {taskStatus === 'done' && <Done />}
                 </div>
                 <div className='flex gap-3 pr-3 items-center'>
-                    <img src={assigneeImageUrl ?? ''} className='w-6 h-6 rounded-full' alt="Assignee" />
+                    {assigneeData ? (
+                        <>
+                            <img src={assigneeData.imageUrl} className='w-6 h-6 rounded-full' alt="Assignee" />
+                        </>
+                    ) : (
+                        <div className='w-6 h-6 rounded-full bg-gray-300'></div> // Placeholder if no data
+                    )}
                 </div>
             </div>
         </div>
@@ -66,16 +76,15 @@ function CardFrame({ taskId, taskName, taskPriority, taskStatus, taskAssignee, t
 
 export default function MainHolder({ _id }: { _id: string }) {
     const tasks = useQuery(api.tasks.get);
+
     if (!tasks) {
         console.log("No tasks found");
         return null;
     }
-    console.log("id", _id)
-    console.log("Fetched tasks:", tasks);
-
+    console.log("id", _id);
     const projectTasks = tasks.filter(task => task.projectid === _id);
 
-    const renderTasksByStatus = (status: string) => (
+    const renderTasksByStatus = (status: any) => (
         projectTasks.filter(task => task.taskStatus === status).map(task => (
             <CardFrame 
                 key={task._id}
@@ -128,6 +137,6 @@ export default function MainHolder({ _id }: { _id: string }) {
                     {renderTasksByStatus('done')}
                 </div>
             </div>
-            </div>
+        </div>
     );
 }

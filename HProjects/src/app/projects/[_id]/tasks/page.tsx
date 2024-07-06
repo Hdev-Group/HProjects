@@ -10,6 +10,8 @@ import { useRouter } from 'next/navigation';
 import SideBar from "../../../../components/projectscontents/sidebar";
 import AddTaskButton from "../../../../components/buttons/addtask";
 import MainHolder from "../../../../components/tasks/dragndrop";
+import { NextApiRequest, NextApiResponse } from "next";
+import { clerkClient } from "@clerk/nextjs/server";
 
 export default function ProjectPage({ params }: { params: { _id: string } }) {
   const { userId, isLoaded, isSignedIn } = useAuth();
@@ -23,6 +25,9 @@ export default function ProjectPage({ params }: { params: { _id: string } }) {
   const router = useRouter();
   const _id = params._id;
   const [activeSection, setActiveSection] = useState("Tasks");
+
+  const assigneeid = project?.projectAssignee;
+  
 
   useEffect(() => {
     if (document.getElementById('tasksproject')) {

@@ -11,6 +11,7 @@ import Head from "next/head";
 import { useRouter } from 'next/navigation';
 import SideBar from "../../../components/projectscontents/sidebar";
 
+
 export default function ProjectPage({ params }: { params: { _id: string } }) {
   const { userId, isLoaded, isSignedIn } = useAuth();
   const { user } = useUser();
@@ -107,9 +108,9 @@ export default function ProjectPage({ params }: { params: { _id: string } }) {
                         <th className="py-2 text-left">Due Date</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-neutral-100/10">
+                    <tbody className="divide-y divide-neutral-100/10 p-2">
                       {projectTasks.map(task => (
-                        <tr key={task._id} onClick={() => taskMainMenu(task._id)} className="group transition-colors data-[state=selected]:bg-muted hover:bg-neutral-500/30 cursor-pointer">
+                        <tr key={task._id} onClick={() => taskMainMenu(task._id)} className="group transition-colors data-[state=selected]:bg-muted  hover:bg-neutral-500/30 cursor-pointer">
                           <td className="py-2 text-left">{task.taskTitle}</td>
                           <td className="py-2 text-left flex items-center gap-3"><img src={user?.imageUrl} className='h-7'></img> You</td>
                           <td className="py-2 text-left">
