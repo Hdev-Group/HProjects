@@ -208,7 +208,7 @@ export default function TaskFullView({ params }: { params: { _id: string, _taski
                                                 <div className='flex flex-col'>
                                                     <h1 className="font-bold text-3xl">{taskName}</h1>
                                                 </div>
-                                                <div className='flex gap-3 mt-1 w-full'>
+                                                <div className='flex gap-3 mt-1 w-full sm:flex-row flex-col'>
                                                     {isEditing ? (
                                                         <>
                                                             <PriorityStatus 
