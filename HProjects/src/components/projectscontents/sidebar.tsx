@@ -14,8 +14,8 @@ function SideBar({ activeSection, _id }: SideBarProps) {
   const getItemClass = (section: string) =>
     `text-sm text-neutral-300 transition-colors font-semibold w-[100%] hover:bg-neutral-600/30 cursor-pointer p-1 rounded-md ${activeSection === section ? "bg-neutral-600/20 text-white" : ""}`;
   return (
-    <article className="w-[15%] flex flex-col justify-between min-w-[200px] bg-neutral-950 overflow-y-auto border-4 border-transparent border-b-neutral-100 border-r-neutral-600/40">
-      <div className='flex flex-col justify-between h-full '>
+    <article className="w-[15%] relitive flex flex-col justify-between min-w-[200px] bg-neutral-950 overflow-y-auto border-4 border-transparent border-b-neutral-100 border-r-neutral-600/40">
+      <div className='flex flex-col fixed justify-between h-full '>
       <div className="p-5 pt-3">
         <h2 className="font-bold text-sm text-neutral-300">Navigation</h2>
         <ul className="mt-4 space-y-2 flex flex-col">

@@ -75,7 +75,7 @@ export default function ProjectPage({ params }: { params: { _id: string } }) {
      <meta name="description" content="Plan, Build and Push with confidence" />
      <meta name="keywords" content="HProjects, Projects, Build, Plan, Push" />
     </head>
-      <div className="h-screen overflow-hidden" id="modal-root">
+      <div className="h-screen overflow-hidden sm:overflow-y-auto" id="modal-root">
         <DashboardHeaderProjects projectname={projectname} activeSection={""} />
         <div className="flex mt-[130px] h-full">
           <SideBar _id={params._id} activeSection={activeSection} />
