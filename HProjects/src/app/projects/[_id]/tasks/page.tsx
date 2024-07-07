@@ -66,11 +66,15 @@ export default function ProjectPage({ params }: { params: { _id: string } }) {
     return <div>Unauthorized</div>;
   }
 
+  const title = projectname + ' | Tasks';
+
   return (
     <>
-      <Head>
-        <title>HProject | Static Title</title>
-      </Head>
+    <head>
+     <title>{title}</title>
+     <meta name="description" content="Plan, Build and Push with confidence" />
+     <meta name="keywords" content="HProjects, Projects, Build, Plan, Push" />
+    </head>
       <div className="h-screen overflow-hidden" id="modal-root">
         <DashboardHeaderProjects projectname={projectname} activeSection={""} />
         <div className="flex mt-[130px] h-full">

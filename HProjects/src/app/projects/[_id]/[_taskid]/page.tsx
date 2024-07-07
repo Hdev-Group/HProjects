@@ -1,16 +1,24 @@
 "use client";
-import { Critical, High, Medium, Low, Security, Feature } from '../../../../components/dropdowns/priorities/critical';
-import { BackLog, Todo, InProgress, Done } from '../../../../components/dropdowns/status/status';
+import { useState, useEffect } from "react";
+import { useRouter } from 'next/navigation';
+import { useQuery, useMutation } from "convex/react";
+import { useUser, useAuth } from "@clerk/nextjs";
+import { api } from '../../../../../convex/_generated/api';
+import Head from "next/head";
+import {
+    Critical, High, Medium, Low, Security, Feature,
+} from '../../../../components/dropdowns/priorities/critical';
+import {
+    BackLog, Todo, InProgress, Done,
+} from '../../../../components/dropdowns/status/status';
 import SideBar from "../../../../components/projectscontents/sidebar";
 import DashboardHeaderProjects from "../../../../components/header/dashboardprojects";
-import Head from "next/head";
-import { useState, useEffect } from "react";
-import { api } from '../../../../../convex/_generated/api';
-import { useQuery } from "convex/react";
-import { useUser, useAuth } from "@clerk/nextjs";
-import { useRouter } from 'next/navigation';
 import BreadcrumbWithCustomSeparator from "../../../../components/tasks/breadcrumb";
 import DeleteTask from '../../../../components/modals/deleteTask';
+import CommentBox from '../../../../components/comments/commentbox';
+import CommentBoxer from '../../../../components/comments/commentboxer';
+import PriorityStatus from '../../../../components/dropdowns/priority';
+import StatusTime from '../../../../components/dropdowns/status';
 
 export default function TaskFullView({ params }: { params: { _id: string, _taskid: string } }) {
     const { userId, isLoaded, isSignedIn } = useAuth();
@@ -31,12 +39,16 @@ export default function TaskFullView({ params }: { params: { _id: string, _taski
     const _id = params._id;
     const taskid = params._taskid;
     const [activeSection, setActiveSection] = useState("Tasks");
-
     const [assigneeData, setAssigneeData] = useState<{ firstName: string, lastName: string, imageUrl: string } | null>(null);
     const [creatorData, setCreatorData] = useState<{ firstName: string, lastName: string, imageUrl: string } | null>(null);
     const [isLoadingAssignee, setIsLoadingAssignee] = useState(false);
     const [isLoadingCreator, setIsLoadingCreator] = useState(false);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [isEditing, setIsEditing] = useState(false);
+    const [priority, setPriority] = useState(taskPriority);
+    const [status, setTaskStatus] = useState(taskStatus);
+    const [description, setDescription] = useState(taskDescription);
+    const editTaskMutation = useMutation(api.taskupdate.editTask);
 
     useEffect(() => {
         async function fetchAssigneeData() {
@@ -100,6 +112,26 @@ export default function TaskFullView({ params }: { params: { _id: string, _taski
         }
     }, [isLoaded, isSignedIn, projectsholder, project, tasks, task, projectUserId, userId, router]);
 
+    useEffect(() => {
+        if (priority !== taskPriority || status !== taskStatus || description !== taskDescription) {
+            const updateTask = async () => {
+                try {
+                    await editTaskMutation({
+                        taskId: taskid,
+                        taskName: taskName,
+                        taskPriority: priority,
+                        taskStatus: status,
+                        taskDescription: description,
+                        taskAssignee: taskAssignee
+                    });
+                } catch (error) {
+                    console.error("Failed to update task:", error);
+                }
+            };
+            updateTask();
+        }
+    }, [priority, status, description]);
+
     if (isLoadingAssignee || isLoadingCreator) {
         return <div>Loading...</div>;
     }
@@ -117,11 +149,17 @@ export default function TaskFullView({ params }: { params: { _id: string, _taski
     }
 
     function edittask() {
-        // Implement edit task functionality
+        if (isEditing) {
+            setIsEditing(false);
+        } else {
+            setIsEditing(true);
+        }        
     }
+
     function deletetasktrigger() {
         setShowDeleteModal(true);
     }
+
     function closeDeleteModal() {
         setShowDeleteModal(false);
     }
@@ -139,19 +177,22 @@ export default function TaskFullView({ params }: { params: { _id: string, _taski
         } else if (minutes < 20) {
             return <p className='font-semibold critical rounded-md p-1' id='loadingidassigneenames'>{minutes} minutes ago</p>;
         } else if (minutes < 60) {
-            return <span>{`${minutes} minutes ago`}</span>;
+            return <p className='font-semibold medium rounded-md p-1' id='loadingidassigneenames'>{minutes} minutes ago</p>;
         } else if (hours < 24) {
-            return <span>{`${hours} hours ago`}</span>;
+            return <p className='font-semibold critical rounded-md p-1' id='loadingidassigneenames'>{hours} hours ago</p>;
         } else {
             return <span>{`${days} days ago`}</span>;
         }
     }
 
+    const title = taskName + ' | Task Details';
     return (
         <>
-            <Head>
-                <title>HProject | Static Title</title>
-            </Head>
+            <head>
+                <title>{title}</title>
+                <meta name="description" content="Plan, Build and Push with confidence" />
+                <meta name="keywords" content="HProjects, Projects, Build, Plan, Push" />
+            </head>
             <div className="h-screen overflow-hidden" id="modal-root">
                 <DashboardHeaderProjects projectname={projectname} activeSection={""} />
                 <div className="flex mt-[130px] h-full">
@@ -167,17 +208,32 @@ export default function TaskFullView({ params }: { params: { _id: string, _taski
                                                 <div className='flex flex-col'>
                                                     <h1 className="font-bold text-3xl">{taskName}</h1>
                                                 </div>
-                                                <div className='flex gap-3 mt-1'>
-                                                    {taskPriority === 'critical' && <Critical />}
-                                                    {taskPriority === 'high' && <High />}
-                                                    {taskPriority === 'medium' && <Medium />}
-                                                    {taskPriority === 'low' && <Low />}
-                                                    {taskPriority === 'security' && <Security />}
-                                                    {taskPriority === 'Feature' && <Feature />}
-                                                    {taskStatus === 'backlog' && <BackLog />}
-                                                    {taskStatus === 'todo' && <Todo />}
-                                                    {taskStatus === 'inprogress' && <InProgress />}
-                                                    {taskStatus === 'done' && <Done />}
+                                                <div className='flex gap-3 mt-1 w-full'>
+                                                    {isEditing ? (
+                                                        <>
+                                                            <PriorityStatus 
+                                                                value={priority}
+                                                                onChange={setPriority}
+                                                            />
+                                                            <StatusTime
+                                                                value={status}
+                                                                onValueChange={setTaskStatus}
+                                                            />
+                                                        </>
+                                                    ) : (
+                                                        <>
+                                                            {taskPriority === 'critical' && <Critical />}
+                                                            {taskPriority === 'high' && <High />}
+                                                            {taskPriority === 'medium' && <Medium />}
+                                                            {taskPriority === 'low' && <Low />}
+                                                            {taskPriority === 'security' && <Security />}
+                                                            {taskPriority === 'Feature' && <Feature />}
+                                                            {taskStatus === 'backlog' && <BackLog />}
+                                                            {taskStatus === 'todo' && <Todo />}
+                                                            {taskStatus === 'inprogress' && <InProgress />}
+                                                            {taskStatus === 'done' && <Done />}
+                                                        </>
+                                                    )}
                                                 </div>
                                             </div>
                                         </div>
@@ -197,41 +253,39 @@ export default function TaskFullView({ params }: { params: { _id: string, _taski
                                                     <p className='font-bold'>Created:</p>
                                                     <div className='flex items-center gap-2'>
                                                         {formatTimeAgo(new Date(task._creationTime))}
+                                                    </div>
+                                                </div>                                        
+                                                <div className='flex flex-col gap-1'>
+                                                    <p className='font-bold'>Task Created By:</p>
+                                                    <div className='flex items-center gap-2'>
+                                                        <img src={creatorData?.imageUrl} className='w-8 h-8 rounded-full' alt="Assignee" id='loadingidassignee' />
+                                                        <p className='font-semibold' id='loadingidassigneenames'>{creatorData?.firstName} {creatorData?.lastName}</p>
+                                                    </div>
                                                 </div>
-                                            </div>                                        
-                                            <div className='flex flex-col gap-1'>
-                                                <p className='font-bold'>Task Created By:</p>
-                                                <div className='flex items-center gap-2'>
-                                                <img src={creatorData?.imageUrl} className='w-8 h-8 rounded-full' alt="Assignee" id='loadingidassignee' />
-                                                <p className='font-semibold' id='loadingidassigneenames'>{creatorData?.firstName} {creatorData?.lastName}</p>
+                                                <div className='flex flex-col gap-1'>
+                                                    <p className='font-bold'>Assignee:</p>
+                                                    <div className='flex items-center gap-2'>
+                                                        <img src={assigneeData?.imageUrl} className='w-8 h-8 rounded-full' alt="Assignee" />
+                                                        <p className='font-semibold'>{assigneeData?.firstName} {assigneeData?.lastName}</p>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div className='flex flex-col gap-1'>
-                                                <p className='font-bold'>Assignee:</p>
-                                                <div className='flex items-center gap-2'>
-                                                <img src={assigneeData?.imageUrl} className='w-8 h-8 rounded-full' alt="Assignee" />
-                                                <p className='font-semibold'>{assigneeData?.firstName} {assigneeData?.lastName}</p>
-                                                </div>
-                                            </div>
-                                            <div className='flex flex-col gap-1 w-full '>
-                                                <p className='font-semibold'>Task Description</p>
-                                                <div className='w-full'>
-                                                    <textarea className='p-2 w-full rounded-md min-h-[10rem] border border-neutral-700 bg-transparent' id='descriptioner'>{taskDescription}</textarea>
+                                                <div className='flex flex-col gap-1 w-full '>
+                                                    <p className='font-semibold'>Task Description</p>
+                                                    <div className='w-full'>
+                                                        <textarea 
+                                                            className='p-2 w-full rounded-md min-h-[10rem] border border-neutral-700 bg-transparent' 
+                                                            id='descriptioner' 
+                                                            value={description}
+                                                            onChange={(e) => setDescription(e.target.value)}
+                                                        />
                                                 </div>
                                             </div>
                                             <div className='flex flex-col gap-4 border border-transparent border-t-neutral-700/40 pt-3'>
                                                 <p className='text-3xl'>Comments:</p>
                                                 <div className='w-full flex flex-col gap-10'>
-                                                    <div className='border-2 border-neutral-700 bg-neutral-700/40 flex justify-center items-center rounded-md min-h-[10rem]'>
-                                                        <p className='font-semibold text-lg'>No comments yet, be the first to comment on this task</p>
-                                                    </div>
-                                                    <div className='border-dashed border p-4 flex gap-4 flex-col justify-center rounded-md hover:border-neutral-200 transition-all'>
-                                                    <textarea className='p-2 w-full rounded-md min-h-[5rem] border border-neutral-700 bg-transparent' id='descriptioner' placeholder="Thanks for the task! I will get on it now.">
-                                                        
-                                                    </textarea>
-                                                    <button className='bg-neutral-500/40 hover:bg-neutral-500/60 transition-all p-2 max-w-[10rem] rounded-md'>Comment</button>
+                                                        <CommentBoxer taskId={taskid} />
+                                                    <CommentBox taskId={taskid} _id={params._id} />
                                                 </div>
-                                            </div>
                                             </div>
                                         </div>
                                     </div>

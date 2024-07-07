@@ -8,7 +8,6 @@ export const metadata: Metadata = {
     keywords: 'HProjects, Projects, Build, Plan, Push',
 }
 
-
 export default function AuthLayout({ children }: { children: ReactNode }) {
     return (
             <div className="flex items-center justify-center h-screen" style={{ background: 'black', margin: 0, padding: 0 }}>

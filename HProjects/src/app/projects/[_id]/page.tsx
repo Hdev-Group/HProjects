@@ -7,10 +7,9 @@ import React, { useEffect, useState } from "react";
 import { useQuery } from "convex/react";
 import DashboardHeaderProjects from "../../../components/header/dashboardprojects";
 import { api } from '../../../../convex/_generated/api';
-import Head from "next/head";
 import { useRouter } from 'next/navigation';
 import SideBar from "../../../components/projectscontents/sidebar";
-
+import ClientLayout from './ClientLayout'; // Ensure the correct path for ClientLayout
 
 export default function ProjectPage({ params }: { params: { _id: string } }) {
   const { userId, isLoaded, isSignedIn } = useAuth();
@@ -81,13 +80,14 @@ export default function ProjectPage({ params }: { params: { _id: string } }) {
   function taskMainMenu(taskId: string) {
     router.push(`${project._id}/${taskId}`);
   }
-
+  const title = projectname + ' | Dashboard';
   return (
     <>
-      <Head>
-        <title>HProject | Static Title</title>
-      </Head>
-
+    <head>
+      <title>{title}</title>
+      <meta name="description" content="Plan, Build and Push with confidence" />
+      <meta name="keywords" content="HProjects, Projects, Build, Plan, Push" />
+    </head>
       <div className="overflow-hidden h-screen">
         <DashboardHeaderProjects projectname={projectname} projectid={project?._id} />
         <div className="flex mt-[130px] h-full">
