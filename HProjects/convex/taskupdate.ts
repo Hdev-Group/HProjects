@@ -4,17 +4,15 @@ import { v } from 'convex/values';
 export const editTask = mutation({
   args: {
     taskId: v.string(),
-    taskName: v.optional(v.string()),
     taskPriority: v.optional(v.string()),
     taskStatus: v.optional(v.string()),
     taskAssignee: v.optional(v.string()),
     taskDescription: v.optional(v.string()),
   },
-  handler: async (ctx, { taskId, taskName, taskPriority, taskStatus, taskAssignee, taskDescription }) => {
+  handler: async (ctx, { taskId, taskPriority, taskStatus, taskAssignee, taskDescription }) => {
 
     // Create an object only with the fields that are not null
     const taskUpdates = {
-        ...(taskName ? { taskName } : {}),
         ...(taskPriority ? { taskPriority } : {}),
         ...(taskStatus ? { taskStatus } : {}),
         ...(taskAssignee ? { taskAssignee } : {}),

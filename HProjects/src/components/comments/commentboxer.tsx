@@ -1,34 +1,44 @@
-"use client";
 import { useAuth } from "@clerk/nextjs";
 import { useQuery } from "convex/react";
 import { api } from '../../../convex/_generated/api';
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 
 export default function CommentBoxer({ taskId }: { taskId: string }) {
   const { userId } = useAuth();
   const comments = useQuery(api.getcomments.get);
   const filteredComments = comments?.filter((comment: any) => comment.taskId === taskId);
-  const [commenterData, setCommenterData] = useState(null);
-  
-  useEffect(() => {
-    async function fetchCommenterData() {
-      if (userId) {
-        try {
-          const response = await fetch(`/api/get-user?userId=${userId}`);
-          if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-          }
-          const data = await response.json();
-          setCommenterData(data);
-        } catch (error) {
-          console.error('Error fetching commenter data:', error);
-          setCommenterData(null);
+  const [commenterData, setCommenterData] = useState<{ [key: string]: { firstName: string, lastName: string, imageUrl: string } }>({});
+  const [dataLoaded, setDataLoaded] = useState(false);
+
+  const commenterIds = filteredComments?.map((comment: any) => comment?.userId) || [];
+  const uniqueCommenterIds = Array.from(new Set(commenterIds));
+
+  const fetchCommenterData = useCallback(async (ids: string[]) => {
+    if (ids.length > 0) {
+      try {
+        const response = await fetch(`/api/getcommentuser?userIds=${ids.join(',')}`);
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
         }
+        const data = await response.json();
+        const dataById = data.reduce((acc: any, user: any) => {
+          acc[user.id] = user;
+          return acc;
+        }, {});
+        setCommenterData(dataById);
+        setDataLoaded(true);
+      } catch (error) {
+        console.error('Error fetching commenter data:', error);
+        setCommenterData({});
       }
     }
-  
-    fetchCommenterData();
-  }, [userId]);
+  }, []);
+
+  useEffect(() => {
+    if (!dataLoaded && uniqueCommenterIds.length > 0) {
+      fetchCommenterData(uniqueCommenterIds);
+    }
+  }, [uniqueCommenterIds, fetchCommenterData, dataLoaded]);
 
   return (
     <div className='flex flex-col gap-4 w-full'>
@@ -38,8 +48,8 @@ export default function CommentBoxer({ taskId }: { taskId: string }) {
             <p className=''>{comment.CommenterMessage}</p>
             <div className="flex gap-4 items-center">
               <div className="flex items-center gap-2">
-              <img src={commenterData?.imageUrl} alt={commenterData?.firstName} className='w-8 h-8 rounded-full' />
-              <p className='text-xs text-neutral-200 font-semibold'>{commenterData?.firstName} {commenterData?.lastName}</p>
+                <img src={commenterData[comment.userId]?.imageUrl} alt={commenterData[comment.userId]?.firstName} className='w-8 h-8 rounded-full' />
+                <p className='text-xs text-neutral-200 font-semibold'>{commenterData[comment.userId]?.firstName} {commenterData[comment.userId]?.lastName}</p>
               </div>
               <p className="text-xs text-neutral-500">{formatTime(comment._creationTime)}</p>
             </div>
@@ -66,7 +76,7 @@ export default function CommentBoxer({ taskId }: { taskId: string }) {
     const months = Math.floor(weeks / 4);
 
     if (months > 0) {
-      return `${months} months ago`;
+      return <p className='font-semibold rounded-md p-1 gap-2'>{months} months ago</p>;
     } else if (weeks > 0) {
       return <p className='font-semibold rounded-md p-1 gap-2'>{weeks} weeks ago</p>;
     } else if (days > 0) {

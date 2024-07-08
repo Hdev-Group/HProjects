@@ -43,7 +43,7 @@ export default function ProjectPage({ params }: { params: { _id: string } }) {
     } else if (!project) {
       console.log('Project not found');
       router.push('/projects');
-    } else if (projectUserId !== userId) {
+    } else if (projectUserId !== userId && !project.otherusers.includes(userId)) {
       console.log('User is not the project owner', projectUserId, userId);
       router.push('/projects');
     }
@@ -61,8 +61,8 @@ export default function ProjectPage({ params }: { params: { _id: string } }) {
     return <div>Project not found</div>;
   }
 
-  if (projectUserId !== userId) {
-    console.log('User is not the project owner', projectUserId, userId);
+  if (!(projectUserId === userId || project.otherusers.includes(userId))) {
+    console.log('Unauthorized access attempt:', project?.otherusers);
     return <div>Unauthorized</div>;
   }
 

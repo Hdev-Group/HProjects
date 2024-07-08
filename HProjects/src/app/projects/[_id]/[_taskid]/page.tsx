@@ -103,7 +103,7 @@ export default function TaskFullView({ params }: { params: { _id: string, _taski
         } else if (!project) {
             console.log('Project not found');
             router.push('/projects');
-        } else if (projectUserId !== userId) {
+        } else if (projectUserId !== userId && !project.otherusers.includes(userId)) {
             console.log('User is not the project owner', projectUserId, userId);
             router.push('/projects');
         } else if (!task) {
@@ -118,7 +118,6 @@ export default function TaskFullView({ params }: { params: { _id: string, _taski
                 try {
                     await editTaskMutation({
                         taskId: taskid,
-                        taskName: taskName,
                         taskPriority: priority,
                         taskStatus: status,
                         taskDescription: description,
