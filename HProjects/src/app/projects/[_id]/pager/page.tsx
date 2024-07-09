@@ -68,6 +68,7 @@ export default function pager({ params }: { params: { _id: string } }){
         <DashboardHeaderProjects projectname={projectname} projectid={project?._id} />
         <div className="flex mt-[130px] h-full">
           <SideBar _id={params._id} activeSection={activeSection} />
+          
           </div>
           </div>
         </>

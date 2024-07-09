@@ -41,7 +41,7 @@ export default function CommentBoxer({ taskId }: { taskId: string }) {
   }, [uniqueCommenterIds, fetchCommenterData, dataLoaded]);
 
   return (
-    <div className='flex flex-col gap-4 w-full'>
+    <div className='flex flex-col gap-4 w-full dark:text-white text-black'>
       <div className='flex flex-col gap-4 w-full'>
         {filteredComments?.map((comment: any) => (
           <div key={comment._id} className='border p-4 flex gap-4 w-full flex-col justify-center rounded-md hover:border-neutral-200 transition-all'>
@@ -49,15 +49,15 @@ export default function CommentBoxer({ taskId }: { taskId: string }) {
             <div className="flex gap-4 items-center">
               <div className="flex items-center gap-2">
                 <img src={commenterData[comment.userId]?.imageUrl} alt={commenterData[comment.userId]?.firstName} className='w-8 h-8 rounded-full' />
-                <p className='text-xs text-neutral-200 font-semibold'>{commenterData[comment.userId]?.firstName} {commenterData[comment.userId]?.lastName}</p>
+                <p className='text-xs dark:text-neutral-200 text-neutral-900 font-semibold'>{commenterData[comment.userId]?.firstName} {commenterData[comment.userId]?.lastName}</p>
               </div>
-              <p className="text-xs text-neutral-500">{formatTime(comment._creationTime)}</p>
+              <p className="text-xs dark:text-neutral-500 text-neutral-500">{formatTime(comment._creationTime)}</p>
             </div>
           </div>
         ))}
         {filteredComments?.length === 0 && (
           <div className='border-2 border-neutral-700 bg-neutral-700/40 flex justify-center items-center rounded-md min-h-[10rem]'>
-            <p className='font-semibold text-lg'>No comments yet, be the first to comment on this task</p>
+            <p className='font-semibold text-lg dark:text-white text-black'>No comments yet, be the first to comment on this task</p>
           </div>
         )}
       </div>

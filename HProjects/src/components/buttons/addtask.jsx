@@ -15,7 +15,7 @@ const AddTaskButton = (id) => {
 
   return (
     <>
-      <button onClick={handleClick} className="bg-primary-500 text-white rounded-md p-2 border w-60 hover:bg-neutral-300/20 hover:border-neutral-200 transition-all bg-neutral-400/10 border-neutral-800">
+      <button onClick={handleClick} className="bg-primary-500 dark:text-white text-black rounded-md p-2 border w-60 hover:bg-neutral-300/20 hover:border-neutral-200 transition-all bg-neutral-500/20 dark:bg-neutral-400/10 border-neutral-800">
         Add Task
       </button>
       {isModalOpen && ReactDOM.createPortal(
