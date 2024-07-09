@@ -83,24 +83,24 @@ export default function ProjectPage({ params }: { params: { _id: string } }) {
   const title = projectname + ' | Dashboard';
   return (
     <>
-    <head>
-      <title>{title}</title>
-      <meta name="description" content="Plan, Build and Push with confidence" />
-      <meta name="keywords" content="HProjects, Projects, Build, Plan, Push" />
-    </head>
-      <div className="overflow-hidden h-screen">
+      <head>
+        <title>{title}</title>
+        <meta name="description" content="Plan, Build and Push with confidence" />
+        <meta name="keywords" content="HProjects, Projects, Build, Plan, Push" />
+      </head>
+      <div className="h-screen flex flex-col">
         <DashboardHeaderProjects projectname={projectname} projectid={project?._id} />
-        <div className="flex mt-[130px] h-full">
+        <div className="flex flex-grow mt-[130px] overflow-hidden">
           <SideBar _id={params._id} activeSection={activeSection} />
-          <div className="flex w-full justify-center">
-            <div className="max-w-10/12 w-[100%] p-5 overflow-y-auto">
+          <div className="flex flex-grow justify-center overflow-y-auto">
+            <div className="max-w-10/12 w-full p-5">
               <h1 className="flex text-2xl font-bold mb-3" id="dashboardprojects">Dashboard</h1>
-              <div className="w-full items-start flex py-5 justify-start px-5 gap-3 flex-col border-neutral-800 bg-neutral-900/50 border rounded">
+              <div className="w-full flex flex-col py-5 px-5 gap-3 border-neutral-800 bg-neutral-900/50 border rounded">
                 <h2 className="text-lg font-semibold">Hello {user?.firstName}! Your work queue.</h2>
                 <div className="overflow-y-auto w-full">
-                  <table className="min-w-[20rem] w-[100%] caption-bottom text-sm mt-5 ">
-                    <thead className="w-[100rem] border-b-neutral-100">
-                      <tr className="border-b w-[100rem] group transition-colors data-[state=selected]:bg-muted hover:bg-transparent">
+                  <table className="min-w-[40rem] w-full text-sm mt-5">
+                    <thead className="border-b border-neutral-100">
+                      <tr className="group transition-colors hover:bg-transparent">
                         <th className="py-2 text-left">Task</th>
                         <th className="py-2 text-left">Assigned To</th>
                         <th className="py-2 text-left">Priority</th>
@@ -108,31 +108,31 @@ export default function ProjectPage({ params }: { params: { _id: string } }) {
                         <th className="py-2 text-left">Due Date</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-neutral-100/10 p-2">
-                    {projectTasks.map(task => {
-                        console.log('Task assigned to user:', task.taskTitle);
-                        return (
-                          <tr key={task._id} onClick={() => taskMainMenu(task._id)} className="group transition-colors data-[state=selected]:bg-muted  hover:bg-neutral-500/30 cursor-pointer">
-                            <td className="py-2 text-left">{task.taskTitle}</td>
-                            <td className="py-2 text-left flex items-center gap-3"><img src={user?.imageUrl} className='h-7 w-7 rounded-full'></img> You</td>
-                            <td className="py-2 text-left">
-                              {task.taskPriority === 'critical' && <Critical />}
-                              {task.taskPriority === 'high' && <High />}
-                              {task.taskPriority === 'medium' && <Medium />}
-                              {task.taskPriority === 'low' && <Low />}
-                              {task.taskPriority === 'security' && <Security />}
-                              {task.taskPriority === 'Feature' && <Feature />}
-                            </td>
-                            <td className="py-2 text-left">
-                              {task.taskStatus === 'backlog' && <BackLog />}
-                              {task.taskStatus === 'todo' && <Todo />}
-                              {task.taskStatus === 'inprogress' && <InProgress />}
-                              {task.taskStatus === 'done' && <Done />}
-                            </td>
-                            <td className="py-2 text-left">{task.dueDate}</td>
-                          </tr>
-                        );
-                    })}
+                    <tbody className="divide-y divide-neutral-100/10">
+                      {projectTasks.map(task => (
+                        <tr key={task._id} onClick={() => taskMainMenu(task._id)} className="group transition-colors hover:bg-neutral-500/30 cursor-pointer">
+                          <td className="py-2 text-left">{task.taskTitle}</td>
+                          <td className="py-2 text-left flex items-center gap-3">
+                            <img src={user?.imageUrl} className='h-7 w-7 rounded-full' alt="Assignee" />
+                            You
+                          </td>
+                          <td className="py-2 text-left">
+                            {task.taskPriority === 'critical' && <Critical />}
+                            {task.taskPriority === 'high' && <High />}
+                            {task.taskPriority === 'medium' && <Medium />}
+                            {task.taskPriority === 'low' && <Low />}
+                            {task.taskPriority === 'security' && <Security />}
+                            {task.taskPriority === 'Feature' && <Feature />}
+                          </td>
+                          <td className="py-2 text-left">
+                            {task.taskStatus === 'backlog' && <BackLog />}
+                            {task.taskStatus === 'todo' && <Todo />}
+                            {task.taskStatus === 'inprogress' && <InProgress />}
+                            {task.taskStatus === 'done' && <Done />}
+                          </td>
+                          <td className="py-2 text-left">{task.dueDate}</td>
+                        </tr>
+                      ))}
                     </tbody>
                   </table>
                 </div>
