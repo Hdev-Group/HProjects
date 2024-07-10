@@ -84,6 +84,14 @@
     margin: 0 !important;
 
   }
+
+
+  .colourdark{
+    background-color: #1c1c24;
+  }
+  .colourlight{
+    background-color: #fff;
+  }
   .fontmain{
     font-family: 'Roboto', sans-serif;
   }

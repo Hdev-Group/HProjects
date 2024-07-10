@@ -75,11 +75,11 @@ export default function ProjectPage({ params }: { params: { _id: string } }) {
      <meta name="description" content="Plan, Build and Push with confidence" />
      <meta name="keywords" content="HProjects, Projects, Build, Plan, Push" />
     </head>
-      <div className="h-screen overflow-hidden sm:overflow-y-auto bg-[#D4D4D8] dark:bg-[#1A1A2E]" id="modal-root">
+      <div className="h-screen overflow-hidden sm:overflow-y-auto bg-bglight dark:bg-bgdark " id="modal-root">
         <DashboardHeaderProjects projectname={projectname} activeSection={""} />
-        <div className="flex mt-[130px] h-full">
+        <div className="flex mt-[110px] h-full bg-[#D4D4D8] dark:bg-[#1A1A2E]">
           <SideBar _id={params._id} activeSection={activeSection} />
-          <div className="flex w-full justify-center dark:bg-[#2E2E3A] bg-[#B2B2CC] rounded-tl-3xl">
+          <div className="flex w-full justify-center bg-bglight dark:bg-bgdark rounded-tl-3xl">
             <div className="max-w-10/12 w-[100%] p-5 flex flex-col items-center overflow-y-auto">
               <div className="flex-row w-full px-5 justify-between mb-5 mt-5 flex">
                 <h1 className="flex text-2xl font-bold text-black dark:text-white" id="tasksproject">Tasks</h1>

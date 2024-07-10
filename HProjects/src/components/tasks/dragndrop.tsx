@@ -101,7 +101,7 @@ export default function MainHolder({ _id }: { _id: string }) {
     console.log("Project tasks:", projectTasks);
     return (
         <div className="flex-row justify-between mb-5 flex lg:flex-nowrap flex-wrap w-full sm:gap-5 gap-1">
-            <div className="flex flex-col border px-2 pb-4 rounded-md border-neutral-800 w-full lg:w-1/4">
+            <div className="flex flex-col border px-2 pb-4 rounded-md border-neutral-600 w-full lg:w-1/4">
                 <div className="mt-2 flex items-center gap-2 mb-4 pb-2">
                     <h2 className="text-lg font-semibold text-black dark:text-white">Backlog</h2>
                     <h1 className="px-1.5 text-white dark:text-black rounded-xl bg-black dark:bg-gray-400 text-sm" id="backlogcount">{projectTasks.filter(task => task.taskStatus.toLowerCase() === 'backlog').length}</h1>
@@ -110,7 +110,7 @@ export default function MainHolder({ _id }: { _id: string }) {
                     {renderTasksByStatus('backlog')}
                 </div>
             </div>
-            <div className="flex flex-col border px-2 pb-4 rounded-md border-neutral-800 w-full lg:w-1/4">
+            <div className="flex flex-col border px-2 pb-4 rounded-md border-neutral-600 w-full lg:w-1/4">
                 <div className="mt-2 flex items-center gap-2 mb-4 pb-2">
                     <h2 className="text-lg font-semibold text-black dark:text-white">To-Do</h2>
                     <h1 className="px-1.5 text-white dark:text-black rounded-xl bg-black dark:bg-gray-400 text-sm" id="todocount">{projectTasks.filter(task => task.taskStatus.toLowerCase() === 'todo').length}</h1>
@@ -119,7 +119,7 @@ export default function MainHolder({ _id }: { _id: string }) {
                     {renderTasksByStatus('todo')}
                 </div>
             </div>
-            <div className="flex flex-col border px-2 pb-4 rounded-md border-neutral-800 w-full lg:w-1/4">
+            <div className="flex flex-col border px-2 pb-4 rounded-md border-neutral-600 w-full lg:w-1/4">
                 <div className="mt-2 flex items-center gap-2 mb-4 pb-2">
                     <h2 className="text-lg font-semibold text-black dark:text-white">In Progress</h2>
                     <h1 className="px-1.5 text-white dark:text-black rounded-xl bg-black dark:bg-gray-400 text-sm" id="inprogresscount">{projectTasks.filter(task => task.taskStatus.toLowerCase() === 'inprogress').length}</h1>
@@ -128,7 +128,7 @@ export default function MainHolder({ _id }: { _id: string }) {
                     {renderTasksByStatus('inprogress')}
                 </div>
             </div>
-            <div className="flex flex-col border px-2 pb-4 rounded-md border-neutral-800 w-full lg:w-1/4">
+            <div className="flex flex-col border px-2 pb-4 rounded-md border-neutral-600 w-full lg:w-1/4">
                 <div className="mt-2 flex items-center gap-2 mb-4 pb-2">
                     <h2 className="text-lg font-semibold text-black dark:text-white">Finished</h2>
                     <h1 className="px-1.5 text-white dark:text-black rounded-xl bg-black dark:bg-gray-400 text-sm" id="finishedcount">{projectTasks.filter(task => task.taskStatus.toLowerCase() === 'done').length}</h1>

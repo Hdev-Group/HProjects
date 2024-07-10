@@ -14,9 +14,9 @@ function SideBar({ activeSection, _id }: SideBarProps) {
   const getItemClass = (section: string) =>
     `text-sm text-black dark:text-neutral-300 transition-colors font-semibold w-full hover:bg-neutral-600/30 cursor-pointer p-1.5 rounded-md ${activeSection === section ? "bg-neutral-600/20 text-white" : ""}`;
   return (
-    <article className="w-max sticky flex h-full flex-col justify-between min-w-[200px]  bg-[#D4D4D8] dark:bg-[#1A1A2E] overflow-auto p-2 pb-2 border-transparent  border-r-neutral-600/40">
+    <article className="w-max sticky flex h-full flex-col justify-between min-w-[200px]  bg-[#D4D4D8] dark:bg-[#1A1A2E] overflow-auto p-2 mt-[-2rem] pb-2 border-transparent  border-r-neutral-600/40">
       <div className="flex flex-col fixed justify-between h-full overflow-y-auto pl-2">
-        <div className="pt-3 w-full flex flex-col">
+        <div className=" w-full flex flex-col">
           <h2 className="font-bold text-sm text-black dark:text-neutral-300">Navigation</h2>
           <ul className="mt-4 space-y-2 w-full flex flex-col">
             <li key="dashboard" className={getItemClass("Dashboard")}>
@@ -71,7 +71,7 @@ function SideBar({ activeSection, _id }: SideBarProps) {
             </li>
           </ul>
         </div>
-        <div className="flex flex-col gap-10 mt-4 mb-[8rem]  pb-4">
+        <div className="flex flex-col gap-10 mt-4 mb-[5rem]  pb-4">
           <Link href={`/projects/${encodeURIComponent(_id)}/pager`}>
             <PagerEl />
           </Link>

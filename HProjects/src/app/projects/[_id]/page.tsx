@@ -90,10 +90,10 @@ export default function ProjectPage({ params }: { params: { _id: string } }) {
       </head>
       <div className="h-screen flex flex-col">
         <DashboardHeaderProjects projectname={projectname} projectid={project?._id} />
-        <div className="flex flex-grow mt-[130px] overflow-hidden">
+        <div className="flex flex-grow mt-[110px] overflow-hidden bg-[#D4D4D8] dark:bg-[#1A1A2E] rounded-tl-3xl">
           <SideBar _id={params._id} activeSection={activeSection} />
-          <div className="flex flex-grow justify-center overflow-y-auto bg-[#D4D4D8] dark:bg-[#1A1A2E]">
-            <div className="max-w-10/12 w-full p-5 dark:bg-[#2E2E3A] bg-[#B2B2CC] rounded-tl-3xl">
+          <div className="flex flex-grow justify-center overflow-y-auto bg-bglight dark:bg-bgdark rounded-tl-3xl">
+            <div className="max-w-10/12 w-full p-5 bg-bglight dark:bg-bgdark rounded-tl-3xl">
               <h1 className="flex text-2xl font-bold mb-3 " id="dashboardprojects">Dashboard</h1>
               <div className="w-full flex flex-col py-5 px-5 gap-3 dark:border-neutral-800 border-neutral-300 bg-neutral-800/30 dark:bg-neutral-900/50 border rounded">
                 <h2 className="text-lg font-semibold ">Hello {user?.firstName}! Your work queue.</h2>

@@ -194,10 +194,10 @@ export default function TaskFullView({ params }: { params: { _id: string, _taski
             </head>
             <div className="h-screen overflow-hidden" id="modal-root">
                 <DashboardHeaderProjects projectname={projectname} activeSection={""} />
-                <div className="flex mt-[130px] h-full">
+                <div className="flex mt-[110px] h-full bg-[#D4D4D8] dark:bg-[#1A1A2E] rounded-tl-3xl">
                     <SideBar _id={params._id} activeSection={activeSection} />
-                    <div className="flex w-full justify-center h-full scroll-pb-10 bg-[#D4D4D8] dark:bg-[#1A1A2E]">
-                        <div className="max-w-9/12 w-[100%] p-5 flex flex-col items-center overflow-y-auto dark:bg-[#2E2E3A] bg-[#B2B2CC] rounded-tl-3xl">
+                    <div className="flex w-full justify-center h-full scroll-pb-10 bg-bglight dark:bg-bgdark rounded-tl-3xl">
+                        <div className="max-w-9/12 w-[100%] p-5 flex flex-col items-center overflow-y-auto bg-bglight dark:bg-bgdark  rounded-tl-3xl">
                             <div className='w-full flex pb-5 border border-transparent justify-center border-b-neutral-700/40'>
                                 <div className='flex flex-col w-full gap-4 items-center'>
                                     <div className="flex w-10/12 pt-4 gap-4 flex-row justify-between">

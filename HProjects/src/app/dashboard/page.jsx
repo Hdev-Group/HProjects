@@ -45,7 +45,7 @@ function Dashboard() {
       </Head>
       <div id="modal-root" className="overflow-y-hidden">
         <DashboardHeader activeSection={activeSection} onSectionChange={handleSectionChange} />
-        <main className="flex gap-20 flex-col items-center justify-center mt-20 py-20 px-0 md:w-[100%] dark:bg-[#2E2E3A] bg-[#B2B2CC]">
+        <main className="flex gap-20 flex-col items-center justify-center mt-20 py-20 px-0 md:w-[100%] bg-bglight dark:bg-bgdark">
           <div className="flex flex-col sm:w-[100%] md:w-[80%]">
             <h1 className="flex text-4xl font-bold mb-9 mt-2" id="projectspage">Projects</h1>
             <AddProjectButton />
