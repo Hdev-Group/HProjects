@@ -1,0 +1,67 @@
+.fadein{
+    animation: fadein 2s ease-in-out forwards;
+}
+@keyframes fadein{
+  from{
+    opacity: 0;
+  }
+  to{
+    opacity: 1;
+  }
+}
+.pushdown{
+    opacity: 0;
+    animation: pushdown 0.75s ease-in-out forwards 0.5s;
+}
+@keyframes pushdown{
+  from{
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to{
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+.pushup{
+    opacity: 0;
+    animation: pushup 0.75s ease-in-out forwards 0.5s;
+}
+.pushuptext1{
+    opacity: 0;
+    animation: pushup 0.75s ease-in-out forwards 0.8s;
+}
+.pushuptext2{
+    opacity: 0;
+    animation: pushup 0.75s ease-in-out forwards 0.89s;
+}
+.pushupbutton{
+    opacity: 0;
+    animation: pushup 0.75s ease-in-out forwards 0.98s;
+}
+@keyframes pushup{
+  from{
+    display: none;
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to{
+    display: flex;
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+.pushright{
+    opacity: 0;
+    animation: pushright 0.75s ease-in-out forwards 1s;
+}
+@keyframes pushright{
+  from{
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to{
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
