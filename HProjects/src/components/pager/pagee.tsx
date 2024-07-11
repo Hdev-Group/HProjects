@@ -46,35 +46,33 @@ export function PageeBreak(){
       </div>
         </TooltipTrigger>
         <TooltipContent>
-        <div className="bg-black text-white p-2 rounded-lg">NAME is on break</div>
+        <div className="bg-black text-white p-2 rounded-lg">{} is on break</div>
         </TooltipContent>
         </Tooltip>
         </TooltipProvider>
     )
 }
 
-export function Pagermainon(){
+export function Pagermainon(pagername:string, timeonpager:string, totaltime:string, timeleft:string){
     return(
         <tr className='flex flex-row justify-between !border-green-400 bg-green-400/20 border p-1 rounded-md'>
-        <td className='dark:text-neutral-100 text-neutral-900 text-sm font-semibold'>Harry Campbell</td>
-        <td className='dark:text-neutral-100 text-neutral-900 text-sm font-semibold'>On Call</td>
-        <td className='dark:text-neutral-100 text-neutral-900 text-sm font-semibold'>1h 30m</td>
-        <td className='dark:text-neutral-100 text-neutral-900 text-sm font-semibold'>3</td>
-        <td className='dark:text-neutral-100 text-neutral-900 text-sm font-semibold'>3h 30m</td>
-        <td className='dark:text-neutral-100 text-neutral-900 text-sm font-semibold'>1h 30m</td>
+        <td className='dark:text-neutral-100 text-neutral-900 text-sm font-semibold text-left'>{pagername}</td>
+        <td className='dark:text-neutral-100 text-neutral-900 text-sm font-semibold text-left'>On Call</td>
+        <td className='dark:text-neutral-100 text-neutral-900 text-sm font-semibold text-left'>{timeonpager}</td>
+        <td className='dark:text-neutral-100 text-neutral-900 text-sm font-semibold text-left'>{totaltime}</td>
+        <td className='dark:text-neutral-100 text-neutral-900 text-sm font-semibold text-left'>{timeleft}</td>
         </tr>
     )
 }
 
-export function Pagermainbreak(){
+export function Pagermainbreak(pagername:string, pagerstatus:string, timeonpager:string, totaltime:string, timeleft:string){
     return(
-        <tr className='flex flex-row justify-between !border-yellow-200 my-1 bg-yellow-400/20 border p-1 rounded-md'>
-        <td className='dark:text-neutral-100 text-neutral-900 text-sm font-semibold'>Harry Campbell</td>
-        <td className='dark:text-neutral-100 text-neutral-900 text-sm font-semibold'>Break</td>
-        <td className='dark:text-neutral-100 text-neutral-900 text-sm font-semibold'>1h 30m</td>
-        <td className='dark:text-neutral-100 text-neutral-900 text-sm font-semibold'>3</td>
-        <td className='dark:text-neutral-100 text-neutral-900 text-sm font-semibold'>3h 30m</td>
-        <td className='dark:text-neutral-100 text-neutral-900 text-sm font-semibold'>1h 30m</td>
+        <tr className='flex flex-row items-start justify-between !border-yellow-200 my-1 bg-yellow-400/20 border p-1 rounded-md'>
+        <td className='dark:text-neutral-100 text-neutral-900 text-sm font-semibold text-left'>{pagername}</td>
+        <td className='dark:text-neutral-100 text-neutral-900 text-sm font-semibold text-left'>Break</td>
+        <td className='dark:text-neutral-100 text-neutral-900 text-sm font-semibold text-left'>{timeonpager}</td>
+        <td className='dark:text-neutral-100 text-neutral-900 text-sm font-semibold text-left'>{totaltime}</td>
+        <td className='dark:text-neutral-100 text-neutral-900 text-sm font-semibold text-left'>{timeleft}</td>
         </tr>
     )
 }

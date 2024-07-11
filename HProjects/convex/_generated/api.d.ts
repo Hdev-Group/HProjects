@@ -17,8 +17,12 @@ import type {
 import type * as commentsender from "../commentsender.js";
 import type * as deleteProject from "../deleteProject.js";
 import type * as deleteTask from "../deleteTask.js";
+import type * as draganddrop from "../draganddrop.js";
 import type * as getcomments from "../getcomments.js";
 import type * as idgetprojects from "../idgetprojects.js";
+import type * as pageradd from "../pageradd.js";
+import type * as pagerdelete from "../pagerdelete.js";
+import type * as pagerget from "../pagerget.js";
 import type * as pinProject from "../pinProject.js";
 import type * as projects from "../projects.js";
 import type * as projectsget from "../projectsget.js";
@@ -39,8 +43,12 @@ declare const fullApi: ApiFromModules<{
   commentsender: typeof commentsender;
   deleteProject: typeof deleteProject;
   deleteTask: typeof deleteTask;
+  draganddrop: typeof draganddrop;
   getcomments: typeof getcomments;
   idgetprojects: typeof idgetprojects;
+  pageradd: typeof pageradd;
+  pagerdelete: typeof pagerdelete;
+  pagerget: typeof pagerget;
   pinProject: typeof pinProject;
   projects: typeof projects;
   projectsget: typeof projectsget;

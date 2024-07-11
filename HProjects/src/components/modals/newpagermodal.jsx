@@ -12,9 +12,11 @@ const NewPagerModal = ({ onClose, id }) => {
   const [taskAssignee, setTaskAssignee] = useState('');
   const [time, setTime] = useState('');
   const [projectDescription, setProjectDescription] = useState('');
+  const [Smarttimerr, setSmartTimerr] = useState('');
   const [assigneeFirstName, setAssigneeFirstName] = useState(''); 
   const [assigneeData, setAssigneeData] = useState('');
   const projectsholder = useQuery(api.idgetprojects.get, { _id: id.id });
+  const addPager = useMutation(api.pageradd.add);
 
 
   useEffect(() => {
@@ -45,13 +47,14 @@ const NewPagerModal = ({ onClose, id }) => {
       return;
     }
     try {
-      await addProjet({  });
+      await addPager({ projectid: id.id, userId: taskAssignee, time: time, status: 'active'});
       document.getElementById
       onClose();
     } catch (error) {
       console.error('Error adding project:', error);
     }
   };
+
 
   const timeworkout = () => {
     const timeObj = new Date(time);
@@ -63,7 +66,7 @@ const NewPagerModal = ({ onClose, id }) => {
     const minutes = Math.floor((calculatedTime % (1000 * 60 * 60)) / (1000 * 60));
     if (hours < 0 || minutes < 0) return 'Invalid time';
     if (hours === 0 && minutes === 0) return 'Now';
-    if (assigneeFirstName === '') return `${assigneeFirstName} will be on call for ...`;
+    if (assigneeFirstName === '') return `... will be on call for ...`;
     if (isNaN(hours) && isNaN(minutes)) return `${assigneeFirstName} will be on call for ...`;
     if (hours > 168) return `${assigneeFirstName} will be on call for ${hours} hours and ${minutes} minutes. | Please note this is high for a single responder`;
     if (hours === 0) return `${assigneeFirstName} will be on call for ${minutes} minutes`;
@@ -117,6 +120,7 @@ const NewPagerModal = ({ onClose, id }) => {
             <input
               name="time"
               value={time}
+              id="timesetter"
               onChange={(e) => setTime(e.target.value)}
               type="datetime-local" // Use datetime-local type for date and time input
               className="bg-neutral-800 border-neutral-800 text-white border rounded-lg px-3 py-2"

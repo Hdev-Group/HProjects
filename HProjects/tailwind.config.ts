@@ -40,7 +40,13 @@ const config: Config = {
           DEFAULT: "#fff",
         },
         bgdark: {
-          DEFAULT: "#0a0c0d",
+          DEFAULT: "#0A0A0A",
+        },
+        bgdarkbars: {
+          DEFAULT: "#161613",
+        },
+        bglightbars: {
+          DEFAULT: "#D4D4D8",
         },
         destructive: {
           DEFAULT: "hsl(var(--destructive))",

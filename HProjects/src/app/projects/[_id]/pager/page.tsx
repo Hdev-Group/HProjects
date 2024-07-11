@@ -63,37 +63,34 @@ export default function pager({ params }: { params: { _id: string } }){
       return (
         <>
           <head>
-        <title>{title}</title>
-        <meta name="description" content="Plan, Build and Push with confidence" />
-        <meta name="keywords" content="HProjects, Projects, Build, Plan, Push" />
+            <title>{title}</title>
+            <meta name="description" content="Plan, Build and Push with confidence" />
+            <meta name="keywords" content="HProjects, Projects, Build, Plan, Push" />
           </head>
           <div className="overflow-hidden h-screen" id="modal-root">
-        <DashboardHeaderProjects projectname={projectname} projectid={project?._id} />
-        <div className="flex mt-[110px] h-full bg-[#D4D4D8] dark:bg-[#1A1A2E]">
-          <SideBar _id={params._id} activeSection={activeSection} />
-          <div className="flex w-full flex-grow justify-center overflow-y-auto bg-bglight dark:bg-bgdark rounded-tl-3xl">
-            <div className="w-full pt-5 bg-bglight dark:bg-bgdark rounded-tl-3xl">
-          <div className='px-4 flex flex-col'>
-            <div className='flex flex-row justify-between mb-5'>
-              <h1 className='flex text-2xl font-bold text-black dark:text-white'>Pager</h1>
-            </div>
-            <div className='w-full h-full'>
-              <div className='flex lg:flex-row lg:justify-between lg:items-center flex-col justify-start'>
-              <div className='flex md:flex-row flex-col gap-2 md:items-center'>
-              <h2 className='text-md font-semibold dark:text-white text-black'>On pager now:</h2><div className='flex md:flex-row flex-col gap-2 justify-between'><PageeActive /><PageeBreak /></div>
+            <DashboardHeaderProjects projectname={projectname} projectid={project?._id} />
+            <div className="flex mt-[110px] h-full bg-bglightbars dark:bg-bgdarkbars">
+              <SideBar _id={params._id} activeSection={activeSection} />
+              <div className="flex w-full justify-center bg-bglight border dark:border-l-white dark:border-t-white border-t-black mt-0.5 dark:bg-bgdark rounded-l-3xl">
+                <div className="w-full pt-5 bg-bglight dark:bg-bgdark rounded-l-3xl">
+                  <div className='px-4 flex flex-col'>
+                    <div className='flex flex-row justify-between mb-5'>
+                      <h1 className='flex text-2xl font-bold text-black dark:text-white'>Pager</h1>
+                    </div>
+                    <div className='w-full h-full'>
+                      <div className='flex lg:flex-row lg:justify-between lg:items-center flex-col justify-start'>
+                        <div className='flex md:flex-row flex-col gap-2 md:items-center'>
+                        <AddPagerButton id={params._id} />
+                        </div>
+                      </div>
+                      <div className='items-center flex justify-center mt-10 h-full'>
+                        <PagerMain id={params._id} />
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
-              <div className='mt-5 mb--10'>
-                <AddPagerButton  id={params._id} />
-              </div>
-              </div>
-              <div className='items-center flex justify-center mt-10 h-full'>
-              <PagerMain />
-              </div>
             </div>
-            </div>
-            </div>
-          </div>
-        </div>
           </div>
         </>
       );

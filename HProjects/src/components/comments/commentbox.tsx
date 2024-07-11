@@ -34,7 +34,7 @@ export default function CommentBox({ taskId, _id }: CommentBoxProps) {
     return (
         <div className='border-dashed border p-4 flex gap-4 flex-col justify-center rounded-md  transition-all'>
             <textarea
-                className='p-2 w-full rounded-md min-h-[5rem] border border-neutral-700 placeholder:dark:text-white placeholder:text-black bg-transparent'
+                className='p-2 w-full rounded-md min-h-[5rem] border border-neutral-700 placeholder:dark:text-neutral-400 placeholder:text-neutra-700 bg-transparent'
                 id='descriptioner'
                 placeholder='Thanks for the task! I will get on it now.'
                 value={CommenterMessage}

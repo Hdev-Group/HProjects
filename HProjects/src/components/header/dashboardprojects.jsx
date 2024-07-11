@@ -36,7 +36,7 @@ const DashboardHeaderProjects = ({ activeSection, projectname}) => {
   console.log()
 
   return (
-    <header className={`fixed flex-col top-[0px] max-[460px]:block sm:block md:flex left-0 right-0 z-50 flex items-center justify-center p-8 bg-[#D4D4D8] dark:bg-[#1A1A2E] transition-colors  duration-300 ${user ? '' : ''}`}>
+    <header className={`fixed flex-col top-[0px] max-[460px]:block sm:block md:flex left-0 right-0 z-50 flex items-center justify-center p-8 bg-bglightbars dark:bg-bgdarkbars transition-colors  duration-300 ${user ? '' : ''}`}>
       <div className="flex flex-row items-center gap-10 justify-between md:w-[100%]">
         <div className="flex items-center justify-center g-5">
           <a href='/dashboard'>

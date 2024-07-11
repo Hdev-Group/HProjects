@@ -77,9 +77,9 @@ export default function ProjectPage({ params }: { params: { _id: string } }) {
     </head>
       <div className="h-screen overflow-hidden sm:overflow-y-auto bg-bglight dark:bg-bgdark " id="modal-root">
         <DashboardHeaderProjects projectname={projectname} activeSection={""} />
-        <div className="flex mt-[110px] h-full bg-[#D4D4D8] dark:bg-[#1A1A2E]">
+        <div className="flex mt-[110px] h-full bg-bglightbars dark:bg-bgdarkbars">
           <SideBar _id={params._id} activeSection={activeSection} />
-          <div className="flex w-full justify-center bg-bglight dark:bg-bgdark rounded-tl-3xl">
+          <div className="flex w-full justify-center bg-bglight border dark:border-l-white dark:border-t-white border-t-black mt-0.5 dark:bg-bgdark rounded-l-3xl">
             <div className="max-w-10/12 w-[100%] p-5 flex flex-col items-center overflow-y-auto">
               <div className="flex-row w-full px-5 justify-between mb-5 mt-5 flex">
                 <h1 className="flex text-2xl font-bold text-black dark:text-white" id="tasksproject">Tasks</h1>
