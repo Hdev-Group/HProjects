@@ -71,12 +71,12 @@ export default function PagerEl() {
   }
 }
 
-function PagerOnCall({ percentage, time }) {
+function PagerOnCall({ percentage, time }: { percentage: number, time: string }) {
   return (
     <div id="pageroncall" className="w-max flex items-center justify-center">
       <div className='border dark:border-green-400 border-green-600 bg-green-700/20 dark:bg-green-400/20 pr-5 items-center h-[4rem] w-full flex rounded-lg'>
         <div className='pl-2 flex justify-center items-center h-full'>
-          <div className='w-1.5 h-[3rem] flex items-end justify-center rounded-lg dark:bg-green-400/20 bg-green-700 overflow-hidden'>
+          <div className='w-1.5 h-[3rem] flex items-end justify-center rounded-lg dark:bg-green-400/20 bg-green-700/20 overflow-hidden'>
             <div className='w-full' style={{ height: `${percentage}%`, backgroundColor: 'green' }}></div>
           </div>
         </div>
@@ -89,7 +89,7 @@ function PagerOnCall({ percentage, time }) {
   );
 }
 
-function PagerOnBreak({ percentage }) {
+function PagerOnBreak({ percentage }: { percentage: number }) {
   return (
     <div id="pageronbreak" className="w-max flex items-center justify-center">
       <div className='border dark:border-yellow-400 border-yellow-600 bg-yellow-700/20 dark:bg-yellow-400/20 pr-5 items-center h-[4rem] w-full flex rounded-lg'>

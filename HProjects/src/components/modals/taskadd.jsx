@@ -50,6 +50,7 @@ const NewTaskModal = ({ onClose, id }) => {
     }
   }, [userId, addTask, id, taskTitle, taskDescription, taskPriority, taskStatus, taskAssignee, onClose]);
 
+  
   useEffect(() => {
     const outerclickclose = document.getElementById('outerclickclose');
     const innercloser = document.getElementById('innercloser');
@@ -109,7 +110,11 @@ const NewTaskModal = ({ onClose, id }) => {
             <div className='flex w-full flex-col'>
             <PriorityStatus 
               required
-              onChange={setTaskPriority}
+              id='priority'
+              onChange={(value) => {
+                setTaskPriority(value);
+                
+              }}
               invalidator='priorityinvalidatorinput'
             />
             <span className='text-red-400 hidden' id='statusinvalidator'>Invalid Priority</span>
