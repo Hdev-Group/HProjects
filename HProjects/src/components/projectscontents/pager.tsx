@@ -5,6 +5,11 @@ import { useMutation } from 'convex/react';
 import { useAuth } from "@clerk/nextjs";
 
 export default function PagerEl() {
+
+
+
+
+
   const { userId, isLoaded, isSignedIn } = useAuth();
   const pagerholder = useQuery(api.pagerget.get);
   const pagerhold = pagerholder?.find(pager => pager.userId === userId);

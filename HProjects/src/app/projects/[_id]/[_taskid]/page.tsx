@@ -282,7 +282,9 @@ export default function TaskFullView({ params }: { params: { _id: string, _taski
                                             <div className='flex flex-col gap-4 border border-transparent border-t-neutral-700/40 pt-3'>
                                                 <p className='text-3xl dark:text-white text-black'>Comments:</p>
                                                 <div className='w-full flex flex-col gap-10'>
+                                                    <div className="w-full flex flex-col gap-10 max-h-[20rem] overflow-y-auto">
                                                         <CommentBoxer taskId={taskid} />
+                                                    </div>
                                                     <CommentBox taskId={taskid} _id={params._id} />
                                                 </div>
                                             </div>

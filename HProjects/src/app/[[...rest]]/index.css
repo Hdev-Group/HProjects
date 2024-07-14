@@ -15,6 +15,8 @@
     opacity: 0;
     animation: pushdown 0.75s ease-in-out forwards 0.5s;
 }
+
+
 @keyframes pushdown{
   from{
     transform: translateY(-100%);
@@ -69,4 +71,12 @@
 }
 .boxtexts{
   font-family: 'Inter', sans-serif;
+}
+.loadingimg{
+  background-image: url('/loadingimg.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 100%;
+  width: 100%;
 }

@@ -9,6 +9,10 @@ interface SideBarProps {
 }
 
 function SideBar({ activeSection, _id }: SideBarProps) {
+
+
+
+
   const { user } = useClerk();
   const { user: userInfo } = useUser();
   const getItemClass = (section: string) =>
