@@ -3,13 +3,15 @@ import { api } from '../../../convex/_generated/api';
 import { useQuery } from 'convex/react';
 import { useMutation } from 'convex/react';
 import { useAuth } from "@clerk/nextjs";
+import {
+  ContextMenu,
+  ContextMenuContent,
+  ContextMenuItem,
+  ContextMenuSeparator,
+  ContextMenuTrigger,
+} from "../ui/context-menu"
 
 export default function PagerEl() {
-
-
-
-
-
   const { userId, isLoaded, isSignedIn } = useAuth();
   const pagerholder = useQuery(api.pagerget.get);
   const pagerhold = pagerholder?.find(pager => pager.userId === userId);
@@ -78,7 +80,8 @@ export default function PagerEl() {
 
 function PagerOnCall({ percentage, time }: { percentage: number, time: string }) {
   return (
-    <div id="pageroncall" className="w-max flex items-center justify-center">
+    <ContextMenu>
+    <ContextMenuTrigger id="pageroncall" className="w-max flex items-center justify-center">
       <div className='border dark:border-green-400 border-green-600 bg-green-700/20 dark:bg-green-400/20 pr-5 items-center h-[4rem] w-full flex rounded-lg'>
         <div className='pl-2 flex justify-center items-center h-full'>
           <div className='w-1.5 h-[3rem] flex items-end justify-center rounded-lg dark:bg-green-400/20 bg-green-700/20 overflow-hidden'>
@@ -90,13 +93,20 @@ function PagerOnCall({ percentage, time }: { percentage: number, time: string })
           <p className='dark:text-neutral-300 text-neutral-700 text-xs'>For the next {time}</p>
         </div>
       </div>
-    </div>
+    </ContextMenuTrigger>
+    <ContextMenuContent>
+    <ContextMenuItem className='text-yellow-300 cursor-pointer'>Start Break</ContextMenuItem>
+      <ContextMenuSeparator />
+      <ContextMenuItem className='text-red-400 cursor-pointer'>End Pager</ContextMenuItem>
+    </ContextMenuContent>
+  </ContextMenu>
   );
 }
 
 function PagerOnBreak({ percentage }: { percentage: number }) {
   return (
-    <div id="pageronbreak" className="w-max flex items-center justify-center">
+    <ContextMenu>
+    <ContextMenuTrigger id="pageronbreak" className="w-max flex items-center justify-center">
       <div className='border dark:border-yellow-400 border-yellow-600 bg-yellow-700/20 dark:bg-yellow-400/20 pr-5 items-center h-[4rem] w-full flex rounded-lg'>
         <div className='pl-2 flex justify-center items-center h-full'>
           <div className='w-1.5 h-[3rem] flex items-end justify-center rounded-lg dark:bg-yellow-400/20 overflow-hidden bg-yellow-700'>
@@ -107,7 +117,13 @@ function PagerOnBreak({ percentage }: { percentage: number }) {
           <h1 className='font-semibold text-md text-left dark:text-white text-black'>You're on break</h1>
         </div>
       </div>
-    </div>
+      </ContextMenuTrigger>
+        <ContextMenuContent>
+        <ContextMenuItem className='text-green-300 cursor-pointer'>End Break</ContextMenuItem>
+          <ContextMenuSeparator />
+          <ContextMenuItem className='text-red-400 cursor-pointer'>End Pager</ContextMenuItem>
+        </ContextMenuContent>
+      </ContextMenu>
   );
 }
 

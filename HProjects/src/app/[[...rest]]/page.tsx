@@ -161,17 +161,17 @@ export default function Home() {
         }
       );
       gsap.fromTo('#databasetasks',
-        { width: '100%', opacity: 0, zIndex: '1000000000000', translateY: '100%' },
+        { width: '100%', opacity: 0, zIndex: '1000000000000', translateX: '100%' },
         {
         opacity: 1,
         width: '100%',
-        translateY: '0%',
+        translateX: '0%',
         duration: 0.5,
         ease: 'power1.inOut',
         scrollTrigger: {
           trigger: '#databasetasks',
-          start: 'top 50%', 
-          end: 'bottom 50%',
+          start: 'top 60%', 
+          end: 'bottom 60%',
           toggleActions: 'play none none reverse',
         },
         }
@@ -199,16 +199,16 @@ export default function Home() {
     setShowSignUp(false);
   };
 
-  const handleModalClick = (e) => {
+  const handleModalClick = ({e}: any) => {
     if (e.target === e.currentTarget) {
       handleCloseModal();
     }
   };
 
   return (
-    <div className='flex items-center justify-center w-[100%] flex-col pt-20 overflow-hidden' ref={container}>
+    <div className='' ref={container}>
       <HeaderIndex />
-      <main className='md:max-w-[100%] mt-10 flex items-center flex-col justify-center overflow-x-hidden boxtexts'>
+      <main className='md:max-w-[100%] mt-[7rem] flex items-center flex-col justify-center overflow-x-hidden boxtexts'>
         <div className='flex md:px-[4.5rem] px-0 justify-between w-[100%] flex-wrap lg:flex-nowrap flex-row gap-10 pt-[5rem] pb-40'>
           <div className='md:w-[70%] w-full flex flex-col justify-start gap-5'>
             <div className="grid-background absolute w-[100%] h-10"></div>
@@ -289,39 +289,19 @@ export default function Home() {
                   <p className='text-[#555555] font-semibold'>P Text</p>
                 </div>
               </div>
-            </div>
-            <div className='flex lg:flex-row justify-between gap-10 max-w-[90rem] flex-col'>
-              <div className='flex flex-col gap-2'>
-                <h1 className='font-bold text-3xl'>Get Started</h1>
-                <div className='bg-white w-full h-40 rounded-[20px] loadingimg px-2 py-4'>
-                  <p className='text-white font-semibold'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci provident blanditiis dolor repellendus error non quae velit eum et ex repellat quisquam, id inventore quibusdam hic numquam unde. Eligendi, assumenda?</p>
-                </div>
-              </div>
-              <div className='flex flex-col gap-2'>
-                <h1 className='font-bold text-3xl'>Get Started</h1>
-                <div className='bg-white w-full h-40 rounded-[20px] loadingimg px-2 py-4'>
-                  <p className='text-white font-semibold'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci provident blanditiis dolor repellendus error non quae velit eum et ex repellat quisquam, id inventore quibusdam hic numquam unde. Eligendi, assumenda?</p>
-                </div>
-              </div>
-              <div className='flex flex-col gap-2'>
-                <h1 className='font-bold text-3xl'>Get Started</h1>
-                <div className='bg-white w-full h-40 rounded-[20px] loadingimg px-2 py-4'>
-                  <p className='text-white font-semibold'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci provident blanditiis dolor repellendus error non quae velit eum et ex repellat quisquam, id inventore quibusdam hic numquam unde. Eligendi, assumenda?</p>
-                </div>
-              </div>
-            </div>                                                                                                                                                                                                                                                             
+            </div>                                                                                                                                                                                                                                                         
           </div> 
         </div>
-        <div className='w-[100%] h-auto bg-white mb-10'>
-          <div className='flex gap-10 text-black flex-col'>
+        <div className='w-[100%] h-auto bg-white mb-10 '>
+          <div className='flex gap-10 text-black justify-center items-center flex-col'>
             <div className='flex items-center justify-center h-10 w-full'>
-              <div className='md:w-[90%] w-full flex flex-row h-full relative'>
+              <div className='md:w-[70%] max-w-[120rem] w-full flex flex-row h-full relative'>
                 <div className='border-t-[0px] border-t-transparent border-r-[75px] border-r-[#09090B] border-b-[40px] border-b-transparent'></div>
                 <div className='w-full bg-[#09090B] h-full'></div>
                 <div className='border-t-[0px] border-t-transparent border-l-[75px] border-l-[#09090B] border-b-[40px] border-b-transparent'></div>
               </div>
             </div>
-            <div className='w-full h-[120rem] items-center flex  flex-col boxtexts'>
+            <div className='w-full h-[120rem] md:max-w-[120rem] items-center flex  flex-col boxtexts'>
               <div className='md:w-[82%] w-full flex-col flex gap-20 mb-40'>
                 <div className='flex items-center flex-col'>
                   <h1 className='font-extrabold text-[35px] text-center'>All you need for project management</h1>
@@ -351,7 +331,7 @@ export default function Home() {
                   </div>
                 </div>
               </div>
-              <div className='md:w-[82%] w-full items-center flex-col flex gap-6'>
+              <div className='md:w-[82%]  w-full items-center flex-col flex gap-6'>
                 <div className='flex flex-col gap-10 h-auto w-1/2'>
                   <div className='flex flex-col relative text-right'>
                     <h1 className='font-bold text-[30px] text-right'>Comments</h1>
@@ -407,7 +387,7 @@ export default function Home() {
                     <div className='bg-white w-full h-6 bottom-0 absolute' id='cacswhite'></div>
                     <p className='font-semibold text-md' id='blurunblurc'>Read your tasks instantly from the project dashboard.</p>
                   </div>
-                  <div className='flex flex-col max-h-[30rem] gap-5 overflow-hidden'>
+                  <div className='flex flex-col w-full max-h-[30rem] gap-5 overflow-hidden'>
                   <div id='databasetasks'
             className='border-neutral-800 bg-neutral-300/60 cursor-pointer hover:border-neutral-300 transition-all py-2 border gap-3 flex flex-col rounded-md w-full'>
             <div className='flex gap-3 pl-4'>
@@ -434,11 +414,34 @@ export default function Home() {
               </div>
             </div>
             <div className='flex items-center justify-center h-10 w-full'>
-              <div className='md:w-[90%] w-full flex flex-row h-full relative'>
+              <div className='md:w-[70%] md:max-w-[120rem] w-full flex flex-row h-full relative'>
                 <div className='border-t-[40px] border-t-transparent border-r-[75px] border-r-[#09090B] border-b-[0px] border-b-transparent'></div>
                 <div className='w-full bg-[#09090B] h-full'></div>
                 <div className='border-t-[40px] border-t-transparent border-l-[75px] border-l-[#09090B] border-b-[0px] border-b-transparent'></div>
               </div>
+            </div>
+          </div>
+          <div className='md:w-1/2 md:max-w-[120rem] h-auto rounded-2xl border-2 mb-[5rem] border-blue-400 bg-white text-black p-10 flex gap-4 flex-col md:flex-row'>
+            <div className='flex justify-between flex-col'>
+            <div>
+              <h1 className='text-3xl font-bold max-w-[29rem]'>Planning starts with HCyber</h1>
+              <p className='text-sm text-neutral-700 mt-5'>
+              Start your next project with HCyber. Collaborate <b>for free</b> and enjoy standard incident management to keep your workflow smooth. Let’s create something amazing together!
+            </p>   
+            </div>
+
+            <a href="/dashboard" className='max-w-10'>
+            <button className='ease-in-out duration-300 hovmain mt-5 flex items-center justify-center border border-neutral-300 p-1 px-5 bg-neutral-500/30 rounded-md hover:border-neutral-900 hover:bg-neutral-200'>
+                      <h1 className='font-semibold text-[20px] flex'>Dashboard 
+                        <svg xmlns="http://www.w3.org/2000/svg" className='h-[30px] w-5 hovericon' viewBox="0 0 24 24" fill="currentColor">
+                          <path d="M16 12L10 18V6L16 12Z"></path>
+                        </svg>
+                      </h1>
+             </button>
+            </a>
+            </div>
+            <div className='md:max-w-[50%] w-full'>
+              <img src='/indexmainphoto.png' alt='mainphoto' className='w-full rounded-xl h-full' />
             </div>
           </div>
       </main>
