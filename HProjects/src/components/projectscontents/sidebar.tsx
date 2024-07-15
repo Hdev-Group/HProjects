@@ -77,7 +77,7 @@ function SideBar({ activeSection, _id }: SideBarProps) {
         </div>
         <div className="flex flex-col gap-10 mb-[7rem]  pb-4 dark:bg-bgdarkbars">
           <Link href={`/projects/${encodeURIComponent(_id)}/pager`}>
-            <PagerEl />
+            <PagerEl _id={_id} />
           </Link>
           <div className='flex-row flex gap-4'>
             <div className='w-[40px] h-[40px] rounded-full flex flex-row'>

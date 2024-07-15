@@ -23,6 +23,7 @@ import type * as idgetprojects from "../idgetprojects.js";
 import type * as pageradd from "../pageradd.js";
 import type * as pagerdelete from "../pagerdelete.js";
 import type * as pagerget from "../pagerget.js";
+import type * as pagerupdate from "../pagerupdate.js";
 import type * as pinProject from "../pinProject.js";
 import type * as projects from "../projects.js";
 import type * as projectsget from "../projectsget.js";
@@ -49,6 +50,7 @@ declare const fullApi: ApiFromModules<{
   pageradd: typeof pageradd;
   pagerdelete: typeof pagerdelete;
   pagerget: typeof pagerget;
+  pagerupdate: typeof pagerupdate;
   pinProject: typeof pinProject;
   projects: typeof projects;
   projectsget: typeof projectsget;

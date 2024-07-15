@@ -1,8 +1,8 @@
 import { query } from "./_generated/server";
-import LRUCache from "lru-cache";
+import {LRUCache} from "lru-cache";
 
 // Create an LRUCache instance
-const cache = new LRUCache<string, any>();
+const cache = new LRUCache<string, any>({ max: 100 });
 
 export const get = query({
   args: {},

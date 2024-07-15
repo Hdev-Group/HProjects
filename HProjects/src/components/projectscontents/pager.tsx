@@ -1,4 +1,4 @@
-import React, { useState, useEffect, use } from 'react';
+import React, { useState, useEffect } from 'react';
 import { api } from '../../../convex/_generated/api';
 import { useQuery } from 'convex/react';
 import { useMutation } from 'convex/react';
@@ -10,15 +10,15 @@ import {
   ContextMenuSeparator,
   ContextMenuTrigger,
 } from "../ui/context-menu"
-
-export default function PagerEl() {
-  const { userId, isLoaded, isSignedIn } = useAuth();
+export default function PagerEl({ _id }: any) {
+  const { userId } = useAuth();
   const pagerholder = useQuery(api.pagerget.get);
   const pagerhold = pagerholder?.find(pager => pager.userId === userId);
 
   const [currentTime, setCurrentTime] = useState(new Date());
   const [percentage, setPercentage] = useState(0);
   const [timeRemaining, setTimeRemaining] = useState('');
+  const paramsmain = _id
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -36,7 +36,51 @@ export default function PagerEl() {
       deletePager({ _id: pagerhold._id });
     }
   }, [pagerhold, timeRemaining]);
+  console.log(paramsmain, "paramsmain");
 
+  function PagerOnCall({ percentage, time }: { percentage: number, time: string, paramsmain: { _id: string } }) {
+    const { userId } = useAuth();
+    const mutatebreak = useMutation(api.pagerupdate.editpager);
+    
+
+    function startBreak() {
+      console.log('start break');
+  
+      if (userId) {
+        mutatebreak({ id: pagerhold._id,  status: 'break'}).catch(err => console.error(err));
+      } else {
+        console.error('User ID is not available.');
+      }
+    }
+
+  
+    function endPager() {
+      console.log('end pager');
+    }
+  
+    return (
+      <ContextMenu>
+        <ContextMenuTrigger id="pageroncall" className="w-max flex items-center justify-center">
+          <div className='border dark:border-green-400 border-green-600 bg-green-700/20 dark:bg-green-400/20 pr-5 items-center h-[4rem] w-full flex rounded-lg'>
+            <div className='pl-2 flex justify-center items-center h-full'>
+              <div className='w-1.5 h-[3rem] flex items-end justify-center rounded-lg dark:bg-green-400/20 bg-green-700/20 overflow-hidden'>
+                <div className='w-full' style={{ height: `${percentage}%`, backgroundColor: 'green' }}></div>
+              </div>
+            </div>
+            <div className='pl-3 h-max flex justify-center flex-col text-left'>
+              <h1 className='font-semibold text-md text-left dark:text-white text-black'>You're on pager</h1>
+              <p className='dark:text-neutral-300 text-neutral-700 text-xs'>For the next {time}</p>
+            </div>
+          </div>
+        </ContextMenuTrigger>
+        <ContextMenuContent>
+          <ContextMenuItem className='text-yellow-300 cursor-pointer' onClick={startBreak}>Start Break</ContextMenuItem>
+          <ContextMenuSeparator />
+          <ContextMenuItem className='text-red-400 cursor-pointer' onClick={endPager}>End Pager</ContextMenuItem>
+        </ContextMenuContent>
+      </ContextMenu>
+    );
+  }
   useEffect(() => {
     if (pagerhold) {
       const pagerStartTime = new Date(pagerhold._creationTime);
@@ -67,7 +111,7 @@ export default function PagerEl() {
     if (timeRemaining.includes('-')) {
       return <PagerOff />;
     } else if (pagerhold.status === 'active') {
-      return <PagerOnCall percentage={percentage} time={timeRemaining} />;
+      return <PagerOnCall percentage={percentage} time={timeRemaining} paramsmain={paramsmain} />;
     } else if (pagerhold.status === 'break') {
       return <PagerOnBreak percentage={percentage} />;
     } else {
@@ -78,32 +122,24 @@ export default function PagerEl() {
   }
 }
 
-function PagerOnCall({ percentage, time }: { percentage: number, time: string }) {
-  return (
-    <ContextMenu>
-    <ContextMenuTrigger id="pageroncall" className="w-max flex items-center justify-center">
-      <div className='border dark:border-green-400 border-green-600 bg-green-700/20 dark:bg-green-400/20 pr-5 items-center h-[4rem] w-full flex rounded-lg'>
-        <div className='pl-2 flex justify-center items-center h-full'>
-          <div className='w-1.5 h-[3rem] flex items-end justify-center rounded-lg dark:bg-green-400/20 bg-green-700/20 overflow-hidden'>
-            <div className='w-full' style={{ height: `${percentage}%`, backgroundColor: 'green' }}></div>
-          </div>
-        </div>
-        <div className='pl-3 h-max flex justify-center flex-col text-left'>
-          <h1 className='font-semibold text-md text-left dark:text-white text-black'>You're on pager</h1>
-          <p className='dark:text-neutral-300 text-neutral-700 text-xs'>For the next {time}</p>
-        </div>
-      </div>
-    </ContextMenuTrigger>
-    <ContextMenuContent>
-    <ContextMenuItem className='text-yellow-300 cursor-pointer'>Start Break</ContextMenuItem>
-      <ContextMenuSeparator />
-      <ContextMenuItem className='text-red-400 cursor-pointer'>End Pager</ContextMenuItem>
-    </ContextMenuContent>
-  </ContextMenu>
-  );
-}
+
+
+
 
 function PagerOnBreak({ percentage }: { percentage: number }) {
+  const { userId } = useAuth();
+  const mutatebreak = useMutation(api.pagerupdate.editpager);
+  const pagerholder = useQuery(api.pagerget.get);
+  const pagerhold = pagerholder?.find(pager => pager.userId === userId);
+  function endBreak() {
+    console.log('start break');
+
+    if (userId) {
+      mutatebreak({ id: pagerhold._id,  status: 'active'}).catch(err => console.error(err));
+    } else {
+      console.error('User ID is not available.');
+    }
+  }
   return (
     <ContextMenu>
     <ContextMenuTrigger id="pageronbreak" className="w-max flex items-center justify-center">
@@ -119,7 +155,7 @@ function PagerOnBreak({ percentage }: { percentage: number }) {
       </div>
       </ContextMenuTrigger>
         <ContextMenuContent>
-        <ContextMenuItem className='text-green-300 cursor-pointer'>End Break</ContextMenuItem>
+        <ContextMenuItem className='text-green-300 cursor-pointer' onClick={endBreak}>Go on Pager</ContextMenuItem>
           <ContextMenuSeparator />
           <ContextMenuItem className='text-red-400 cursor-pointer'>End Pager</ContextMenuItem>
         </ContextMenuContent>
