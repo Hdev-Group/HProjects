@@ -3,6 +3,8 @@ import { api } from '../../../convex/_generated/api';
 import { useQuery } from 'convex/react';
 import { useMutation } from 'convex/react';
 import { useAuth } from "@clerk/nextjs";
+import NewPagerModal from '../modals/newpagermodal';
+import ReactDOM from 'react-dom';
 import {
   ContextMenu,
   ContextMenuContent,
@@ -19,6 +21,7 @@ export default function PagerEl({ _id }: any) {
   const [percentage, setPercentage] = useState(0);
   const [timeRemaining, setTimeRemaining] = useState('');
   const paramsmain = _id
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -36,15 +39,49 @@ export default function PagerEl({ _id }: any) {
       deletePager({ _id: pagerhold._id });
     }
   }, [pagerhold, timeRemaining]);
-  console.log(paramsmain, "paramsmain");
 
+  const handleClose = () => {
+    setIsModalOpen(false);
+};
+  const handleClick = () => {
+    setIsModalOpen(true);
+    return (
+      <>
+        {isModalOpen && ReactDOM.createPortal(
+          <NewPagerModal id={paramsmain} onClose={handleClose} />,
+          document.getElementById('modal-root') as Element
+        )}
+      </>
+    );
+  }
+
+  function PagerOff() {
+    return (
+      <ContextMenu>
+      <ContextMenuTrigger id="pageroff" className="w-max flex items-center justify-center">
+        <div className='border dark:border-neutral-400 border-neutral-600 bg-yellow-700/20 dark:bg-neutral-400/20 pr-5 items-center h-[3rem] w-full flex rounded-lg'>
+          <div className='pl-2 flex justify-center items-center h-full'>
+            <div className='w-1.5 h-[2rem] flex items-end justify-center rounded-lg dark:bg-neutral-400/20 bg-neutral-700'>
+              <div className='w-full' style={{ height: '0%', backgroundColor: 'neutral' }}></div>
+            </div>
+          </div>
+          <div className='pl-3 h-max flex justify-center flex-col text-left'>
+            <h1 className='font-semibold text-md text-left dark:text-white text-black'>You're off pager</h1>
+          </div>
+        </div>
+      </ContextMenuTrigger>
+      <ContextMenuContent>
+        <ContextMenuItem className='text-green-300 cursor-pointer' onClick={handleClick}>Go on Pager</ContextMenuItem>
+      </ContextMenuContent>
+    </ContextMenu>
+    );
+  }
   function PagerOnCall({ percentage, time }: { percentage: number, time: string, paramsmain: { _id: string } }) {
     const { userId } = useAuth();
     const mutatebreak = useMutation(api.pagerupdate.editpager);
     
 
     function startBreak() {
-      console.log('start break');
   
       if (userId) {
         mutatebreak({ id: pagerhold._id,  status: 'break'}).catch(err => console.error(err));
@@ -55,7 +92,6 @@ export default function PagerEl({ _id }: any) {
 
   
     function endPager() {
-      console.log('end pager');
     }
   
     return (
@@ -124,15 +160,12 @@ export default function PagerEl({ _id }: any) {
 
 
 
-
-
 function PagerOnBreak({ percentage }: { percentage: number }) {
   const { userId } = useAuth();
   const mutatebreak = useMutation(api.pagerupdate.editpager);
   const pagerholder = useQuery(api.pagerget.get);
   const pagerhold = pagerholder?.find(pager => pager.userId === userId);
   function endBreak() {
-    console.log('start break');
 
     if (userId) {
       mutatebreak({ id: pagerhold._id,  status: 'active'}).catch(err => console.error(err));
@@ -163,19 +196,3 @@ function PagerOnBreak({ percentage }: { percentage: number }) {
   );
 }
 
-function PagerOff() {
-  return (
-    <div id="pageroff" className="w-max flex items-center justify-center">
-      <div className='border dark:border-neutral-400 border-neutral-600 bg-yellow-700/20 dark:bg-neutral-400/20 pr-5 items-center h-[3rem] w-full flex rounded-lg'>
-        <div className='pl-2 flex justify-center items-center h-full'>
-          <div className='w-1.5 h-[2rem] flex items-end justify-center rounded-lg dark:bg-neutral-400/20 bg-neutral-700'>
-            <div className='w-full' style={{ height: '0%', backgroundColor: 'neutral' }}></div>
-          </div>
-        </div>
-        <div className='pl-3 h-max flex justify-center flex-col text-left'>
-          <h1 className='font-semibold text-md text-left dark:text-white text-black'>You're off pager</h1>
-        </div>
-      </div>
-    </div>
-  );
-}

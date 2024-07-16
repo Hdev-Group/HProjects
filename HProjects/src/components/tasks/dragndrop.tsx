@@ -85,14 +85,11 @@ export default function MainHolder({ _id }: { _id: string }) {
     const [dragOverStatus, setDragOverStatus] = useState<string | null>(null);
 
     if (!tasks) {
-        console.log("No tasks found");
         return null;
     }
-    console.log("id", _id);
     const projectTasks = tasks.filter(task => task.projectid === _id);
 
     const onDragStart = (event: React.DragEvent<HTMLDivElement>, taskId: string) => {
-        console.log(`Task ${taskId} dragging`);
         setDraggingTask(taskId);
     };
 
@@ -102,20 +99,17 @@ export default function MainHolder({ _id }: { _id: string }) {
     };
 
     const onDragOver = (event: React.DragEvent<HTMLDivElement>, status: string) => {
-        console.log(`Drag over ${status}`);
         event.preventDefault();
         setDragOverStatus(status);
     };
 
     const onDrop = async (event: React.DragEvent<HTMLDivElement>, status: string) => {
         event.preventDefault();
-        console.log(`Task ${draggingTask} dropped on ${status}`);
         if (draggingTask) {
             await editTaskMutation({
                 taskId: draggingTask,
                 taskStatus: status,
             });
-            console.log(`Task ${draggingTask} dropped on ${status}`);
             setDraggingTask(null);
             setDragOverStatus(null);
         }
@@ -138,8 +132,6 @@ export default function MainHolder({ _id }: { _id: string }) {
             />
         ))
     );
-
-    console.log("Project tasks:", projectTasks);
 
     const renderDropZone = (status: string) => (
         <div 

@@ -18,7 +18,6 @@ export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const userId = searchParams.get("userId");
 
-  console.log("Received userId:", userId);
 
   if (!userId) {
     console.log("Invalid userId");

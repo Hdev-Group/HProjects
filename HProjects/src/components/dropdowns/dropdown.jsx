@@ -16,7 +16,6 @@ function DropdownMenuMain({ id, pname, pinned }) {
     const pinProjectMutation = useMutation(api.pinProject.pinProject);
 
     function deleteclick() {
-        console.log(id);
         setShowDeleteModal(true);
     }
 
@@ -27,7 +26,6 @@ function DropdownMenuMain({ id, pname, pinned }) {
     const handlePinProject = async () => {
         try {
             const updatedProject = await pinProjectMutation({ id, pinned: !pinned });
-            console.log('Project updated:', updatedProject);
         } catch (error) {
             console.error('Error updating project:', error);
         }

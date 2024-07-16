@@ -6,7 +6,6 @@ import '../../styles/globals.css';
 
 const DashboardHeader = ({ activeSection, onSectionChange }) => {
 
-  console.log(activeSection);
   const { user } = useClerk();
   const { isLoaded, isSignedIn, user: userInfo } = useUser();
 
@@ -32,7 +31,6 @@ const DashboardHeader = ({ activeSection, onSectionChange }) => {
   const isElementPresent = (id) => {
     return document.getElementById(id) !== null;
   };
-  console.log()
 
   return (
     <header className={`fixed flex-col top-[0px] max-[460px]:block bg-bglightbars dark:bg-bgdarkbars sm:block md:flex left-0 right-0 z-50 flex items-center justify-center p-8 transition-colors  duration-300 ${user ? '' : ''}`}>

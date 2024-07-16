@@ -30,7 +30,6 @@ function ProjectsDataAdder() {
   const renderProjects = (projects) => {
     return projects.map((project, index) => {
       const taskCounter = countTasks(project._id);
-      console.log(taskCounter)
       if (project.projectStatus === 'developing') {
         return <BoxProjectBuilding pinned={project.pinned} key={index} name={project.projectName} id={project._id} tasks={taskCounter} />;
       } else if (project.projectStatus === 'live') {

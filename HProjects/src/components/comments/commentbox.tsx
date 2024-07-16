@@ -13,8 +13,7 @@ export default function CommentBox({ taskId, _id }: CommentBoxProps) {
 
     const taskident = taskId;
     const projectident = _id;
-    console.log(_id);
-    console.log('CommentBox', taskident, projectident);
+
     const [CommenterMessage, setCommenterMessage] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const addComment = useMutation(api.commentsender.add);

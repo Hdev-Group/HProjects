@@ -21,10 +21,8 @@ const Header = () => {
 
         if (whitesectionRect.top - headerRect.bottom <= 10) {
           header.classList.add('scrolledwhite');
-          console.log('scrolledwhite');
         } else {
           header.classList.remove('scrolledwhite');
-          console.log('not scrolledwhite');
         }
       }
     };
