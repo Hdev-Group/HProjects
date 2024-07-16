@@ -4,7 +4,7 @@ import { useQuery } from 'convex/react';
 import { useMutation } from 'convex/react';
 import { useAuth } from "@clerk/nextjs";
 import NewPagerModal from '../modals/newpagermodal';
-import ReactDOM from 'react-dom';
+import { useToast } from "../ui/use-toast"
 import {
   ContextMenu,
   ContextMenuContent,
@@ -45,15 +45,16 @@ export default function PagerEl({ _id }: any) {
 };
   const handleClick = () => {
     setIsModalOpen(true);
-    return (
-      <>
-        {isModalOpen && ReactDOM.createPortal(
-          <NewPagerModal id={paramsmain} onClose={handleClose} />,
-          document.getElementById('modal-root') as Element
-        )}
-      </>
-    );
-  }
+    console.log("clicked");
+
+  return (
+    <>
+      {isModalOpen && (
+        <NewPagerModal id={paramsmain} onClose={handleClose} />
+      )}
+    </>
+  );
+}
 
   function PagerOff() {
     return (
@@ -82,7 +83,6 @@ export default function PagerEl({ _id }: any) {
     
 
     function startBreak() {
-  
       if (userId) {
         mutatebreak({ id: pagerhold._id,  status: 'break'}).catch(err => console.error(err));
       } else {
@@ -93,6 +93,24 @@ export default function PagerEl({ _id }: any) {
   
     function endPager() {
     }
+    const ToastOnBreak = () => {
+      const { toast } = useToast()
+    
+      return (
+        <ContextMenuItem
+          className='text-yellow-300 cursor-pointer bg-transparent' 
+          onClick={() => {
+            startBreak();
+            toast({
+              description: "Your break has started",
+            })
+          }}
+        >
+          Start Break
+        </ContextMenuItem>
+      )
+    }
+
   
     return (
       <ContextMenu>
@@ -110,7 +128,7 @@ export default function PagerEl({ _id }: any) {
           </div>
         </ContextMenuTrigger>
         <ContextMenuContent>
-          <ContextMenuItem className='text-yellow-300 cursor-pointer' onClick={startBreak}>Start Break</ContextMenuItem>
+          <ToastOnBreak />
           <ContextMenuSeparator />
           <ContextMenuItem className='text-red-400 cursor-pointer' onClick={endPager}>End Pager</ContextMenuItem>
         </ContextMenuContent>
@@ -165,6 +183,23 @@ function PagerOnBreak({ percentage }: { percentage: number }) {
   const mutatebreak = useMutation(api.pagerupdate.editpager);
   const pagerholder = useQuery(api.pagerget.get);
   const pagerhold = pagerholder?.find(pager => pager.userId === userId);
+  const ToastBeginPager = () => {
+    const { toast } = useToast()
+  
+    return (
+      <ContextMenuItem
+      className='text-green-300 cursor-pointer' 
+        onClick={() => {
+          endBreak();
+          toast({
+            description: "Your pager has started",
+          })
+        }}
+      >
+        Go on Pager
+      </ContextMenuItem>
+    )
+  }
   function endBreak() {
 
     if (userId) {
@@ -188,7 +223,7 @@ function PagerOnBreak({ percentage }: { percentage: number }) {
       </div>
       </ContextMenuTrigger>
         <ContextMenuContent>
-        <ContextMenuItem className='text-green-300 cursor-pointer' onClick={endBreak}>Go on Pager</ContextMenuItem>
+          <ToastBeginPager />
           <ContextMenuSeparator />
           <ContextMenuItem className='text-red-400 cursor-pointer'>End Pager</ContextMenuItem>
         </ContextMenuContent>

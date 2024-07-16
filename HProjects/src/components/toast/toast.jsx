@@ -1,3 +1,6 @@
+import { useToast } from "../ui/use-toast"
+import { Button } from "../ui/button"
+
 export const ToastDemo = () => {
     const { toast } = useToast()
   
@@ -13,4 +16,3 @@ export const ToastDemo = () => {
       </Button>
     )
   }
-  

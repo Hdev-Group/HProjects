@@ -258,7 +258,7 @@ export default function Home() {
               {showSignUp && (
                 <div onClick={handleModalClick} className='fixed top-0 left-0 right-0 bottom-0 bg-black/50 z-50 flex items-center justify-center'>
                   <div className="flex items-center justify-center h-[100%]">
-                    <SignUp appearance={{ baseTheme: dark }} />
+                    <SignUp  />
                   </div>
                 </div>
               )}

@@ -5,7 +5,7 @@ import { useClerk, useUser, UserButton } from '@clerk/clerk-react';
 import Link from 'next/link';
 import '../../styles/globals.css';
 
-const DashboardHeaderProjects = ({ activeSection, projectname}) => {
+const DashboardHeaderProjects = ({ projectname }) => {
 
   const { user } = useClerk();
   const { isLoaded, isSignedIn, user: userInfo } = useUser();
