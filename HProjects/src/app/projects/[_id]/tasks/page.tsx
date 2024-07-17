@@ -59,14 +59,15 @@ export default function ProjectPage({ params }: { params: { _id: string } }) {
   }
 
   const title = projectname + ' | Tasks';
+  console.log('projectname', projectname);
 
   return (
     <>
-      <Head>
+      <head>
         <title>{title}</title>
         <meta name="description" content="Plan, Build and Push with confidence" />
         <meta name="keywords" content="HProjects, Projects, Build, Plan, Push" />
-      </Head>
+      </head>
       <div className="h-screen overflow-hidden sm:overflow-y-auto bg-bglight dark:bg-bgdark " id="modal-root">
         <DashboardHeaderProjects projectname={projectname} activeSection={activeSection} />
         <div className="flex mt-[110px] h-full bg-bglightbars dark:bg-bgdarkbars">
