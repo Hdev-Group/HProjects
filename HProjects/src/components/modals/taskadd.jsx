@@ -15,7 +15,6 @@ const NewTaskModal = ({ onClose, id }) => {
   const [taskStatus, setTaskStatus] = useState('');
   const [taskAssignee, setTaskAssignee] = useState('');
   const addTask = useMutation(api.taskssender.add);
-  console.log("id:", id.id);
   const handleFormSubmit = useCallback(async (e) => {
     e.preventDefault();
     if (!userId) {
@@ -50,6 +49,7 @@ const NewTaskModal = ({ onClose, id }) => {
     }
   }, [userId, addTask, id, taskTitle, taskDescription, taskPriority, taskStatus, taskAssignee, onClose]);
 
+  
   useEffect(() => {
     const outerclickclose = document.getElementById('outerclickclose');
     const innercloser = document.getElementById('innercloser');
@@ -109,7 +109,11 @@ const NewTaskModal = ({ onClose, id }) => {
             <div className='flex w-full flex-col'>
             <PriorityStatus 
               required
-              onChange={setTaskPriority}
+              id='priority'
+              onChange={(value) => {
+                setTaskPriority(value);
+                
+              }}
               invalidator='priorityinvalidatorinput'
             />
             <span className='text-red-400 hidden' id='statusinvalidator'>Invalid Priority</span>

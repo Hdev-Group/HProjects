@@ -10,6 +10,18 @@ export default defineSchema({
     projectStatus: v.string(),
     userId: v.string(),
   }),
+  comments: defineTable({
+    CommenterMessage: v.string(),
+    ProjectId: v.id("project"),
+    taskId: v.id("tasks"),
+    userId: v.string(),
+  }),
+  pager: defineTable({
+    projectid: v.id("project"),
+    status: v.string(),
+    time: v.string(),
+    userId: v.string(),
+  }),
   tasks: defineTable({
     projectid: v.id("project"),
     taskAssignee: v.string(),

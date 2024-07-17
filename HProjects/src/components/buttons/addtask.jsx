@@ -8,7 +8,6 @@ const AddTaskButton = (id) => {
   const handleClick = () => {
     setIsModalOpen(true);
   };
-  console.log(id);
   const handleClose = () => {
     setIsModalOpen(false);
   };

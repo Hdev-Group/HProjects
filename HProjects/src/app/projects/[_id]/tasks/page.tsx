@@ -10,24 +10,19 @@ import { useRouter } from 'next/navigation';
 import SideBar from "../../../../components/projectscontents/sidebar";
 import AddTaskButton from "../../../../components/buttons/addtask";
 import MainHolder from "../../../../components/tasks/dragndrop";
-import { NextApiRequest, NextApiResponse } from "next";
-import { clerkClient } from "@clerk/nextjs/server";
 
 export default function ProjectPage({ params }: { params: { _id: string } }) {
   const { userId, isLoaded, isSignedIn } = useAuth();
   const { user } = useUser();
   const projectsholder = useQuery(api.projectsget.get);
   const project = projectsholder?.find(project => project._id === params._id);
-  console.log(project);
-  console.log(project?.userId, "userId");
   const projectname = project?.projectName;
   const projectUserId = project?.userId;
   const router = useRouter();
   const _id = params._id;
-  const [activeSection, setActiveSection] = useState("Tasks");
 
-  const assigneeid = project?.projectAssignee;
-  
+  const [taskFilter, setTaskFilter] = useState('');
+  const [activeSection, setActiveSection] = useState("Tasks");
 
   useEffect(() => {
     if (document.getElementById('tasksproject')) {
@@ -36,15 +31,13 @@ export default function ProjectPage({ params }: { params: { _id: string } }) {
   }, []);
 
   useEffect(() => {
-    if (!isLoaded || !projectsholder) return; // Wait until authentication state and project data are loaded
+    if (!isLoaded || !projectsholder) return;
 
     if (!isSignedIn) {
-      router.push('/sign-in'); // Redirect to sign-in page if not signed in
+      router.push('/sign-in');
     } else if (!project) {
-      console.log('Project not found');
       router.push('/projects');
     } else if (projectUserId !== userId && !project.otherusers.includes(userId)) {
-      console.log('User is not the project owner', projectUserId, userId);
       router.push('/projects');
     }
   }, [isLoaded, isSignedIn, projectsholder, project, projectUserId, userId, router]);
@@ -62,31 +55,40 @@ export default function ProjectPage({ params }: { params: { _id: string } }) {
   }
 
   if (!(projectUserId === userId || project.otherusers.includes(userId))) {
-    console.log('Unauthorized access attempt:', project?.otherusers);
     return <div>Unauthorized</div>;
   }
 
   const title = projectname + ' | Tasks';
+  console.log('projectname', projectname);
 
   return (
     <>
-    <head>
-     <title>{title}</title>
-     <meta name="description" content="Plan, Build and Push with confidence" />
-     <meta name="keywords" content="HProjects, Projects, Build, Plan, Push" />
-    </head>
-      <div className="h-screen overflow-hidden sm:overflow-y-auto bg-[#D4D4D8] dark:bg-[#1A1A2E]" id="modal-root">
-        <DashboardHeaderProjects projectname={projectname} activeSection={""} />
-        <div className="flex mt-[130px] h-full">
+      <head>
+        <title>{title}</title>
+        <meta name="description" content="Plan, Build and Push with confidence" />
+        <meta name="keywords" content="HProjects, Projects, Build, Plan, Push" />
+      </head>
+      <div className="h-screen overflow-hidden sm:overflow-y-auto bg-bglight dark:bg-bgdark " id="modal-root">
+        <DashboardHeaderProjects projectname={projectname} activeSection={activeSection} />
+        <div className="flex mt-[110px] h-full bg-bglightbars dark:bg-bgdarkbars">
           <SideBar _id={params._id} activeSection={activeSection} />
-          <div className="flex w-full justify-center dark:bg-[#2E2E3A] bg-[#B2B2CC] rounded-tl-3xl">
+          <div className="flex w-full justify-center bg-bglight border dark:border-l-white dark:border-t-white border-t-black mt-0.5 dark:bg-bgdark rounded-l-3xl">
             <div className="max-w-10/12 w-[100%] p-5 flex flex-col items-center overflow-y-auto">
               <div className="flex-row w-full px-5 justify-between mb-5 mt-5 flex">
                 <h1 className="flex text-2xl font-bold text-black dark:text-white" id="tasksproject">Tasks</h1>
+              </div>
+              <div className="flex flex-row justify-between w-full p-5">
                 <AddTaskButton id={params._id} />
+                <input
+                  type='text'
+                  placeholder='Filter by tasks'
+                  value={taskFilter}
+                  onChange={(e) => setTaskFilter(e.target.value)}
+                  className='dark:bg-neutral-800 bg-white border  border-neutral-300 dark:border-neutral-700 w-full max-w-[15rem] rounded px-2 py-1'
+                />
               </div>
               <div className="w-full items-center flex py-5 justify-start px-5 gap-1 flex-col rounded">
-                <MainHolder _id={_id} />
+                <MainHolder _id={_id} taskFilter={taskFilter} />
               </div>
             </div>
           </div>

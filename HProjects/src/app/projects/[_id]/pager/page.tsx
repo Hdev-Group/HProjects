@@ -7,6 +7,8 @@ import { api } from '../../../..//../convex/_generated/api';
 import React, { useEffect, useState } from "react";
 import DashboardHeaderProjects from "../../../../components/header/dashboardprojects";
 import SideBar from "../../../../components/projectscontents/sidebar";
+import PagerMain from "../../../../components/pager/pagermain";
+import { PageeActive, PageeBreak} from "../../../../components/pager/pagee";
 
 export default function pager({ params }: { params: { _id: string } }){
     const { userId, isLoaded, isSignedIn } = useAuth();
@@ -25,10 +27,8 @@ export default function pager({ params }: { params: { _id: string } }){
         if (!isSignedIn) {
           router.push('/sign-in'); // Redirect to sign-in page if not signed in
         } else if (!project) {
-          console.log('Project not found');
           router.push('/projects');
         } else if (projectUserId !== userId && !project.otherusers.includes(userId)) {
-          console.log('User is not the project owner', projectUserId, userId);
           router.push('/projects');
         }
       }, [isLoaded, isSignedIn, projectsholder, project, projectUserId, userId, router]);
@@ -51,7 +51,6 @@ export default function pager({ params }: { params: { _id: string } }){
       }
     
       if (!(projectUserId === userId || project.otherusers.includes(userId))) {
-        console.log('Unauthorized access attempt:', project?.otherusers);
         return <div>Unauthorized</div>;
       }
 
@@ -59,18 +58,31 @@ export default function pager({ params }: { params: { _id: string } }){
       
       return (
         <>
-        <head>
+          <head>
             <title>{title}</title>
             <meta name="description" content="Plan, Build and Push with confidence" />
             <meta name="keywords" content="HProjects, Projects, Build, Plan, Push" />
-        </head>
-        <div className="overflow-hidden h-screen">
-        <DashboardHeaderProjects projectname={projectname} projectid={project?._id} />
-        <div className="flex mt-[130px] h-full">
-          <SideBar _id={params._id} activeSection={activeSection} />
-          
-          </div>
+          </head>
+          <div className="overflow-hidden h-screen" id="modal-root">
+            <DashboardHeaderProjects projectname={projectname} projectid={project?._id} />
+            <div className="flex mt-[110px] h-full bg-bglightbars dark:bg-bgdarkbars">
+              <SideBar _id={params._id} activeSection={activeSection} />
+              <div className="flex w-full justify-center bg-bglight border dark:border-l-white dark:border-t-white border-t-black mt-0.5 dark:bg-bgdark rounded-l-3xl">
+                <div className="w-full pt-5 bg-bglight dark:bg-bgdark rounded-l-3xl">
+                  <div className='px-4 flex flex-col'>
+                    <div className='flex flex-row justify-between mb-5'>
+                      <h1 className='flex text-2xl font-bold text-black dark:text-white'>Pager</h1>
+                    </div>
+                    <div className='w-full h-full'>
+                      <div className='items-center flex justify-center mt-10 h-full gap-4'>
+                        <PagerMain id={params._id} />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </>
-        );
+      );
 }

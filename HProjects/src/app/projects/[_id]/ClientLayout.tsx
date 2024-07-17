@@ -7,7 +7,6 @@ interface ClientLayoutProps {
 }
 
 export default function ClientLayout({ children, title }: ClientLayoutProps) {
-  console.log('ClientLayout', title);
 
   if (!title) {
     return null; // or a loading spinner, or some fallback content

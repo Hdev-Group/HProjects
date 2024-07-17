@@ -5,10 +5,8 @@ export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const userIds = searchParams.get("userIds");
 
-  console.log("Received userIds:", userIds);
 
   if (!userIds) {
-    console.log("Invalid userIds");
     return NextResponse.json({ error: "Invalid userIds" }, { status: 400 });
   }
 
@@ -16,7 +14,6 @@ export async function GET(request: Request) {
 
   try {
     const users = await Promise.all(userIdArray.map(id => clerkClient.users.getUser(id)));
-    console.log("User data fetched successfully");
     return NextResponse.json(users);
   } catch (error) {
     console.error("Error fetching user data:", error);

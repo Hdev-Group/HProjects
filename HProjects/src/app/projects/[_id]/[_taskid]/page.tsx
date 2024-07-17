@@ -101,13 +101,10 @@ export default function TaskFullView({ params }: { params: { _id: string, _taski
         if (!isSignedIn) {
             router.push('/sign-in'); // Redirect to sign-in page if not signed in
         } else if (!project) {
-            console.log('Project not found');
             router.push('/projects');
         } else if (projectUserId !== userId && !project.otherusers.includes(userId)) {
-            console.log('User is not the project owner', projectUserId, userId);
             router.push('/projects');
         } else if (!task) {
-            console.log('Task not found');
             router.push(`/projects/${_id}`);
         }
     }, [isLoaded, isSignedIn, projectsholder, project, tasks, task, projectUserId, userId, router]);
@@ -194,10 +191,10 @@ export default function TaskFullView({ params }: { params: { _id: string, _taski
             </head>
             <div className="h-screen overflow-hidden" id="modal-root">
                 <DashboardHeaderProjects projectname={projectname} activeSection={""} />
-                <div className="flex mt-[130px] h-full">
+                <div className="flex mt-[110px] h-full bg-bglight dark:bg-bgdark rounded-tl-3xl">
                     <SideBar _id={params._id} activeSection={activeSection} />
-                    <div className="flex w-full justify-center h-full scroll-pb-10 bg-[#D4D4D8] dark:bg-[#1A1A2E]">
-                        <div className="max-w-9/12 w-[100%] p-5 flex flex-col items-center overflow-y-auto dark:bg-[#2E2E3A] bg-[#B2B2CC] rounded-tl-3xl">
+                    <div className="flex w-full justify-center bg-bglight border dark:border-l-white dark:border-t-white border-t-black mt-0.5 dark:bg-bgdark rounded-l-3xl">
+                    <div className="max-w-9/12 w-[100%] p-5 flex flex-col items-center overflow-y-auto bg-bglight dark:bg-bgdark rounded-l-3xl">
                             <div className='w-full flex pb-5 border border-transparent justify-center border-b-neutral-700/40'>
                                 <div className='flex flex-col w-full gap-4 items-center'>
                                     <div className="flex w-10/12 pt-4 gap-4 flex-row justify-between">
@@ -282,7 +279,9 @@ export default function TaskFullView({ params }: { params: { _id: string, _taski
                                             <div className='flex flex-col gap-4 border border-transparent border-t-neutral-700/40 pt-3'>
                                                 <p className='text-3xl dark:text-white text-black'>Comments:</p>
                                                 <div className='w-full flex flex-col gap-10'>
+                                                    <div className="w-full flex flex-col gap-10 max-h-[20rem] overflow-y-auto">
                                                         <CommentBoxer taskId={taskid} />
+                                                    </div>
                                                     <CommentBox taskId={taskid} _id={params._id} />
                                                 </div>
                                             </div>
