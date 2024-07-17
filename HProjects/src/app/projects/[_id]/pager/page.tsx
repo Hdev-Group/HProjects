@@ -67,8 +67,8 @@ export default function pager({ params }: { params: { _id: string } }){
             <DashboardHeaderProjects projectname={projectname} projectid={project?._id} />
             <div className="flex mt-[110px] h-full bg-bglightbars dark:bg-bgdarkbars">
               <SideBar _id={params._id} activeSection={activeSection} />
-              <div className="flex w-full justify-center bg-bglight border dark:border-l-white dark:border-t-white border-t-black mt-0.5 dark:bg-bgdark rounded-l-3xl">
-                <div className="w-full pt-5 bg-bglight dark:bg-bgdark rounded-l-3xl">
+              <div className="flex w-full p-5 pt-10 justify-center bg-bglight border dark:border-l-white dark:border-t-white border-t-black mt-0.5 dark:bg-bgdark rounded-l-3xl">
+                <div className="w-full  bg-bglight dark:bg-bgdark rounded-l-3xl">
                   <div className='px-4 flex flex-col'>
                     <div className='flex flex-row justify-between mb-5'>
                       <h1 className='flex text-2xl font-bold text-black dark:text-white'>Pager</h1>

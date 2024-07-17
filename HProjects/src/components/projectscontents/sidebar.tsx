@@ -1,8 +1,8 @@
 "use client";
 import React from 'react';
 import Link from 'next/link';
-import { useUser, useClerk } from '@clerk/clerk-react';
-import PagerEl from './pager'
+import {QuickMenu} from './quickmenu';
+
 interface SideBarProps {
   activeSection: string;
   _id: string;
@@ -10,11 +10,6 @@ interface SideBarProps {
 
 function SideBar({ activeSection, _id }: SideBarProps) {
 
-
-
-
-  const { user } = useClerk();
-  const { user: userInfo } = useUser();
   const getItemClass = (section: string) =>
     `text-sm text-black dark:text-neutral-100 transition-colors font-semibold w-full hover:bg-neutral-600/30 cursor-pointer p-1.5 rounded-md ${activeSection === section ? "bg-neutral-500/20 text-black dark:text-white" : ""}`;
   return (
@@ -75,18 +70,7 @@ function SideBar({ activeSection, _id }: SideBarProps) {
             </li>
           </ul>
         </div>
-        <div className="flex flex-col gap-10 mb-[7rem]  pb-4 dark:bg-bgdarkbars">
-            <PagerEl _id={_id} />
-          <div className='flex-row flex gap-4'>
-            <div className='w-[40px] h-[40px] rounded-full flex flex-row'>
-              <img src={userInfo?.imageUrl} alt="logo" className="w-[40px] h-[40px] rounded-full" />
-            </div>
-            <div className='flex flex-col text-left justify-center'>
-              <h1 className='dark:text-neutral-100 text-neutral-900 text-sm font-semibold text-left'>{userInfo?.firstName} {userInfo?.lastName}</h1>
-              <p className="dark:text-neutral-500 text-neutral-600 text-xs text-left font-semibold">Lead Developer</p>
-            </div>
-          </div>
-        </div>
+        <QuickMenu id={_id} />
       </div>
     </article>
   );

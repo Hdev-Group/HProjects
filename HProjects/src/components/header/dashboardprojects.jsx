@@ -59,7 +59,7 @@ const DashboardHeaderProjects = ({ projectname }) => {
                         }
                       }}
                   />
-              <p className='mb-[1px] max-w-[100px] truncate text-black dark:text-white font-semibold text-lg'>{userInfo.firstName}</p>
+              <p className='mb-[1px] max-w-[100px] truncate text-[15px] text-black dark:text-white font-semibold'>{userInfo.firstName}</p>
             </span>
             <p className='text-gray-500 font-bold text-[20px] ml-3 mr-3'>/</p>
             <span className='border border-slate-600 justify-center bg-slate-600/20 py-1 mt-2 flex px-5 items-center gap-3 text-[15px] h-10 rounded-lg text-black dark:text-white font-semibold'>{projectname}</span>
