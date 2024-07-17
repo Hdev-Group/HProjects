@@ -48,6 +48,7 @@ const config: Config = {
         bglightbars: {
           DEFAULT: "#D4D4D8",
         },
+        
         destructive: {
           DEFAULT: "hsl(var(--destructive))",
           foreground: "hsl(var(--destructive-foreground))",

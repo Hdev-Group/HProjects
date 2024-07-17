@@ -9,7 +9,7 @@ import DashboardHeaderProjects from "../../../components/header/dashboardproject
 import { api } from '../../../../convex/_generated/api';
 import { useRouter } from 'next/navigation';
 import SideBar from "../../../components/projectscontents/sidebar";
-import ClientLayout from './ClientLayout'; // Ensure the correct path for ClientLayout
+import ClientLayout from './ClientLayout'; 
 
 export default function ProjectPage({ params }: { params: { _id: string } }) {
   const { userId, isLoaded, isSignedIn } = useAuth();

@@ -16,12 +16,12 @@ function SideBar({ activeSection, _id }: SideBarProps) {
   const { user } = useClerk();
   const { user: userInfo } = useUser();
   const getItemClass = (section: string) =>
-    `text-sm text-black dark:text-neutral-300 transition-colors font-semibold w-full hover:bg-neutral-600/30 cursor-pointer p-1.5 rounded-md ${activeSection === section ? "bg-neutral-600/20 text-white" : ""}`;
+    `text-sm text-black dark:text-neutral-100 transition-colors font-semibold w-full hover:bg-neutral-600/30 cursor-pointer p-1.5 rounded-md ${activeSection === section ? "bg-neutral-500/20 text-black dark:text-white" : ""}`;
   return (
     <article className="w-max sticky flex h-full flex-col justify-between min-w-[200px]  bg-bglightbars dark:bg-bgdarkbars !rounded-none overflow-auto p-2  border-transparent  border-r-neutral-600/40">
       <div className="flex flex-col fixed justify-between h-full overflow-y-auto pl-2">
         <div className=" w-full flex flex-col">
-          <h2 className="font-bold text-sm text-black dark:text-neutral-300">Navigation</h2>
+          <h2 className="font-bold text-sm text-neutral-900 dark:text-neutral-300">Navigation</h2>
           <ul className="mt-4 space-y-2 w-full flex flex-col">
             <li key="dashboard" className={getItemClass("Dashboard")}>
               <Link href={`/projects/${encodeURIComponent(_id)}`}>

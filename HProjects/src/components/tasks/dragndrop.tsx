@@ -4,35 +4,33 @@ import { api } from '../../../convex/_generated/api';
 import { useUser } from '@clerk/nextjs';
 import { useQuery } from "convex/react";
 import { useState, useEffect } from 'react';
-import { clerkClient } from '@clerk/nextjs/server';
 import { useMutation } from 'convex/react';
 import { useRouter } from 'next/navigation';
-import { add } from '../../../convex/projects';
 
-function CardFrame({ taskId, taskName, taskPriority, taskStatus, taskAssignee, taskDescription, onDragStart, onDragEnd, onDragOver, onDrop }: { taskId: string, taskName: string, taskPriority: string, taskStatus: string, taskAssignee: string, taskDescription: string, onDragStart: any, onDragEnd: any, onDragOver: any, onDrop: any }) {
+function CardFrame({ taskId, taskName, taskPriority, taskStatus, taskAssignee, taskDescription, onDragStart, onDragEnd, onDragOver, onDrop }) {
     const { user } = useUser();
     const [assigneeData, setAssigneeData] = useState<{ firstName: string, lastName: string, imageUrl: string } | null>(null);
     const router = useRouter();
 
     useEffect(() => {
         async function fetchAssigneeData() {
-          if (taskAssignee) {
-            try {
-              const response = await fetch(`/api/get-user?userId=${taskAssignee}`);
-              if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-              }
-              const data = await response.json();
-              setAssigneeData(data);
-            } catch (error) {
-              console.error('Error fetching assignee data:', error);
-              setAssigneeData(null);
+            if (taskAssignee) {
+                try {
+                    const response = await fetch(`/api/get-user?userId=${taskAssignee}`);
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    const data = await response.json();
+                    setAssigneeData(data);
+                } catch (error) {
+                    console.error('Error fetching assignee data:', error);
+                    setAssigneeData(null);
+                }
             }
-          }
         }
-      
+
         fetchAssigneeData();
-      }, [taskAssignee]);
+    }, [taskAssignee]);
 
     function taskmainmenu(taskId: string) {
         router.push(`./${taskId}`);
@@ -78,7 +76,7 @@ function CardFrame({ taskId, taskName, taskPriority, taskStatus, taskAssignee, t
     );
 }
 
-export default function MainHolder({ _id }: { _id: string }) {
+export default function MainHolder({ _id, taskFilter }) {
     const tasks = useQuery(api.tasks.get);
     const editTaskMutation = useMutation(api.draganddrop.editTask);
     const [draggingTask, setDraggingTask] = useState<string | null>(null);
@@ -87,7 +85,8 @@ export default function MainHolder({ _id }: { _id: string }) {
     if (!tasks) {
         return null;
     }
-    const projectTasks = tasks.filter(task => task.projectid === _id);
+
+    const projectTasks = tasks.filter(task => task.projectid === _id && task.taskTitle.toLowerCase().includes(taskFilter.toLowerCase()));
 
     const onDragStart = (event: React.DragEvent<HTMLDivElement>, taskId: string) => {
         setDraggingTask(taskId);

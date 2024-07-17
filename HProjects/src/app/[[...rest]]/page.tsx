@@ -231,7 +231,7 @@ export default function Home() {
               </p>
               <SignedOut>
                 <div className='flex flex-row mt-6 gap-2 md:gap-6 pushupbutton'>
-                  <button onClick={handleSignUpClick} className='ease-in-out duration-300 hovmain mb-20 flex items-center justify-center border border-neutral-600 p-1 px-5 bg-neutral-900/30 rounded-md hover:border-neutral-400 hover:bg-neutral-800'>
+                  <button onClick={handleSignUpClick} className='ease-in-out duration-300 hovmain mb-20 flex items-center justify-center border border-neutral-600 py-2 px-10 bg-neutral-900/30 rounded-2xl hover:border-neutral-400 hover:bg-neutral-800'>
                     <h1 className='font-semibold text-[20px] flex'>Get Started 
                       <svg xmlns="http://www.w3.org/2000/svg" className='h-[30px] w-5 hovericon' viewBox="0 0 24 24" fill="currentColor">
                         <path d="M16 12L10 18V6L16 12Z"></path>
@@ -243,7 +243,7 @@ export default function Home() {
               <SignedIn>
                 <div className='flex flex-row mt-2 gap-2 md:gap-6 pushupbutton'>
                   <a href='/dashboard'>
-                    <button className='ease-in-out duration-300 hovmain mb-20 flex items-center justify-center border border-neutral-600 p-1 px-5 bg-neutral-900/30 rounded-md hover:border-neutral-400 hover:bg-neutral-800'>
+                    <button className='ease-in-out duration-300 hovmain mb-20 flex items-center justify-center border border-neutral-600 py-2 px-10 bg-neutral-900/30 rounded-2xl hover:border-neutral-400 hover:bg-neutral-800'>
                       <h1 className='font-semibold text-[20px] flex'>Dashboard 
                         <svg xmlns="http://www.w3.org/2000/svg" className='h-[30px] w-5 hovericon' viewBox="0 0 24 24" fill="currentColor">
                           <path d="M16 12L10 18V6L16 12Z"></path>

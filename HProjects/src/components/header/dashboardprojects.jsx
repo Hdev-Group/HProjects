@@ -45,7 +45,7 @@ const DashboardHeaderProjects = ({ projectname }) => {
                 width={32}
                 height={32}
               />
-              <h1 className="text-2xl font-bold">Projects</h1>
+              <h1 className="text-2xl font-bold text-black dark:text-white">Projects</h1>
             </div>
           </a>
           <div className="flex items-center flex-row justify-center">
@@ -59,10 +59,10 @@ const DashboardHeaderProjects = ({ projectname }) => {
                         }
                       }}
                   />
-              <p className='mb-[1px] max-w-[100px] truncate'>{userInfo.firstName}</p>
+              <p className='mb-[1px] max-w-[100px] truncate text-black dark:text-white font-semibold text-lg'>{userInfo.firstName}</p>
             </span>
             <p className='text-gray-500 font-bold text-[20px] ml-3 mr-3'>/</p>
-            <span className='border border-slate-600 justify-center bg-slate-600/20 py-1 mt-2 flex px-5 items-center gap-3 text-[15px] h-10 font-medium rounded-lg'>{projectname}</span>
+            <span className='border border-slate-600 justify-center bg-slate-600/20 py-1 mt-2 flex px-5 items-center gap-3 text-[15px] h-10 rounded-lg text-black dark:text-white font-semibold'>{projectname}</span>
           </div>
         </div>
       </div>
