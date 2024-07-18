@@ -414,3 +414,51 @@
     box-shadow: 0 0 0 5px rgba(0, 0, 0, 0);
   }
 }
+.arm{
+  animation: arm 4s infinite;
+}
+@keyframes arm{
+  0%{
+    transform: rotate(50deg);
+  }
+  50%{
+    transform: rotate(46deg);
+  }
+  100%{
+    transform: rotate(50deg);
+  }
+}
+.arm1{
+  animation: arm1 4s infinite;
+  z-index: 100;
+}
+@keyframes arm1{
+  0%{
+    transform: translateX(0);
+    rotate: -50deg;
+  }
+  10%{
+    transform: translateX(5px);
+  }
+  40%{
+    transform: translateX(-30px);
+  }
+  50%{
+    transform: translateX(-60px);
+    rotate: -80deg;
+  }
+  60%{
+    transform: translateX(-30px);
+  }
+  70%{
+    transform: translateX(-40px);
+  }
+  80%{
+    transform: translateX(-30px);
+  }
+
+  100%{
+    transform: translateX(0);
+    rotate: -50deg;
+  }
+}
