@@ -2,6 +2,7 @@ import { useAuth } from "@clerk/nextjs";
 import { useQuery } from "convex/react";
 import { api } from '../../../convex/_generated/api';
 import { useEffect, useState, useCallback } from "react";
+import DropdownCommentMenu from "../dropdowns/comment";
 
 export default function CommentBoxer({ taskId }: { taskId: string }) {
   const { userId } = useAuth();
@@ -41,17 +42,33 @@ export default function CommentBoxer({ taskId }: { taskId: string }) {
   }, [uniqueCommenterIds, fetchCommenterData, dataLoaded]);
 
   return (
-    <div className='flex flex-col gap-4 w-full dark:text-white text-black'>
-      <div className='flex flex-col gap-4 w-full'>
+    <div className='flex flex-col gap-4 border p-1 rounded-lg w-full dark:text-white text-black'>
+      <div className='flex flex-col gap-4 w-full overflow-y-auto max-h-[20rem]'>
         {filteredComments?.map((comment: any) => (
-          <div key={comment._id} className='border p-4 flex gap-4 w-full flex-col justify-center rounded-md hover:border-neutral-200 transition-all'>
-            <p className=''>{comment.CommenterMessage}</p>
-            <div className="flex gap-4 items-center">
+          <div key={comment._id} className='p-4 flex gap-4 w-full flex-col justify-center rounded-md hover:border-neutral-200 transition-all'>
+            <div className="flex gap-4 items-center justify-between">
               <div className="flex items-center gap-2">
                 <img src={commenterData[comment.userId]?.imageUrl} alt={commenterData[comment.userId]?.firstName} className='w-8 h-8 rounded-full' />
                 <p className='text-xs dark:text-neutral-200 text-neutral-900 font-semibold'>{commenterData[comment.userId]?.firstName} {commenterData[comment.userId]?.lastName}</p>
               </div>
+              <div className="flex gap-4">
               <p className="text-xs dark:text-neutral-500 text-neutral-500">{formatTime(comment._creationTime)}</p>
+              <DropdownCommentMenu commentid={comment._id} />
+              </div>
+            </div>
+            <p className=''>{comment.CommenterMessage}</p>
+            <div className="flex flex-row gap-3">
+              <div className="flex border justify-center items-center rounded-md p-1 gap-2">
+                <p>😀 1</p>
+              </div>
+              <div className="flex border justify-center items-center rounded-md p-1 gap-2">
+                <p>😎 1</p>
+              </div>
+            </div>
+            <div className="flex gap-5 relative">
+              <p className="text-sm dark:text-neutral-500 text-black">Reply</p>
+              
+              <p className="text-sm dark:text-neutral-500 text-black beforeitemcommentreact">React</p>
             </div>
           </div>
         ))}

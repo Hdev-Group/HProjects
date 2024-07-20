@@ -16,11 +16,11 @@ export default function NotFound() {
       <HeaderIndex />
       <div className='h-full pt-40 px-2 md:px-20 relative w-full flex-row md:flex-row'>
         <div className='flex flex-col md:flex-row w-full'>
-        <div className='w-full z-[100] relative md:w-[45%]  flex flex-col gap-10'>
+        <div className='w-full z-[100] relative md:w-[45%] mt-[4rem] flex flex-col gap-10'>
           <h1 className='font-bold text-5xl w-full boxtexts leading-snug'>{randomtext()}</h1>
           <p className='text-xl'>Get back to your projects.</p>
-          <a href='/dashboard' className='font-semibold text-white p-2 rounded-3xl w-1/6 text-center bg-black border'>Dashboard</a>
-          <p className='text-xs'>Nerd stuff: 404 - Unable to find page: {pathname}</p>
+          <a href='/dashboard' className='font-semibold text-white p-2 rounded-3xl w-full md:w-1/6 text-center bg-black border'>Dashboard</a>
+          <p className='text-xs'><b>Nerd stuff:</b> 404 - Unable to find page: <br></br> <b>{pathname}</b></p>
         </div>
         <div className='flex relative pt-[50rem]  items-center  justify-center w-full md:w-[50%] z-[-10]'>
           <div className='absolute left-[55rem] md:left-[60rem]'>

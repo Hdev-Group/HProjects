@@ -186,6 +186,20 @@
     font-weight: 600;
     font-size: 0.9rem;
   }
+  .beforeitemcommentreact::before{
+    content: '';
+    background-color: rgb(115 115 115);
+    color: rgb(115 115 115);
+    padding-left: 6px;
+    position: absolute;
+    left: 40px;
+    top: 9px;
+    height: 6px;
+    margin-right: 10px;
+    width: 5px;
+    border-radius: 50%;
+    font-size: 0.3rem;
+  }
   .planningdot{
     background-color: #800080;
     border-radius: 50%;

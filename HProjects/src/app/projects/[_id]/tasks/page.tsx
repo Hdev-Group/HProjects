@@ -87,7 +87,7 @@ export default function ProjectPage({ params }: { params: { _id: string } }) {
                   className='dark:bg-neutral-800 bg-white border  border-neutral-300 dark:border-neutral-700 w-full max-w-[15rem] rounded px-2 py-1'
                 />
               </div>
-              <div className="w-full items-center flex py-5 justify-start px-5 gap-1 flex-col rounded">
+              <div className="w-full items-center flex pb-[10rem] justify-start px-5 gap-1 flex-col rounded">
                 <MainHolder _id={_id} taskFilter={taskFilter} />
               </div>
             </div>
