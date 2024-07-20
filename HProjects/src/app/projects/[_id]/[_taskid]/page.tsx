@@ -193,7 +193,7 @@ export default function TaskFullView({ params }: { params: { _id: string, _taski
                 <DashboardHeaderProjects projectname={projectname} />
                 <div className="flex mt-[110px] h-full bg-bglightbars dark:bg-bgdarkbars">
                     <SideBar _id={params._id} activeSection={activeSection} />
-                    <div className="flex w-full p-5 pt-10 justify-center bg-bglight border dark:border-l-white dark:border-t-white border-t-black mt-0.5 dark:bg-bgdark rounded-l-3xl">
+                    <div className="flex w-full overflow-y-auto p-5 pt-10 justify-center bg-bglight border dark:border-l-white dark:border-t-white border-t-black mt-0.5 dark:bg-bgdark rounded-l-3xl">
                         <div className="w-full bg-bglight dark:bg-bgdark rounded-tl-3xl">
                             <div className='w-full flex pb-5 border border-transparent justify-center  border-b-neutral-700/40'>
                                 <div className='flex flex-col w-full gap-4 items-center '>
