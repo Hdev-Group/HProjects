@@ -1,18 +1,30 @@
 import { useAuth } from "@clerk/nextjs";
-import { useQuery } from "convex/react";
+import { useQuery, useMutation } from "convex/react";
 import { api } from '../../../convex/_generated/api';
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import DropdownCommentMenu from "../dropdowns/comment";
+import React from 'react';
+import { Reply } from "lucide-react";
 
 export default function CommentBoxer({ taskId }: { taskId: string }) {
   const { userId } = useAuth();
+  const useridentifier = userId;
   const comments = useQuery(api.getcomments.get);
   const filteredComments = comments?.filter((comment: any) => comment.taskId === taskId);
   const [commenterData, setCommenterData] = useState<{ [key: string]: { firstName: string, lastName: string, imageUrl: string } }>({});
   const [dataLoaded, setDataLoaded] = useState(false);
+  const [showReplyDropdown, setShowReplyDropdown] = useState<string | null>(null);
 
   const commenterIds = filteredComments?.map((comment: any) => comment?.userId) || [];
   const uniqueCommenterIds = Array.from(new Set(commenterIds));
+
+  const replydropdown = (id: any) => {
+    if (showReplyDropdown === id) {
+      setShowReplyDropdown(null);
+    } else {
+      setShowReplyDropdown(id);
+    }
+  };
 
   const fetchCommenterData = useCallback(async (ids: string[]) => {
     if (ids.length > 0) {
@@ -41,22 +53,96 @@ export default function CommentBoxer({ taskId }: { taskId: string }) {
     }
   }, [uniqueCommenterIds, fetchCommenterData, dataLoaded]);
 
+
+  const sendReplyMutation = useMutation(api.replysender.add);
+
+  const ReplyChecker = ({ commentdata, userId }: { commentdata: any, userId: string }) => {
+    const replys = useQuery(api.getreplys.get);
+    const filteredReplys = replys?.filter((reply: any) => reply.commentId === commentdata._id);
+  
+    return (
+      <div className="flex flex-col gap-4 relative ml-3 p-1 pl-5 w-full dark:text-white text-black">
+        <div className="flex flex-col gap-4 w-full overflow-y-auto replys">
+          {filteredReplys?.map((reply: any) => (
+            <div key={reply._id} className="flex flex-col gap-3 justify-center relative ">
+              <div className="flex flex-row items-center gap-3 ">
+                <img src={commenterData[reply.userId]?.imageUrl} alt={commenterData[reply.userId]?.firstName} className='w-8 h-8 z-10 rounded-full' />
+                <h2 className="font-semi-bold">{commenterData[reply.userId]?.firstName} {commenterData[reply.userId]?.lastName}</h2>
+              </div>
+              <p className="ml-11">{reply.CommenterMessage}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  };
+
+  const CommentReply = ({ userId, commentdata }: { userId: string, commentdata: any }) => {
+    const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+    async function SendReply(id: any) {
+      const textarea = textareaRef.current;
+      if (textarea) {
+        const reply = textarea.value;
+        if (reply) {
+          await sendReplyMutation({ commentId: commentdata._id, taskId: commentdata.taskId, userId: userId, CommenterMessage: reply });
+          console.log(reply);
+          console.log(userId);
+          console.log(id);
+          textarea.value = '';
+        }
+      }
+    }
+
+    const handleInput = () => {
+      const textarea = textareaRef.current;
+      if (textarea) {
+        textarea.style.height = 'auto';
+        textarea.style.height = `${textarea.scrollHeight}px`;
+      }
+    };
+
+    return (
+      <div className="w-1/2 flex items-center flex-col justify-center border dark:border-neutral-700 rounded-xl p">
+        <textarea
+          ref={textareaRef}
+          onInput={handleInput}
+          placeholder={`Reply to ${useridentifier === userId ? 'your' : `${commenterData[userId]?.firstName} ${commenterData[userId]?.lastName}'s`} comment.`}
+          className="w-full p-2 break-words h-auto bg-transparent text-wrap overflow-x-hidden resize-none"
+          style={{ overflow: 'hidden' }}
+        />
+        <div className="flex w-full justify-between items-center pr-5 rounded-b-xl overflow-hidden">
+          <button
+            className="text-blue-600 hover:text-blue-800 dark:hover:text-blue-200 transition-all dark:text-blue-400 font-semibold rounded-md p-2"
+            onClick={() => SendReply(commentdata._id)}
+          >
+            Reply
+          </button>
+          <div className="flex gap-4 ">
+            <p className="grayscale hover:grayscale-0 cursor-pointer transition-all">👍</p>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   return (
-    <div className='flex flex-col gap-4 border p-1 rounded-lg w-full dark:text-white text-black'>
-      <div className='flex flex-col gap-4 w-full overflow-y-auto max-h-[20rem]'>
+    <div className='flex flex-col gap-4 border p-1 rounded-t-lg w-full dark:text-white text-black'>
+      <div className='flex flex-col gap-4 w-full '>
         {filteredComments?.map((comment: any) => (
-          <div key={comment._id} className='p-4 flex gap-4 w-full flex-col justify-center rounded-md hover:border-neutral-200 transition-all'>
-            <div className="flex gap-4 items-center justify-between">
-              <div className="flex items-center gap-2">
-                <img src={commenterData[comment.userId]?.imageUrl} alt={commenterData[comment.userId]?.firstName} className='w-8 h-8 rounded-full' />
+          <div key={comment._id} className='p-4 flex gap-4  w-full flex-col justify-center rounded-md hover:border-neutral-200 transition-all'>
+            <div className="flex gap-4 items-center justify-between relative replygrabber">
+              <div className="flex items-center gap-2 relative ">
+                <img src={commenterData[comment.userId]?.imageUrl} alt={commenterData[comment.userId]?.firstName} className='w-8 h-8 rounded-full ' />
                 <p className='text-xs dark:text-neutral-200 text-neutral-900 font-semibold'>{commenterData[comment.userId]?.firstName} {commenterData[comment.userId]?.lastName}</p>
               </div>
               <div className="flex gap-4">
-              <p className="text-xs dark:text-neutral-500 text-neutral-500">{formatTime(comment._creationTime)}</p>
-              <DropdownCommentMenu commentid={comment._id} />
+                <p className="text-xs dark:text-neutral-500 text-neutral-500">{formatTime(comment._creationTime)}</p>
+                <DropdownCommentMenu commentid={comment._id} commentdata={comment} />
               </div>
             </div>
-            <p className=''>{comment.CommenterMessage}</p>
+            <div className="gap-3 flex flex-col ml-10">
+            <p>{comment.CommenterMessage}</p>
             <div className="flex flex-row gap-3">
               <div className="flex border justify-center items-center rounded-md p-1 gap-2">
                 <p>😀 1</p>
@@ -66,10 +152,32 @@ export default function CommentBoxer({ taskId }: { taskId: string }) {
               </div>
             </div>
             <div className="flex gap-5 relative">
-              <p className="text-sm dark:text-neutral-500 text-black">Reply</p>
-              
-              <p className="text-sm dark:text-neutral-500 text-black beforeitemcommentreact">React</p>
+              <button
+                id={comment._id}
+                onClick={() => replydropdown(comment._id)}
+                className={`text-sm dark:text-neutral-500 text-black dark:hover:text-white hover:text-black transition-all ${showReplyDropdown === comment._id ? 'dark:text-white text-black' : ''}`}
+              >
+                Reply
+              </button>
+
+              <button
+                id={comment._id}
+                className="text-sm dark:text-neutral-500 text-black dark:hover:text-white hover:text-black transition-all beforeitemcommentreact"
+              >
+                React
+              </button>
+              </div>
             </div>
+            {showReplyDropdown === comment._id && (
+              <div className="flex flex-row gap-3">
+                <div className="mt-1 beforetoperreply">
+                  <img src={commenterData[userId]?.imageUrl} alt={commenterData[userId]?.firstName} className='w-8 h-8 rounded-full' />
+                </div>
+                <CommentReply commentdata={comment} userId={comment.userId} />
+              </div>
+            )}
+            {/* checking for replys */}
+            <ReplyChecker commentdata={comment} userId={comment.userId} />
           </div>
         ))}
         {filteredComments?.length === 0 && (

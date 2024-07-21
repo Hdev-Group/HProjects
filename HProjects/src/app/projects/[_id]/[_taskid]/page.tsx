@@ -4,7 +4,6 @@ import { useRouter } from 'next/navigation';
 import { useQuery, useMutation } from "convex/react";
 import { useUser, useAuth } from "@clerk/nextjs";
 import { api } from '../../../../../convex/_generated/api';
-import Head from "next/head";
 import {
     Critical, High, Medium, Low, Security, Feature,
 } from '../../../../components/dropdowns/priorities/critical';
@@ -193,17 +192,26 @@ export default function TaskFullView({ params }: { params: { _id: string, _taski
                 <DashboardHeaderProjects projectname={projectname} />
                 <div className="flex mt-[110px] h-full bg-bglightbars dark:bg-bgdarkbars">
                     <SideBar _id={params._id} activeSection={activeSection} />
-                    <div className="flex w-full overflow-y-auto p-5 pt-10 justify-center bg-bglight border dark:border-l-white dark:border-t-white border-t-black mt-0.5 dark:bg-bgdark rounded-l-3xl">
+                    <div className="flex w-full overflow-y-auto md:p-5 p-2 pt-10 justify-center bg-bglight border dark:border-l-white dark:border-t-white border-t-black mt-0.5 dark:bg-bgdark rounded-l-3xl">
                         <div className="w-full bg-bglight dark:bg-bgdark rounded-tl-3xl">
                             <div className='w-full flex pb-5 border border-transparent justify-center  border-b-neutral-700/40'>
                                 <div className='flex flex-col w-full gap-4 items-center '>
-                                    <div className="flex w-10/12 pt-4 gap-4 flex-row justify-between">
+                                    <div className="flex w-full md:w-10/12 pt-4 gap-4 flex-col md:flex-row justify-between">
                                         <div className='w-max flex flex-col gap-5 '>
+                                        <div className='flex flex-row gap-3 mt-3 items-center h-8 w-50'>
+                                            <div className='flex justify-center items-center cursor-pointer hover:bg-neutral-500/60 bg-neutral-500/20 border hover:border-neutral-300 h-7 p-0.5 rounded-lg w-7 transition-all' onClick={edittask}>
+                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M15.7279 9.57627L14.3137 8.16206L5 17.4758V18.89H6.41421L15.7279 9.57627ZM17.1421 8.16206L18.5563 6.74785L17.1421 5.33363L15.7279 6.74785L17.1421 8.16206ZM7.24264 20.89H3V16.6473L16.435 3.21231C16.8256 2.82179 17.4587 2.82179 17.8492 3.21231L20.6777 6.04074C21.0682 6.43126 21.0682 7.06443 20.6777 7.45495L7.24264 20.89Z"></path></svg>
+                                            </div>
+                                            <div className='flex justify-center items-center cursor-pointer hover:bg-red-500/60 bg-red-500/80 border hover:border-neutral-300 h-7 p-0.5 rounded-lg w-7 transition-all' onClick={deletetasktrigger}>
+                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M17 6H22V8H20V21C20 21.5523 19.5523 22 19 22H5C4.44772 22 4 21.5523 4 21V8H2V6H7V3C7 2.44772 7.44772 2 8 2H16C16.5523 2 17 2.44772 17 3V6ZM18 8H6V20H18V8ZM9 4V6H15V4H9Z"></path></svg>
+                                            </div>
+                                        </div>
                                             <BreadcrumbWithCustomSeparator projectid={_id} />
                                             <div className='flex flex-col gap-2'>
                                                 <div className='flex flex-col'>
-                                                    <h1 className="font-bold text-3xl dark:text-white text-black">{taskName}</h1>
+                                                    <h1 className="font-bold text-3xl dark:text-white text-black text-wrap">{taskName}</h1>
                                                 </div>
+                                                
                                                 <div className='flex gap-3 mt-1 w-full sm:flex-row flex-col'>
                                                     {isEditing ? (
                                                         <>
@@ -236,17 +244,9 @@ export default function TaskFullView({ params }: { params: { _id: string, _taski
                                                 Declare Incident
                                             </button>
                                         </div>
-                                        <div className='flex flex-row gap-3 mt-3 items-center h-8 w-50'>
-                                            <div className='flex justify-center items-center cursor-pointer hover:bg-neutral-500/60 bg-neutral-500/20 border hover:border-neutral-300 h-7 p-0.5 rounded-lg w-7 transition-all' onClick={edittask}>
-                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M15.7279 9.57627L14.3137 8.16206L5 17.4758V18.89H6.41421L15.7279 9.57627ZM17.1421 8.16206L18.5563 6.74785L17.1421 5.33363L15.7279 6.74785L17.1421 8.16206ZM7.24264 20.89H3V16.6473L16.435 3.21231C16.8256 2.82179 17.4587 2.82179 17.8492 3.21231L20.6777 6.04074C21.0682 6.43126 21.0682 7.06443 20.6777 7.45495L7.24264 20.89Z"></path></svg>
-                                            </div>
-                                            <div className='flex justify-center items-center cursor-pointer hover:bg-red-500/60 bg-red-500/80 border hover:border-neutral-300 h-7 p-0.5 rounded-lg w-7 transition-all' onClick={deletetasktrigger}>
-                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M17 6H22V8H20V21C20 21.5523 19.5523 22 19 22H5C4.44772 22 4 21.5523 4 21V8H2V6H7V3C7 2.44772 7.44772 2 8 2H16C16.5523 2 17 2.44772 17 3V6ZM18 8H6V20H18V8ZM9 4V6H15V4H9Z"></path></svg>
-                                            </div>
-                                        </div>
                                     </div>
                                     <div className='w-full flex items-center justify-center pb-80'>
-                                        <div className='flex flex-col justify-start w-10/12 gap-2 mt-3'>
+                                        <div className='flex flex-col justify-start w-full md:w-10/12 gap-2 mt-3'>
                                             <div className='flex flex-col gap-3'>
                                                 <div className='flex flex-col gap-1'>
                                                     <p className='font-bold dark:text-white text-black'>Created:</p>
@@ -281,8 +281,8 @@ export default function TaskFullView({ params }: { params: { _id: string, _taski
                                             </div>
                                             <div className='flex flex-col gap-4 border border-transparent border-t-neutral-700/40 pt-3'>
                                                 <p className='text-3xl dark:text-white text-black'>Comments:</p>
-                                                <div className='w-full flex flex-col gap-10'>
-                                                    <div className="w-full flex flex-col gap-10 ">
+                                                <div className='w-full flex flex-col'>
+                                                    <div className="w-full flex flex-col">
                                                         <CommentBoxer taskId={taskid} />
                                                     </div>
                                                     <CommentBox taskId={taskid} _id={params._id} />
