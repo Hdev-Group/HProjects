@@ -77,15 +77,14 @@ export default function CommentBoxer({ taskId }: { taskId: string }) {
     );
   };
 
-  const CommentReply = ({ userId, commentdata }: { userId: string, commentdata: any }) => {
+  const CommentReply = ({commentdata }: { commentdata: any }) => {
     const textareaRef = useRef<HTMLTextAreaElement>(null);
-
     async function SendReply(id: any) {
       const textarea = textareaRef.current;
       if (textarea) {
         const reply = textarea.value;
         if (reply) {
-          await sendReplyMutation({ commentId: commentdata._id, taskId: commentdata.taskId, userId: userId, CommenterMessage: reply });
+          await sendReplyMutation({ commentId: commentdata._id, taskId: commentdata.taskId, userId: userId!, CommenterMessage: reply });
           console.log(reply);
           console.log(userId);
           console.log(id);
@@ -173,11 +172,11 @@ export default function CommentBoxer({ taskId }: { taskId: string }) {
                 <div className="mt-1 beforetoperreply">
                   <img src={commenterData[userId]?.imageUrl} alt={commenterData[userId]?.firstName} className='w-8 h-8 rounded-full' />
                 </div>
-                <CommentReply commentdata={comment} userId={comment.userId} />
+                <CommentReply commentdata={comment} />
               </div>
             )}
             {/* checking for replys */}
-            <ReplyChecker commentdata={comment} userId={comment.userId} />
+            <ReplyChecker commentdata={comment} />
           </div>
         ))}
         {filteredComments?.length === 0 && (
