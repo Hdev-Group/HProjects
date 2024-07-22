@@ -499,3 +499,17 @@
   z-index: 2;
   border-left: solid 1px #737373;
 }
+.emojiselector::before {
+  content: '';
+  position: absolute;
+  top: 40px;
+  rotate: 180deg;
+  left: 42%;
+  z-index: -10;
+  translate: -50%;
+  width: 0;
+  height: 5px;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-bottom: 10px solid #737373;
+}

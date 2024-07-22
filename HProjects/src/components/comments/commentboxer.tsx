@@ -4,7 +4,6 @@ import { api } from '../../../convex/_generated/api';
 import { useEffect, useState, useCallback, useRef } from "react";
 import DropdownCommentMenu from "../dropdowns/comment";
 import React from 'react';
-import { Reply } from "lucide-react";
 
 export default function CommentBoxer({ taskId }: { taskId: string }) {
   const { userId } = useAuth();
@@ -13,6 +12,7 @@ export default function CommentBoxer({ taskId }: { taskId: string }) {
   const filteredComments = comments?.filter((comment: any) => comment.taskId === taskId);
   const [commenterData, setCommenterData] = useState<{ [key: string]: { firstName: string, lastName: string, imageUrl: string } }>({});
   const [dataLoaded, setDataLoaded] = useState(false);
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const [showReplyDropdown, setShowReplyDropdown] = useState<string | null>(null);
 
   const commenterIds = filteredComments?.map((comment: any) => comment?.userId) || [];
@@ -53,7 +53,6 @@ export default function CommentBoxer({ taskId }: { taskId: string }) {
     }
   }, [uniqueCommenterIds, fetchCommenterData, dataLoaded]);
 
-
   const sendReplyMutation = useMutation(api.replysender.add);
 
   const ReplyChecker = ({ commentdata, userId }: { commentdata: any, userId: string }) => {
@@ -77,8 +76,10 @@ export default function CommentBoxer({ taskId }: { taskId: string }) {
     );
   };
 
-  const CommentReply = ({commentdata }: { commentdata: any }) => {
+  const CommentReply = ({ commentdata }: { commentdata: any }) => {
+
     const textareaRef = useRef<HTMLTextAreaElement>(null);
+
     async function SendReply(id: any) {
       const textarea = textareaRef.current;
       if (textarea) {
@@ -106,6 +107,7 @@ export default function CommentBoxer({ taskId }: { taskId: string }) {
         <textarea
           ref={textareaRef}
           onInput={handleInput}
+          id="textreplyarea"
           placeholder={`Reply to ${useridentifier === userId ? 'your' : `${commenterData[userId]?.firstName} ${commenterData[userId]?.lastName}'s`} comment.`}
           className="w-full p-2 break-words h-auto bg-transparent text-wrap overflow-x-hidden resize-none"
           style={{ overflow: 'hidden' }}
@@ -118,18 +120,39 @@ export default function CommentBoxer({ taskId }: { taskId: string }) {
             Reply
           </button>
           <div className="flex gap-4 ">
-            <p className="grayscale hover:grayscale-0 cursor-pointer transition-all">👍</p>
+            <p className="grayscale hover:grayscale-0 cursor-pointer transition-all">
+              👍
+            </p>
           </div>
         </div>
       </div>
     );
   };
 
+  const emojipopup = () => {
+    console.log('emoji');
+    setShowEmojiPicker(!showEmojiPicker);
+  };
+
+  const EmojiPicker = () => {
+    return (
+      <div className="flex flex-col gap-4 absolute bottom-6 z-2 left-0 p-2 bg-neutral-700 dark:bg-neutral-800 rounded-md emojiselector shadow-lg z-50">
+        <div className="flex flex-row gap-3">
+          <p>👍</p>
+          <p>👎</p>
+          <p>👌</p>
+          <p>👏</p>
+          <p>😎</p>
+        </div>
+      </div>
+    );
+  };
+
   return (
-    <div className='flex flex-col gap-4 border p-1 rounded-t-lg w-full dark:text-white text-black'>
+    <div className='flex flex-col gap-4 border p-1 rounded-t-lg w-full dark:text-white text-black  '>
       <div className='flex flex-col gap-4 w-full '>
         {filteredComments?.map((comment: any) => (
-          <div key={comment._id} className='p-4 flex gap-4  w-full flex-col justify-center rounded-md hover:border-neutral-200 transition-all'>
+          <div key={comment._id} className='p-4 flex gap-4 bg-neutral-800/10 w-full flex-col justify-center rounded-md hover:border-neutral-200 transition-all'>
             <div className="flex gap-4 items-center justify-between relative replygrabber">
               <div className="flex items-center gap-2 relative ">
                 <img src={commenterData[comment.userId]?.imageUrl} alt={commenterData[comment.userId]?.firstName} className='w-8 h-8 rounded-full ' />
@@ -158,10 +181,11 @@ export default function CommentBoxer({ taskId }: { taskId: string }) {
               >
                 Reply
               </button>
-
+              {showEmojiPicker && <EmojiPicker />}
               <button
                 id={comment._id}
-                className="text-sm dark:text-neutral-500 text-black dark:hover:text-white hover:text-black transition-all beforeitemcommentreact"
+                onClick={emojipopup}
+                className="text-sm dark:text-neutral-500  text-black dark:hover:text-white hover:text-black transition-all beforeitemcommentreact"
               >
                 React
               </button>
