@@ -7,10 +7,33 @@ function DeleteTask({ taskname, _taskid, onClose }) {
     const [showDeleteModal, setShowDeleteModal] = useState(true);
     function closeDeleteModal() {
         setShowDeleteModal(false);
+        onClose();
     }
+    useEffect(() => {
+        const outerclickclose = document.getElementById('outerclickclose');
+        const innercloser = document.getElementById('innercloser');
+        const handleClickOutside = (e) => {
+          if (e.target.id === 'outerclickclose') {
+            innercloser.classList.add('slide-out-right');
+            setTimeout(() => {
+              onClose();
+            }, 500);
+          }
+        };
+    
+        if (outerclickclose) {
+          outerclickclose.addEventListener('click', handleClickOutside);
+        }
+    
+        return () => {
+          if (outerclickclose) {
+            outerclickclose.removeEventListener('click', handleClickOutside);
+          }
+        };
+      }, [onClose]);
     const handleDeleteTask = async () => {
         try {
-            await deleteTaskMutation({ taskid: _taskid });
+            await deleteTaskMutation({ id: _taskid });
             onClose();
         } catch (error) {
             console.error(`Failed to delete task with ID ${_taskid}:`, error);
@@ -18,8 +41,8 @@ function DeleteTask({ taskname, _taskid, onClose }) {
     }
 
     return (
-        <div className="fixed inset-0 z-50 bg-black bg-opacity-50 flex items-center justify-center">
-            <div className="bg-[#09090B] border-neutral-900 border w-1/3 h-1/5 rounded-lg flex flex-col">
+        <div className="fixed inset-0 z-50 bg-black bg-opacity-50 flex items-center justify-center" id='outerclickclose'>
+            <div className="bg-[#09090B] border-neutral-900 border w-1/3 h-1/5 rounded-lg flex flex-col" id='innercloser'>
                 <div className="p-4 flex justify-between flex-col h-full w-full">
                     <div>
                         <h2 className="text-2xl font-bold">Delete Task - {taskname}</h2>
@@ -29,12 +52,12 @@ function DeleteTask({ taskname, _taskid, onClose }) {
                     </div>
                     <div className="flex gap-4 mt-4">
                         <button
-                            className={`bg-red-600 text-white px-4 py-2 rounded-lg`}
+                            className={`bg-red-600 text-white hover:bg-red-500 transition-all px-4 py-2 rounded-lg`}
                             onClick={handleDeleteTask}
                         >
                             Delete
                         </button>
-                        <button className="bg-neutral-500 text-white px-4 py-2 rounded-lg" onClick={closeDeleteModal}>Cancel</button>
+                        <button className="bg-neutral-500 hover:bg-neutral-700 transition-all text-white px-4 py-2 rounded-lg" onClick={closeDeleteModal}>Cancel</button>
                     </div>
                 </div>
             </div>

@@ -36,7 +36,7 @@ function SideBar({ activeSection, _id }: SideBarProps) {
               </Link>
             </li>
             <IncidentDeclaration _id={_id} activeSection={activeSection} />
-            <li key="changelog" className={getItemClass("Changelog")}>
+            <li key="changelog" className={getItemClass("changelog")}>
               <Link href={`/projects/${encodeURIComponent(_id)}/changelog`}>
                 Changelog
               </Link>

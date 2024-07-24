@@ -57,7 +57,6 @@ export default function IncidentsPage({ params }: { params: { _id: string } }) {
   }
 
   const title = projectname + ' | Incidents';
-  console.log('projectname', projectname);
 
   return (
     <>

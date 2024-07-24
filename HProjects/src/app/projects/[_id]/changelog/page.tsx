@@ -1,7 +1,7 @@
 "use client";
 import { useAuth } from "@clerk/nextjs";
 import { useUser } from "@clerk/clerk-react";
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import { useQuery } from "convex/react";
 import DashboardHeaderProjects from "../../../../components/header/dashboardprojects";
 import { api } from '../../../../../convex/_generated/api';
@@ -11,7 +11,7 @@ import SideBar from "../../../../components/projectscontents/sidebar";
 import AddTaskButton from "../../../../components/buttons/addtask";
 import MainHolder from "../../../../components/tasks/dragndrop";
 
-export default function ProjectPage({ params }: { params: { _id: string } }) {
+export default function IncidentsPage({ params }: { params: { _id: string } }) {
   const { userId, isLoaded, isSignedIn } = useAuth();
   const { user } = useUser();
   const projectsholder = useQuery(api.projectsget.get);
@@ -22,11 +22,11 @@ export default function ProjectPage({ params }: { params: { _id: string } }) {
   const _id = params._id;
 
   const [taskFilter, setTaskFilter] = useState('');
-  const [activeSection, setActiveSection] = useState("Tasks");
+  const [activeSection, setActiveSection] = useState("changelog");
 
   useEffect(() => {
-    if (document.getElementById('tasksproject')) {
-      setActiveSection('Tasks');
+    if (document.getElementById('changelog')) {
+      setActiveSection('changelog');
     }
   }, []);
 
@@ -36,8 +36,6 @@ export default function ProjectPage({ params }: { params: { _id: string } }) {
     if (!isSignedIn) {
       router.push('/sign-in');
     } else if (!project) {
-      router.push('/projects');
-    } else if (projectUserId !== userId && !project.otherusers.includes(userId)) {
       router.push('/projects');
     }
   }, [isLoaded, isSignedIn, projectsholder, project, projectUserId, userId, router]);
@@ -58,7 +56,7 @@ export default function ProjectPage({ params }: { params: { _id: string } }) {
     return <div>Unauthorized</div>;
   }
 
-  const title = projectname + ' | Tasks';
+  const title = projectname + ' | Changelog';
 
   return (
     <>
@@ -67,32 +65,19 @@ export default function ProjectPage({ params }: { params: { _id: string } }) {
         <meta name="description" content="Plan, Build and Push with confidence" />
         <meta name="keywords" content="HProjects, Projects, Build, Plan, Push" />
       </head>
-      <div className="h-screen bg-bglight overflow-hidden dark:bg-bgdark " id="modal-root">
+      <div className="h-screen overflow-hidden  bg-bglight dark:bg-bgdark " id="modal-root">
         <DashboardHeaderProjects projectname={projectname} activeSection={activeSection} />
         <div className="flex mt-[110px] h-full bg-bglightbars dark:bg-bgdarkbars">
           <SideBar _id={params._id} activeSection={activeSection} />
-          <div className="flex w-full justify-center  bg-bglight border dark:border-l-white dark:border-t-white border-t-black mt-0.5 dark:bg-bgdark rounded-l-3xl">
-            <div className="max-w-10/12 w-[100%] overflow-y-auto p-5 flex flex-col items-center">
+          <div className="flex w-full h-full overflow-y-auto justify-center bg-bglight border dark:border-l-white dark:border-t-white border-t-black mt-0.5 dark:bg-bgdark rounded-l-3xl">
+            <div className="max-w-10/12 w-[100%] p-5 flex flex-col items-center overflow-y-auto">
               <div className="flex-row w-full px-5 justify-between mb-5 mt-5 flex">
-                <h1 className="flex text-2xl font-bold text-black dark:text-white" id="tasksproject">Tasks</h1>
+                <h1 className="flex text-2xl font-bold text-black dark:text-white" id="changelog">Changelog</h1>
               </div>
-              <div className="flex flex-row justify-between w-full p-5">
-                <AddTaskButton id={params._id} />
-                <input
-                  type='text'
-                  placeholder='Filter by tasks'
-                  value={taskFilter}
-                  onChange={(e) => setTaskFilter(e.target.value)}
-                  className='dark:bg-neutral-800 bg-white border  border-neutral-300 dark:border-neutral-700 w-full max-w-[15rem] rounded px-2 py-1'
-                />
-              </div>
-              <div className="w-full items-center flex pb-[10rem] justify-start px-5 gap-1 flex-col rounded">
-                <MainHolder _id={_id} taskFilter={taskFilter} />
               </div>
             </div>
-          </div>
         </div>
-      </div>
+    </div>
     </>
-  );
+    );
 }
