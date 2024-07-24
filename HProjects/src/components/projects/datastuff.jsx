@@ -23,7 +23,7 @@ function ProjectsDataAdder() {
   const countTasks = (projectId) => {
     const projectTasks = tasksholder?.filter(task => task.projectid === projectId) || [];
     const totalTasks = projectTasks.length;
-    const incompleteTasks = projectTasks.filter(task => task.status !== 'done').length;
+    const incompleteTasks = projectTasks.filter(task => task.taskStatus !== 'done').length;
     return `${incompleteTasks}/${totalTasks}`;
   };
 

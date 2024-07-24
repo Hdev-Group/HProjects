@@ -188,13 +188,14 @@ export default function TaskFullView({ params }: { params: { _id: string, _taski
                 <meta name="description" content="Plan, Build and Push with confidence" />
                 <meta name="keywords" content="HProjects, Projects, Build, Plan, Push" />
             </head>
-            <div className="overflow-hidden h-screen" id="modal-root">
-                <DashboardHeaderProjects projectname={projectname} />
+            <div id="modal-root" className="w-full h-full">
+            <div className="h-screen bg-bglight overflow-hidden dark:bg-bgdark">
+                <DashboardHeaderProjects projectname={projectname} activeSection={activeSection} />
                 <div className="flex mt-[110px] h-full bg-bglightbars dark:bg-bgdarkbars">
-                    <SideBar _id={params._id} activeSection={activeSection} />
-                    <div className="flex w-full overflow-y-auto md:p-5 p-2 pt-10 justify-center bg-bglight border dark:border-l-white dark:border-t-white border-t-black mt-0.5 dark:bg-bgdark rounded-l-3xl">
-                        <div className="w-full bg-bglight dark:bg-bgdark rounded-tl-3xl">
-                            <div className='w-full flex pb-5 border border-transparent justify-center  border-b-neutral-700/40'>
+                <SideBar _id={params._id} activeSection={activeSection} />
+                <div className="flex w-full justify-center  bg-bglight border dark:border-l-white dark:border-t-white border-t-black mt-0.5 dark:bg-bgdark rounded-l-3xl">
+                    <div className="max-w-10/12 w-[100%] overflow-y-auto p-5 flex flex-col items-center">
+                    <div className="flex-row w-full px-5 justify-between mb-5 mt-5 flex">
                                 <div className='flex flex-col w-full gap-4 items-center '>
                                     <div className="flex w-full md:w-10/12 pt-4 gap-4 flex-col md:flex-row justify-between">
                                         <div className='w-max flex flex-col gap-5 '>
@@ -240,9 +241,6 @@ export default function TaskFullView({ params }: { params: { _id: string, _taski
                                                     )}
                                                 </div>
                                             </div>
-                                            <button className="rounded-xl h-full py-1 w-full bg-red-500/20 hover:bg-red-800 transition-all font-semibold">
-                                                Declare Incident
-                                            </button>
                                         </div>
                                     </div>
                                     <div className='w-full flex items-center justify-center pb-80'>
@@ -298,6 +296,7 @@ export default function TaskFullView({ params }: { params: { _id: string, _taski
                 </div>
             </div>
             {showDeleteModal && <DeleteTask onClose={closeDeleteModal} _taskid={taskid} taskname={taskName}/>}
+            </div>
         </>
     );
 }
