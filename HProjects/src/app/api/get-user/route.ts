@@ -18,7 +18,6 @@ export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const userId = searchParams.get("userId");
 
-
   if (!userId) {
     console.log("Invalid userId");
     return NextResponse.json({ error: "Invalid userId" }, { status: 400 });
@@ -28,7 +27,8 @@ export async function GET(request: Request) {
   if (cache.has(userId)) {
     console.log("User data found in cache");
     const cachedUser = cache.get(userId);
-    return NextResponse.json(cachedUser.data); // Return cached data
+    const { firstName, lastName, id, imageUrl } = cachedUser.data;
+    return NextResponse.json({ firstName, lastName, id, imageUrl }); // Return selected data
   }
 
   try {
@@ -38,7 +38,8 @@ export async function GET(request: Request) {
     // Store user data in cache
     cache.set(userId, { userId, data: user });
 
-    return NextResponse.json(user);
+    const { firstName, lastName, id, imageUrl } = user;
+    return NextResponse.json({ firstName, lastName, id, imageUrl });
   } catch (error) {
     console.error("Error fetching user data:", error);
     return NextResponse.json({ error: "Error fetching user data" }, { status: 500 });
