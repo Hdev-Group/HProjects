@@ -72,8 +72,9 @@ export default function Pager({ params }: { params: { _id: string, slug: string[
                     <div className="flex w-full p-5 pt-10 justify-center bg-bglight border dark:border-l-white dark:border-t-white border-t-black mt-0.5 dark:bg-bgdark rounded-l-3xl">
                         <div className="w-full bg-bglight dark:bg-bgdark rounded-l-3xl">
                             <div className='px-4 flex flex-col'>
-                                <div className='flex flex-row justify-between mb-5'>
+                                <div className='flex flex-col gap-4 justify-between mb-3'>
                                     <h1 className='flex text-2xl font-bold text-black dark:text-white'>Pager</h1>
+                                    <div className='w-full h-[1px] gradientedline'></div>
                                 </div>
                                 <div className='w-full h-full'>
                                     <div className='items-center flex justify-center mt-10 h-full gap-4'>

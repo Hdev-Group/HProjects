@@ -91,6 +91,7 @@ export default function ProjectPage({ params }: { params: { _id: string } }) {
             <div className="max-w-10/12 w-[100%] p-5 flex flex-col items-center overflow-y-auto">
               <div className="w-full px-5 flex-col justify-between mb-5 mt-5 flex">
               <h1 className="flex text-2xl font-bold mb-3 " id="dashboardprojects">Dashboard</h1>
+              <div className='w-full h-[1px] mb-4 gradientedline'></div>
               <div className="w-full flex flex-col py-5 px-5 gap-3 dark:border-neutral-800 border-neutral-300 bg-neutral-800/30 dark:bg-neutral-900/50 border rounded">
                 <h2 className="text-lg font-semibold ">Hello {user?.firstName}! Your work queue.</h2>
                 <div className="overflow-y-auto w-full">

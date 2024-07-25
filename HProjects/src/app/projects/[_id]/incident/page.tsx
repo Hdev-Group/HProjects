@@ -71,8 +71,9 @@ export default function IncidentsPage({ params }: { params: { _id: string } }) {
           <SideBar _id={params._id} activeSection={activeSection} />
           <div className="flex w-full h-full overflow-y-auto justify-center bg-bglight border dark:border-l-white dark:border-t-white border-t-black mt-0.5 dark:bg-bgdark rounded-l-3xl">
             <div className="max-w-10/12 w-[100%] p-5 flex flex-col items-center overflow-y-auto">
-              <div className="flex-row w-full px-5 justify-between mb-5 mt-5 flex">
+              <div className="flex-col w-full gap-4 px-5 justify-between mb-5 mt-5 flex">
                 <h1 className="flex text-2xl font-bold text-black dark:text-white" id="Incidentsproject">Incidents</h1>
+                <div className='w-full h-[1px] gradientedline'></div>
               </div>
               </div>
             </div>

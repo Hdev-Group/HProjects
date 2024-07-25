@@ -52,12 +52,12 @@ function DeleteTask({ taskname, _taskid, onClose }) {
                     </div>
                     <div className="flex gap-4 mt-4">
                         <button
-                            className={`bg-red-600 text-white hover:bg-red-500 transition-all px-4 py-2 rounded-lg`}
+                            className={`bg-yellow-600/20 text-white hover:bg-yellow-600 transition-all px-4 py-2 rounded-lg`}
                             onClick={handleDeleteTask}
                         >
-                            Delete
+                            Archive
                         </button>
-                        <button className="bg-neutral-500 hover:bg-neutral-700 transition-all text-white px-4 py-2 rounded-lg" onClick={closeDeleteModal}>Cancel</button>
+                        <button className="bg-neutral-900/20 hover:bg-neutral-900 transition-all text-white px-4 py-2 rounded-lg" onClick={closeDeleteModal}>Cancel</button>
                     </div>
                 </div>
             </div>
