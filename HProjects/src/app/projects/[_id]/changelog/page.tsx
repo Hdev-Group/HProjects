@@ -10,6 +10,7 @@ import { useRouter } from 'next/navigation';
 import SideBar from "../../../../components/projectscontents/sidebar";
 import AddTaskButton from "../../../../components/buttons/addtask";
 import MainHolder from "../../../../components/tasks/dragndrop";
+import { each } from "jquery";
 
 export default function IncidentsPage({ params }: { params: { _id: string } }) {
   const { userId, isLoaded, isSignedIn } = useAuth();
@@ -18,10 +19,9 @@ export default function IncidentsPage({ params }: { params: { _id: string } }) {
   const project = projectsholder?.find(project => project._id === params._id);
   const projectname = project?.projectName;
   const projectUserId = project?.userId;
+  const tasksholder = useQuery(api.tasksget.get);
   const router = useRouter();
   const _id = params._id;
-
-  const [taskFilter, setTaskFilter] = useState('');
   const [activeSection, setActiveSection] = useState("changelog");
 
   useEffect(() => {
@@ -58,6 +58,9 @@ export default function IncidentsPage({ params }: { params: { _id: string } }) {
 
   const title = projectname + ' | Changelog';
 
+  const taskFilterThisWeek = tasksholder?.filter(task => task.projectid === _id && task.taskStatus === "done" && new Date(task.lastupdated).getTime() > new Date().getTime() - 7 * 24 * 60 * 60 * 1000)?.length ?? 0;
+  const pluralcheck = taskFilterThisWeek === 1 ? 'task' : 'tasks';
+
   return (
     <>
       <head>
@@ -75,8 +78,8 @@ export default function IncidentsPage({ params }: { params: { _id: string } }) {
                 <h1 className="flex text-2xl font-bold text-black dark:text-white" id="changelog">Changelog</h1>
                 <div className='w-full h-[1px] gradientedline'></div>
                 <div>
-                    <div className="w-full flex flex-col py-5 px-5 gap-3 dark:border-neutral-800 border-neutral-300 bg-neutral-800/30 dark:bg-neutral-900/50 border rounded">
-                        <h1>This week, 10 Changes logged</h1>
+                    <div className="w-full flex flex-col py-5 px-5 gap-3 dark:border-neutral-800 border-neutral-300 bg-neutral-800/30 dark:bg-green-500/50 border rounded">
+                        <h1>This week, {taskFilterThisWeek} {pluralcheck} have been completed</h1>
                     </div>
                 </div>
               </div>

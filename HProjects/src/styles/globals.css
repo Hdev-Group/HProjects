@@ -515,5 +515,6 @@
 }
 .gradientedline{
   background-image: linear-gradient(to right, #737373 1%, transparent 85%);
+  height: 2px;
   border-radius: 50%;
 }

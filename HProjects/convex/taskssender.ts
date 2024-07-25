@@ -20,6 +20,7 @@ export const add = mutation({
       taskPriority,
       taskStatus,
       taskAssignee,
+      lastupdated: new Date().toISOString(),
     };
 
     await ctx.db.insert("tasks", task);
