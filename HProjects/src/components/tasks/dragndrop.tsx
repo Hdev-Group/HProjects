@@ -104,10 +104,12 @@ export default function MainHolder({ _id, taskFilter }) {
 
     const onDrop = async (event: React.DragEvent<HTMLDivElement>, status: string) => {
         event.preventDefault();
+        const currenttime = new Date().toISOString();
         if (draggingTask) {
             await editTaskMutation({
-                taskId: draggingTask,
+                _id: draggingTask,
                 taskStatus: status,
+                lastupdated: currenttime,
             });
             setDraggingTask(null);
             setDragOverStatus(null);

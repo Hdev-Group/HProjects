@@ -5,30 +5,68 @@ import React, { useEffect, useState } from "react";
 import { useQuery } from "convex/react";
 import DashboardHeaderProjects from "../../../../components/header/dashboardprojects";
 import { api } from '../../../../../convex/_generated/api';
-import Head from "next/head";
 import { useRouter } from 'next/navigation';
 import SideBar from "../../../../components/projectscontents/sidebar";
-import AddTaskButton from "../../../../components/buttons/addtask";
-import MainHolder from "../../../../components/tasks/dragndrop";
-import { each } from "jquery";
 
-export default function IncidentsPage({ params }: { params: { _id: string } }) {
+export default function ChangelogPage({ params }: { params: { _id: string } }) {
   const { userId, isLoaded, isSignedIn } = useAuth();
   const { user } = useUser();
   const projectsholder = useQuery(api.projectsget.get);
   const project = projectsholder?.find(project => project._id === params._id);
   const projectname = project?.projectName;
+  const [ownerData, setOwnerData] = useState<{ id: string, firstName: string, lastName: string, imageUrl: string } | null>(null);
   const projectUserId = project?.userId;
   const tasksholder = useQuery(api.tasksget.get);
   const router = useRouter();
   const _id = params._id;
   const [activeSection, setActiveSection] = useState("changelog");
+  const [taskAssignee, setTaskAssignee] = useState<string | null>(null);
+  const [taskAssigneeCount, setTaskAssigneeCount] = useState(0);
 
   useEffect(() => {
     if (document.getElementById('changelog')) {
       setActiveSection('changelog');
     }
   }, []);
+
+  useEffect(() => {
+    async function fetchProjectOwnerData(assignee: string | null) {
+      if (assignee) {
+        try {
+          const response = await fetch(`/api/get-user?userId=${assignee}`);
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          const data = await response.json();
+          setOwnerData({ id: assignee, ...data });
+        } catch (error) {
+          console.error('Error fetching assignee data:', error);
+          setOwnerData(null);
+        }
+      }
+    }
+  
+    let currentTaskAssignee: string | null = null;
+    let currentTaskAssigneeCount = 0;
+
+    tasksholder?.filter((task: any) => task.projectid === _id && task.taskStatus === "done" && new Date(task.lastupdated).getTime() > new Date().getTime() - 7 * 24 * 60 * 60 * 1000).forEach((task: any) => {
+      if (currentTaskAssignee === null) {
+        currentTaskAssignee = task.taskAssignee;
+        currentTaskAssigneeCount = 1;
+      } else if (currentTaskAssignee === task.taskAssignee) {
+        currentTaskAssigneeCount += 1;
+      } else {
+        if (currentTaskAssigneeCount < 1) {
+          currentTaskAssignee = task.taskAssignee;
+          currentTaskAssigneeCount = 1;
+        }
+      }
+    });
+
+    setTaskAssignee(currentTaskAssignee);
+    setTaskAssigneeCount(currentTaskAssigneeCount);
+    fetchProjectOwnerData(currentTaskAssignee);
+  }, [tasksholder, _id]);
 
   useEffect(() => {
     if (!isLoaded || !projectsholder) return;
@@ -60,6 +98,11 @@ export default function IncidentsPage({ params }: { params: { _id: string } }) {
 
   const taskFilterThisWeek = tasksholder?.filter(task => task.projectid === _id && task.taskStatus === "done" && new Date(task.lastupdated).getTime() > new Date().getTime() - 7 * 24 * 60 * 60 * 1000)?.length ?? 0;
   const pluralcheck = taskFilterThisWeek === 1 ? 'task' : 'tasks';
+  const taskschecker = taskFilterThisWeek === 0 ? 'No tasks have been completed.' : `${taskFilterThisWeek} ${pluralcheck} has been completed.`;
+  let performance: string | null = null;
+  if (ownerData && taskAssigneeCount > 0) {
+    performance = `${ownerData.firstName} has completed the most tasks with ${taskAssigneeCount} total tasks`;
+  }
 
   return (
     <>
@@ -78,15 +121,24 @@ export default function IncidentsPage({ params }: { params: { _id: string } }) {
                 <h1 className="flex text-2xl font-bold text-black dark:text-white" id="changelog">Changelog</h1>
                 <div className='w-full h-[1px] gradientedline'></div>
                 <div>
-                    <div className="w-full flex flex-col py-5 px-5 gap-3 dark:border-neutral-800 border-neutral-300 bg-neutral-800/30 dark:bg-green-500/50 border rounded">
-                        <h1>This week, {taskFilterThisWeek} {pluralcheck} have been completed</h1>
+                  <div className={`w-full flex flex-col py-5 px-5 gap-3 dark:border-neutral-800 border-neutral-300  ${taskFilterThisWeek === 0 ? 'dark:bg-red-600 bg-red-600/20' : 'dark:bg-green-500/50 bg-green-600/20' } border rounded`}>
+                    <h1>This week, {taskschecker} {performance}</h1>
+                  </div>
+                </div>
+                <div className="mt-5 w-full">
+                  <div className="pb-2 w-full border border-transparent border-b-neutral-300/30 rounded-sm">
+                    <h2 className="font-semibold text-xl mb-3">22nd to 28th July</h2>
+                    <div className="gradientedline"></div>
+                    <div className="mt-2 mb-1">
+                      We tracked no changes this week
                     </div>
+                  </div>
                 </div>
               </div>
-              </div>
             </div>
+          </div>
         </div>
-    </div>
+      </div>
     </>
-    );
+  );
 }
