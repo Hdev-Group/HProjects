@@ -81,6 +81,7 @@ export default function MainHolder({ _id, taskFilter }) {
     const editTaskMutation = useMutation(api.draganddrop.editTask);
     const [draggingTask, setDraggingTask] = useState<string | null>(null);
     const [dragOverStatus, setDragOverStatus] = useState<string | null>(null);
+    const [dragOverPosition, setDragOverPosition] = useState<number | null>(null);
 
     if (!tasks) {
         return null;
@@ -95,11 +96,13 @@ export default function MainHolder({ _id, taskFilter }) {
     const onDragEnd = () => {
         setDraggingTask(null);
         setDragOverStatus(null);
+        setDragOverPosition(null);
     };
 
-    const onDragOver = (event: React.DragEvent<HTMLDivElement>, status: string) => {
+    const onDragOver = (event: React.DragEvent<HTMLDivElement>, status: string, position: number) => {
         event.preventDefault();
         setDragOverStatus(status);
+        setDragOverPosition(position);
     };
 
     const onDrop = async (event: React.DragEvent<HTMLDivElement>, status: string) => {
@@ -113,31 +116,39 @@ export default function MainHolder({ _id, taskFilter }) {
             });
             setDraggingTask(null);
             setDragOverStatus(null);
+            setDragOverPosition(null);
         }
     };
 
     const renderTasksByStatus = (status: string) => (
-        projectTasks.filter(task => task.taskStatus === status).map(task => (
-            <CardFrame 
+        projectTasks.filter(task => task.taskStatus === status).map((task, index) => (
+            <div
                 key={task._id}
-                taskId={task._id}
-                taskName={task.taskTitle}
-                taskPriority={task.taskPriority}
-                taskStatus={task.taskStatus}
-                taskAssignee={task.taskAssignee}
-                taskDescription={task.taskDescription}
-                onDragStart={onDragStart}
-                onDragEnd={onDragEnd}
-                onDragOver={onDragOver}
-                onDrop={onDrop}
-            />
+                onDragOver={(e) => onDragOver(e, status, index)}
+            >
+                {dragOverStatus === status && dragOverPosition === index && (
+                    <div className="h-1 bg-green-500"></div>
+                )}
+                <CardFrame 
+                    taskId={task._id}
+                    taskName={task.taskTitle}
+                    taskPriority={task.taskPriority}
+                    taskStatus={task.taskStatus}
+                    taskAssignee={task.taskAssignee}
+                    taskDescription={task.taskDescription}
+                    onDragStart={onDragStart}
+                    onDragEnd={onDragEnd}
+                    onDragOver={onDragOver}
+                    onDrop={onDrop}
+                />
+            </div>
         ))
     );
 
     const renderDropZone = (status: string) => (
         <div 
             className={`flex flex-col border px-2 pb-4 rounded-md border-neutral-600 w-full lg:w-1/4 ${dragOverStatus === status ? 'border-green-500' : ''}`}
-            onDragOver={(e) => onDragOver(e, status)}
+            onDragOver={(e) => onDragOver(e, status, projectTasks.filter(task => task.taskStatus === status).length)}
             onDrop={(e) => onDrop(e, status)}
         >
             <div className="mt-2 flex items-center gap-2 mb-4 pb-2">
@@ -146,6 +157,9 @@ export default function MainHolder({ _id, taskFilter }) {
             </div>
             <div className='flex flex-col gap-2'>
                 {renderTasksByStatus(status)}
+                {dragOverStatus === status && dragOverPosition === projectTasks.filter(task => task.taskStatus === status).length && (
+                    <div className="h-1 bg-green-500"></div>
+                )}
             </div>
         </div>
     );

@@ -116,7 +116,7 @@ export default function ChangelogPage({ params }: { params: { _id: string } }) {
         <div className="flex mt-[110px] h-full bg-bglightbars dark:bg-bgdarkbars">
           <SideBar _id={params._id} activeSection={activeSection} />
           <div className="flex w-full h-full overflow-y-auto justify-center bg-bglight border dark:border-l-white dark:border-t-white border-t-black mt-0.5 dark:bg-bgdark rounded-l-3xl">
-            <div className="max-w-10/12 w-[100%] p-5 flex flex-col items-center overflow-y-auto">
+            <div className="max-w-10/12 w-[100%] md:p-5 flex flex-col items-center overflow-y-auto">
               <div className="flex-col w-full px-5 gap-4 justify-between mb-5 mt-5 flex">
                 <h1 className="flex text-2xl font-bold text-black dark:text-white" id="changelog">Changelog</h1>
                 <div className='w-full h-[1px] gradientedline'></div>
@@ -125,9 +125,19 @@ export default function ChangelogPage({ params }: { params: { _id: string } }) {
                     <h1>This week, {taskschecker} {performance}</h1>
                   </div>
                 </div>
-                <div className="mt-5 w-full">
-                  <div className="pb-2 w-full border border-transparent border-b-neutral-300/30 rounded-sm">
+                <div className="mt-1 w-full flex flex-col gap-3">
+                  <div className="pb-2 w-full bg-neutral-900 p-2 rounded-sm">
                     <h2 className="font-semibold text-xl mb-3">22nd to 28th July</h2>
+                    <div className="gradientedline"></div>
+                    <div className="mt-2 mb-1">
+                      We tracked <code>1</code> task change this week.
+                    </div>
+                    <div>
+
+                    </div>
+                  </div>
+                  <div className="pb-2 w-full bg-neutral-900 p-2  rounded-sm">
+                    <h2 className="font-semibold text-xl mb-3">15th to 21st July</h2>
                     <div className="gradientedline"></div>
                     <div className="mt-2 mb-1">
                       We tracked no changes this week
