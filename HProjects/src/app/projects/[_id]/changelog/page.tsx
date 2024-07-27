@@ -196,12 +196,13 @@ function SenderChangelogger({ weekBlocks, ownerData, taskFilterThisWeek }: { wee
               const task = tasksholder?.find(task => task._id === log.taskId);
               let changes = '';
               if (log.added === true) {
+                // will add a link to get to the task page easily
                 changes += `${task?.taskTitle} has been created with the assignee ${ownerData[log.taskAssignee]?.firstName} ${ownerData[log.taskAssignee]?.lastName}`;
               }
               else if (log.action === task?.taskStatus) {
-                changes += `${task?.taskTitle}'s priority has changed to `;
-              } else if (log.taskPriority === task?.taskPriority) {
                 changes += `${task?.taskTitle}'s status has changed to `;
+              } else if (log.taskPriority === task?.taskPriority) {
+                changes += `${task?.taskTitle}'s priority has changed to `;
               }
               const assignee = ownerData[log.usercommited];
                 return (
