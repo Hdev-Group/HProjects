@@ -195,36 +195,37 @@ function SenderChangelogger({ weekBlocks, ownerData, taskFilterThisWeek }: { wee
             {logs.map(log => {
               const task = tasksholder?.find(task => task._id === log.taskId);
               let changes = '';
-              if (log.action === task?.taskStatus) {
+              if (log.added === true) {
+                changes += `${task?.taskTitle} has been created with the assignee ${ownerData[log.taskAssignee]?.firstName} ${ownerData[log.taskAssignee]?.lastName}`;
+              }
+              else if (log.action === task?.taskStatus) {
                 changes += `${task?.taskTitle}'s priority has changed to `;
               } else if (log.taskPriority === task?.taskPriority) {
                 changes += `${task?.taskTitle}'s status has changed to `;
-              } else if (log.action === "created") {
-                changes += `${task?.taskTitle} has been created with the assignee ${ownerData[log.taskAssignee]?.firstName} ${ownerData[log.taskAssignee]?.lastName}`;
               }
               const assignee = ownerData[log.usercommited];
-              return (
+                return (
                 <div key={log.id} className="log-entry mt-2">
                   <div className="flex flex-col gap-1 bg-neutral-800/20 p-2 rounded-md">
-                    <div className="gap-3 flex flex-row items-center">
-                      <div className="flex flex-row gap-2 items-center">
-                        {assignee ? (
-                          <>
-                            <img src={assignee.imageUrl} className="w-8 h-8 rounded-full" alt={`${assignee.firstName} ${assignee.lastName}`} />
-                            <h2 className="font-semibold">{assignee.firstName} {assignee.lastName}</h2>
-                          </>
-                        ) : (
-                          <div className="w-8 h-8 rounded-full bg-gray-400"></div> // Placeholder if no image
-                        )}
-                      </div>
-                      <p className="text-xs text-neutral-400 font-semibold">{new Date(log.timestamp).toLocaleString([], {day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' })}</p>
+                  <div className="gap-3 flex flex-row items-center">
+                    <div className="flex flex-row gap-2 items-center">
+                    {assignee ? (
+                      <>
+                      <img src={assignee.imageUrl} className="w-8 h-8 rounded-full" alt={`${assignee.firstName} ${assignee.lastName}`} />
+                      <h2 className="font-semibold">{assignee.firstName} {assignee.lastName}</h2>
+                      </>
+                    ) : (
+                      <div className="w-8 h-8 rounded-full bg-gray-400"></div> // Placeholder if no image
+                    )}
                     </div>
-                    <p className="flex flex-row gap-2">{changes}
-                      {log.action === "critical" ? <Critical /> : log.action === "high" ? <High /> : log.action === "medium" ? <Medium /> : log.action === "low" ? <Low /> : log.action === "security" ? <Security /> : log.action === "feature" ? <Feature /> : log.action === "backlog" ? <BackLog /> : log.action === "todo" ? <Todo /> : log.action === "inprogress" ? <InProgress /> : <Done />}
-                    </p>
+                    <p className="text-xs text-neutral-400 font-semibold">{new Date(log.timestamp).toLocaleString([], {day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' })}</p>
+                  </div>
+                  <p className="flex flex-row gap-2">{changes}
+                    {log.action === "critical" ? <Critical /> : log.action === "high" ? <High /> : log.action === "medium" ? <Medium /> : log.action === "low" ? <Low /> : log.action === "security" ? <Security /> : log.action === "feature" ? <Feature /> : log.action === "backlog" ? <BackLog /> : log.action === "todo" ? <Todo /> : log.action === "inprogress" ? <InProgress /> : log.action === "done" ? <Done /> : "" }
+                  </p>
                   </div>
                 </div>
-              );
+                );
             })}
           </div>
         </div>

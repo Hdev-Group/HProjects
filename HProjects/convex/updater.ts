@@ -8,9 +8,10 @@ export const logger = mutation({
         taskPriority: v.string(),
         taskAssignee: v.string(),
         usercommited: v.string(),
+        added: v.optional(v.boolean()),
         timestamp: v.string()
     },
-    handler: async (ctx, { taskId, action, taskPriority, taskAssignee, ProjectId, usercommited }) => {
+    handler: async (ctx, { taskId, action, taskPriority, taskAssignee, ProjectId, usercommited, added }) => {
         const logData = {
             ProjectId: ProjectId,
             taskId: taskId,
@@ -18,6 +19,7 @@ export const logger = mutation({
             taskPriority: taskPriority,
             taskAssignee: taskAssignee,
             usercommited: usercommited,
+            added: added,
             timestamp: new Date().toISOString()
         };
 

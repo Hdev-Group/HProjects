@@ -61,7 +61,6 @@ const NewTaskModal = ({ onClose, id }) => {
         taskAssignee
       });
   
-      console.log('Add Task Response:', response); // Log the entire response
       setTaskId(response);
   
       if (response) {
@@ -69,10 +68,11 @@ const NewTaskModal = ({ onClose, id }) => {
         await logger({
           taskId: response,
           ProjectId: id.id,
-          action: 'created',
+          action: taskStatus,
           taskPriority,
           taskAssignee,
           usercommited: userId,
+          added: true,
           timestamp: new Date().toISOString()
         });
         console.log('Task added to logger.', response);
