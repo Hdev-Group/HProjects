@@ -3,7 +3,7 @@ import { v } from 'convex/values';
 
 export const editTask = mutation({
   args: {
-    _id: v.string(),
+    _id: v.optional(v.string()),
     taskPriority: v.optional(v.string()),
     taskStatus: v.optional(v.string()),
     taskAssignee: v.optional(v.string()),

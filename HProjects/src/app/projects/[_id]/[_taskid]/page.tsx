@@ -47,6 +47,7 @@ export default function TaskFullView({ params }: { params: { _id: string, _taski
     const [priority, setPriority] = useState(taskPriority);
     const [status, setTaskStatus] = useState(taskStatus);
     const [description, setDescription] = useState(taskDescription);
+    const logger = useMutation(api.updater.logger)
     const editTaskMutation = useMutation(api.taskupdate.editTask);
 
     useEffect(() => {
@@ -110,15 +111,25 @@ export default function TaskFullView({ params }: { params: { _id: string, _taski
 
     useEffect(() => {
         if (priority !== taskPriority || status !== taskStatus || description !== taskDescription) {
+            const currenttime = new Date().toISOString();
             const updateTask = async () => {
                 try {
                     await editTaskMutation({
-                        taskId: taskid,
+                        _id: taskid,
                         taskPriority: priority,
                         taskStatus: status,
                         taskDescription: description,
                         taskAssignee: taskAssignee
                     });
+                    await logger({
+                        ProjectId: _id,
+                        taskId: taskid,
+                        action: status,
+                        taskPriority: priority,
+                        taskAssignee: taskAssignee,
+                        usercommited: user.id,
+                        timestamp: currenttime,
+                    })
                 } catch (error) {
                     console.error("Failed to update task:", error);
                 }

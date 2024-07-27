@@ -7,11 +7,9 @@ import { useState, useEffect } from 'react';
 import { useMutation } from 'convex/react';
 import { useRouter } from 'next/navigation';
 
-function CardFrame({ taskId, taskName, taskPriority, taskStatus, taskAssignee, taskDescription, onDragStart, onDragEnd, onDragOver, onDrop }) {
-    const { user } = useUser();
+function CardFrame({ taskId, taskName, taskPriority, taskStatus, taskAssignee, taskDescription, onDragStart, onDragEnd, onDragOver, onDrop }: { taskId: string, taskName: string, taskPriority: string, taskStatus: string, taskAssignee: string, taskDescription: string, onDragStart: (event: React.DragEvent<HTMLDivElement>, taskId: string) => void, onDragEnd: () => void, onDragOver: (event: React.DragEvent<HTMLDivElement>, status: string, position: number) => void, onDrop: (event: React.DragEvent<HTMLDivElement>, status: string) => void }) {
     const [assigneeData, setAssigneeData] = useState<{ firstName: string, lastName: string, imageUrl: string } | null>(null);
     const router = useRouter();
-
     useEffect(() => {
         async function fetchAssigneeData() {
             if (taskAssignee) {
@@ -77,8 +75,10 @@ function CardFrame({ taskId, taskName, taskPriority, taskStatus, taskAssignee, t
 }
 
 export default function MainHolder({ _id, taskFilter }) {
+    const { user } = useUser();
     const tasks = useQuery(api.tasks.get);
     const editTaskMutation = useMutation(api.draganddrop.editTask);
+    const logger = useMutation(api.updater.logger)
     const [draggingTask, setDraggingTask] = useState<string | null>(null);
     const [dragOverStatus, setDragOverStatus] = useState<string | null>(null);
     const [dragOverPosition, setDragOverPosition] = useState<number | null>(null);
@@ -107,12 +107,21 @@ export default function MainHolder({ _id, taskFilter }) {
 
     const onDrop = async (event: React.DragEvent<HTMLDivElement>, status: string) => {
         event.preventDefault();
-        const currenttime = new Date().toISOString();
+        const loggercurrenttime = new Date().toISOString();
         if (draggingTask) {
             await editTaskMutation({
                 _id: draggingTask,
                 taskStatus: status,
                 lastupdated: currenttime,
+            });
+            await logger({
+                ProjectId: _id,
+                taskId: draggingTask,
+                action: status,
+                taskPriority: tasks.find(task => task._id === draggingTask).taskPriority,
+                taskAssignee: tasks.find(task => task._id === draggingTask).taskAssignee,
+                usercommited: user.id,
+                timestamp: currenttime,
             });
             setDraggingTask(null);
             setDragOverStatus(null);
