@@ -23,8 +23,8 @@ export const add = mutation({
       lastupdated: new Date().toISOString(),
     };
 
-    await ctx.db.insert("tasks", task);
-
-    return task;
+    // Insert the task and return it
+    const insertedTask = await ctx.db.insert("tasks", task);
+    return insertedTask; // Ensure that this has the taskId
   },
 });

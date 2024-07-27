@@ -188,7 +188,7 @@ function SenderChangelogger({ weekBlocks, ownerData, taskFilterThisWeek }: { wee
         <div className="pb-2 w-full bg-neutral-900 p-2 rounded-sm" key={weekKey}>
           <div className="flex flex-col mb-3 w-full">
             <h2 className="font-semibold text-xl">Week of {new Date(weekKey.split('_')[0]).toLocaleDateString()} to {new Date(weekKey.split('_')[1]).toLocaleDateString()}</h2>
-            <p className="text-sm">We tracked <code>{tasksthatweek.length}</code> task change{tasksthatweek.length === 1 ? "" : "s"} this week.</p>
+            <p className="text-xs text-neutral-400">We tracked <code>{tasksthatweek.length}</code> task change{tasksthatweek.length === 1 ? "" : "s"} this week.</p>
           </div>
           <div className="gradientedline"></div>
           <div className="flex flex-col w-full">
@@ -199,6 +199,8 @@ function SenderChangelogger({ weekBlocks, ownerData, taskFilterThisWeek }: { wee
                 changes += `${task?.taskTitle}'s priority has changed to `;
               } else if (log.taskPriority === task?.taskPriority) {
                 changes += `${task?.taskTitle}'s status has changed to `;
+              } else if (log.action === "created") {
+                changes += `${task?.taskTitle} has been created with the assignee ${ownerData[log.taskAssignee]?.firstName} ${ownerData[log.taskAssignee]?.lastName}`;
               }
               const assignee = ownerData[log.usercommited];
               return (
