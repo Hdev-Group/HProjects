@@ -112,7 +112,7 @@ export default function MainHolder({ _id, taskFilter }) {
             await editTaskMutation({
                 _id: draggingTask,
                 taskStatus: status,
-                lastupdated: currenttime,
+                lastupdated: loggercurrenttime,
             });
             await logger({
                 ProjectId: _id,
@@ -121,7 +121,7 @@ export default function MainHolder({ _id, taskFilter }) {
                 taskPriority: tasks.find(task => task._id === draggingTask).taskPriority,
                 taskAssignee: tasks.find(task => task._id === draggingTask).taskAssignee,
                 usercommited: user.id,
-                timestamp: currenttime,
+                timestamp: loggercurrenttime,
             });
             setDraggingTask(null);
             setDragOverStatus(null);

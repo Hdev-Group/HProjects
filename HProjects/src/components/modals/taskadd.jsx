@@ -15,6 +15,7 @@ const NewTaskModal = ({ onClose, id }) => {
   const [taskStatus, setTaskStatus] = useState('');
   const [taskAssignee, setTaskAssignee] = useState('');
   const addTask = useMutation(api.taskssender.add);
+  const logger = useMutation(api.logs.add); // log new tasks added
   const handleFormSubmit = useCallback(async (e) => {
     e.preventDefault();
     if (!userId) {
