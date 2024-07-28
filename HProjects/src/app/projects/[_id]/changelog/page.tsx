@@ -182,18 +182,24 @@ function SenderChangelogger({ weekBlocks, ownerData, taskFilterThisWeek }: { wee
   const tasksholderunfiltered = useQuery(api.tasksget.get);
   const tasksholder = tasksholderunfiltered?.filter(task => tasksthatweek.some(log => log.taskId === task._id));
 
+  const weekStart = new Date();
+  weekStart.setDate(weekStart.getDate() - 7);
+  const filteredTasks = tasksholder?.filter(task => {
+    const taskDate = new Date(task.lastupdated);
+    return taskDate >= weekStart;
+  });
+
   return (
     <>
-      {Object.entries(weekBlocks).map(([weekKey, logs]) => (
+      {Object.entries(weekBlocks).reverse().map(([weekKey, logs]) => (
         <div className="pb-2 w-full bg-neutral-900 p-2 rounded-sm" key={weekKey}>
           <div className="flex flex-col mb-3 w-full">
             <h2 className="font-semibold text-xl">Week of {new Date(weekKey.split('_')[0]).toLocaleDateString()} to {new Date(weekKey.split('_')[1]).toLocaleDateString()}</h2>
-            <p className="text-xs text-neutral-400">We tracked <code>{tasksthatweek.length}</code> task change{tasksthatweek.length === 1 ? "" : "s"} this week.</p>
           </div>
           <div className="gradientedline"></div>
           <div className="flex flex-col w-full">
-            {logs.map(log => {
-              const task = tasksholder?.find(task => task._id === log.taskId);
+            {logs.reverse().map(log => {
+              const task = filteredTasks?.find(task => task._id === log.taskId);
               let changes = '';
               if (log.added === true) {
                 // will add a link to get to the task page easily
