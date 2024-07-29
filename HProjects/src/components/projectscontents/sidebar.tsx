@@ -3,22 +3,29 @@ import React from 'react';
 import Link from 'next/link';
 import {IncidentDeclaration} from './incidentdec';
 import {QuickMenu} from './quickmenu';
+import '../../styles/globals.css';
 
 interface SideBarProps {
   activeSection: string;
   _id: string;
+  projectname: any;
 }
 
-function SideBar({ activeSection, _id }: SideBarProps) {
+function SideBar({ activeSection, _id, projectname }: SideBarProps) {
 
   const getItemClass = (section: string) =>
     `text-sm text-black dark:text-neutral-100 transition-colors font-semibold w-full hover:bg-neutral-600/30 cursor-pointer p-1.5 rounded-md ${activeSection === section ? "bg-neutral-500/20 text-black dark:text-white" : ""}`;
   return (
     <article className="w-max hidden sticky overflow-x-hidden md:flex h-full flex-col justify-between min-w-[200px] md:w-10   bg-bglightbars dark:bg-bgdarkbars !rounded-none overflow-auto p-2  border-transparent  border-r-neutral-600/40">
 
-      <div className="flex flex-col fixed justify-between h-full overflow-y-auto pl-2">
+      <div className="flex flex-col fixed justify-between h-full  overflow-y-auto pl-2">
+        <div className='flex flex-col gap-1'>
+          <div className="flex flex-col w-full">
+            <div className="flex items-center gap-2 mt-4">
+              <h1 className="text-lg font-bold text-black dark:text-white">{projectname}</h1>
+            </div>
+          </div>
         <div className=" w-full flex flex-col relative">
-          <h2 className="font-bold text-sm text-neutral-900 dark:text-neutral-300">Navigation</h2>
           <ul className="mt-4 space-y-2 w-full flex flex-col">
             <li key="dashboard" className={getItemClass("Dashboard")}>
               <Link href={`/projects/${encodeURIComponent(_id)}`}>
@@ -66,13 +73,10 @@ function SideBar({ activeSection, _id }: SideBarProps) {
                 Settings
               </Link>
             </li>
-            <li className='w-full flex items-center justify-end'>
-            <button className='mb-3 w-7 flex h-7 justify-center items-center p-1 bg-neutral-700 rounded-full'>
-              <svg xmlns="http://www.w3.org/2000/svg" className='h-full w-full rotate-180' viewBox="0 0 24 24" fill="black"><path d="M8.36853 12L13.1162 3.03212L14.8838 3.9679L10.6315 12L14.8838 20.0321L13.1162 20.9679L8.36853 12Z"></path></svg>
-            </button>
-            </li>
+
           </ul>
-        </div>
+        </div>        </div>
+
         <QuickMenu id={_id} />
       </div>
     </article>

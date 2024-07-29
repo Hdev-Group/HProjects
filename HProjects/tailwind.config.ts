@@ -43,7 +43,7 @@ const config: Config = {
           DEFAULT: "#0A0A0A",
         },
         bgdarkbars: {
-          DEFAULT: "#161613",
+          DEFAULT: "#080808",
         },
         bglightbars: {
           DEFAULT: "#D4D4D8",

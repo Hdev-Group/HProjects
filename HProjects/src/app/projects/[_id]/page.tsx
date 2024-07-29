@@ -5,7 +5,6 @@ import { useAuth } from "@clerk/nextjs";
 import { useUser } from "@clerk/clerk-react";
 import React, { useEffect, useState } from "react";
 import { useQuery } from "convex/react";
-import DashboardHeaderProjects from "../../../components/header/dashboardprojects";
 import { api } from '../../../../convex/_generated/api';
 import { useRouter } from 'next/navigation';
 import SideBar from "../../../components/projectscontents/sidebar";
@@ -84,10 +83,9 @@ export default function ProjectPage({ params }: { params: { _id: string } }) {
         <meta name="keywords" content="HProjects, Projects, Build, Plan, Push" />
       </head>
       <div className="h-screen flex flex-col">
-        <DashboardHeaderProjects projectname={projectname} projectid={project?._id} />
-        <div className="flex flex-grow mt-[110px] overflow-hidden bg-bglightbars dark:bg-bgdarkbars" id="modal-root">
-          <SideBar _id={params._id} activeSection={activeSection} />
-          <div className="flex w-full justify-center bg-bglight border dark:border-l-white dark:border-t-white border-t-black mt-0.5 dark:bg-bgdark rounded-l-3xl">
+        <div className="flex flex-grow overflow-hidden bg-bglightbars dark:bg-bgdarkbars" id="modal-root">
+          <SideBar _id={params._id} activeSection={activeSection} projectname={projectname} />
+          <div className="flex w-full justify-center bg-bglight border mt-0.5 dark:bg-bgdark rounded-l-3xl">
             <div className="max-w-10/12 w-[100%] p-5 flex flex-col items-center overflow-y-auto">
               <div className="w-full px-5 flex-col justify-between mb-5 mt-5 flex">
               <h1 className="flex text-2xl font-bold mb-3 " id="dashboardprojects">Dashboard</h1>

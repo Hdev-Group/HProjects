@@ -66,12 +66,11 @@ export default function Pager({ params }: { params: { _id: string, slug: string[
                 <meta name="keywords" content="HProjects, Projects, Build, Plan, Push" />
             </head>
             <div className="overflow-hidden h-screen" id="modal-root">
-                <DashboardHeaderProjects projectname={projectname} projectid={project?._id} />
-                <div className="flex mt-[110px] h-full bg-bglightbars dark:bg-bgdarkbars">
-                    <SideBar _id={params._id} activeSection={activeSection} />
-                    <div className="flex w-full p-5 pt-10 justify-center bg-bglight border dark:border-l-white dark:border-t-white border-t-black mt-0.5 dark:bg-bgdark rounded-l-3xl">
+                <div className="flex h-full bg-bglightbars dark:bg-bgdarkbars">
+                <SideBar _id={params._id} activeSection={activeSection} projectname={projectname} />
+                <div className="flex w-full justify-center bg-bglight border mt-0.5 dark:bg-bgdark rounded-l-3xl">
                         <div className="w-full bg-bglight dark:bg-bgdark rounded-l-3xl">
-                            <div className='px-4 flex flex-col'>
+                            <div className='px-4 flex flex-col mt-10'>
                                 <div className='flex flex-col gap-4 justify-between mb-3'>
                                     <h1 className='flex text-2xl font-bold text-black dark:text-white'>Pager</h1>
                                     <div className='w-full h-[1px] gradientedline'></div>

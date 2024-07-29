@@ -14,7 +14,7 @@ export function QuickMenu(id: any){
     const { user: userInfo } = useUser();
 
     return (
-        <div className="flex flex-col gap-10 mb-[7rem]  pb-4 dark:bg-bgdarkbars">
+        <div className="flex flex-col gap-10   pb-4 dark:bg-bgdarkbars">
         <PagerEl _id={id} />
         <ContextMenu>
         <ContextMenuTrigger>

@@ -10,6 +10,12 @@ import { Critical, High, Medium, Low, Security, Feature } from '../../../../comp
 import { BackLog, Todo, InProgress, Done } from '../../../../components/dropdowns/status/status';
 import SideBar from "../../../../components/projectscontents/sidebar";
 import NoChanges from "../../../../components/noitems/nochanges";
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "../../../../components/ui/hover-card";
+
 
 export default function ChangelogPage({ params }: { params: { _id: string } }) {
   const { userId, isLoaded, isSignedIn } = useAuth();
@@ -24,6 +30,7 @@ export default function ChangelogPage({ params }: { params: { _id: string } }) {
   const router = useRouter();
   const _id = params._id;
   const [activeSection, setActiveSection] = useState("changelog");
+  const [changelogfilter, setChangelogFilter] = useState('');
   const [weekBlocks, setWeekBlocks] = useState<Record<string, any[]>>({});
   async function fetchData(assignees: string[]) {
     if (assignees && assignees.length > 0) {
@@ -153,19 +160,29 @@ export default function ChangelogPage({ params }: { params: { _id: string } }) {
         <meta name="keywords" content="HProjects, Projects, Build, Plan, Push" />
       </head>
       <div className="h-screen overflow-hidden bg-bglight dark:bg-bgdark" id="modal-root">
-        <DashboardHeaderProjects projectname={projectname} activeSection={activeSection} />
-        <div className="flex mt-[110px] h-full bg-bglightbars dark:bg-bgdarkbars">
-          <SideBar _id={params._id} activeSection={activeSection} />
-          <div className="flex w-full h-full overflow-y-auto justify-center bg-bglight border dark:border-l-white dark:border-t-white border-t-black mt-0.5 dark:bg-bgdark rounded-l-3xl">
+        <div className="flex  h-full bg-bglightbars dark:bg-bgdarkbars">
+        <SideBar _id={params._id} activeSection={activeSection} projectname={projectname} />
+        <div className="flex w-full justify-center bg-bglight border mt-0.5 dark:bg-bgdark rounded-l-3xl">
+
             <div className="max-w-10/12 w-[100%] md:p-5 flex flex-col items-center overflow-y-auto">
               <div className="flex-col w-full px-5 gap-4 justify-between mb-5 mt-5 flex">
-                <h1 className="flex text-2xl font-bold text-black dark:text-white" id="changelog">Changelog</h1>
+                <div className="flex flex-row justify-between">
+                  <h1 className="flex text-2xl font-bold text-black dark:text-white" id="changelog">Changelog</h1>
+                  <input
+                    type='text'
+                    value={changelogfilter}
+                    onChange={e => setChangelogFilter(e.target.value)}
+                    placeholder='Filter by changes'
+                    className='dark:bg-neutral-800 bg-white border  border-neutral-300 dark:border-neutral-700 w-full max-w-[15rem] rounded px-2 py-1'
+                  />
+                </div>
                 <div className='w-full h-[1px] gradientedline'></div>
                 <div className="mt-1 w-full flex flex-col gap-3">
                   <SenderChangelogger 
                     weekBlocks={weekBlocks} 
                     ownerData={ownerData}
                     taskFilterThisWeek={taskFilterThisWeek}
+                    _id={_id}
                   />
                 </div>
               </div>
@@ -177,7 +194,7 @@ export default function ChangelogPage({ params }: { params: { _id: string } }) {
   );
 }
 
-function SenderChangelogger({ weekBlocks, ownerData, taskFilterThisWeek }: { weekBlocks: Record<string, any[]>, ownerData: Record<string, any>, taskFilterThisWeek: number }) {
+function SenderChangelogger({ weekBlocks, ownerData, taskFilterThisWeek, _id, changelogfilter }: { weekBlocks: Record<string, any[]>, ownerData: Record<string, any>, taskFilterThisWeek: number, _id: string, changelogfilter: string }) {
   const tasksthatweek = Object.values(weekBlocks).flat();
   const tasksholderunfiltered = useQuery(api.tasksget.get);
   const tasksholder = tasksholderunfiltered?.filter(task => tasksthatweek.some(log => log.taskId === task._id));
@@ -193,47 +210,76 @@ function SenderChangelogger({ weekBlocks, ownerData, taskFilterThisWeek }: { wee
     <>
       {Object.entries(weekBlocks).reverse().map(([weekKey, logs]) => (
         <div className="pb-2 w-full bg-neutral-900 p-2 rounded-sm" key={weekKey}>
-          <div className="flex flex-col mb-3 w-full">
+          <div className="flex flex-col mb-3 w-full bg-neutral-800/20 p-1 rounded-md px-2">
             <h2 className="font-semibold text-xl">Week of {new Date(weekKey.split('_')[0]).toLocaleDateString()} to {new Date(weekKey.split('_')[1]).toLocaleDateString()}</h2>
           </div>
-          <div className="gradientedline"></div>
           <div className="flex flex-col w-full">
-            {logs.reverse().map(log => {
-              const task = filteredTasks?.find(task => task._id === log.taskId);
-              let changes = '';
-              if (log.added === true) {
-                // will add a link to get to the task page easily
-                changes += `${task?.taskTitle} has been created with the assignee ${ownerData[log.taskAssignee]?.firstName} ${ownerData[log.taskAssignee]?.lastName}`;
-              }
-              else if (log.action === task?.taskStatus) {
-                changes += `${task?.taskTitle}'s status has changed to `;
-              } else if (log.taskPriority === task?.taskPriority) {
-                changes += `${task?.taskTitle}'s priority has changed to `;
-              }
-              const assignee = ownerData[log.usercommited];
+            {logs.reverse()
+              .map(log => {
+                const task = filteredTasks?.find(task => task._id === log.taskId);
+                let changes = '';
+                if (log.added === true) {
+                  // will add a link to get to the task page easily
+                  changes += `${task?.taskTitle} has been created with the assignee ${ownerData[log.taskAssignee]?.firstName} ${ownerData[log.taskAssignee]?.lastName} it is currently`;
+                }
+                else if (log.action === task?.taskStatus) {
+                  changes += `${task?.taskTitle}'s status has changed to `;
+                } else if (log.taskPriority === task?.taskPriority) {
+                  changes += `${task?.taskTitle}'s priority has changed to `;
+                }
+                let hovercardchanges = '';
+                if (log.added === true) {
+                  hovercardchanges += `created ${task?.taskTitle} with the assignee ${ownerData[log.taskAssignee]?.firstName} ${ownerData[log.taskAssignee]?.lastName} it is currently`;
+                }
+                else if (log.action === task?.taskStatus) {
+                  hovercardchanges += `changed ${task?.taskTitle}'s status to `;
+                } else if (log.taskPriority === task?.taskPriority) {
+                  hovercardchanges += `changed ${task?.taskTitle}'s priority to `;
+                }
+                const assignee = ownerData[log.usercommited];
                 return (
-                <div key={log.id} className="log-entry mt-2">
-                  <div className="flex flex-col gap-1 bg-neutral-800/20 p-2 rounded-md">
-                  <div className="gap-3 flex flex-row items-center">
-                    <div className="flex flex-row gap-2 items-center">
-                    {assignee ? (
-                      <>
-                      <img src={assignee.imageUrl} className="w-8 h-8 rounded-full" alt={`${assignee.firstName} ${assignee.lastName}`} />
-                      <h2 className="font-semibold">{assignee.firstName} {assignee.lastName}</h2>
-                      </>
-                    ) : (
-                      <div className="w-8 h-8 rounded-full bg-gray-400"></div> // Placeholder if no image
-                    )}
+                <HoverCard>
+                  <HoverCardTrigger>
+                  <a href={`/projects/${_id}/${task._id}`} key={log.id}>
+                    <div className="log-entry mt-2">
+                      <div className="flex flex-col gap-1 bg-neutral-800/20 p-2 rounded-md cursor-pointer hover:bg-neutral-600/20 transition-all">
+                        <div className="gap-3 flex flex-row items-center">
+                          <div className="flex flex-row gap-2 items-center">
+                            {assignee ? (
+                              <>
+                                <img src={assignee.imageUrl} className="w-8 h-8 rounded-full" alt={`${assignee.firstName} ${assignee.lastName}`} />
+                                <h2 className="font-semibold">{assignee.firstName} {assignee.lastName}</h2>
+                              </>
+                            ) : (
+                              <div className="w-8 h-8 rounded-full bg-gray-400"></div> // Placeholder if no image
+                            )}
+                          </div>
+                          <p className="text-xs text-neutral-400 font-semibold">{new Date(log.timestamp).toLocaleString([], { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' })}</p>
+                        </div>
+                        <p className="flex flex-row gap-2">{changes}
+                          {log.action === "critical" ? <Critical /> : log.action === "high" ? <High /> : log.action === "medium" ? <Medium /> : log.action === "low" ? <Low /> : log.action === "security" ? <Security /> : log.action === "feature" ? <Feature /> : log.action === "backlog" ? <BackLog /> : log.action === "todo" ? <Todo /> : log.action === "inprogress" ? <InProgress /> : log.action === "done" ? <Done /> : ""}
+                        </p>
+                      </div>
                     </div>
-                    <p className="text-xs text-neutral-400 font-semibold">{new Date(log.timestamp).toLocaleString([], {day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' })}</p>
-                  </div>
-                  <p className="flex flex-row gap-2">{changes}
-                    {log.action === "critical" ? <Critical /> : log.action === "high" ? <High /> : log.action === "medium" ? <Medium /> : log.action === "low" ? <Low /> : log.action === "security" ? <Security /> : log.action === "feature" ? <Feature /> : log.action === "backlog" ? <BackLog /> : log.action === "todo" ? <Todo /> : log.action === "inprogress" ? <InProgress /> : log.action === "done" ? <Done /> : "" }
-                  </p>
-                  </div>
-                </div>
+                  </a>
+                  </HoverCardTrigger>
+                  <HoverCardContent>
+                    <div className="flex flex-row gap-4 ">
+                      <img src={assignee?.imageUrl} className="w-8 h-8 rounded-full mt-2" alt={`${assignee?.firstName} ${assignee?.lastName}`} />
+                      <div className="flex flex-col">
+                        <div className="flex flex-col">
+                          <h1 className="font-semibold">{assignee?.firstName} {assignee?.lastName}</h1>
+                          <p className="text-xs text-neutral-400">Lead Developer</p>
+                        </div>
+                        <div className="">
+                          <p className="flex flex-row gap-2">{assignee?.firstName} has {hovercardchanges}{log.action === "critical" ? <Critical /> : log.action === "high" ? <High /> : log.action === "medium" ? <Medium /> : log.action === "low" ? <Low /> : log.action === "security" ? <Security /> : log.action === "feature" ? <Feature /> : log.action === "backlog" ? <BackLog /> : log.action === "todo" ? <Todo /> : log.action === "inprogress" ? <InProgress /> : log.action === "done" ? <Done /> : ""}</p>
+                        </div>
+                      </div>
+                    </div>
+                    </HoverCardContent>
+                  </HoverCard>
                 );
-            })}
+              })}
           </div>
         </div>
       ))}
