@@ -80,6 +80,7 @@ function CardFrame({ taskId, taskName, taskPriority, taskStatus, taskAssignee, t
         </div>
         </HoverCardTrigger>
         <HoverCardContent>
+        {taskStatus !== 'done' &&
         <div className='border-neutral-800 cursor-pointer hover:border-neutral-300 transition-all py-2 gap-3 flex flex-col rounded-md w-full'>
             <div className='flex gap-3 pl-4 flex-col'>
             <div className='flex gap-3 pr-3 items-center'>
@@ -110,7 +111,6 @@ function CardFrame({ taskId, taskName, taskPriority, taskStatus, taskAssignee, t
                     {taskStatus === 'backlog' && <BackLog />}
                     {taskStatus === 'todo' && <Todo />}
                     {taskStatus === 'inprogress' && <InProgress />}
-                    {taskStatus === 'done' && <Done />}
                 </div>
 
             </div>
@@ -120,6 +120,51 @@ function CardFrame({ taskId, taskName, taskPriority, taskStatus, taskAssignee, t
                 </p>
             </div>
             </div>
+                }
+                {taskStatus == 'done' &&
+                <div className='border-neutral-800 cursor-pointer hover:border-neutral-300 transition-all py-2 gap-3 flex flex-col rounded-md w-full'>
+                    <div className='flex gap-3 pl-4 flex-col'>
+                    <div className='flex gap-3 pr-3 items-center'>
+                            {assigneeData ? (
+                                <>
+                                    <img src={assigneeData.imageUrl} className='w-6 h-6 rounded-full' alt="Assignee" />
+                                    <div>
+                                        <h2 className='font-semibold'>{assigneeData.firstName} {assigneeData.lastName}</h2>
+                                        <p className='text-xs text-neutral-400'>Lead Developer</p>
+                                    </div>
+                                </>
+                            ) : (
+                                <div className='w-6 h-6 rounded-full bg-neutral-800 animate-pulse'></div>
+                            )}
+                        </div>
+                        <h1 className='font-bold'>
+                            {taskName}
+                        </h1>
+                    </div>
+                    <div className='flex justify-between'>
+                        <div className='flex gap-3 pl-3'>
+                            {taskPriority === 'critical' && <Critical />}
+                            {taskPriority === 'high' && <High />}
+                            {taskPriority === 'medium' && <Medium />}
+                            {taskPriority === 'low' && <Low />}
+                            {taskPriority === 'security' && <Security />}
+                            {taskPriority === 'Feature' && <Feature />}
+                            {taskStatus === 'done' && <Done />}
+                        </div>
+
+                    </div>
+                    <div className='flex gap-3 pl-4'>
+                        <p className='text-sm max-w-[500px] text-wrap'>
+                            {taskDescription}
+                        </p>
+                    </div>
+                    <div className='flex gap-3 pl-4'>
+                        <p className='text-sm max-w-[500px] w-auto text-wrap border border-green-400 bg-green-500/20 p-1 rounded-md font-semibold flex px-2'>
+                            Task Completed - This task will be archived in 30 days.
+                        </p>
+                        </div>
+                    </div>
+                        }
         </HoverCardContent>
         </HoverCard>
     );
