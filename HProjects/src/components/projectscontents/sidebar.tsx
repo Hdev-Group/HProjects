@@ -22,7 +22,9 @@ function SideBar({ activeSection, _id, projectname }: SideBarProps) {
         <div className='flex flex-col gap-1'>
           <div className="flex flex-col w-full">
             <div className="flex items-center gap-2 mt-4">
+            <a href='/dashboard' className='w-full transition-all hover:bg-neutral-600/20 py-2 flex items-center justify-center rounded-lg '>
               <h1 className="text-lg font-bold text-black dark:text-white">{projectname}</h1>
+              </a>
             </div>
           </div>
         <div className=" w-full flex flex-col relative">

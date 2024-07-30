@@ -6,6 +6,11 @@ import { useQuery } from "convex/react";
 import { useState, useEffect } from 'react';
 import { useMutation } from 'convex/react';
 import { useRouter } from 'next/navigation';
+import {
+    HoverCard,
+    HoverCardContent,
+    HoverCardTrigger,
+  } from "../../components/ui/hover-card";
 
 function CardFrame({ taskId, taskName, taskPriority, taskStatus, taskAssignee, taskDescription, onDragStart, onDragEnd, onDragOver, onDrop }: { taskId: string, taskName: string, taskPriority: string, taskStatus: string, taskAssignee: string, taskDescription: string, onDragStart: (event: React.DragEvent<HTMLDivElement>, taskId: string) => void, onDragEnd: () => void, onDragOver: (event: React.DragEvent<HTMLDivElement>, status: string, position: number) => void, onDrop: (event: React.DragEvent<HTMLDivElement>, status: string) => void }) {
     const [assigneeData, setAssigneeData] = useState<{ firstName: string, lastName: string, imageUrl: string } | null>(null);
@@ -35,6 +40,8 @@ function CardFrame({ taskId, taskName, taskPriority, taskStatus, taskAssignee, t
     }
 
     return (
+        <HoverCard>
+        <HoverCardTrigger>
         <div
             className='border-neutral-800 bg-neutral-900/60 cursor-pointer hover:border-neutral-300 transition-all py-2 border gap-3 flex flex-col rounded-md w-full'
             onDoubleClick={() => taskmainmenu(taskId)}
@@ -71,6 +78,50 @@ function CardFrame({ taskId, taskName, taskPriority, taskStatus, taskAssignee, t
                 </div>
             </div>
         </div>
+        </HoverCardTrigger>
+        <HoverCardContent>
+        <div className='border-neutral-800 cursor-pointer hover:border-neutral-300 transition-all py-2 gap-3 flex flex-col rounded-md w-full'>
+            <div className='flex gap-3 pl-4 flex-col'>
+            <div className='flex gap-3 pr-3 items-center'>
+                    {assigneeData ? (
+                        <>
+                            <img src={assigneeData.imageUrl} className='w-6 h-6 rounded-full' alt="Assignee" />
+                            <div>
+                                <h2 className='font-semibold'>{assigneeData.firstName} {assigneeData.lastName}</h2>
+                                <p className='text-xs text-neutral-400'>Lead Developer</p>
+                            </div>
+                        </>
+                    ) : (
+                        <div className='w-6 h-6 rounded-full bg-neutral-800 animate-pulse'></div>
+                    )}
+                </div>
+                <h1 className='font-bold'>
+                    {taskName}
+                </h1>
+            </div>
+            <div className='flex justify-between'>
+                <div className='flex gap-3 pl-3'>
+                    {taskPriority === 'critical' && <Critical />}
+                    {taskPriority === 'high' && <High />}
+                    {taskPriority === 'medium' && <Medium />}
+                    {taskPriority === 'low' && <Low />}
+                    {taskPriority === 'security' && <Security />}
+                    {taskPriority === 'Feature' && <Feature />}
+                    {taskStatus === 'backlog' && <BackLog />}
+                    {taskStatus === 'todo' && <Todo />}
+                    {taskStatus === 'inprogress' && <InProgress />}
+                    {taskStatus === 'done' && <Done />}
+                </div>
+
+            </div>
+            <div className='flex gap-3 pl-4'>
+                <p className='text-sm max-w-[500px] text-wrap'>
+                    {taskDescription}
+                </p>
+            </div>
+            </div>
+        </HoverCardContent>
+        </HoverCard>
     );
 }
 
