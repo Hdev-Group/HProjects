@@ -5,7 +5,6 @@ import { useAuth } from "@clerk/nextjs";
 import { useUser } from "@clerk/clerk-react";
 import React, { useEffect, useState } from "react";
 import { useQuery } from "convex/react";
-import DashboardHeaderProjects from "../../../components/header/dashboardprojects";
 import { api } from '../../../../convex/_generated/api';
 import { useRouter } from 'next/navigation';
 import SideBar from "../../../components/projectscontents/sidebar";
@@ -84,12 +83,13 @@ export default function ProjectPage({ params }: { params: { _id: string } }) {
         <meta name="keywords" content="HProjects, Projects, Build, Plan, Push" />
       </head>
       <div className="h-screen flex flex-col">
-        <DashboardHeaderProjects projectname={projectname} projectid={project?._id} />
-        <div className="flex flex-grow mt-[110px] overflow-hidden bg-bglightbars dark:bg-bgdarkbars" id="modal-root">
-          <SideBar _id={params._id} activeSection={activeSection} />
-          <div className="flex w-full justify-center bg-bglight border dark:border-l-white dark:border-t-white border-t-black mt-0.5 dark:bg-bgdark rounded-l-3xl">
-            <div className="max-w-10/12 w-full p-5 bg-bglight dark:bg-bgdark rounded-l-3xl">
+        <div className="flex flex-grow overflow-hidden bg-bglightbars dark:bg-bgdarkbars" id="modal-root">
+          <SideBar _id={params._id} activeSection={activeSection} projectname={projectname} />
+          <div className="flex w-full justify-center bg-bglight border mt-0.5 dark:bg-bgdark rounded-l-3xl">
+            <div className="max-w-10/12 w-[100%] p-5 flex flex-col items-center overflow-y-auto">
+              <div className="w-full px-5 flex-col justify-between mb-5 mt-5 flex">
               <h1 className="flex text-2xl font-bold mb-3 " id="dashboardprojects">Dashboard</h1>
+              <div className='w-full h-[1px] mb-4 gradientedline'></div>
               <div className="w-full flex flex-col py-5 px-5 gap-3 dark:border-neutral-800 border-neutral-300 bg-neutral-800/30 dark:bg-neutral-900/50 border rounded">
                 <h2 className="text-lg font-semibold ">Hello {user?.firstName}! Your work queue.</h2>
                 <div className="overflow-y-auto w-full">
@@ -103,10 +103,10 @@ export default function ProjectPage({ params }: { params: { _id: string } }) {
                         <th className="py-2 text-left">Due Date</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-neutral-100/10">
+                    <tbody className="divide-y divide-neutral-100/10 px-2">
                       {projectTasks.map(task => (
-                        <tr key={task._id} onClick={() => taskMainMenu(task._id)} className="group transition-colors hover:bg-neutral-500/30 cursor-pointer">
-                          <td className="py-2 text-left">{task.taskTitle}</td>
+                        <tr key={task._id} onClick={() => taskMainMenu(task._id)} className="group transition-colors  hover:bg-neutral-500/30 cursor-pointer">
+                          <td className="py-2 px-2 text-left ml-2">{task.taskTitle}</td>
                           <td className="py-2 text-left flex items-center gap-3">
                             <img src={user?.imageUrl} className='h-7 w-7 rounded-full' alt="Assignee" />
                             You
@@ -135,6 +135,7 @@ export default function ProjectPage({ params }: { params: { _id: string } }) {
             </div>
           </div>
         </div>
+      </div>
       </div>
     </>
   );

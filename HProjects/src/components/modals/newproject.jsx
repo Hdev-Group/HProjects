@@ -10,7 +10,7 @@ const NewProjectModal = ({ onClose }) => {
   const [projectName, setProjectName] = useState('');
   const [projectDescription, setProjectDescription] = useState('');
   const [projectStatus, setProjectStatus] = useState('');
-  const [pinned = false] = useState(false); // [TODO
+  const [pinned = false] = useState(false); 
   const [otherusers] = useState([]);
   const addProject = useMutation(api.projects.add);
 

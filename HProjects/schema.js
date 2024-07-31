@@ -1,28 +1,29 @@
-import { defineSchema, defineTable, defineIndex } from "convex/server";
+import { defineSchema, defineTable } from "convex/server";
 import { v } from "convex/values";
 
 export default defineSchema({
-  project: defineTable({
-    otherusers: v.array(v.any()),
-    pinned: v.boolean(),
-    projectDescription: v.string(),
-    projectName: v.string(),
-    projectStatus: v.string(),
-    userId: v.string(),
-  }),
   comments: defineTable({
     CommenterMessage: v.string(),
     ProjectId: v.id("project"),
     taskId: v.id("tasks"),
     userId: v.string(),
   }),
-  pager: defineTable({
-    projectid: v.id("project"),
-    status: v.string(),
-    time: v.string(),
+  project: defineTable({
+    otherusers: v.array(v.string()),
+    pinned: v.boolean(),
+    projectDescription: v.string(),
+    projectName: v.string(),
+    projectStatus: v.string(),
+    userId: v.string(),
+  }),
+  replys: defineTable({
+    CommenterMessage: v.string(),
+    commentId: v.id("comments"),
+    taskId: v.id("tasks"),
     userId: v.string(),
   }),
   tasks: defineTable({
+    lastupdated: v.optional(v.string()),
     projectid: v.id("project"),
     taskAssignee: v.string(),
     taskDescription: v.string(),
@@ -30,5 +31,12 @@ export default defineSchema({
     taskStatus: v.string(),
     taskTitle: v.string(),
     userId: v.string(),
-  }).index("by_project", ["projectid"]),
+  }),
+  logs: defineTable({
+    taskId: v.id("tasks"),
+    action: v.optional(v.string()),
+    taskPriority: v.optional(v.string()),
+    taskAssignee: v.optional(v.string()),
+    timestamp: v.string(),
+  }),
 });

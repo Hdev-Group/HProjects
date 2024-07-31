@@ -31,7 +31,7 @@ export default function CommentBox({ taskId, _id }: CommentBoxProps) {
         setIsLoading(false);
     };
     return (
-        <div className='border-dashed border p-4 flex gap-4 flex-col justify-center rounded-md  transition-all'>
+        <div className='border border-t-transparent p-4 flex gap-4 flex-col justify-center rounded-b-md  transition-all'>
             <textarea
                 className='p-2 w-full rounded-md min-h-[5rem] border border-neutral-700 max-h-[3rem] h-[3rem] overflow-y-auto placeholder:dark:text-neutral-400 placeholder:text-neutra-700 bg-transparent'
                 id='descriptioner'

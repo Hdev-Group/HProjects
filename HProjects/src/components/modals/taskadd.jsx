@@ -4,23 +4,30 @@ import { useAuth } from '@clerk/nextjs';
 import { useMutation } from 'convex/react';
 import { api } from '../../../convex/_generated/api';
 import AssigneeSelect from '../dropdowns/assignee';
+import { ConvexClient } from "convex/browser";
 import PriorityStatus from '../dropdowns/priority';
 import StatusTime from '../dropdowns/status';
 
 const NewTaskModal = ({ onClose, id }) => {
+  const client = new ConvexClient(process.env.NEXT_PUBLIC_CONVEX_URL);
   const { userId, isLoaded, isSignedIn } = useAuth();
   const [taskTitle, setTaskTitle] = useState('');
   const [taskDescription, setTaskDescription] = useState('');
   const [taskPriority, setTaskPriority] = useState('');
   const [taskStatus, setTaskStatus] = useState('');
   const [taskAssignee, setTaskAssignee] = useState('');
+  const [taskId, setTaskId] = useState('');
   const addTask = useMutation(api.taskssender.add);
+  const logger = useMutation(api.updater.logger); // log new tasks added
+  
   const handleFormSubmit = useCallback(async (e) => {
     e.preventDefault();
+    
     if (!userId) {
       console.error('User is not authenticated');
       return;
     }
+
     if (taskTitle === '') {
       document.getElementById('titleinvalidator').classList.remove('hidden');
       return;
@@ -41,15 +48,44 @@ const NewTaskModal = ({ onClose, id }) => {
       document.getElementById('descriptioninvalidator').classList.remove('hidden');
       return;
     }
+
     try {
-      await addTask({ projectid: id.id, userId, taskTitle, taskDescription, taskPriority, taskStatus, taskAssignee });
+      // Call Convex mutation and get response
+      const response = await addTask({
+        projectid: id.id,
+        userId,
+        taskTitle,
+        taskDescription,
+        taskPriority,
+        taskStatus,
+        taskAssignee
+      });
+  
+      setTaskId(response);
+  
+      if (response) {
+        // Log the task creation
+        await logger({
+          taskId: response,
+          ProjectId: id.id,
+          action: taskStatus,
+          taskPriority,
+          taskAssignee,
+          usercommited: userId,
+          added: true,
+          timestamp: new Date().toISOString()
+        });
+        console.log('Task added to logger.', response);
+      } else {
+        console.error('Failed to retrieve taskId.');
+      }
+  
       onClose();
     } catch (error) {
-      console.error('Error adding project:', error);
+      console.error('Error adding task:', error);
     }
-  }, [userId, addTask, id, taskTitle, taskDescription, taskPriority, taskStatus, taskAssignee, onClose]);
+  }, [taskId, addTask, id, taskTitle, taskDescription, taskPriority, taskStatus, taskAssignee, onClose]);
 
-  
   useEffect(() => {
     const outerclickclose = document.getElementById('outerclickclose');
     const innercloser = document.getElementById('innercloser');
@@ -110,13 +146,10 @@ const NewTaskModal = ({ onClose, id }) => {
             <PriorityStatus 
               required
               id='priority'
-              onChange={(value) => {
-                setTaskPriority(value);
-                
-              }}
+              onChange={(value) => setTaskPriority(value)}
               invalidator='priorityinvalidatorinput'
             />
-            <span className='text-red-400 hidden' id='statusinvalidator'>Invalid Priority</span>
+            <span className='text-red-400 hidden' id='priorityinvalidator'>Invalid Priority</span>
             </div>
             <div className='flex w-full flex-col'>
             <StatusTime

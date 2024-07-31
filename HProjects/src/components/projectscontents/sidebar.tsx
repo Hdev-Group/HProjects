@@ -1,27 +1,33 @@
 "use client";
 import React from 'react';
 import Link from 'next/link';
-import { useUser, useClerk } from '@clerk/clerk-react';
-import PagerEl from './pager'
+import {IncidentDeclaration} from './incidentdec';
+import {QuickMenu} from './quickmenu';
+import '../../styles/globals.css';
+
 interface SideBarProps {
   activeSection: string;
   _id: string;
+  projectname: any;
 }
 
-function SideBar({ activeSection, _id }: SideBarProps) {
+function SideBar({ activeSection, _id, projectname }: SideBarProps) {
 
-
-
-
-  const { user } = useClerk();
-  const { user: userInfo } = useUser();
   const getItemClass = (section: string) =>
     `text-sm text-black dark:text-neutral-100 transition-colors font-semibold w-full hover:bg-neutral-600/30 cursor-pointer p-1.5 rounded-md ${activeSection === section ? "bg-neutral-500/20 text-black dark:text-white" : ""}`;
   return (
-    <article className="w-max sticky flex h-full flex-col justify-between min-w-[200px]  bg-bglightbars dark:bg-bgdarkbars !rounded-none overflow-auto p-2  border-transparent  border-r-neutral-600/40">
-      <div className="flex flex-col fixed justify-between h-full overflow-y-auto pl-2">
-        <div className=" w-full flex flex-col">
-          <h2 className="font-bold text-sm text-neutral-900 dark:text-neutral-300">Navigation</h2>
+    <article className="w-max hidden sticky overflow-x-hidden md:flex h-full flex-col justify-between min-w-[200px] md:w-10   bg-bglightbars dark:bg-bgdarkbars !rounded-none overflow-auto p-2  border-transparent  border-r-neutral-600/40">
+
+      <div className="flex flex-col fixed justify-between h-full  overflow-y-auto pl-2">
+        <div className='flex flex-col gap-1'>
+          <div className="flex flex-col w-full">
+            <div className="flex items-center gap-2 mt-4">
+            <a href='/dashboard' className='w-full transition-all hover:bg-neutral-600/20 py-2 flex items-center justify-center rounded-lg '>
+              <h1 className="text-lg font-bold text-black dark:text-white">{projectname}</h1>
+              </a>
+            </div>
+          </div>
+        <div className=" w-full flex flex-col relative">
           <ul className="mt-4 space-y-2 w-full flex flex-col">
             <li key="dashboard" className={getItemClass("Dashboard")}>
               <Link href={`/projects/${encodeURIComponent(_id)}`}>
@@ -38,12 +44,8 @@ function SideBar({ activeSection, _id }: SideBarProps) {
                 Tasks
               </Link>
             </li>
-            <li key="incident" className={getItemClass("incident")}>
-              <Link href={`/projects/${encodeURIComponent(_id)}/incident`}>
-                Incidents
-              </Link>
-            </li>
-            <li key="changelog" className={getItemClass("Changelog")}>
+            <IncidentDeclaration _id={_id} activeSection={activeSection} />
+            <li key="changelog" className={getItemClass("changelog")}>
               <Link href={`/projects/${encodeURIComponent(_id)}/changelog`}>
                 Changelog
               </Link>
@@ -73,20 +75,11 @@ function SideBar({ activeSection, _id }: SideBarProps) {
                 Settings
               </Link>
             </li>
+
           </ul>
-        </div>
-        <div className="flex flex-col gap-10 mb-[7rem]  pb-4 dark:bg-bgdarkbars">
-            <PagerEl _id={_id} />
-          <div className='flex-row flex gap-4'>
-            <div className='w-[40px] h-[40px] rounded-full flex flex-row'>
-              <img src={userInfo?.imageUrl} alt="logo" className="w-[40px] h-[40px] rounded-full" />
-            </div>
-            <div className='flex flex-col text-left justify-center'>
-              <h1 className='dark:text-neutral-100 text-neutral-900 text-sm font-semibold text-left'>{userInfo?.firstName} {userInfo?.lastName}</h1>
-              <p className="dark:text-neutral-500 text-neutral-600 text-xs text-left font-semibold">Lead Developer</p>
-            </div>
-          </div>
-        </div>
+        </div>        </div>
+
+        <QuickMenu id={_id} />
       </div>
     </article>
   );

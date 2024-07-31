@@ -186,6 +186,20 @@
     font-weight: 600;
     font-size: 0.9rem;
   }
+  .beforeitemcommentreact::before{
+    content: '';
+    background-color: rgb(115 115 115);
+    color: rgb(115 115 115);
+    padding-left: 6px;
+    position: absolute;
+    left: 40px;
+    top: 9px;
+    height: 6px;
+    margin-right: 10px;
+    width: 5px;
+    border-radius: 50%;
+    font-size: 0.3rem;
+  }
   .planningdot{
     background-color: #800080;
     border-radius: 50%;
@@ -413,4 +427,94 @@
   100%{
     box-shadow: 0 0 0 5px rgba(0, 0, 0, 0);
   }
+}
+.arm{
+  animation: arm 4s infinite;
+}
+@keyframes arm{
+  0%{
+    transform: rotate(50deg);
+  }
+  50%{
+    transform: rotate(46deg);
+  }
+  100%{
+    transform: rotate(50deg);
+  }
+}
+.arm1{
+  animation: arm1 4s infinite;
+  z-index: 100;
+}
+@keyframes arm1{
+  0%{
+    transform: translateX(0);
+    rotate: -50deg;
+  }
+  10%{
+    transform: translateX(5px);
+  }
+  40%{
+    transform: translateX(-30px);
+  }
+  50%{
+    transform: translateX(-60px);
+    rotate: -80deg;
+  }
+  60%{
+    transform: translateX(-30px);
+  }
+  70%{
+    transform: translateX(-40px);
+  }
+  80%{
+    transform: translateX(-30px);
+  }
+
+  100%{
+    transform: translateX(0);
+    rotate: -50deg;
+  }
+}
+.replys::before{
+  content: '';
+  margin-right: 10px;
+  width: 25px;
+  left: 1px;
+  position: absolute;
+  height: 100%;
+  top: -55px;
+  z-index: 2;
+  border-left: solid 1px #737373;
+  border-bottom-left-radius: 400px;
+  border-bottom: solid 1px #737373;
+}
+.replygrabber::after{
+  content: '';
+  position: absolute;
+  height: 255%;
+  width: 100%;
+  top: 30px;
+  left: 13px;
+  z-index: 2;
+  border-left: solid 1px #737373;
+}
+.emojiselector::before {
+  content: '';
+  position: absolute;
+  top: 40px;
+  rotate: 180deg;
+  left: 42%;
+  z-index: -10;
+  translate: -50%;
+  width: 0;
+  height: 5px;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-bottom: 10px solid #737373;
+}
+.gradientedline{
+  background-image: linear-gradient(to right, #737373 1%, transparent 85%);
+  height: 2px;
+  border-radius: 50%;
 }
