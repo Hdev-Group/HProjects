@@ -14,7 +14,7 @@ function ProjectsDataAdder() {
   if (!isLoaded || !isSignedIn) {
     return <div>Loading...</div>;
   }
-    
+  
   const userProjects = projectsholder?.filter(project => project.userId === userId) || [];
   const userTeams = projectsholder?.filter(project => project.otherusers.includes(userId)) || [];
   const pinnedProjects = userProjects.filter(project => project.pinned);

@@ -9,6 +9,11 @@ import { useRouter } from 'next/navigation';
 import SideBar from "../../../../components/projectscontents/sidebar";
 import AddTaskButton from "../../../../components/buttons/addtask";
 import MainHolder from "../../../../components/tasks/dragndrop";
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "../../../../components/ui/hover-card";
 
 export default function ProjectPage({ params }: { params: { _id: string } }) {
   const { userId, isLoaded, isSignedIn } = useAuth();
@@ -19,6 +24,10 @@ export default function ProjectPage({ params }: { params: { _id: string } }) {
   const projectUserId = project?.userId;
   const router = useRouter();
   const _id = params._id;
+
+  const tasksget = useQuery(api.tasks.get);
+  const totaltasksarchived = tasksget?.filter(task => task.archived === true).length ?? 0;
+
 
   const [taskFilter, setTaskFilter] = useState('');
   const [activeSection, setActiveSection] = useState("Tasks");
@@ -76,7 +85,24 @@ export default function ProjectPage({ params }: { params: { _id: string } }) {
                 <div className='w-full h-[1px] gradientedline'></div>
               </div>
               <div className="flex flex-row justify-between w-full p-5">
-                <AddTaskButton id={params._id} />
+                <div className="flex flex-row gap-4 items-center">
+                  <AddTaskButton id={params._id} />
+                  <HoverCard>
+                    <HoverCardTrigger>
+                    <h2 className="text-sm font-semibold dark:text-neutral-300 hover:text-neutral-100 cursor-pointer transition-all text-black">✔ {totaltasksarchived} Archived</h2>
+                    </HoverCardTrigger>
+                    <HoverCardContent className="px-[10px] py-1">
+                      <div className="w-full">
+                        <div className="pb-1 w-full font-semibold ">Tasks Archived</div>
+                          {tasksget?.filter(task => task.archived === true).map((task, index) => (
+                            <div>
+                              <h1 key={index}>{task.taskTitle}</h1>
+                            </div>
+                          ))}
+                      </div>
+                    </HoverCardContent>
+                  </HoverCard>
+                </div>
                 <input
                   type='text'
                   placeholder='Filter by tasks'

@@ -11,9 +11,8 @@ import {
     BackLog, Todo, InProgress, Done,
 } from '../../../../components/dropdowns/status/status';
 import SideBar from "../../../../components/projectscontents/sidebar";
-import DashboardHeaderProjects from "../../../../components/header/dashboardprojects";
 import BreadcrumbWithCustomSeparator from "../../../../components/tasks/breadcrumb";
-import DeleteTask from '../../../../components/modals/deleteTask';
+import ArchiveTask from '../../../../components/modals/deleteTask';
 import CommentBox from '../../../../components/comments/commentbox';
 import CommentBoxer from '../../../../components/comments/commentboxer';
 import PriorityStatus from '../../../../components/dropdowns/priority';
@@ -305,7 +304,7 @@ export default function TaskFullView({ params }: { params: { _id: string, _taski
                     </div>
                 </div>
             </div>
-            {showDeleteModal && <DeleteTask onClose={closeDeleteModal} _taskid={taskid} taskname={taskName}/>}
+            {showDeleteModal && <ArchiveTask onClose={closeDeleteModal} _taskid={taskid} projectid={_id} taskname={taskName}/>}
             </div>
         </>
     );

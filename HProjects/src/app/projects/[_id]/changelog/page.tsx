@@ -194,7 +194,7 @@ export default function ChangelogPage({ params }: { params: { _id: string } }) {
   );
 }
 
-function SenderChangelogger({ weekBlocks, ownerData, taskFilterThisWeek, _id, changelogfilter }) {
+function SenderChangelogger({ weekBlocks, ownerData, _id}: { weekBlocks: Record<string, any[]>, ownerData: Record<string, any>, taskFilterThisWeek: number, _id: string }) {
   const tasksthatweek = Object.values(weekBlocks).flat();
   const tasksholderunfiltered = useQuery(api.tasksget.get);
   const tasksholder = tasksholderunfiltered?.filter(task => tasksthatweek.some(log => log.taskId === task._id));
@@ -218,7 +218,7 @@ function SenderChangelogger({ weekBlocks, ownerData, taskFilterThisWeek, _id, ch
       </div>
       <div className="flex flex-col w-full">
         {Object.entries(
-          logs.reverse().reduce((acc, log) => {
+          logs.reverse().reduce(({acc, log}: {acc: string, log: any}) => {
             const logDate = new Date(log.timestamp);
             const dateKey = logDate.toDateString();
             if (!acc[dateKey]) acc[dateKey] = [];
@@ -233,6 +233,8 @@ function SenderChangelogger({ weekBlocks, ownerData, taskFilterThisWeek, _id, ch
               let changes = '';
               if (log.added === true) {
                 changes += `${task?.taskTitle} has been created with the assignee ${ownerData[log.taskAssignee]?.firstName} ${ownerData[log.taskAssignee]?.lastName} it is currently`;
+              } else if (log.archived === true) {
+                changes += `${task?.taskTitle} has been archived`;
               } else if (log.action === task?.taskStatus) {
                 changes += `${task?.taskTitle}'s status has changed to `;
               } else if (log.taskPriority === task?.taskPriority) {

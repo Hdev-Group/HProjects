@@ -14,6 +14,7 @@ import type {
   FilterApi,
   FunctionReference,
 } from "convex/server";
+import type * as archiveTask from "../archiveTask.js";
 import type * as commentsender from "../commentsender.js";
 import type * as deleteProject from "../deleteProject.js";
 import type * as deleteTask from "../deleteTask.js";
@@ -45,6 +46,7 @@ import type * as updater from "../updater.js";
  * ```
  */
 declare const fullApi: ApiFromModules<{
+  archiveTask: typeof archiveTask;
   commentsender: typeof commentsender;
   deleteProject: typeof deleteProject;
   deleteTask: typeof deleteTask;
