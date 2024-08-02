@@ -210,7 +210,7 @@ function SenderChangelogger({ weekBlocks, ownerData, taskFilterThisWeek, _id, ch
     <>
 {
   Object.entries(weekBlocks).reverse().map(([weekKey, logs]) => (
-    <div className="pb-2 w-full bg-neutral-900 p-2 rounded-sm" key={weekKey}>
+    <div className="pb-2 w-full bg-neutral-900 border border-neutral-400 p-2 rounded-md" key={weekKey}>
       <div className="flex flex-col mb-3 w-full bg-neutral-400/5 p-1 rounded-md px-2">
         <h2 className="font-semibold text-xl ">
           Week of {new Date(weekKey.split('_')[0]).toLocaleDateString()} to {new Date(weekKey.split('_')[1]).toLocaleDateString()}
@@ -225,7 +225,7 @@ function SenderChangelogger({ weekBlocks, ownerData, taskFilterThisWeek, _id, ch
             acc[dateKey].push(log);
             return acc;
           }, {})
-        ).map(([dateKey, dailyLogs]) => (
+        ).reverse().map(([dateKey, dailyLogs]) => (
           <div key={dateKey}>
             <h3 className="font-semibold text-md mb-2 bg-neutral-900/20 my-2 w-full border border-transparent border-b-neutral-300/40 pb-1 ml-2">{new Date(dateKey).toLocaleDateString()}</h3>
             {dailyLogs.map(log => {
