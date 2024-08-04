@@ -104,30 +104,35 @@ export default function ProjectPage({ params }: { params: { _id: string } }) {
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-neutral-100/10 px-2">
-                      {projectTasks.map(task => (
-                        <tr key={task._id} onClick={() => taskMainMenu(task._id)} className="group transition-colors  hover:bg-neutral-500/30 cursor-pointer">
-                          <td className="py-2 px-2 text-left ml-2">{task.taskTitle}</td>
-                          <td className="py-2 text-left flex items-center gap-3">
-                            <img src={user?.imageUrl} className='h-7 w-7 rounded-full' alt="Assignee" />
-                            You
-                          </td>
-                          <td className="py-2 text-left">
-                            {task.taskPriority === 'critical' && <Critical />}
-                            {task.taskPriority === 'high' && <High />}
-                            {task.taskPriority === 'medium' && <Medium />}
-                            {task.taskPriority === 'low' && <Low />}
-                            {task.taskPriority === 'security' && <Security />}
-                            {task.taskPriority === 'Feature' && <Feature />}
-                          </td>
-                          <td className="py-2 text-left">
-                            {task.taskStatus === 'backlog' && <BackLog />}
-                            {task.taskStatus === 'todo' && <Todo />}
-                            {task.taskStatus === 'inprogress' && <InProgress />}
-                            {task.taskStatus === 'done' && <Done />}
-                          </td>
-                          <td className="py-2 text-left">{task.dueDate}</td>
-                        </tr>
-                      ))}
+                      {projectTasks.map(task => {
+                        if (task.archived) {
+                          return null; 
+                        }
+                        return (
+                          <tr key={task._id} onClick={() => taskMainMenu(task._id)} className="group transition-colors  hover:bg-neutral-500/30 cursor-pointer">
+                            <td className="py-2 px-2 text-left ml-2">{task.taskTitle}</td>
+                            <td className="py-2 text-left flex items-center gap-3">
+                              <img src={user?.imageUrl} className='h-7 w-7 rounded-full' alt="Assignee" />
+                              You
+                            </td>
+                            <td className="py-2 text-left">
+                              {task.taskPriority === 'critical' && <Critical />}
+                              {task.taskPriority === 'high' && <High />}
+                              {task.taskPriority === 'medium' && <Medium />}
+                              {task.taskPriority === 'low' && <Low />}
+                              {task.taskPriority === 'security' && <Security />}
+                              {task.taskPriority === 'Feature' && <Feature />}
+                            </td>
+                            <td className="py-2 text-left">
+                              {task.taskStatus === 'backlog' && <BackLog />}
+                              {task.taskStatus === 'todo' && <Todo />}
+                              {task.taskStatus === 'inprogress' && <InProgress />}
+                              {task.taskStatus === 'done' && <Done />}
+                            </td>
+                            <td className="py-2 text-left">{task.dueDate}</td>
+                          </tr>
+                        );
+                      })}
                     </tbody>
                   </table>
                 </div>

@@ -7,8 +7,11 @@ import { useMutation, useQuery } from "convex/react";
 import { api } from '../../../../../convex/_generated/api';
 import React, { useEffect, useState } from "react";
 import SideBar from "../../../../components/projectscontents/sidebar";
+import { useToast } from "../../../../components/ui/use-toast";
+
 
 export default function ProjectSettings({ params }) {
+  const { toast } = useToast()
   const { userId, isLoaded, isSignedIn } = useAuth();
   const { user } = useUser();
   const router = useRouter();
@@ -57,6 +60,9 @@ export default function ProjectSettings({ params }) {
   const fullname = user?.firstName + ' ' + user?.lastName;
 
   function saveJobTitle() {
+    toast({
+      description: 'Job title saved',
+    });
     addJobTitle({ userid: userId, jobtitle, projectID: params._id });
   }
 

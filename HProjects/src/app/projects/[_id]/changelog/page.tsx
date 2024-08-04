@@ -197,7 +197,9 @@ export default function ChangelogPage({ params }: { params: { _id: string } }) {
 function SenderChangelogger({ weekBlocks, ownerData, taskFilterThisWeek, _id, changelogfilter }) {
   const tasksthatweek = Object.values(weekBlocks).flat();
   const tasksholderunfiltered = useQuery(api.tasksget.get);
+  const {userId} = useAuth();
   const tasksholder = tasksholderunfiltered?.filter(task => tasksthatweek.some(log => log.taskId === task._id));
+  const jobtitlealready = useQuery(api.getjob.get);
 
   const weekStart = new Date();
   weekStart.setDate(weekStart.getDate() - 7);
@@ -210,7 +212,7 @@ function SenderChangelogger({ weekBlocks, ownerData, taskFilterThisWeek, _id, ch
     <>
 {
   Object.entries(weekBlocks).reverse().map(([weekKey, logs]) => (
-    <div className="pb-2 w-full bg-neutral-900 border border-neutral-400 p-2 rounded-md" key={weekKey}>
+    <div className="pb-2 w-full bg-neutral-900 border border-neutral-700 p-2 rounded-md" key={weekKey}>
       <div className="flex flex-col mb-3 w-full bg-neutral-400/5 p-1 rounded-md px-2">
         <h2 className="font-semibold text-xl ">
           Week of {new Date(weekKey.split('_')[0]).toLocaleDateString()} to {new Date(weekKey.split('_')[1]).toLocaleDateString()}
@@ -284,7 +286,7 @@ function SenderChangelogger({ weekBlocks, ownerData, taskFilterThisWeek, _id, ch
                       <div className="flex flex-col">
                         <div className="flex flex-col">
                           <h1 className="font-semibold">{ownerData[log.usercommited]?.firstName} {ownerData[log.usercommited]?.lastName}</h1>
-                          <p className="text-xs text-neutral-400">Lead Developer</p>
+                          <p className='text-xs text-neutral-400'>{jobtitlealready?.filter(jobtitlealready => jobtitlealready.userid === userId)[0]?.jobtitle}</p>
                         </div>
                         <div>
                           <p className="flex flex-row gap-2">{ownerData[log.usercommited]?.firstName} {ownerData[log.usercommited]?.lastName} has {hovercardchanges}{log.action === "critical" ? <Critical /> : log.action === "high" ? <High /> : log.action === "medium" ? <Medium /> : log.action === "low" ? <Low /> : log.action === "security" ? <Security /> : log.action === "feature" ? <Feature /> : log.action === "backlog" ? <BackLog /> : log.action === "todo" ? <Todo /> : log.action === "inprogress" ? <InProgress /> : log.action === "done" ? <Done /> : ""}</p>

@@ -2,6 +2,7 @@ import { Critical, High, Medium, Low, Security, Feature } from '../dropdowns/pri
 import { BackLog, Todo, InProgress, Done } from '../dropdowns/status/status';
 import { api } from '../../../convex/_generated/api';
 import { useUser } from '@clerk/nextjs';
+import { useAuth } from '@clerk/nextjs';
 import { useQuery } from "convex/react";
 import { useState, useEffect } from 'react';
 import { useMutation } from 'convex/react';
@@ -22,9 +23,11 @@ import {
   function CardFrame({ taskId, projectid, taskName, taskPriority, taskStatus, taskAssignee, taskDescription, onDragStart, onDragEnd, onDragOver, onDrop }) {
     const [assigneeData, setAssigneeData] = useState<{ firstName: string, lastName: string, imageUrl: string } | null>(null);
     const router = useRouter();
+    const {userId} = useAuth();
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [selectedTask, setSelectedTask] = useState<{ taskname: string, _taskid: string, projectid: string } | null>(null);
-    
+    const jobtitlealready = useQuery(api.getjob.get);
+
     function closeDeleteModal() {
         setShowDeleteModal(false);
     }
@@ -111,7 +114,7 @@ import {
                                                     <img src={assigneeData.imageUrl} className='w-6 h-6 rounded-full' alt="Assignee" />
                                                     <div>
                                                         <h2 className='font-semibold'>{assigneeData.firstName} {assigneeData.lastName}</h2>
-                                                        <p className='text-xs text-neutral-400'>Lead Developer</p>
+                                                        <p className='text-xs text-neutral-400'>{jobtitlealready?.filter(jobtitlealready => jobtitlealready.userid === userId)[0]?.jobtitle}</p>
                                                     </div>
                                                 </>
                                             ) : (
@@ -151,7 +154,7 @@ import {
                                                     <img src={assigneeData.imageUrl} className='w-6 h-6 rounded-full' alt="Assignee" />
                                                     <div>
                                                         <h2 className='font-semibold'>{assigneeData.firstName} {assigneeData.lastName}</h2>
-                                                        <p className='text-xs text-neutral-400'>Lead Developer</p>
+                                                        <p className='text-xs text-neutral-400'>{jobtitlealready?.filter(jobtitlealready => jobtitlealready.userid === userId)[0]?.jobtitle}</p>
                                                     </div>
                                                 </>
                                             ) : (
