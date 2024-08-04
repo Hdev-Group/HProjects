@@ -79,8 +79,9 @@ export default function ProjectSettings({ params }) {
           <div className="flex w-full justify-center bg-bglight border mt-0.5 dark:bg-bgdark rounded-l-3xl">
             <div className="max-w-10/12 w-[100%] md:p-5 flex flex-col items-center overflow-y-auto">
               <div className="flex-col w-full px-5 gap-4 justify-between mb-5 mt-5 flex">
-                <div className="flex flex-row justify-between">
+                <div className="flex flex-col gap-4 justify-between">
                   <h1 className="flex text-2xl font-bold text-black dark:text-white" id="project-settings">Project Settings</h1>
+                  <div className='w-full h-[1px] gradientedline'></div>
                 </div>
                 <div className='w-full'>
                   <div className='flex flex-col gap-3'>

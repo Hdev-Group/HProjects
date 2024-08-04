@@ -20,12 +20,12 @@ import {
     ContextMenuTrigger,
   } from "../ui/context-menu"
 
-  function CardFrame({ taskId, projectid, taskName, taskPriority, taskStatus, taskAssignee, taskDescription, onDragStart, onDragEnd, onDragOver, onDrop }) {
-    const [assigneeData, setAssigneeData] = useState<{ firstName: string, lastName: string, imageUrl: string } | null>(null);
+  function CardFrame({ taskId, projectid, taskName, taskPriority, taskStatus, taskAssignee, taskDescription, onDragStart, onDragEnd, onDragOver, onDrop }: { taskId: string, projectid: string, taskName: string, taskPriority: string, taskStatus: string, taskAssignee: string, taskDescription: string, onDragStart: (event: React.DragEvent<HTMLDivElement>, taskId: string) => void, onDragEnd: () => void, onDragOver: (event: React.DragEvent<HTMLDivElement>, status: string, position: number) => void, onDrop: (event: React.DragEvent<HTMLDivElement>, status: string) => void }) {
+    const [assigneeData, setAssigneeData] = useState<{ firstName: string, lastName: string, imageUrl: string, id: string } | null>(null);
     const router = useRouter();
     const {userId} = useAuth();
     const [showDeleteModal, setShowDeleteModal] = useState(false);
-    const [selectedTask, setSelectedTask] = useState<{ taskname: string, _taskid: string, projectid: string } | null>(null);
+    const [selectedTask, setSelectedTask] = useState<{ taskname: string, _taskid: string, projectid: string} | null>(null);
     const jobtitlealready = useQuery(api.getjob.get);
 
     function closeDeleteModal() {
@@ -114,7 +114,7 @@ import {
                                                     <img src={assigneeData.imageUrl} className='w-6 h-6 rounded-full' alt="Assignee" />
                                                     <div>
                                                         <h2 className='font-semibold'>{assigneeData.firstName} {assigneeData.lastName}</h2>
-                                                        <p className='text-xs text-neutral-400'>{jobtitlealready?.filter(jobtitlealready => jobtitlealready.userid === userId)[0]?.jobtitle}</p>
+                                                        <p className='text-xs text-neutral-400'>{jobtitlealready?.filter(jobtitlealready => jobtitlealready.userid === assigneeData.id)[0]?.jobtitle}</p>
                                                     </div>
                                                 </>
                                             ) : (
@@ -154,7 +154,7 @@ import {
                                                     <img src={assigneeData.imageUrl} className='w-6 h-6 rounded-full' alt="Assignee" />
                                                     <div>
                                                         <h2 className='font-semibold'>{assigneeData.firstName} {assigneeData.lastName}</h2>
-                                                        <p className='text-xs text-neutral-400'>{jobtitlealready?.filter(jobtitlealready => jobtitlealready.userid === userId)[0]?.jobtitle}</p>
+                                                        <p className='text-xs text-neutral-400'>{jobtitlealready?.filter(jobtitlealready => jobtitlealready.userid === assigneeData.id)[0]?.jobtitle}</p>
                                                     </div>
                                                 </>
                                             ) : (

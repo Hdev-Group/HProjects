@@ -194,7 +194,7 @@ export default function ChangelogPage({ params }: { params: { _id: string } }) {
   );
 }
 
-function SenderChangelogger({ weekBlocks, ownerData, taskFilterThisWeek, _id, changelogfilter }) {
+function SenderChangelogger({ weekBlocks, ownerData, taskFilterThisWeek, _id }: { weekBlocks: Record<string, any[]>, ownerData: Record<string, any>, taskFilterThisWeek: number, _id: string}) {
   const tasksthatweek = Object.values(weekBlocks).flat();
   const tasksholderunfiltered = useQuery(api.tasksget.get);
   const {userId} = useAuth();
@@ -238,9 +238,9 @@ function SenderChangelogger({ weekBlocks, ownerData, taskFilterThisWeek, _id, ch
               } else if (log.archived === true) {
                 changes += `${task?.taskTitle} has been archived by ${ownerData[log.usercommited]?.firstName} ${ownerData[log.usercommited]?.lastName}`;
               } else if (log.action === task?.taskStatus) {
-                changes += `${task?.taskTitle}'s status has changed to `;
+                changes += `${task?.taskTitle} status has changed to `;
               } else if (log.taskPriority === task?.taskPriority) {
-                changes += `${task?.taskTitle}'s priority has changed to `;
+                changes += `${task?.taskTitle} priority has changed to `;
               }
               let hovercardchanges = '';
               if (log.added === true) {
@@ -249,9 +249,9 @@ function SenderChangelogger({ weekBlocks, ownerData, taskFilterThisWeek, _id, ch
                 hovercardchanges += `archived ${task?.taskTitle}.`;
               }
               else if (log.action === task?.taskStatus) {
-                hovercardchanges += `changed ${task?.taskTitle}'s status to `;
+                hovercardchanges += `changed ${task?.taskTitle} status changed to `;
               } else if (log.taskPriority === task?.taskPriority) {
-                hovercardchanges += `changed ${task?.taskTitle}'s priority to `;
+                hovercardchanges += `changed ${task?.taskTitle} priority changed to `;
               }
               const assignee = ownerData[log.usercommited];
               return (
@@ -286,10 +286,10 @@ function SenderChangelogger({ weekBlocks, ownerData, taskFilterThisWeek, _id, ch
                       <div className="flex flex-col">
                         <div className="flex flex-col">
                           <h1 className="font-semibold">{ownerData[log.usercommited]?.firstName} {ownerData[log.usercommited]?.lastName}</h1>
-                          <p className='text-xs text-neutral-400'>{jobtitlealready?.filter(jobtitlealready => jobtitlealready.userid === userId)[0]?.jobtitle}</p>
+                          <p className='text-xs text-neutral-400'>{jobtitlealready?.filter(jobtitlealready => jobtitlealready.userid === ownerData[log.usercommited]?.id)[0]?.jobtitle}</p>
                         </div>
                         <div>
-                          <p className="flex flex-row gap-2">{ownerData[log.usercommited]?.firstName} {ownerData[log.usercommited]?.lastName} has {hovercardchanges}{log.action === "critical" ? <Critical /> : log.action === "high" ? <High /> : log.action === "medium" ? <Medium /> : log.action === "low" ? <Low /> : log.action === "security" ? <Security /> : log.action === "feature" ? <Feature /> : log.action === "backlog" ? <BackLog /> : log.action === "todo" ? <Todo /> : log.action === "inprogress" ? <InProgress /> : log.action === "done" ? <Done /> : ""}</p>
+                          <p className="flex flex-row gap-2">{ownerData[log.usercommited]?.firstName} {ownerData[log.usercommited]?.lastName} has {hovercardchanges}{log.action === "critical" ? "critical." : log.action === "high" ? "high." : log.action === "medium" ? "medium." : log.action === "low" ? "low." : log.action === "security" ? "security." : log.action === "feature" ? "feature." : log.action === "backlog" ? "backlog." : log.action === "todo" ? "to do." : log.action === "inprogress" ? "in progress." : log.action === "done" ? "done." : ""}</p>
                         </div>
                       </div>
                     </div>

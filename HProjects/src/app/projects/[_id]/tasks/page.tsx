@@ -89,7 +89,9 @@ export default function ProjectPage({ params }: { params: { _id: string } }) {
                   <AddTaskButton id={params._id} />
                   <HoverCard>
                     <HoverCardTrigger>
-                    <h2 className="text-sm font-semibold dark:text-neutral-300 hover:text-neutral-100 cursor-pointer transition-all text-black">✔ {totaltasksarchived} Archived</h2>
+                      <a href={`/projects/${params._id}/tasks/archived`}>  
+                        <h2 className="text-sm font-semibold dark:text-neutral-300 hover:text-neutral-100 cursor-pointer transition-all text-black">✔ {totaltasksarchived} Archived</h2>
+                      </a>
                     </HoverCardTrigger>
                     <HoverCardContent className="px-[10px] py-1">
                       <div className="w-full">
