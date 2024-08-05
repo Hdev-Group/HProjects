@@ -21,7 +21,7 @@ function ProjectsDataAdder() {
   const nonPinnedProjects = userProjects.filter(project => !project.pinned);
 
   const countTasks = (projectId) => {
-    const projectTasks = tasksholder?.filter(task => task.projectid === projectId) || [];
+    const projectTasks = tasksholder?.filter(task => task.projectid === projectId && task.archived != true) || [];
     const totalTasks = projectTasks.length;
     const incompleteTasks = projectTasks.filter(task => task.taskStatus !== 'done').length;
     return `${incompleteTasks}/${totalTasks}`;

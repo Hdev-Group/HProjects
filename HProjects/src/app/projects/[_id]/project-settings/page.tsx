@@ -84,7 +84,7 @@ export default function ProjectSettings({ params }) {
                   <div className='w-full h-[1px] gradientedline'></div>
                 </div>
                 <div className='w-full'>
-                  <div className='flex flex-col gap-3'>
+                  <div className='flex flex-col gap-3 bg-neutral-900/50 rounded-lg border px-4 p-5'>
                     <h2 className='font-semibold text-lg'>User Settings</h2>
                     <div>
                       <div>
@@ -94,17 +94,10 @@ export default function ProjectSettings({ params }) {
                             className='border rounded-md bg-transparent text-black dark:text-white p-1'
                             onChange={(e) => setJobTitle(e.target.value)}
                             value={jobtitle}
+                            maxLength={25}
                           />
                           <button onClick={saveJobTitle} className='border rounded-md bg-transparent text-black dark:text-white px-6 py-1 hover:bg-neutral-500/40 transition-all'>Save</button>
                         </div>
-                      </div>
-                      <div>
-                        <h3>Name</h3>
-                        <input type='text'
-                          className='border rounded-md bg-transparent text-black dark:text-white p-1'
-                          value={fullname}
-                          readOnly
-                        />
                       </div>
                     </div>
                   </div>

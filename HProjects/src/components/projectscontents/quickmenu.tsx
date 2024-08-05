@@ -24,7 +24,7 @@ export function QuickMenu(id: any){
         <PagerEl _id={id} />
         <ContextMenu>
         <ContextMenuTrigger>
-        <div className='flex-row flex gap-4'>
+        <div className='flex-row flex gap-3'>
         <div className='w-[40px] h-[40px] rounded-full flex flex-row'>
           <img src={userInfo?.imageUrl} alt="logo" className="w-[40px] h-[40px] rounded-full" />
         </div>

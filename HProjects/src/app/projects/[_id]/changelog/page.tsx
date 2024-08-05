@@ -36,7 +36,7 @@ export default function ChangelogPage({ params }: { params: { _id: string } }) {
     if (assignees && assignees.length > 0) {
       try {
         const query = new URLSearchParams({ userIds: assignees.join(',') }).toString();
-        const response = await fetch(`/api/getcommentuser?${query}`);
+        const response = await fetch(`/api/get-changeloggers?${query}`);
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -239,9 +239,9 @@ function SenderChangelogger({ weekBlocks, ownerData, taskFilterThisWeek, _id }: 
                 changes += `${task?.taskTitle} has been archived by ${ownerData[log.usercommited]?.firstName} ${ownerData[log.usercommited]?.lastName}`;
               } else if (log.action === task?.taskStatus) {
                 changes += `${task?.taskTitle} status has changed to `;
-              } else if (log.taskPriority === task?.taskPriority) {
-                changes += `${task?.taskTitle} priority has changed to `;
-              }
+              } if (log.taskPriority) {
+                  changes += `${task?.taskTitle} priority has changed to ${log.taskPriority}.`;
+                }
               let hovercardchanges = '';
               if (log.added === true) {
                 hovercardchanges += `created ${task?.taskTitle} with the assignee ${ownerData[log.taskAssignee]?.firstName} ${ownerData[log.taskAssignee]?.lastName} it is currently`;
@@ -249,10 +249,10 @@ function SenderChangelogger({ weekBlocks, ownerData, taskFilterThisWeek, _id }: 
                 hovercardchanges += `archived ${task?.taskTitle}.`;
               }
               else if (log.action === task?.taskStatus) {
-                hovercardchanges += `changed ${task?.taskTitle} status changed to `;
-              } else if (log.taskPriority === task?.taskPriority) {
-                hovercardchanges += `changed ${task?.taskTitle} priority changed to `;
-              }
+                hovercardchanges += `changed ${task?.taskTitle} status changed to ${log.action} `;
+              } else if (log.taskPriority) {
+                  hovercardchanges += `changed ${task?.taskTitle} priority to ${log.taskPriority}.`;
+                }
               const assignee = ownerData[log.usercommited];
               return (
                 <HoverCard key={log.id}>
@@ -274,7 +274,6 @@ function SenderChangelogger({ weekBlocks, ownerData, taskFilterThisWeek, _id }: 
                             <p className="text-xs text-neutral-400 font-semibold">{new Date(log.timestamp).toLocaleString([], { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' })}</p>
                           </div>
                           <p className="flex flex-row gap-2">{changes}
-                            {log.action === "critical" ? <Critical /> : log.action === "high" ? <High /> : log.action === "medium" ? <Medium /> : log.action === "low" ? <Low /> : log.action === "security" ? <Security /> : log.action === "feature" ? <Feature /> : log.action === "backlog" ? <BackLog /> : log.action === "todo" ? <Todo /> : log.action === "inprogress" ? <InProgress /> : log.action === "done" ? <Done /> : ""}
                           </p>
                         </div>
                       </div>
@@ -289,7 +288,7 @@ function SenderChangelogger({ weekBlocks, ownerData, taskFilterThisWeek, _id }: 
                           <p className='text-xs text-neutral-400'>{jobtitlealready?.filter(jobtitlealready => jobtitlealready.userid === ownerData[log.usercommited]?.id)[0]?.jobtitle}</p>
                         </div>
                         <div>
-                          <p className="flex flex-row gap-2">{ownerData[log.usercommited]?.firstName} {ownerData[log.usercommited]?.lastName} has {hovercardchanges}{log.action === "critical" ? "critical." : log.action === "high" ? "high." : log.action === "medium" ? "medium." : log.action === "low" ? "low." : log.action === "security" ? "security." : log.action === "feature" ? "feature." : log.action === "backlog" ? "backlog." : log.action === "todo" ? "to do." : log.action === "inprogress" ? "in progress." : log.action === "done" ? "done." : ""}</p>
+                          <p className="flex flex-row gap-2">{ownerData[log.usercommited]?.firstName} {ownerData[log.usercommited]?.lastName} has {hovercardchanges}</p>
                         </div>
                       </div>
                     </div>

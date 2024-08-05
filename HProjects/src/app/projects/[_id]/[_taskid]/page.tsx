@@ -123,12 +123,12 @@ export default function TaskFullView({ params }: { params: { _id: string, _taski
                     await logger({
                         ProjectId: _id,
                         taskId: taskid,
-                        action: status,
-                        taskPriority: priority,
-                        taskAssignee: taskAssignee,
+                        action: status !== taskStatus ? status : null,
+                        taskPriority: priority !== taskPriority ? priority : null,
+                        taskAssignee: taskAssignee !== task.taskAssignee ? taskAssignee : null,
                         usercommited: user.id,
                         timestamp: currenttime,
-                    })
+                    });
                 } catch (error) {
                     console.error("Failed to update task:", error);
                 }
