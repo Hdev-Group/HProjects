@@ -164,9 +164,9 @@ export default function PagerEl({ _id }: any) {
   if (pagerhold) {
     if (timeRemaining.includes('-')) {
       return <PagerOff />;
-    } else if (pagerhold.status === 'active') {
+    } else if (pagerhold.status === 'active' && pagerhold.projectId === _id) {
       return <PagerOnCall percentage={percentage} time={timeRemaining} paramsmain={paramsmain} />;
-    } else if (pagerhold.status === 'break') {
+    } else if (pagerhold.status === 'break' && pagerhold.projectId === _id) {
       return <PagerOnBreak percentage={percentage} />;
     } else {
       return <PagerOff />;

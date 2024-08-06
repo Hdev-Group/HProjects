@@ -77,7 +77,7 @@ export default function ProjectPage({ params }: { params: { _id: string } }) {
                 <h1 className="flex text-2xl font-bold text-black dark:text-white" id="tasksproject">Archived Tasks</h1>
                 <div className='w-full h-[1px] gradientedline'></div>
                 <div className="w-full flex ">
-                test
+                
               </div>
               </div>
             </div>

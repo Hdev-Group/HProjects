@@ -15,8 +15,8 @@ import {
 export function QuickMenu(id: any){
   const { userId } = useAuth();
   const jobtitlealready = useQuery(api.getjob.get);
+  const { signOut } = useClerk();
 
-    const { user } = useClerk();
     const { user: userInfo } = useUser();
 
     return (
@@ -41,9 +41,9 @@ export function QuickMenu(id: any){
             </Link>
           </ContextMenuItem>
           <ContextMenuItem>
-            <Link href='/logout'>
+            <div onClick={() => signOut({ redirectUrl: '/' })}>
               Logout
-            </Link>
+            </div>
           </ContextMenuItem>
         </ContextMenuContent>
         </ContextMenu>

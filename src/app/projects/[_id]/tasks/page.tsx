@@ -26,7 +26,7 @@ export default function ProjectPage({ params }: { params: { _id: string } }) {
   const _id = params._id;
 
   const tasksget = useQuery(api.tasks.get);
-  const totaltasksarchived = tasksget?.filter(task => task.archived === true).length ?? 0;
+  const totaltasksarchived = tasksget?.filter(task => task.archived === true && task.projectid === _id).length ?? 0;
 
 
   const [taskFilter, setTaskFilter] = useState('');
@@ -96,7 +96,7 @@ export default function ProjectPage({ params }: { params: { _id: string } }) {
                     <HoverCardContent className="px-[10px] py-1">
                       <div className="w-full">
                         <div className="pb-1 w-full font-semibold ">Tasks Archived</div>
-                          {tasksget?.filter(task => task.archived === true).map((task, index) => (
+                          {tasksget?.filter(task => task.archived === true && task.projectid === _id).map((task, index) => (
                             <div>
                               <h1 key={index}>{task.taskTitle}</h1>
                             </div>
