@@ -25,7 +25,6 @@ export async function GET(request: Request) {
       // Fetch the user data from Clerk API
       const user = await clerkClient.users.getUser(id);
       // Cache the user data
-      userCache.set(id, user);
 
       // Return only the desired fields
       return {
