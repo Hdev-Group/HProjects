@@ -195,7 +195,28 @@ export default function TaskFullView({ params }: { params: { _id: string, _taski
         }
     }
 
-    const title = taskName + ' | Task Details';
+    const title = taskName + projectname + ' | Task Details';
+    function taskunarchive() {
+        const currenttime = new Date().toISOString();
+        const updateTask = async () => {
+            try {
+                await editTaskMutation({
+                    _id: taskid,
+                    archived: false
+                });
+                await logger({
+                    ProjectId: _id,
+                    taskId: taskid,
+                    action: 'unarchived',
+                    usercommited: user.id,
+                    timestamp: currenttime,
+                });
+            } catch (error) {
+                console.error("Failed to update task:", error);
+            }
+        };
+        updateTask();
+    }
     return (
         <>
             <head>
@@ -212,9 +233,9 @@ export default function TaskFullView({ params }: { params: { _id: string, _taski
                     <div className="flex-row w-full px-5 justify-between mb-5 mt-5 flex">
                                 <div className='flex flex-col w-full gap-4 items-center '>
                                     <div className="flex w-full md:w-10/12 pt-4 gap-4 flex-col md:flex-row justify-between">
-                                        <div className='w-max flex flex-col gap-5 '>
+                                        <div className='w-full flex flex-col'>
+                                            {archived && <div className='font-semibold medium w-full rounded-md px-5 py-2 cursor-pointer hover:bg-orange-200/30 transition-all hover:border-orange-600' onClick={taskunarchive}><h1 className="text-2xl">{taskName} is archived</h1> <p className="font-normal text-xs">Click here to unarchive</p></div>}
                                         <div className='flex flex-row gap-3 mt-3 items-center h-8 w-50'>
-                                        {archived && <div className='font-semibold medium rounded-md p-1'><h1>{taskName} is archived</h1> <p className="font-normal text-xs">Click here to unarchive</p></div>}
                                             {!archived &&
                                             <>
                                              <div className='flex justify-center items-center cursor-pointer hover:bg-neutral-500/60 bg-neutral-500/20 border hover:border-neutral-300 h-7 p-0.5 rounded-lg w-7 transition-all' onClick={edittask}>
