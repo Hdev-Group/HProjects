@@ -33,13 +33,6 @@ export default function Pager({ params }: { params: { _id: string, slug: string[
         }
     }, [isLoaded, isSignedIn, projectsholder, project, projectUserId, userId, router]);
 
-
-
-    const createPager = () => {
-        console.log('Create pager function triggered');
-        // Add your function logic here
-    };
-
     if (!isLoaded || !projectsholder) {
         return <div>Loading...</div>;
     }

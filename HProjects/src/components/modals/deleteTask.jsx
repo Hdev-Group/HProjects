@@ -1,9 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { api } from '../../../convex/_generated/api';
+import { useAuth } from '@clerk/nextjs';
 import { useMutation } from 'convex/react';
 
-function DeleteTask({ taskname, _taskid, onClose }) {
-    const deleteTaskMutation = useMutation(api.deleteTask.deleteTask);
+function ArchiveTask({ taskname, _taskid, onClose, projectid }) {
+    const archiveTaskMutation = useMutation(api.archiveTask.Task);
+    const logtask = useMutation(api.updater.logger);
+    const { userId } = useAuth();
+
     const [showDeleteModal, setShowDeleteModal] = useState(true);
     function closeDeleteModal() {
         setShowDeleteModal(false);
@@ -33,7 +37,9 @@ function DeleteTask({ taskname, _taskid, onClose }) {
       }, [onClose]);
     const handleDeleteTask = async () => {
         try {
-            await deleteTaskMutation({ id: _taskid });
+            await archiveTaskMutation({ _id: _taskid, archived: true, projectid: projectid });
+            // log archive task
+            await logtask({ taskId: _taskid, archived: true, usercommited: userId, ProjectId: projectid, timestamp: new Date().toISOString() });
             onClose();
         } catch (error) {
             console.error(`Failed to delete task with ID ${_taskid}:`, error);
@@ -64,4 +70,5 @@ function DeleteTask({ taskname, _taskid, onClose }) {
         </div>
     )
 }
-export default DeleteTask;
+
+export default ArchiveTask;

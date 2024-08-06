@@ -36,7 +36,7 @@ export default function ChangelogPage({ params }: { params: { _id: string } }) {
     if (assignees && assignees.length > 0) {
       try {
         const query = new URLSearchParams({ userIds: assignees.join(',') }).toString();
-        const response = await fetch(`/api/getcommentuser?${query}`);
+        const response = await fetch(`/api/get-changeloggers?${query}`);
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -194,10 +194,12 @@ export default function ChangelogPage({ params }: { params: { _id: string } }) {
   );
 }
 
-function SenderChangelogger({ weekBlocks, ownerData, taskFilterThisWeek, _id, changelogfilter }) {
+function SenderChangelogger({ weekBlocks, ownerData, taskFilterThisWeek, _id }: { weekBlocks: Record<string, any[]>, ownerData: Record<string, any>, taskFilterThisWeek: number, _id: string}) {
   const tasksthatweek = Object.values(weekBlocks).flat();
   const tasksholderunfiltered = useQuery(api.tasksget.get);
+  const {userId} = useAuth();
   const tasksholder = tasksholderunfiltered?.filter(task => tasksthatweek.some(log => log.taskId === task._id));
+  const jobtitlealready = useQuery(api.getjob.get);
 
   const weekStart = new Date();
   weekStart.setDate(weekStart.getDate() - 7);
@@ -210,7 +212,7 @@ function SenderChangelogger({ weekBlocks, ownerData, taskFilterThisWeek, _id, ch
     <>
 {
   Object.entries(weekBlocks).reverse().map(([weekKey, logs]) => (
-    <div className="pb-2 w-full bg-neutral-900 p-2 rounded-sm" key={weekKey}>
+    <div className="pb-2 w-full bg-neutral-900 border border-neutral-700 p-2 rounded-md" key={weekKey}>
       <div className="flex flex-col mb-3 w-full bg-neutral-400/5 p-1 rounded-md px-2">
         <h2 className="font-semibold text-xl ">
           Week of {new Date(weekKey.split('_')[0]).toLocaleDateString()} to {new Date(weekKey.split('_')[1]).toLocaleDateString()}
@@ -225,7 +227,7 @@ function SenderChangelogger({ weekBlocks, ownerData, taskFilterThisWeek, _id, ch
             acc[dateKey].push(log);
             return acc;
           }, {})
-        ).map(([dateKey, dailyLogs]) => (
+        ).reverse().map(([dateKey, dailyLogs]) => (
           <div key={dateKey}>
             <h3 className="font-semibold text-md mb-2 bg-neutral-900/20 my-2 w-full border border-transparent border-b-neutral-300/40 pb-1 ml-2">{new Date(dateKey).toLocaleDateString()}</h3>
             {dailyLogs.map(log => {
@@ -233,24 +235,29 @@ function SenderChangelogger({ weekBlocks, ownerData, taskFilterThisWeek, _id, ch
               let changes = '';
               if (log.added === true) {
                 changes += `${task?.taskTitle} has been created with the assignee ${ownerData[log.taskAssignee]?.firstName} ${ownerData[log.taskAssignee]?.lastName} it is currently`;
+              } else if (log.archived === true) {
+                changes += `${task?.taskTitle} has been archived by ${ownerData[log.usercommited]?.firstName} ${ownerData[log.usercommited]?.lastName}`;
               } else if (log.action === task?.taskStatus) {
-                changes += `${task?.taskTitle}'s status has changed to `;
-              } else if (log.taskPriority === task?.taskPriority) {
-                changes += `${task?.taskTitle}'s priority has changed to `;
-              }
+                changes += `${task?.taskTitle} status has changed to `;
+              } if (log.taskPriority) {
+                  changes += `${task?.taskTitle} priority has changed to ${log.taskPriority}.`;
+                }
               let hovercardchanges = '';
               if (log.added === true) {
                 hovercardchanges += `created ${task?.taskTitle} with the assignee ${ownerData[log.taskAssignee]?.firstName} ${ownerData[log.taskAssignee]?.lastName} it is currently`;
-              } else if (log.action === task?.taskStatus) {
-                hovercardchanges += `changed ${task?.taskTitle}'s status to `;
-              } else if (log.taskPriority === task?.taskPriority) {
-                hovercardchanges += `changed ${task?.taskTitle}'s priority to `;
+              } else if (log.archived === true) {
+                hovercardchanges += `archived ${task?.taskTitle}.`;
               }
+              else if (log.action === task?.taskStatus) {
+                hovercardchanges += `changed ${task?.taskTitle} status changed to ${log.action} `;
+              } else if (log.taskPriority) {
+                  hovercardchanges += `changed ${task?.taskTitle} priority to ${log.taskPriority}.`;
+                }
               const assignee = ownerData[log.usercommited];
               return (
                 <HoverCard key={log.id}>
                   <HoverCardTrigger>
-                    <a href={`/projects/${_id}/${task._id}`}>
+                    <a href={`/projects/${_id}/${task?._id}`}>
                       <div className="log-entry mt-2">
                         <div className="flex flex-col gap-1 bg-neutral-800/20 p-2 rounded-md cursor-pointer hover:bg-neutral-600/20 transition-all">
                           <div className="gap-3 flex flex-row items-center">
@@ -267,7 +274,6 @@ function SenderChangelogger({ weekBlocks, ownerData, taskFilterThisWeek, _id, ch
                             <p className="text-xs text-neutral-400 font-semibold">{new Date(log.timestamp).toLocaleString([], { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' })}</p>
                           </div>
                           <p className="flex flex-row gap-2">{changes}
-                            {log.action === "critical" ? <Critical /> : log.action === "high" ? <High /> : log.action === "medium" ? <Medium /> : log.action === "low" ? <Low /> : log.action === "security" ? <Security /> : log.action === "feature" ? <Feature /> : log.action === "backlog" ? <BackLog /> : log.action === "todo" ? <Todo /> : log.action === "inprogress" ? <InProgress /> : log.action === "done" ? <Done /> : ""}
                           </p>
                         </div>
                       </div>
@@ -278,11 +284,11 @@ function SenderChangelogger({ weekBlocks, ownerData, taskFilterThisWeek, _id, ch
                       <img src={assignee?.imageUrl} className="w-8 h-8 rounded-full mt-2" alt={`${assignee?.firstName} ${assignee?.lastName}`} />
                       <div className="flex flex-col">
                         <div className="flex flex-col">
-                          <h1 className="font-semibold">{assignee?.firstName} {assignee?.lastName}</h1>
-                          <p className="text-xs text-neutral-400">Lead Developer</p>
+                          <h1 className="font-semibold">{ownerData[log.usercommited]?.firstName} {ownerData[log.usercommited]?.lastName}</h1>
+                          <p className='text-xs text-neutral-400'>{jobtitlealready?.filter(jobtitlealready => jobtitlealready.userid === ownerData[log.usercommited]?.id)[0]?.jobtitle}</p>
                         </div>
                         <div>
-                          <p className="flex flex-row gap-2">{assignee?.firstName} has {hovercardchanges}{log.action === "critical" ? <Critical /> : log.action === "high" ? <High /> : log.action === "medium" ? <Medium /> : log.action === "low" ? <Low /> : log.action === "security" ? <Security /> : log.action === "feature" ? <Feature /> : log.action === "backlog" ? <BackLog /> : log.action === "todo" ? <Todo /> : log.action === "inprogress" ? <InProgress /> : log.action === "done" ? <Done /> : ""}</p>
+                          <p className="flex flex-row gap-2">{ownerData[log.usercommited]?.firstName} {ownerData[log.usercommited]?.lastName} has {hovercardchanges}</p>
                         </div>
                       </div>
                     </div>

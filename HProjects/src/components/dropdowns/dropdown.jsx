@@ -60,7 +60,9 @@ function DropdownMenuMain({ id, pname, pinned }) {
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="absolute top-[-9rem] left-[13rem]">
                     <ToastDemo />
-                    <DropdownMenuItem className='cursor-pointer'>Settings</DropdownMenuItem>
+                    <DropdownMenuItem className='cursor-pointer'>
+                        <a className='w-full' href={`/projects/${id}/project-settings`}>Settings</a>
+                    </DropdownMenuItem>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem className="text-red-400 cursor-pointer" onClick={deleteclick} id={`delete${id}`}>
                         Delete

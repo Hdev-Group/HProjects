@@ -14,7 +14,6 @@ export async function GET(request: Request) {
 
   const userIdArray = userIds.split(',');
 
-
   try {
     const users = await Promise.all(userIdArray.map(async (id) => {
       // Check if the user data is already cached
@@ -24,7 +23,9 @@ export async function GET(request: Request) {
 
       // Fetch the user data from Clerk API
       const user = await clerkClient.users.getUser(id);
+
       // Cache the user data
+      userCache.set(id, user);
 
       // Return only the desired fields
       return {

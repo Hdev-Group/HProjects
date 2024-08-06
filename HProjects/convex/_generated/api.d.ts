@@ -14,11 +14,13 @@ import type {
   FilterApi,
   FunctionReference,
 } from "convex/server";
+import type * as archiveTask from "../archiveTask.js";
 import type * as commentsender from "../commentsender.js";
 import type * as deleteProject from "../deleteProject.js";
 import type * as deleteTask from "../deleteTask.js";
 import type * as draganddrop from "../draganddrop.js";
 import type * as getcomments from "../getcomments.js";
+import type * as getjob from "../getjob.js";
 import type * as getlogs from "../getlogs.js";
 import type * as getreplys from "../getreplys.js";
 import type * as idgetprojects from "../idgetprojects.js";
@@ -35,6 +37,7 @@ import type * as tasksget from "../tasksget.js";
 import type * as taskssender from "../taskssender.js";
 import type * as taskupdate from "../taskupdate.js";
 import type * as updater from "../updater.js";
+import type * as users from "../users.js";
 
 /**
  * A utility for referencing Convex functions in your app's API.
@@ -45,11 +48,13 @@ import type * as updater from "../updater.js";
  * ```
  */
 declare const fullApi: ApiFromModules<{
+  archiveTask: typeof archiveTask;
   commentsender: typeof commentsender;
   deleteProject: typeof deleteProject;
   deleteTask: typeof deleteTask;
   draganddrop: typeof draganddrop;
   getcomments: typeof getcomments;
+  getjob: typeof getjob;
   getlogs: typeof getlogs;
   getreplys: typeof getreplys;
   idgetprojects: typeof idgetprojects;
@@ -66,6 +71,7 @@ declare const fullApi: ApiFromModules<{
   taskssender: typeof taskssender;
   taskupdate: typeof taskupdate;
   updater: typeof updater;
+  users: typeof users;
 }>;
 export declare const api: FilterApi<
   typeof fullApi,

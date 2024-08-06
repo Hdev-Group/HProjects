@@ -15,8 +15,15 @@ export default function CommentBoxer({ taskId }: { taskId: string }) {
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const [showReplyDropdown, setShowReplyDropdown] = useState<string | null>(null);
 
+  // Extract user IDs from comments
   const commenterIds = filteredComments?.map((comment: any) => comment?.userId) || [];
-  const uniqueCommenterIds = Array.from(new Set(commenterIds));
+
+  // Extract user IDs from replies
+  const replys = useQuery(api.getreplys.get);
+  const replyUserIds = replys?.map((reply: any) => reply?.userId) || [];
+
+  // Combine and deduplicate all user IDs
+  const uniqueUserIds = Array.from(new Set([...commenterIds, ...replyUserIds]));
 
   const replydropdown = (id: any) => {
     if (showReplyDropdown === id) {
@@ -29,6 +36,7 @@ export default function CommentBoxer({ taskId }: { taskId: string }) {
   const fetchCommenterData = useCallback(async (ids: string[]) => {
     if (ids.length > 0) {
       try {
+        console.log('Fetching user data for IDs:', ids);
         const response = await fetch(`/api/getcommentuser?userIds=${ids.join(',')}`);
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
@@ -41,32 +49,39 @@ export default function CommentBoxer({ taskId }: { taskId: string }) {
         setCommenterData(dataById);
         setDataLoaded(true);
       } catch (error) {
-        console.error('Error fetching commenter data:', error);
+        console.error('Error fetching user data:', error);
         setCommenterData({});
       }
     }
   }, []);
 
   useEffect(() => {
-    if (!dataLoaded && uniqueCommenterIds.length > 0) {
-      fetchCommenterData(uniqueCommenterIds);
+    if (!dataLoaded && uniqueUserIds.length > 0) {
+      fetchCommenterData(uniqueUserIds);
     }
-  }, [uniqueCommenterIds, fetchCommenterData, dataLoaded]);
+  }, [uniqueUserIds, fetchCommenterData, dataLoaded]);
 
   const sendReplyMutation = useMutation(api.replysender.add);
 
-  const ReplyChecker = ({ commentdata, userId }: { commentdata: any, userId: string }) => {
-    const replys = useQuery(api.getreplys.get);
+  const ReplyChecker = ({ commentdata }: { commentdata: any }) => {
     const filteredReplys = replys?.filter((reply: any) => reply.commentId === commentdata._id);
+  
+    if (!filteredReplys || filteredReplys.length === 0) return null;
   
     return (
       <div className="flex flex-col gap-4 relative ml-3 p-1 pl-5 w-full dark:text-white text-black">
         <div className="flex flex-col gap-4 w-full overflow-y-auto replys">
-          {filteredReplys?.map((reply: any) => (
-            <div key={reply._id} className="flex flex-col gap-3 justify-center relative ">
-              <div className="flex flex-row items-center gap-3 ">
-                <img src={commenterData[reply.userId]?.imageUrl} alt={commenterData[reply.userId]?.firstName} className='w-8 h-8 z-10 rounded-full' />
-                <h2 className="font-semi-bold">{commenterData[reply.userId]?.firstName} {commenterData[reply.userId]?.lastName}</h2>
+          {filteredReplys.map((reply: any) => (
+            <div key={reply._id} className="flex flex-col gap-3 justify-center relative">
+              <div className="flex flex-row items-center gap-3">
+                <img
+                  src={commenterData[reply.userId]?.imageUrl || '/default-avatar.png'} // Provide a fallback image
+                  alt={`${commenterData[reply.userId]?.firstName} ${commenterData[reply.userId]?.lastName}`}
+                  className="w-8 h-8 z-10 rounded-full"
+                />
+                <h2 className="font-semi-bold">
+                  {commenterData[reply.userId]?.firstName || 'Unknown'} {commenterData[reply.userId]?.lastName || ''}
+                </h2>
               </div>
               <p className="ml-11">{reply.CommenterMessage}</p>
             </div>
@@ -77,7 +92,6 @@ export default function CommentBoxer({ taskId }: { taskId: string }) {
   };
 
   const CommentReply = ({ commentdata }: { commentdata: any }) => {
-
     const textareaRef = useRef<HTMLTextAreaElement>(null);
 
     async function SendReply(id: any) {
@@ -86,9 +100,6 @@ export default function CommentBoxer({ taskId }: { taskId: string }) {
         const reply = textarea.value;
         if (reply) {
           await sendReplyMutation({ commentId: commentdata._id, taskId: commentdata.taskId, userId: userId!, CommenterMessage: reply });
-          console.log(reply);
-          console.log(userId);
-          console.log(id);
           textarea.value = '';
         }
       }
@@ -130,7 +141,6 @@ export default function CommentBoxer({ taskId }: { taskId: string }) {
   };
 
   const emojipopup = () => {
-    console.log('emoji');
     setShowEmojiPicker(!showEmojiPicker);
   };
 
@@ -211,7 +221,6 @@ export default function CommentBoxer({ taskId }: { taskId: string }) {
       </div>
     </div>
   );
-
   function formatTime(creationTime: string): JSX.Element {
     const datenow = Date.now();
     const creationDate = new Date(creationTime);

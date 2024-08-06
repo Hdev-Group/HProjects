@@ -39,4 +39,8 @@ export default defineSchema({
     taskAssignee: v.optional(v.string()),
     timestamp: v.string(),
   }),
+  users: defineTable({
+    userid: v.string(),
+    jobtitle: v.string(),
+  }).unique("userid"), // Ensure userid is unique  
 });

@@ -2,6 +2,8 @@ import { useEffect } from 'react';
 import Image from 'next/image';
 import { useClerk, useUser, UserButton } from '@clerk/clerk-react';
 import Link from 'next/link';
+import Router from 'next/router';
+
 import '../../styles/globals.css';
 
 const DashboardHeader = ({ activeSection, onSectionChange }) => {
@@ -32,7 +34,52 @@ const DashboardHeader = ({ activeSection, onSectionChange }) => {
     return document.getElementById(id) !== null;
   };
 
+  useEffect(() => {
+    const loaderbar = document.getElementById('loaderbar');
+
+    const startLoading = () => {
+      if (loaderbar) {
+        loaderbar.style.transition = 'none';
+        loaderbar.style.width = '0%';
+        setTimeout(() => {
+          loaderbar.style.transition = 'width 0.5s ease';
+          loaderbar.style.width = '100%';
+        }, 50);
+      }
+    };
+
+    const stopLoading = () => {
+      if (loaderbar) {
+        loaderbar.style.width = '100%';
+        setTimeout(() => {
+          loaderbar.style.transition = 'width 0.5s ease, opacity 0.5s ease';
+          loaderbar.style.opacity = '0';
+          setTimeout(() => {
+            loaderbar.style.width = '0%';
+            loaderbar.style.opacity = '1';
+          }, 500);
+        }, 200); // Optional delay to show 100% width momentarily
+      }
+    };
+
+    Router.events.on('routeChangeStart', startLoading);
+    Router.events.on('routeChangeComplete', stopLoading);
+    Router.events.on('routeChangeError', stopLoading);
+
+    return () => {
+      Router.events.off('routeChangeStart', startLoading);
+      Router.events.off('routeChangeComplete', stopLoading);
+      Router.events.off('routeChangeError', stopLoading);
+    };
+  }, []);
+
   return (
+    <>
+      <div
+        id="loaderbar"
+        className="h-0.5 bg-blue-600 fixed top-0 left-0 z-50"
+        style={{ width: '0%', opacity: 1 }}
+      />
     <header className={`fixed flex-col top-[0px] max-[460px]:block bg-bglightbars dark:bg-bgdarkbars sm:block md:flex left-0 right-0 z-50 flex items-center justify-center p-8 transition-colors  duration-300 ${user ? '' : ''}`}>
       <div className="flex flex-row items-center gap-10 justify-between md:w-[100%]">
         <div className="flex items-center justify-center g-5">
@@ -78,6 +125,7 @@ const DashboardHeader = ({ activeSection, onSectionChange }) => {
         </div>
       </div>
     </header>
+    </>
   );
 };
 
