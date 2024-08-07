@@ -77,7 +77,7 @@ export default function PagerEl({ _id }: any) {
     </ContextMenu>
     );
   }
-  function PagerOnCall({ percentage, time }: { percentage: number, time: string, paramsmain: { _id: string } }) {
+  function PagerOnCall({ percentage, time, paramsmain }: { percentage: number, time: string, paramsmain: { _id: string } }) {
     const { userId } = useAuth();
     const mutatebreak = useMutation(api.pagerupdate.editpager);
     
@@ -161,16 +161,15 @@ export default function PagerEl({ _id }: any) {
     }
   }, [pagerhold]);
 
-  if (pagerhold) {
+  if (pagerhold && paramsmain.id === pagerhold.projectid) {
     if (timeRemaining.includes('-')) {
       return <PagerOff />;
-    } else if (pagerhold.status === 'active' && pagerhold.projectId === _id) {
+    } else if (pagerhold.status === 'active') {
       return <PagerOnCall percentage={percentage} time={timeRemaining} paramsmain={paramsmain} />;
-    } else if (pagerhold.status === 'break' && pagerhold.projectId === _id) {
+    } else if (pagerhold.status === 'break') {
       return <PagerOnBreak percentage={percentage} />;
-    } else {
+    } else 
       return <PagerOff />;
-    }
   } else {
     return <PagerOff />;
   }
