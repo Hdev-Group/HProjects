@@ -10,6 +10,11 @@ import {
 import {
     BackLog, Todo, InProgress, Done,
 } from '../../../../components/dropdowns/status/status';
+import {
+    HoverCard,
+    HoverCardContent,
+    HoverCardTrigger,
+  } from "../../../../components/ui/hover-card";
 import SideBar from "../../../../components/projectscontents/sidebar";
 import BreadcrumbWithCustomSeparator from "../../../../components/tasks/breadcrumb";
 import ArchiveTask from '../../../../components/modals/deleteTask';
@@ -22,6 +27,7 @@ export default function TaskFullView({ params }: { params: { _id: string, _taski
     const { userId, isLoaded, isSignedIn } = useAuth();
     const { user } = useUser();
     const router = useRouter();
+    const jobtitlealready = useQuery(api.getjob.get);
     const projectsholder = useQuery(api.projectsget.get);
     const project = projectsholder?.find(project => project._id === params._id);
     const tasks = useQuery(api.tasks.get);
@@ -87,6 +93,7 @@ export default function TaskFullView({ params }: { params: { _id: string, _taski
                         throw new Error(`HTTP error! status: ${response.status}`);
                     }
                     const data = await response.json();
+                    console.log(data);
                     setCreatorData(data);
                 } catch (error) {
                     console.error('Error fetching creator data:', error);
@@ -196,6 +203,7 @@ export default function TaskFullView({ params }: { params: { _id: string, _taski
     }
 
     const title = taskName + projectname + ' | Task Details';
+
     function taskunarchive() {
         const currenttime = new Date().toISOString();
         const updateTask = async () => {
@@ -294,10 +302,26 @@ export default function TaskFullView({ params }: { params: { _id: string, _taski
                                                 </div>                                        
                                                 <div className='flex flex-col gap-1'>
                                                     <p className='font-bold dark:text-white text-black'>Task Created By:</p>
-                                                    <div className='flex items-center gap-2'>
-                                                        <img src={creatorData?.imageUrl} className='w-8 h-8 rounded-full' alt="Assignee" id='loadingidassignee' />
-                                                        <p className='font-semibold dark:text-white text-black' id='loadingidassigneenames'>{creatorData?.firstName} {creatorData?.lastName}</p>
-                                                    </div>
+                                                    <HoverCard>
+                                                        <HoverCardTrigger>
+                                                            <div className='flex items-center gap-2'>
+                                                                <img src={creatorData?.imageUrl} className='w-8 h-8 rounded-full' alt="Assignee" id='loadingidassignee' />
+                                                                <p className='font-semibold dark:text-white text-black' id='loadingidassigneenames'>{creatorData?.firstName} {creatorData?.lastName}</p>
+                                                            </div>
+                                                        </HoverCardTrigger>
+                                                        <HoverCardContent className='p-2 min-w-[400px] w-max'>
+                                                            <div className='flex flex-col justify-center w-full gap-5'>
+                                                                <div className="flex flex-row items-center gap-2">
+                                                                <img src={creatorData?.imageUrl} className='w-8 h-8 rounded-full' alt="Assignee" />
+                                                                <div>
+                                                                    <p className='font-semibold dark:text-white text-black'>{creatorData?.firstName} {creatorData?.lastName}</p>
+                                                                    <p className='text-xs text-neutral-400'>{jobtitlealready?.filter(jobtitlealready => jobtitlealready.userid === creatorData?.id)[0]?.jobtitle}</p>
+                                                                </div>
+                                                                </div>
+                                                                <input type='text' placeholder={`Send a quick message to ${creatorData?.firstName}`} className='w-full text-sm dark:bg-neutral-800 bg-white border border-neutral-300 dark:border-neutral-700 rounded-md p-1' />
+                                                            </div>
+                                                        </HoverCardContent>
+                                                    </HoverCard>
                                                 </div>
                                                 <div className='flex flex-col gap-1'>
                                                     <p className='font-bold dark:text-white text-black'>Assignee:</p>

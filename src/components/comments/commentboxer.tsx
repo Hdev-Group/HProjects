@@ -79,7 +79,7 @@ export default function CommentBoxer({ taskId }: { taskId: string }) {
                   alt={`${commenterData[reply.userId]?.firstName} ${commenterData[reply.userId]?.lastName}`}
                   className="w-8 h-8 z-10 rounded-full"
                 />
-                <h2 className="font-semi-bold">
+                <h2 className="font-semibold text-xs">
                   {commenterData[reply.userId]?.firstName || 'Unknown'} {commenterData[reply.userId]?.lastName || ''}
                 </h2>
               </div>

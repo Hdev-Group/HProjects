@@ -53,7 +53,7 @@ export default function MainDMs({ params }: { params: { _id: string } }) {
     return <div>Unauthorized</div>;
   }
 
-  const title = projectname + ' | Chat';
+  const title = projectname + ' | Direct Messages';
 
   return (
     <>
