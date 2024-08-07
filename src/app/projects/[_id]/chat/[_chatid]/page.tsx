@@ -52,8 +52,8 @@ export default function MainDMs({ params }: { params: { _id: string } }) {
   if (!(projectUserId === userId || project.otherusers.includes(userId))) {
     return <div>Unauthorized</div>;
   }
-
-  const title = projectname + ' | Chat';
+  const userfirstname = user?.firstName;
+  const title = userfirstname + ' | Direct Messages';
 
   return (
     <>
@@ -76,8 +76,11 @@ export default function MainDMs({ params }: { params: { _id: string } }) {
                       </div>
                     </div>
               <div className="flex-col w-full gap-4 px-5 h-full justify-between mb-5 mt-5 flex">
-                <div className="flex flex-col gap-3 justify-end w-full h-full">
-                    <input type="text" placeholder={`Type a message to ${user?.firstName}`} className="w-full h-10 border bg-transparent border-neutral-600/40 rounded-lg px-3 py-2" />
+                <div className="flex flex-col justify-end h-full">
+                  <div className="flex overflow-x-hidden flex-row border bg-transparent items-center border-neutral-600/40 rounded-lg w-full">
+                      <input type="text" placeholder={`Type a message to ${user?.firstName}`} className="w-full px-3 bg-transparent h-10" />
+                      <button className="h-full bg-blue-500 w-10 flex items-center justify-center"><svg xmlns="http://www.w3.org/2000/svg" className="w-5 flex" viewBox="0 0 24 24" fill="currentColor"><path d="M1.94619 9.31543C1.42365 9.14125 1.41953 8.86022 1.95694 8.68108L21.0431 2.31901C21.5716 2.14285 21.8747 2.43866 21.7266 2.95694L16.2734 22.0432C16.1224 22.5716 15.8178 22.59 15.5945 22.0876L12 14L18 6.00005L10 12L1.94619 9.31543Z"></path></svg></button>
+                  </div>
                 </div>
               </div>
               </div>
