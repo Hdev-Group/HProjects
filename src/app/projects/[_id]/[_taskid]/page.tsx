@@ -22,6 +22,7 @@ import CommentBox from '../../../../components/comments/commentbox';
 import CommentBoxer from '../../../../components/comments/commentboxer';
 import PriorityStatus from '../../../../components/dropdowns/priority';
 import StatusTime from '../../../../components/dropdowns/status';
+import QuickChat from '../../../../components/quickchat/quickchat';
 
 export default function TaskFullView({ params }: { params: { _id: string, _taskid: string } }) {
     const { userId, isLoaded, isSignedIn } = useAuth();
@@ -93,7 +94,6 @@ export default function TaskFullView({ params }: { params: { _id: string, _taski
                         throw new Error(`HTTP error! status: ${response.status}`);
                     }
                     const data = await response.json();
-                    console.log(data);
                     setCreatorData(data);
                 } catch (error) {
                     console.error('Error fetching creator data:', error);
@@ -318,7 +318,7 @@ export default function TaskFullView({ params }: { params: { _id: string, _taski
                                                                     <p className='text-xs text-neutral-400'>{jobtitlealready?.filter(jobtitlealready => jobtitlealready.userid === creatorData?.id)[0]?.jobtitle}</p>
                                                                 </div>
                                                                 </div>
-                                                                <input type='text' placeholder={`Send a quick message to ${creatorData?.firstName}`} className='w-full text-sm dark:bg-neutral-800 bg-white border border-neutral-300 dark:border-neutral-700 rounded-md p-1' />
+                                                                <QuickChat userId={creatorData?.id} userfirst={creatorData?.firstName} />
                                                             </div>
                                                         </HoverCardContent>
                                                     </HoverCard>
