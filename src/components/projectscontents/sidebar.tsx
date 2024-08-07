@@ -3,6 +3,8 @@ import Link from 'next/link';
 import { IncidentDeclaration } from './incidentdec';
 import { QuickMenu } from './quickmenu';
 import '../../styles/globals.css';
+import { AppProgressBar as ProgressBar } from 'next-nprogress-bar';
+
 
 interface SideBarProps {
   activeSection: string;
@@ -11,41 +13,17 @@ interface SideBarProps {
 }
 
 function SideBar({ activeSection, _id, projectname }: SideBarProps) {
-  useEffect(() => {
-    const loaderbar = document.getElementById('loaderbar');
-
-    if (loaderbar) {
-      loaderbar.style.width = '0%'; // Start the loading bar animation
-      loaderbar.style.opacity = '1';  // Ensure the loading bar is visible
-
-      const animateLoaderBar = () => {
-        loaderbar.style.width = '100%';
-
-        setTimeout(() => {
-          loaderbar.style.width = '0%';
-          loaderbar.style.opacity = '0';
-        }, 500);
-      };
-
-      animateLoaderBar();
-
-      const interval = setInterval(animateLoaderBar, 2000);
-
-      return () => {
-        clearInterval(interval);
-      };
-    }
-  }, [activeSection]);
 
   const getItemClass = (section: string) =>
     `text-sm text-black dark:text-neutral-100 transition-colors font-semibold w-full hover:bg-neutral-600/30 cursor-pointer p-1.5 rounded-md ${activeSection === section ? "bg-neutral-500/20 text-black dark:text-white" : ""}`;
 
   return (
     <article className="w-max hidden sticky overflow-x-hidden md:flex h-full flex-col justify-between min-w-[200px] md:w-10 bg-bglightbars dark:bg-bgdarkbars !rounded-none overflow-auto p-2 border-transparent border-r-neutral-600/40">
-      <div
-        id="loaderbar"
-        className="h-1 bg-blue-600 fixed top-0 left-0 z-50"
-        style={{ width: '0%', opacity: 1 }}
+      <ProgressBar
+        height="1px"
+        color="#89bff8"
+        options={{ showSpinner: true }}
+        shallowRouting
       />
       <div className="flex flex-col fixed justify-between h-full  overflow-y-auto pl-2">
         <div className='flex flex-col gap-1'>
