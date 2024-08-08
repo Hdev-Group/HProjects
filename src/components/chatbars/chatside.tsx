@@ -55,7 +55,7 @@ export default function Chatside({ chat, projectid }: ChatsideProps) {
     <div className="flex flex-row items-center gap-4 cursor-pointer transition-all hover:bg-neutral-700/30 w-full h-16 pl-4">
       {assigneeData ? (
         <>
-          <a href={chat._id ? `/projects/${projectid}/chat/${chat._id}` : `/projects/${projectid}/chat`} className="flex flex-row w-full items-center gap-3">
+          <a href={chat._id ? `/projects/${projectid}/chat/${chat._id}` : `/projects/${projectid}/chat`} className="flex  text-black dark:text-white flex-row w-full items-center gap-3">
             <img src={assigneeData.imageUrl} alt="Assignee Avatar" className="w-8 h-8 rounded-full" />
             <div className="flex flex-col gap-0.5">
               <p className="text-md font-semibold">

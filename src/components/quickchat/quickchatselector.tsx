@@ -103,7 +103,7 @@ export default function ChatSelector({ value, onValueChange, id }: ChatSelectorP
   return (
     <Select value={value} onValueChange={onValueChange}>
       <SelectTrigger>
-        <SelectValue placeholder="Select a user to chat with" />
+        <SelectValue className="placeholder:text-white placeholder:dark:text-black" placeholder="Select a user to chat with" />
       </SelectTrigger>
       <SelectContent className="z-[100000000000000000000000]">
         <SelectGroup>

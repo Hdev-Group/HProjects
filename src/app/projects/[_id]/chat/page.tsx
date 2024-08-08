@@ -69,7 +69,7 @@ export default function MainDMs({ params }: { params: { _id: string } }) {
         <div className="flex h-full bg-bglightbars dark:bg-bgdarkbars">
         <SideBar _id={params._id} activeSection={activeSection} projectname={projectname} />
         <div className="flex w-full bg-black border mt-0.5 gap-2  rounded-l-3xl">
-            <div className="w-full border bg-bglight dark:bg-bgdark border-l-transparent rounded-3xl border-neutral-600/40">
+            <div className="w-full border bg-bglight text-black dark:text-white dark:bg-bgdark border-l-transparent rounded-3xl border-neutral-600/40">
                 <div className="flex items-center justify-start pl-4 border  border-transparent border-b-neutral-600/40 py-4">
                     <h1 className="font-semibold text-xl">Direct Messages</h1>
                 </div>

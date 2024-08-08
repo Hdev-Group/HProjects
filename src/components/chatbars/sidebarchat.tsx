@@ -71,9 +71,9 @@ export default function SideBarChat({ user, id }: SideBarChatProps) {
   }
 
   return (
-    <div className="min-w-[300px] border bg-bglight dark:bg-bgdark border-l-transparent rounded-3xl border-neutral-600/40">
+    <div className="min-w-[300px] border bg-bglight  dark:bg-bgdark border-l-transparent rounded-3xl border-neutral-600/40">
       <div className="flex items-center justify-start pl-4 border border-transparent border-b-neutral-600/40 py-4">
-        <h1 className="font-semibold text-xl">Direct Messages</h1>
+        <h1 className="font-semibold text-xl text-black dark:text-white">Direct Messages</h1>
       </div>
       <div className="flex flex-col gap-2 mt-3">
         <div className="flex flex-row px-2 w-full h-full gap-1 items-center">
@@ -82,7 +82,7 @@ export default function SideBarChat({ user, id }: SideBarChatProps) {
             value={taskAssignee}
             onValueChange={(value: string) => setTaskAssignee(value)}
           />
-          <button onClick={submitchat} className="w-1/3 h-10 bg-primary-500 text-white font-semibold rounded-md border transition-all hover:bg-blue-600">Chat</button>
+          <button onClick={submitchat} className="w-1/3 h-10 bg-primary-500 text-black dark:text-white font-semibold rounded-md border transition-all hover:bg-blue-300 dark:hover:bg-blue-600">Chat</button>
         </div>
         {filteredgetchat?.map((chat: Chat) => (
           <Chatside key={chat._id} chat={chat} projectid={id} />

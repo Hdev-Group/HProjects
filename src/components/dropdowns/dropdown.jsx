@@ -35,7 +35,7 @@ function DropdownMenuMain({ id, pname, pinned }) {
             const { toast } = useToast()
         
             return (
-            <DropdownMenuItem className="text-orange-300 cursor-pointer" id="pinproject" 
+            <DropdownMenuItem className="dark:text-orange-300 text-orange-600 cursor-pointer" id="pinproject" 
                 onClick={() => {
                 handlePinProject();
                 toast({
@@ -53,9 +53,9 @@ function DropdownMenuMain({ id, pname, pinned }) {
             <DropdownMenu>
                 <DropdownMenuTrigger>
                     <div className="gap-1 flex flex-col cursor-pointer absolute top-4 right-2 px-4 py-2 hover:bg-neutral-600/20 rounded-lg">
-                        <div className="h-[3px] w-[3px] rounded-full bg-white" />
-                        <div className="h-[3px] w-[3px] rounded-full bg-white" />
-                        <div className="h-[3px] w-[3px] rounded-full bg-white" />
+                        <div className="h-[3px] w-[3px] rounded-full bg-black dark:bg-white" />
+                        <div className="h-[3px] w-[3px] rounded-full bg-black dark:bg-white" />
+                        <div className="h-[3px] w-[3px] rounded-full bg-black dark:bg-white" />
                     </div>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="absolute top-[-9rem] left-[13rem]">

@@ -68,14 +68,14 @@ import {
                     <HoverCard>
                         <HoverCardTrigger>
                             <div
-                                className='border-neutral-800 bg-neutral-900/60 cursor-pointer hover:border-neutral-300 transition-all py-2 border gap-3 flex flex-col rounded-md w-full'
+                                className='dark:border-neutral-800 border-neutral-200 bg-white dark:bg-neutral-900/60 text-black dark:text-white cursor-pointer hover:border-neutral-300 transition-all py-2 border gap-3 flex flex-col rounded-md w-full'
                                 onDoubleClick={() => taskmainmenu(taskId)}
                                 draggable
                                 onDragStart={(e) => onDragStart(e, taskId)}
                                 onDragEnd={onDragEnd}
                             >
                                 <div className='flex gap-3 pl-4'>
-                                    <h1 className='font-bold'>
+                                    <h1 className='font-semibold'>
                                         {taskName}
                                     </h1>
                                 </div>
@@ -295,13 +295,13 @@ export default function MainHolder({ _id, taskFilter }: { _id: string, taskFilte
 
     const renderDropZone = (status: string) => (
         <div 
-            className={`flex flex-col border px-2 pb-4 rounded-md border-neutral-600 w-full lg:w-1/4 ${dragOverStatus === status ? 'border-green-500' : ''}`}
+            className={`flex flex-col dark:border px-3 py-2 pb-4 rounded-md dark:bg-transparent bg-neutral-100/80 dark:border-neutral-900 w-full lg:w-1/4 ${dragOverStatus === status ? 'border-green-500' : ''}`}
             onDragOver={(e) => onDragOver(e, status, projectTasks.filter(task => task.taskStatus === status).length)}
             onDrop={(e) => onDrop(e, status)}
         >
             <div className="mt-2 flex items-center gap-2 mb-4 pb-2">
                 <h2 className="text-lg font-semibold text-black dark:text-white capitalize">{status}</h2>
-                <h1 className="px-1.5 text-white dark:text-black rounded-xl bg-black dark:bg-gray-400 text-sm" id={`${status}count`}>{projectTasks.filter(task => task.taskStatus.toLowerCase() === status).length}</h1>
+                <h1 className="px-1.5 text-black dark:text-white bg-neutral-100 dark:bg-neutral-800 border-neutral-400 border dark:border-neutral-600 rounded-sm text-sm" id={`${status}count`}>{projectTasks.filter(task => task.taskStatus.toLowerCase() === status).length}</h1>
             </div>
             <div className='flex flex-col gap-2'>
                 {renderTasksByStatus(status)}

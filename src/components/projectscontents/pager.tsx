@@ -59,14 +59,14 @@ export default function PagerEl({ _id }: any) {
     return (
       <ContextMenu>
       <ContextMenuTrigger id="pageroff" className="w-max flex items-center justify-center">
-        <div className='border dark:border-neutral-400 border-neutral-600 bg-yellow-700/20 dark:bg-neutral-400/20 pr-5 items-center h-[3rem] w-full flex rounded-lg'>
+        <div className='border dark:border-neutral-400 border-neutral-600 bg-neutral-900/20 dark:bg-neutral-400/20 pr-5 items-center h-[3rem] w-full flex rounded-lg'>
           <div className='pl-2 flex justify-center items-center h-full'>
             <div className='w-1.5 h-[2rem] flex items-end justify-center rounded-lg dark:bg-neutral-400/20 bg-neutral-700'>
               <div className='w-full' style={{ height: '0%', backgroundColor: 'neutral' }}></div>
             </div>
           </div>
           <div className='pl-3 h-max flex justify-center flex-col text-left'>
-            <h1 className='font-semibold text-md text-left dark:text-white text-black'>You're off pager</h1>
+            <h1 className='font-semibold text-md text-left text-white'>You're off pager</h1>
           </div>
         </div>
       </ContextMenuTrigger>
@@ -121,8 +121,8 @@ export default function PagerEl({ _id }: any) {
               </div>
             </div>
             <div className='pl-3 h-max flex justify-center flex-col text-left'>
-              <h1 className='font-semibold text-md text-left dark:text-white text-black'>You're on pager</h1>
-              <p className='dark:text-neutral-300 text-neutral-700 text-xs'>For the next {time}</p>
+              <h1 className='font-semibold text-md text-left text-white'>You're on pager</h1>
+              <p className='text-neutral-300 text-xs'>For the next {time}</p>
             </div>
           </div>
         </ContextMenuTrigger>
@@ -216,7 +216,7 @@ function PagerOnBreak({ percentage }: { percentage: number }) {
           </div>
         </div>
         <div className='pl-3 h-max flex justify-center flex-col text-left'>
-          <h1 className='font-semibold text-md text-left dark:text-white text-black'>You're on break</h1>
+          <h1 className='font-semibold text-md text-left text-white'>You're on break</h1>
         </div>
       </div>
       </ContextMenuTrigger>

@@ -11,13 +11,13 @@ import {
 
 export function IncidentDeclaration({_id, activeSection}: { _id: string, activeSection: string }) {
     const getItemClass = (section: string) =>
-        `text-sm text-black dark:text-neutral-100 transition-colors font-semibold w-full hover:bg-neutral-600/30 cursor-pointer p-1.5 rounded-md ${activeSection === section ? "bg-neutral-500/20 text-black dark:text-white" : ""}`;
+        `text-sm text-white dark:text-neutral-100 transition-colors font-semibold w-full hover:bg-neutral-600/30 cursor-pointer p-1.5 rounded-md ${activeSection === section ? "bg-neutral-500/20 text-black dark:text-white" : ""}`;
   return (
     <ContextMenu>
         <ContextMenuTrigger>
         <li key="incident" className={getItemClass("incident")}>
         <Link href={`/projects/${encodeURIComponent(_id)}/incident`}>
-            Incidents
+        <p className='w-full h-full'>Incidents</p>
         </Link>
         </li>
         </ContextMenuTrigger>

@@ -112,16 +112,16 @@ const NewTaskModal = ({ onClose, id }) => {
 
   return (
     <div id="outerclickclose" className="absolute modalmain top-0 justify-end items-center flex overflow-y-auto min-h-[100%] h-full w-[100%] bg-neutral-950/40 z-[1000000]">
-      <div id='innercloser' className="flex flex-col px-5 py-5 slide-in-right overflow-y-auto bg--400shadow-lg rounded-tl-[1rem] border-neutral-600 border-l shadow-black bg-neutral-900 h-[100%] md:w-[540px] w-[100%]">
+      <div id='innercloser' className="flex flex-col px-5 py-5 slide-in-right overflow-y-auto bg--400shadow-lg rounded-tl-[1rem] border-neutral-600 border-l dark:shadow-black bg-neutral-100 dark:bg-neutral-900 h-[100%] md:w-[540px] w-[100%]">
         <div className="flex items-center flex-row justify-between">
-          <h1 className="text-2xl font-bold dark:text-white text-dark">Add a Task</h1>
+          <h1 className="text-2xl font-bold text-black dark:text-white text-dark">Add a Task</h1>
           <p onClick={onClose} className="text-2xl text-red-600 cursor-pointer hover:text-red-400 transition-all-300">x</p>
         </div>
         <form onSubmit={handleFormSubmit} className="flex flex-col gap-4 mt-10">
           <div className="flex flex-col border-b border-neutral-100/20 pb-4">
-            <label htmlFor="projectname" className="text-sm mb-2 font-bold dark:text-white text-dark">Title</label>
+            <label htmlFor="projectname" className="text-sm mb-2 font-bold text-black dark:text-white text-dark">Title</label>
             <input
-              className="bg-neutral-800 border-neutral-800 text-white border rounded-lg px-3 py-2"
+              className="bg-neutral-800 border-neutral-800 text-black dark:text-white border rounded-lg px-3 py-2"
               id="titlename"
               name="nameproject"
               invalidator='titleinvalidatorinput'
@@ -130,7 +130,7 @@ const NewTaskModal = ({ onClose, id }) => {
               onChange={(e) => setTaskTitle(e.target.value)}
             />
             <span className='text-red-400 hidden' id='titleinvalidator'>Invalid Title</span>
-            <label htmlFor="assignee" className="text-sm mb-2 mt-2 font-bold dark:text-white text-dark">Assignee</label>
+            <label htmlFor="assignee" className="text-sm mb-2 mt-2 font-bold text-black dark:text-white text-dark">Assignee</label>
             <AssigneeSelect
               id={id}
               invalidator='assigneeinvalidatorinput'
@@ -161,9 +161,9 @@ const NewTaskModal = ({ onClose, id }) => {
             </div>
           </div>
           <div className="flex flex-col gap-5 border-b border-neutral-100/20 pb-4">
-            <label htmlFor="projectdescription" className="text-sm mb-1 font-bold dark:text-white text-dark">Description</label>
+            <label htmlFor="projectdescription" className="text-sm mb-1 font-bold text-black dark:text-white text-dark">Description</label>
             <textarea
-              className="bg-neutral-800 border-neutral-800 text-white border rounded-lg px-3 py-2 resize-y"
+              className="dark:bg-neutral-800 dark:border-neutral-800 border-neutral-300 text-black dark:text-white border rounded-lg px-3 py-2 resize-y"
               placeholder="The server room is on fire, Send help."
               invalidator='descriptioninvalidatorinput'
               value={taskDescription}

@@ -29,8 +29,8 @@ export function QuickMenu(id: any){
           <img src={userInfo?.imageUrl} alt="logo" className="w-[40px] h-[40px] rounded-full" />
         </div>
         <div className='flex flex-col text-left justify-center'>
-          <h1 className='dark:text-neutral-100 text-neutral-900 text-sm font-semibold text-left'>{userInfo?.firstName} {userInfo?.lastName}</h1>
-          <p className="dark:text-neutral-500 text-neutral-600 text-xs text-left font-semibold">{jobtitlealready?.filter(jobtitlealready => jobtitlealready.userid === userId)[0]?.jobtitle }</p>
+          <h1 className='text-neutral-100 text-sm font-semibold text-left'>{userInfo?.firstName} {userInfo?.lastName}</h1>
+          <p className="text-neutral-500  text-xs text-left font-semibold">{jobtitlealready?.filter(jobtitlealready => jobtitlealready.userid === userId)[0]?.jobtitle }</p>
         </div>
         </div>
         </ContextMenuTrigger>

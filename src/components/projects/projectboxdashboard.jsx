@@ -16,7 +16,7 @@ const BoxProjectBuilding = ({ name, id, pinned, tasks }) => {
   return (
     <div className="relative">
       <a href={`/projects/${id}`}>
-        <div className="flex flex-col bg-neutral-900/70 w-[300px] px-4 py-5 rounded-lg border-2 border-neutral-800">
+        <div className="flex flex-col dark:bg-neutral-900/70 w-[300px] px-4 py-5 rounded-lg border bg-neutral-200 text-black dark:text-white border-neutral-500 dark:border-neutral-800">
           <div className="flex flex-row items-center justify-between">
             <h1 className="text-2xl font-bold">{name}</h1>
           </div>
@@ -46,7 +46,7 @@ const BoxProjectlive = ({ name, id, pinned, tasks }) => {
   return (
     <div className="relative">
       <a href={`/projects/${id}`}>
-        <div className="flex flex-col bg-neutral-900/70 w-[300px] px-4 py-5 rounded-lg border-2 border-neutral-800">
+        <div className="flex flex-col dark:bg-neutral-900/70 w-[300px] px-4 py-5 rounded-lg border bg-neutral-200 text-black dark:text-white border-neutral-500 dark:border-neutral-800">
           <div className="flex flex-row items-center justify-between">
             <h1 className="text-2xl font-bold">{name}</h1>
           </div>
@@ -77,7 +77,7 @@ const BoxProjectPlanning = ({ name, id, pinned, tasks }) => {
   return (
     <div className="relative">
       <a href={`/projects/${id}`}>
-        <div className="flex flex-col bg-neutral-900/70 w-[300px] px-4 py-5 rounded-lg border-2 border-neutral-800">
+        <div className="flex flex-col dark:bg-neutral-900/70 w-[300px] px-4 py-5 rounded-lg border bg-neutral-200 text-black dark:text-white border-neutral-500 dark:border-neutral-800">
           <div className="flex flex-row items-center justify-between">
             <h1 className="text-2xl font-bold">{name}</h1>
           </div>

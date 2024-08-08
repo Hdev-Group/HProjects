@@ -179,6 +179,7 @@
     font-weight: 600;
     font-size: 0.9rem;
   }
+
   .planning{
     background-color: rgba(128, 0, 128, 0.24);
     border: solid 1px #800080;
@@ -347,62 +348,139 @@
   transform: translateX(5px);
   transition: all ease-in-out 0.3s;
 }
-.critical{
-  background-color: #8b00003f;
-  border: solid 1px #d15353;
-  color: #d15353;
+@media (prefers-color-scheme: light) {
+  .developing-light{
+    background-color: #cce5ff;
+    border: solid 1px #99c2ff;
+    color: #99c2ff;
+    font-weight: 600;
+    font-size: 0.9rem;
+  }
+.critical-light{
+  background-color: #ffb3b3;
+  border: solid 1px #ff6666;
+  color: #ff6666;
   font-weight: 600;
   animation: ping 2s infinite;
 }
-.high{
-  background-color: #ff00003f;
-  border: solid 1px #FF0000;
-  color: #FF0000;
+.high-light{
+  background-color: #ffcccc;
+  border: solid 1px #ff9999;
+  color: #ff9999;
   animation: pinghigh 2s infinite;
   font-weight: 600;
 }
-.medium{
-  background-color: #ff8c003f;
-  border: solid 1px #ff8c00;
-  color: #ff8c00;
+.medium-light{
+  background-color: #ffe6cc;
+  border: solid 1px #ff972f;
+  color: #ff972f;
   font-weight: 600;
 }
-.low{
-  background-color: #0080003f;
-  border: solid 1px #008000;
-  color: #76e476;
+
+.feature-light{
+  background-color: #ccccff;
+  border: solid 1px #9999ff;
+  color: #9999ff;
   font-weight: 600;
 }
-.feature{
-  background-color: #0000ff3f;
-  border: solid 1px #fff;
-  color: #fff;
-  font-weight: 600;
-}
-.security{
-  background-color: #8000803f;
-  border: solid 1px #800080;
-  color: #be28be;
+.security-light{
+  background-color: #e6ccff;
+  border: solid 1px #cc99ff;
+  color: #cc99ff;
   font-weight: 600;
   animation: pingsecurity 2s infinite;
 }
-.backlog{
-  background-color: #0000003f;
-  border: solid 1px #000;
-  color: #fff;
+.backlog-light{
+  background-color: #cccccc;
+  border: solid 1px #999999;
+  color: #ffffff;
   font-weight: 600;
 }
-.todo{
-  background-color: rgba(241, 188, 13, 0.466);
-  border: solid 1px #f1bc0d;
-  color: #f1bc0d;
+.todo-light{
+  background-color: rgba(255, 123, 0, 0.411);
+  border: solid 1px rgba(255, 123, 0);
+  color: rgba(255, 123, 0);
   font-weight: 600;
 }
-.inprogress{
-  background-color: #f1bc0d3f;
-  border: solid 1px #f1bc0d;
-  color: #f1bc0d;
+.inprogress-light{
+  background-color: #ffcc003f;
+  border: solid 1px #ffcc00;
+  color: #ffcc00;
   font-weight: 600;
+}
+}
+@media (prefers-color-scheme: dark) {
+  .critical{
+    background-color: #8b00003f;
+    border: solid 1px #d15353;
+    color: #d15353;
+    font-weight: 600;
+    animation: ping 2s infinite;
+  }
+  .low{
+    background-color: #0080003f;
+    border: solid 1px #008000;
+    color: #76e476;
+    font-weight: 600;
+  }
+  .high{
+    background-color: #ff00003f;
+    border: solid 1px #FF0000;
+    color: #FF0000;
+    animation: pinghigh 2s infinite;
+    font-weight: 600;
+  }
+  .medium{
+    background-color: #ff8c003f;
+    border: solid 1px #ff8c00;
+    color: #ff8c00;
+    font-weight: 600;
+  }
+  .low{
+    background-color: #0080003f;
+    border: solid 1px #008000;
+    color: #76e476;
+    font-weight: 600;
+  }
+  .feature{
+    background-color: #0000ff3f;
+    border: solid 1px #fff;
+    color: #fff;
+    font-weight: 600;
+  }
+  .security{
+    background-color: #8000803f;
+    border: solid 1px #800080;
+    color: #be28be;
+    font-weight: 600;
+    animation: pingsecurity 2s infinite;
+  }
+  .backlog{
+    background-color: #0000003f;
+    border: solid 1px #000;
+    color: #fff;
+    font-weight: 600;
+  }
+  .todo{
+    background-color: rgba(241, 188, 13, 0.466);
+    border: solid 1px #f1bc0d;
+    color: #f1bc0d;
+    font-weight: 600;
+  }
+  .inprogress{
+    background-color: #f1bc0d3f;
+    border: solid 1px #f1bc0d;
+    color: #f1bc0d;
+    font-weight: 600;
+  }
+}
+@media (prefers-color-scheme: light) {
+  .low-light{
+    background-color: #ccffcc;
+    border: solid 1px #09b809;
+    color: #09b809;
+    font-weight: 600;
+  }
 }
 @keyframes ping{
   0%{

@@ -37,7 +37,7 @@ const config: Config = {
           foreground: "hsl(var(--secondary-foreground))",
         },
         bglight: {
-          DEFAULT: "#fff",
+          DEFAULT: "#FFFFFF",
         },
         bgdark: {
           DEFAULT: "#0A0A0A",
@@ -46,7 +46,7 @@ const config: Config = {
           DEFAULT: "#080808",
         },
         bglightbars: {
-          DEFAULT: "#D4D4D8",
+          DEFAULT: "#333333",
         },
         
         destructive: {

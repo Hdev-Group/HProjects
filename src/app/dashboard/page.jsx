@@ -47,9 +47,9 @@ function Dashboard() {
         <DashboardHeader activeSection={activeSection} onSectionChange={handleSectionChange} />
         <main className="flex gap-20 flex-col items-center justify-center mt-20 py-20 px-0 md:w-[100%] bg-bglight dark:bg-bgdark">
           <div className="flex flex-col sm:w-[100%] md:w-[80%]">
-            <h1 className="flex text-4xl font-bold mb-9 mt-2" id="projectspage">Projects</h1>
+            <h1 className="flex text-4xl font-bold mb-9 mt-2 text-black dark:text-white" id="projectspage">Projects</h1>
             <AddProjectButton />
-            <div className="w-full flex-wrap overflow-y-scroll scroll-barproject justify-start items-center flex py-10 px-10 gap-3 flex-row border-neutral-800 rounded-tl-[0] bg-neutral-900/50 border rounded">
+            <div className="w-full flex-wrap overflow-y-scroll scroll-barproject justify-start items-center flex py-10 px-10 gap-3 flex-row dark:border-neutral-800 border-neutral-200 rounded-tl-[0] bg-neutral-300 dark:bg-neutral-900 border rounded-md">
               <div className="flex flex-wrap flex-row items-start gap-4 min-w-[100%]">
                 <ProjectsDataAdder />
               </div>
