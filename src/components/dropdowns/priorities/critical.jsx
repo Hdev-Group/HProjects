@@ -12,7 +12,8 @@ export function Critical(){
         <TooltipTrigger asChild>
         <div className="flex cursor-pointer items-center gap-4 justify-start">
         <div className="flex h-[20px] items-center justify-center p-3 rounded-xl critical live gap-2">
-        P1-Critical
+        <p className="hidden lg:block">P1-Critical</p>
+        <p className="lg:hidden block">P1</p>
         </div>
         </div>
         </TooltipTrigger>
@@ -30,7 +31,8 @@ export function High(){
         <TooltipTrigger asChild>
         <div className="flex items-center gap-4 justify-between">
         <div className="flex h-[20px] items-center justify-center p-3 high rounded-xl live gap-2">
-        P2-High
+        <p className="hidden lg:block">P2-High</p>
+        <p className="lg:hidden block">P2</p>
         </div>
         </div>
         </TooltipTrigger>
@@ -48,7 +50,8 @@ export function Medium(){
         <TooltipTrigger asChild>
         <div className="flex items-center gap-4">
         <div className="flex h-[20px] items-center medium justify-center p-3 rounded-xl developing gap-2">
-        P3-Medium
+        <p className="hidden lg:block">P3-Medium</p>
+        <p className="lg:hidden block">P3</p>
         </div>
         </div>
         </TooltipTrigger>
@@ -66,7 +69,8 @@ export function Low(){
         <TooltipTrigger asChild>
         <div className="flex items-center gap-4">
         <div className="flex h-[20px] items-center justify-center low p-3 rounded-xl planning gap-2">
-        P4-Low
+        <p className="hidden lg:block">P4-Low</p>
+        <p className="lg:hidden block">P4</p>
         </div>
         </div>
         </TooltipTrigger>
@@ -84,7 +88,8 @@ export function Feature(){
             <TooltipTrigger asChild>
         <div className="flex items-center gap-4">
         <div className="flex h-[20px] feature items-center justify-center p-3 rounded-xl feture gap-2">
-        P5-Feature
+        <p className="hidden lg:block">P5-Feature</p>
+        <p className="lg:hidden block">P5</p>
         </div>
         </div>
         </TooltipTrigger>
@@ -102,7 +107,8 @@ export function Security(){
         <TooltipTrigger asChild>
         <div className="flex items-center gap-4">
         <div className="flex h-[20px] items-center security justify-center p-3 rounded-xl live gap-2">
-        PS-Security
+        <p className="hidden lg:block">PS-Security</p>
+        <p className="lg:hidden block">PS</p>
         </div>
         </div>
         </TooltipTrigger>
