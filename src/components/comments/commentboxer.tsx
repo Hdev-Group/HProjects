@@ -36,7 +36,6 @@ export default function CommentBoxer({ taskId }: { taskId: string }) {
   const fetchCommenterData = useCallback(async (ids: string[]) => {
     if (ids.length > 0) {
       try {
-        console.log('Fetching user data for IDs:', ids);
         const response = await fetch(`/api/getcommentuser?userIds=${ids.join(',')}`);
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);

@@ -22,12 +22,10 @@ export default function Chatside({ chat }: ChatsideProps) {
   const jobtitlealready = useQuery(api.getjob.get);
   const { userId: currentUserId } = useAuth();
   const [assigneeData, setAssigneeData] = useState<AssigneeData | null>(null);
-  console.log("alive")
 
   useEffect(() => {
     async function fetchAssigneeData() {
       const userIdToFetch = chat.userId === currentUserId ? chat.otherchatter : chat.userId;
-      console.log(`userIdToFetch: ${userIdToFetch}`); // Add logging
 
       if (userIdToFetch) {
         try {
@@ -36,11 +34,9 @@ export default function Chatside({ chat }: ChatsideProps) {
             throw new Error(`HTTP error! status: ${response.status}`);
           }
           const data = await response.json();
-          console.log('Fetched data:', data);
           setAssigneeData(data);
         } catch (error) {
           console.error('Error fetching assignee data:', error);
-          // Optionally, log more details
           console.error('Fetch URL:', `/api/get-user?userId=${userIdToFetch}`);
           setAssigneeData(null);
         }
@@ -53,13 +49,12 @@ export default function Chatside({ chat }: ChatsideProps) {
     fetchAssigneeData();
   }, [chat.userId, chat.otherchatter, currentUserId]);
 
-  console.log(assigneeData);
 
   return (
     <div className="flex flex-row items-center gap-4 cursor-pointer transition-all hover:bg-neutral-700/30 w-full h-16 pl-4">
       {assigneeData ? (
         <>
-          <a href={`./${chat._id}`} className="flex flex-row justify-center items-center gap-3">
+          <a href={`./${chat._id}`} className="flex flex-row w-full items-center gap-3">
             <img src={assigneeData.imageUrl} alt="Assignee Avatar" className="w-8 h-8 rounded-full" />
             <div className="flex flex-col gap-0.5">
               <p className="text-md font-semibold">

@@ -75,7 +75,6 @@ const NewTaskModal = ({ onClose, id }) => {
           added: true,
           timestamp: new Date().toISOString()
         });
-        console.log('Task added to logger.', response);
       } else {
         console.error('Failed to retrieve taskId.');
       }

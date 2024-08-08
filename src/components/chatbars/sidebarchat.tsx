@@ -44,12 +44,10 @@ export default function SideBarChat({ user, id }: SideBarChatProps) {
     if (taskAssignee && taskAssignee !== '' && taskAssignee !== null) {
       try {
         const taskAssigneeArray: any = JSON.parse(taskAssignee);
-        console.log("Parsed taskAssignee:", taskAssigneeArray);
 
         if (taskAssigneeArray.length >= 3) {
           const assigneeId: string = taskAssigneeArray[0];
           const assigneeName: string = taskAssigneeArray[1];
-          console.log("Checking if assignee already exists:", assigneeId);
 
           const assigneeExists = filteredgetchat?.some((chat: Chat) => chat.otherchatter === assigneeId);
           if (assigneeExists) {
@@ -60,7 +58,6 @@ export default function SideBarChat({ user, id }: SideBarChatProps) {
               otherchatter: assigneeId,
               projectid: id,
             });
-            console.log('Chat started successfully');
           }
         } else {
           console.error('Invalid taskAssignee structure:', taskAssigneeArray);

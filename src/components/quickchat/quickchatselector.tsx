@@ -38,7 +38,6 @@ export default function ChatSelector({ value, onValueChange, id }: ChatSelectorP
     async function fetchProjectOwnerData() {
       if (ownerid) {
         try {
-          console.log(`Fetching data for project owner with ID: ${ownerid}`);
           const response = await fetch(`/api/get-user?userId=${ownerid}`);
           if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);

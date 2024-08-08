@@ -19,13 +19,11 @@ export async function GET(request: Request) {
   const userId = searchParams.get("userId");
 
   if (!userId) {
-    console.log("Invalid userId");
     return NextResponse.json({ error: "Invalid userId" }, { status: 400 });
   }
 
   // Check if user data is in cache
   if (cache.has(userId)) {
-    console.log("User data found in cache");
     const cachedUser = cache.get(userId);
     const { firstName, lastName, id, imageUrl } = cachedUser.data;
     return NextResponse.json({ firstName, lastName, id, imageUrl }); // Return selected data
@@ -33,7 +31,6 @@ export async function GET(request: Request) {
 
   try {
     const user = await clerkClient.users.getUser(userId);
-    console.log("User data fetched successfully");
 
     // Store user data in cache
     cache.set(userId, { userId, data: user });

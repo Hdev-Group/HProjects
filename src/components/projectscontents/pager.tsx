@@ -45,7 +45,6 @@ export default function PagerEl({ _id }: any) {
 };
   const handleClick = () => {
     setIsModalOpen(true);
-    console.log("clicked");
 
   return (
     <>

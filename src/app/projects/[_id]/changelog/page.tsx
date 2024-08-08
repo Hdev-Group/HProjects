@@ -40,7 +40,6 @@ export default function ChangelogPage({ params }: { params: { _id: string } }) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
         const data = await response.json();
-        console.log('Fetched user data:', data);
         if (!data || !Array.isArray(data) || data.length === 0) {
           console.warn('No data returned for assignees:', assignees);
           return;
@@ -83,9 +82,7 @@ export default function ChangelogPage({ params }: { params: { _id: string } }) {
   }
 
   useEffect(() => {
-    if (logger) {
-      console.log('Logger data:', logger);
-  
+    if (logger) {  
       const newWeekBlocks: Record<string, any[]> = {};
       const assigneesSet = new Set<string>();
   
@@ -104,19 +101,16 @@ export default function ChangelogPage({ params }: { params: { _id: string } }) {
   
           // Add assignee from logger
           if (log.taskAssignee) {
-            console.log('Assignee from logger:', log.taskAssignee);
             assigneesSet.add(log.taskAssignee);
           }
   
           // Add usercommited if present in the logger entry
           if (log.usercommited) {
-            console.log('User committed from logger:', log.usercommited);
             assigneesSet.add(log.usercommited);
           }
         }
       });
   
-      console.log('Unique Assignees:', Array.from(assigneesSet)); // Ensure all unique assignees are present
       setWeekBlocks(newWeekBlocks);
       fetchData(Array.from(assigneesSet));
     }
