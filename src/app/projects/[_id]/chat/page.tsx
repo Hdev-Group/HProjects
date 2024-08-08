@@ -7,6 +7,7 @@ import { api } from '../../../../../convex/_generated/api';
 import { useRouter } from 'next/navigation';
 import SideBar from "../../../../components/projectscontents/sidebar";
 import ChatSelector from "../../../../components/quickchat/quickchatselector";
+import MainChat from "../../../../components/chatbars/mainchat";
 
 
 export default function MainDMs({ params }: { params: { _id: string } }) {
@@ -78,15 +79,7 @@ export default function MainDMs({ params }: { params: { _id: string } }) {
                     value={taskAssignee}
                     onValueChange={setTaskAssignee}
                   />
-                  <a href="./chat/h">
-                  <div className="flex flex-row items-center gap-4 cursor-pointer transition-all hover:bg-neutral-700/30 w-full h-16 pl-4">
-                      <img src={user?.imageUrl} alt="logo" className="w-8 h-8 rounded-full" />
-                      <div className="flex flex-col gap-0.5">
-                        <p className="text-md font-semibold m">{user?.firstName} {user?.lastName}</p>
-                        <p className="text-sm text-neutral-500 ">Project Lead Developer</p>
-                      </div>
-                    </div>
-                  </a>
+                  <MainChat id={_id} />
                 </div>
             </div>
             </div>

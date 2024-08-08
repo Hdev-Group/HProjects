@@ -85,7 +85,7 @@ export default function SideBarChat({ user, id }: SideBarChatProps) {
           <button onClick={submitchat} className="w-1/3 h-10 bg-primary-500 text-white font-semibold rounded-md border transition-all hover:bg-blue-600">Chat</button>
         </div>
         {filteredgetchat?.map((chat: Chat) => (
-          <Chatside key={chat._id} chat={chat} />
+          <Chatside key={chat._id} chat={chat} projectid={id} />
         ))}
       </div>
     </div>
