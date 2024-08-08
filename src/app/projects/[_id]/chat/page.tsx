@@ -8,6 +8,14 @@ import { useRouter } from 'next/navigation';
 import SideBar from "../../../../components/projectscontents/sidebar";
 import ChatSelector from "../../../../components/quickchat/quickchatselector";
 import MainChat from "../../../../components/chatbars/mainchat";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "../../../../components/ui/dropdown-menu";
+
 
 
 export default function MainDMs({ params }: { params: { _id: string } }) {
@@ -73,13 +81,32 @@ export default function MainDMs({ params }: { params: { _id: string } }) {
                 <div className="flex items-center justify-start pl-4 border  border-transparent border-b-neutral-600/40 py-4">
                     <h1 className="font-semibold text-xl">Direct Messages</h1>
                 </div>
-                <div className="flex flex-col gap-2 mt-3">
-                  <ChatSelector
-                    id={_id}
-                    value={taskAssignee}
-                    onValueChange={setTaskAssignee}
-                  />
-                  <MainChat id={_id} />
+                <div className="flex flex-col gap-2 mt-3 w-full justify-start items-start">
+                  <div className="w-full flex justify-start pl-4 border border-transparent border-b-neutral-800 pb-3">
+                    <DropdownMenu>
+                      <DropdownMenuTrigger className="">
+                        <div className="border px-4 py-1 hover:bg-blue-400 transition-all rounded-sm text-2xl flex items-center justify-center font-extrabold">
+                          <p className="mb-1">+</p>
+                        </div>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent>
+                        <DropdownMenuItem>
+                        <ChatSelector
+                              id={_id}
+                              value={taskAssignee}
+                              onValueChange={setTaskAssignee}
+                            />
+                        </DropdownMenuItem>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem>
+                          New Group Chat
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </div>
+                  <div className="w-full flex flex-col gap-1">
+                    <MainChat id={_id} />
+                  </div>
                 </div>
             </div>
             </div>

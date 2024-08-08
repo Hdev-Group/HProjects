@@ -3,7 +3,6 @@ import { useAuth } from "@clerk/nextjs";
 import { useUser } from "@clerk/clerk-react";
 import React, { useEffect, useState } from "react";
 import { useQuery } from "convex/react";
-import DashboardHeaderProjects from "../../../../components/header/dashboardprojects";
 import { api } from '../../../../../convex/_generated/api';
 import Head from "next/head";
 import { useRouter } from 'next/navigation';

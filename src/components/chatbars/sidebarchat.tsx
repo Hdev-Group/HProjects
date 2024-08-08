@@ -4,7 +4,13 @@ import { useAuth } from "@clerk/nextjs";
 import { api } from '../../../convex/_generated/api';
 import { useQuery, useMutation } from "convex/react";
 import Chatside from "./chatside";
-
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "../ui/dropdown-menu";
 interface SideBarChatProps {
   user: any;
   id: string;
@@ -57,6 +63,7 @@ export default function SideBarChat({ user, id }: SideBarChatProps) {
               userId: userId!,
               otherchatter: assigneeId,
               projectid: id,
+              chatupdated: new Date().toISOString(),
             });
           }
         } else {
@@ -77,14 +84,30 @@ export default function SideBarChat({ user, id }: SideBarChatProps) {
       </div>
       <div className="flex flex-col gap-2 mt-3">
         <div className="flex flex-row px-2 w-full h-full gap-1 items-center">
-          <ChatSelector
-            id={id}
-            value={taskAssignee}
-            onValueChange={(value: string) => setTaskAssignee(value)}
-          />
+          <DropdownMenu>
+            <DropdownMenuTrigger className="">
+              <div className="border px-3  hover:bg-blue-400 transition-all rounded-sm text-2xl flex items-center justify-center font-extrabold">
+                <p className="mb-1">+</p>
+              </div>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuItem>
+                <ChatSelector
+                  id={id}
+                  value={taskAssignee}
+                  onValueChange={(value: string) => setTaskAssignee(value)}
+                />
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem>
+                New Group Chat
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+
           <button onClick={submitchat} className="w-1/3 h-10 bg-primary-500 text-black dark:text-white font-semibold rounded-md border transition-all hover:bg-blue-300 dark:hover:bg-blue-600">Chat</button>
         </div>
-        {filteredgetchat?.map((chat: Chat) => (
+        {filteredgetchat?.sort((a: Chat, b: Chat) => new Date(b.chatupdated).getTime() - new Date(a.chatupdated).getTime()).map((chat: Chat) => (
           <Chatside key={chat._id} chat={chat} projectid={id} />
         ))}
       </div>

@@ -227,7 +227,7 @@ export default function Home() {
               </div>
               <h1 className='font-bold text-5xl font-sans pushuptext1'>Plan, Build and Push with confidence</h1>
               <p className='font-medium text-sm text-neutral-400 pushuptext2'>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci provident blanditiis dolor repellendus error non quae velit eum et ex repellat quisquam, id inventore quibusdam hic numquam unde. Eligendi, assumenda?
+                Build projects and communicate in real time with your team, manage incidents and tasks with ease.
               </p>
               <SignedOut>
                 <div className='flex flex-row mt-6 gap-2 md:gap-6 pushupbutton'>
