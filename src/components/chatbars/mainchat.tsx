@@ -27,7 +27,7 @@ export default function MainChat({ id }: MainChatProps) {
   return (
     <div>
       {filteredgetchat?.map((chat: Chat) => (
-        <Chatside key={chat._id} chat={chat} />
+        <Chatside key={chat._id} chat={chat} projectid={id} />
       ))}
     </div>
   );

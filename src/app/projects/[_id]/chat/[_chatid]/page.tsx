@@ -10,6 +10,7 @@ import SideBarChat from "../../../../../components/chatbars/sidebarchat";
 import Chatside from "../../../../../components/chatbars/chatside";
 import MessageSubmitter from "../../../../../components/quickchat/MessageSubmitter";
 
+
 export default function MainDMs({ params }: { params: { _id: string, _chatid: string } }) {
   const { userId, isLoaded, isSignedIn } = useAuth();
   const { user } = useUser();
@@ -25,7 +26,7 @@ export default function MainDMs({ params }: { params: { _id: string, _chatid: st
 
   // Memoize the chat
   const chat = useMemo(() => {
-    return chats?.find(chat => _id === chat.projectid && chat._id === params._chatid);
+    return chats?.find((chat: any) => _id === chat.projectid && chat._id === params._chatid);
   }, [chats, _id, params._chatid]);
 
   const [assigneeData, setAssigneeData] = useState<any | null>(null);
@@ -108,7 +109,7 @@ export default function MainDMs({ params }: { params: { _id: string, _chatid: st
             <SideBarChat user={user} id={params._id} />
             <div className="max-w-10/12 w-[100%] flex flex-col bg-bglight dark:bg-bgdark border-neutral-600/40 border rounded-3xl items-center overflow-y-auto">
               <div className="flex flex-row items-center gap-4 transition-all  w-full">
-                {chat && <Chatside chat={chat} />}
+                {chat && <Chatside chat={chat} projectid={_id} />}
               </div>
               <div className="flex-col w-full gap-4 px-5 h-full justify-between mb-5 mt-5 flex">
                 <div className="flex flex-col justify-end h-full">
