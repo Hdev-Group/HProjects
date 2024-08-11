@@ -48,7 +48,7 @@ function ArchiveTask({ taskname, _taskid, onClose, projectid }) {
 
     return (
         <div className="fixed inset-0 z-50 bg-black bg-opacity-50 flex items-center justify-center" id='outerclickclose'>
-            <div className="bg-[#09090B] border-neutral-900 border w-1/3 h-1/5 rounded-lg flex flex-col" id='innercloser'>
+            <div className="bg-[#09090B] border-neutral-900 border w-1/3 h-auto rounded-lg flex flex-col" id='innercloser'>
                 <div className="p-4 flex justify-between flex-col h-full w-full">
                     <div>
                         <h2 className="text-2xl font-bold">Archive Task - {taskname}</h2>

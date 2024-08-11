@@ -119,3 +119,22 @@ export function Security(){
     </TooltipProvider>
         )
 }
+export function Paused(){
+    return(
+        <TooltipProvider>
+        <Tooltip>
+        <TooltipTrigger asChild>
+        <div className="flex items-center gap-4">
+        <div className="flex h-[20px] items-center justify-center p-3 rounded-sm border border-neutral-200 dark:border-neutral-600 dark:bg-neutral-400/20 gap-2">
+        <p className="hidden lg:flex gap-2 flex-row font-semibold items-center justify-center"><img src="/1.svg" />Paused</p>
+        <p className="lg:hidden block"><img src="/1.svg" /></p>
+        </div>
+        </div>
+        </TooltipTrigger>
+        <TooltipContent>
+            <p>Paused</p>
+        </TooltipContent>
+        </Tooltip>
+    </TooltipProvider>
+    )
+}
