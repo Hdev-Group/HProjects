@@ -3,17 +3,17 @@ import { useAuth } from "@clerk/nextjs";
 import { useUser } from "@clerk/clerk-react";
 import React, { useEffect, useState } from "react";
 import { useQuery } from "convex/react";
-import { api } from '../../../../../convex/_generated/api';
+import { api } from '../../../../../../convex/_generated/api';
 import { useRouter } from 'next/navigation';
-import { Critical, High, Medium, Low, Security, Feature } from '../../../../components/dropdowns/priorities/critical';
-import { BackLog, Todo, InProgress, Done } from '../../../../components/dropdowns/status/status';
-import SideBar from "../../../../components/projectscontents/sidebar";
-import NoChanges from "../../../../components/noitems/nochanges";
+import { Critical, High, Medium, Low, Security, Feature } from '../../../../../components/dropdowns/priorities/critical';
+import { BackLog, Todo, InProgress, Done } from '../../../../../components/dropdowns/status/status';
+import SideBar from "../../../../../components/projectscontents/sidebar";
+import NoChanges from "../../../../../components/noitems/nochanges";
 import {
   HoverCard,
   HoverCardContent,
   HoverCardTrigger,
-} from "../../../../components/ui/hover-card";
+} from "../../../../../components/ui/hover-card";
 
 
 export default function ChangelogPage({ params }: { params: { _id: string } }) {

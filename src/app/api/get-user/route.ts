@@ -1,6 +1,7 @@
 import { clerkClient } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
-import {LRUCache} from "lru-cache";
+import { LRUCache } from "lru-cache";
+import { getAuth } from '@clerk/nextjs/server';
 
 // Define the type for your cache entries
 interface CacheEntry {
@@ -16,24 +17,31 @@ const cache = new LRUCache<string, CacheEntry>({
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
-  const userId = searchParams.get("userId");
+  const userIda = searchParams.get("userId");
+
+  // Ensure Clerk middleware is in place
+  const { userId } = getAuth(request);
 
   if (!userId) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
+  if (!userIda) {
     return NextResponse.json({ error: "Invalid userId" }, { status: 400 });
   }
 
   // Check if user data is in cache
-  if (cache.has(userId)) {
-    const cachedUser = cache.get(userId);
-    const { firstName, lastName, id, imageUrl } = cachedUser.data;
-    return NextResponse.json({ firstName, lastName, id, imageUrl }); // Return selected data
+  if (cache.has(userIda)) {
+    const cachedUser = cache.get(userIda);
+    const { firstName, lastName, id, imageUrl } = cachedUser!.data;
+    return NextResponse.json({ firstName, lastName, id, imageUrl });
   }
 
   try {
-    const user = await clerkClient.users.getUser(userId);
+    const user = await clerkClient.users.getUser(userIda);
 
     // Store user data in cache
-    cache.set(userId, { userId, data: user });
+    cache.set(userIda, { userId: userIda, data: user });
 
     const { firstName, lastName, id, imageUrl } = user;
     return NextResponse.json({ firstName, lastName, id, imageUrl });

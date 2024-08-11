@@ -4,9 +4,9 @@ import dynamic from 'next/dynamic';
 import Head from "next/head";
 import React, { useState, useEffect } from "react";
 import { useRouter } from 'next/navigation';
-import DashboardHeader from "../../components/header/dashboardheader";
-import AddProjectButton from "../../components/buttons/projectsmodalopen";
-import ProjectsDataAdder from "../../components/projects/datastuff";
+import DashboardHeader from "../../../components/header/dashboardheader";
+import AddProjectButton from "../../../components/buttons/projectsmodalopen";
+import ProjectsDataAdder from "../../../components/projects/datastuff";
 
 function Dashboard() {
   const { isLoaded, isSignedIn, error } = useAuth();

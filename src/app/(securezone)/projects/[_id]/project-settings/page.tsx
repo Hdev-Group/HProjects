@@ -4,10 +4,10 @@ import { useRouter } from 'next/navigation';
 import { useAuth } from "@clerk/nextjs";
 import { useUser } from "@clerk/clerk-react";
 import { useMutation, useQuery } from "convex/react";
-import { api } from '../../../../../convex/_generated/api';
+import { api } from '../../../../../../convex/_generated/api';
 import React, { useEffect, useState } from "react";
-import SideBar from "../../../../components/projectscontents/sidebar";
-import { useToast } from "../../../../components/ui/use-toast";
+import SideBar from "../../../../../components/projectscontents/sidebar";
+import { useToast } from "../../../../../components/ui/use-toast";
 
 
 export default function ProjectSettings({ params }) {

@@ -3,12 +3,12 @@ import { useAuth } from "@clerk/nextjs";
 import { useUser } from "@clerk/clerk-react";
 import React, { useEffect, useState } from "react";
 import { useQuery } from "convex/react";
-import { api } from '../../../../../convex/_generated/api';
+import { api } from '../../../../../../convex/_generated/api';
 import Head from "next/head";
 import { useRouter } from 'next/navigation';
-import SideBar from "../../../../components/projectscontents/sidebar";
-import AddTaskButton from "../../../../components/buttons/addtask";
-import MainHolder from "../../../../components/tasks/dragndrop";
+import SideBar from "../../../../../components/projectscontents/sidebar";
+import AddTaskButton from "../../../../../components/buttons/addtask";
+import MainHolder from "../../../../../components/tasks/dragndrop";
 
 export default function IncidentsPage({ params }: { params: { _id: string } }) {
   const { userId, isLoaded, isSignedIn } = useAuth();

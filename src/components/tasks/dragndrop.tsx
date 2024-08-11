@@ -258,7 +258,7 @@ export default function MainHolder({ _id, taskFilter }: { _id: string, taskFilte
                 action: status,
                 taskPriority: tasks.find(task => task._id === draggingTask).taskPriority,
                 taskAssignee: tasks.find(task => task._id === draggingTask).taskAssignee,
-                usercommited: user.id,
+                usercommited: user?.id,
                 timestamp: loggercurrenttime,
             });
             setDraggingTask(null);

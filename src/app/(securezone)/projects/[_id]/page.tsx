@@ -1,13 +1,13 @@
 "use client";
-import { Critical, High, Medium, Low, Security, Feature } from '../../../components/dropdowns/priorities/critical';
-import { BackLog, Todo, InProgress, Done } from '../../../components/dropdowns/status/status';
+import { Critical, High, Medium, Low, Security, Feature } from '../../../../components/dropdowns/priorities/critical';
+import { BackLog, Todo, InProgress, Done } from '../../../../components/dropdowns/status/status';
 import { useAuth } from "@clerk/nextjs";
 import { useUser } from "@clerk/clerk-react";
 import React, { useEffect, useState } from "react";
 import { useQuery } from "convex/react";
-import { api } from '../../../../convex/_generated/api';
+import { api } from '../../../../../convex/_generated/api';
 import { useRouter } from 'next/navigation';
-import SideBar from "../../../components/projectscontents/sidebar";
+import SideBar from "../../../../components/projectscontents/sidebar";
 import ClientLayout from './ClientLayout'; 
 
 export default function ProjectPage({ params }: { params: { _id: string } }) {

@@ -3,26 +3,26 @@ import { useState, useEffect } from "react";
 import { useRouter } from 'next/navigation';
 import { useQuery, useMutation } from "convex/react";
 import { useUser, useAuth } from "@clerk/nextjs";
-import { api } from '../../../../../convex/_generated/api';
+import { api } from '../../../../../../convex/_generated/api';
 import {
     Critical, High, Medium, Low, Security, Feature,
-} from '../../../../components/dropdowns/priorities/critical';
+} from '../../../../../components/dropdowns/priorities/critical';
 import {
     BackLog, Todo, InProgress, Done,
-} from '../../../../components/dropdowns/status/status';
+} from '../../../../../components/dropdowns/status/status';
 import {
     HoverCard,
     HoverCardContent,
     HoverCardTrigger,
-  } from "../../../../components/ui/hover-card";
-import SideBar from "../../../../components/projectscontents/sidebar";
-import BreadcrumbWithCustomSeparator from "../../../../components/tasks/breadcrumb";
-import ArchiveTask from '../../../../components/modals/deleteTask';
-import CommentBox from '../../../../components/comments/commentbox';
-import CommentBoxer from '../../../../components/comments/commentboxer';
-import PriorityStatus from '../../../../components/dropdowns/priority';
-import StatusTime from '../../../../components/dropdowns/status';
-import QuickChat from '../../../../components/quickchat/quickchat';
+  } from "../../../../../components/ui/hover-card";
+import SideBar from "../../../../../components/projectscontents/sidebar";
+import BreadcrumbWithCustomSeparator from "../../../../../components/tasks/breadcrumb";
+import ArchiveTask from '../../../../../components/modals/deleteTask';
+import CommentBox from '../../../../../components/comments/commentbox';
+import CommentBoxer from '../../../../../components/comments/commentboxer';
+import PriorityStatus from '../../../../../components/dropdowns/priority';
+import StatusTime from '../../../../../components/dropdowns/status';
+import QuickChat from '../../../../../components/quickchat/quickchat';
 
 export default function TaskFullView({ params }: { params: { _id: string, _taskid: string } }) {
     const { userId, isLoaded, isSignedIn } = useAuth();

@@ -4,7 +4,7 @@ import { useUser } from '@clerk/clerk-react';
 import React, { useState, useEffect } from "react";
 import { useAuth } from "@clerk/nextjs";
 import { useRouter } from 'next/navigation';
-import DashboardHeader from '../../components/header/dashboardheader';
+import DashboardHeader from '../../../components/header/dashboardheader';
 
 const Settings = () => {
     const { isLoaded, isSignedIn, user: userInfo } = useUser();

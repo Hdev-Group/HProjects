@@ -3,18 +3,18 @@ import { useAuth } from "@clerk/nextjs";
 import { useUser } from "@clerk/clerk-react";
 import React, { useEffect, useState } from "react";
 import { useQuery } from "convex/react";
-import { api } from '../../../../../convex/_generated/api';
+import { api } from '../../../../../../convex/_generated/api';
 import { useRouter } from 'next/navigation';
-import SideBar from "../../../../components/projectscontents/sidebar";
-import ChatSelector from "../../../../components/quickchat/quickchatselector";
-import MainChat from "../../../../components/chatbars/mainchat";
+import SideBar from "../../../../../components/projectscontents/sidebar";
+import ChatSelector from "../../../../../components/quickchat/quickchatselector";
+import MainChat from "../../../../../components/chatbars/mainchat";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "../../../../components/ui/dropdown-menu";
+} from "../../../../../components/ui/dropdown-menu";
 
 
 
