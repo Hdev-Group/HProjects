@@ -444,7 +444,7 @@
   }
   .feature{
     background-color: #0000ff3f;
-    border: solid 1px #fff;
+    border: solid 1px #0000ff3f;
     color: #fff;
     font-weight: 600;
   }
