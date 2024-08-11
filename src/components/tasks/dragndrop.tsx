@@ -293,14 +293,14 @@ export default function MainHolder({ _id, taskFilter }: { _id: string, taskFilte
         ))
     );
 
-    const renderDropZone = (status: string) => (
+    const renderDropZone = ({status, name}: {status: string, name: string}) => (
         <div 
             className={`flex flex-col dark:border px-3 py-2 pb-4 rounded-md dark:bg-transparent bg-neutral-100/80 dark:border-neutral-900 w-full lg:w-1/4 ${dragOverStatus === status ? 'border-green-500' : ''}`}
             onDragOver={(e) => onDragOver(e, status, projectTasks.filter(task => task.taskStatus === status).length)}
             onDrop={(e) => onDrop(e, status)}
         >
             <div className="mt-2 flex items-center gap-2 mb-4 pb-2">
-                <h2 className="text-lg font-semibold text-black dark:text-white capitalize">{status}</h2>
+                <h2 className="text-lg font-semibold text-black dark:text-white capitalize">{name}</h2>
                 <h1 className="px-1.5 text-black dark:text-white bg-neutral-100 dark:bg-neutral-800 border-neutral-400 border dark:border-neutral-600 rounded-sm text-sm" id={`${status}count`}>{projectTasks.filter(task => task.taskStatus.toLowerCase() === status).length}</h1>
             </div>
             <div className='flex flex-col gap-2'>
@@ -314,10 +314,10 @@ export default function MainHolder({ _id, taskFilter }: { _id: string, taskFilte
 
     return (
         <div className="flex-row justify-between mb-5 flex lg:flex-nowrap flex-wrap w-full sm:gap-5 gap-1">
-            {renderDropZone('backlog')}
-            {renderDropZone('todo')}
-            {renderDropZone('inprogress')}
-            {renderDropZone('done')}
+            {renderDropZone({status: 'backlog', name: 'Backlog'})}
+            {renderDropZone({status: 'todo', name: 'To do'})}
+            {renderDropZone({status: 'inprogress', name: 'In Progress'})}
+            {renderDropZone({status: 'done', name: 'Done'})}
         </div>
     );
 }
