@@ -25,6 +25,6 @@ export const add = mutation({
 
     // Insert the task and return it
     const insertedTask = await ctx.db.insert("tasks", task);
-    return insertedTask; // Ensure that this has the taskId
+    return insertedTask;
   },
 });

@@ -25,6 +25,6 @@ export const add = mutation({
     // Insert the project into the "project" table
     await ctx.db.insert("project", project);
 
-    return project; // Optionally return the newly created project
+    return project; 
   },
 });

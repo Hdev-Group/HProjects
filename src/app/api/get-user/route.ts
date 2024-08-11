@@ -3,10 +3,9 @@ import { NextResponse } from "next/server";
 import { LRUCache } from "lru-cache";
 import { getAuth } from '@clerk/nextjs/server';
 
-// Define the type for your cache entries
 interface CacheEntry {
   userId: string;
-  data: any; // Adjust this based on the actual structure of user data
+  data: any; 
 }
 
 // Create a new LRU cache instance

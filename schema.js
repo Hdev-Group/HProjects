@@ -42,5 +42,5 @@ export default defineSchema({
   users: defineTable({
     userid: v.string(),
     jobtitle: v.string(),
-  }).unique("userid"), // Ensure userid is unique  
+  }).unique("userid"), 
 });

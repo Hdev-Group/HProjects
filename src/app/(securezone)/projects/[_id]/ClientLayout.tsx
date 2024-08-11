@@ -9,7 +9,7 @@ interface ClientLayoutProps {
 export default function ClientLayout({ children, title }: ClientLayoutProps) {
 
   if (!title) {
-    return null; // or a loading spinner, or some fallback content
+    return null; 
   }
 
   return (

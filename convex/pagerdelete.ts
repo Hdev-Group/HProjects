@@ -7,7 +7,7 @@ export const deletePager = mutation({
     },
     handler: async (ctx, args) => {
         if (!args._id) {
-            throw new Error('Missing required field: _id'); // Update the error message to use "_id"
+            throw new Error('Missing required field: _id');
         }
         await ctx.db.delete(args._id);
     },
