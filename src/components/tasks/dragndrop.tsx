@@ -4,7 +4,7 @@ import { api } from '../../../convex/_generated/api';
 import { useUser } from '@clerk/nextjs';
 import { useAuth } from '@clerk/nextjs';
 import { useQuery } from "convex/react";
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useMutation } from 'convex/react';
 import { useRouter } from 'next/navigation';
 import ArchiveTask from '../modals/deleteTask';
@@ -19,6 +19,7 @@ import {
     ContextMenuItem,
     ContextMenuTrigger,
   } from "../ui/context-menu"
+import { stat } from 'fs';
 
   function CardFrame({ taskId, projectid, taskName, taskPriority, taskStatus, taskAssignee, taskDescription, onDragStart, onDragEnd, onDragOver, onDrop }: { taskId: string, projectid: string, taskName: string, taskPriority: string, taskStatus: string, taskAssignee: string, taskDescription: string, onDragStart: (event: React.DragEvent<HTMLDivElement>, taskId: string) => void, onDragEnd: () => void, onDragOver: (event: React.DragEvent<HTMLDivElement>, status: string, position: number) => void, onDrop: (event: React.DragEvent<HTMLDivElement>, status: string) => void }) {
     const [assigneeData, setAssigneeData] = useState<{ firstName: string, lastName: string, imageUrl: string, id: string } | null>(null);
@@ -60,6 +61,8 @@ import {
         setSelectedTask({ taskname: taskName, _taskid: taskId, projectid: projectid });
         setShowDeleteModal(true);
     }
+    const taskCardRef = useRef(null);
+
 
     return (
         <>
@@ -71,6 +74,7 @@ import {
                                 className='dark:border-neutral-800 border-neutral-200 bg-white dark:bg-neutral-900/60 text-black dark:text-white cursor-pointer hover:border-neutral-300 transition-all py-2 border gap-3 flex flex-col rounded-md w-full'
                                 onDoubleClick={() => taskmainmenu(taskId)}
                                 draggable
+                                ref={taskCardRef}
                                 onDragStart={(e) => onDragStart(e, taskId)}
                                 onDragEnd={onDragEnd}
                             >
@@ -261,11 +265,13 @@ export default function MainHolder({ _id, taskFilter }: { _id: string, taskFilte
                 usercommited: user?.id,
                 timestamp: loggercurrenttime,
             });
+    
             setDraggingTask(null);
             setDragOverStatus(null);
             setDragOverPosition(null);
         }
     };
+    
 
     const renderTasksByStatus = (status: string) => (
         projectTasks.filter(task => task.taskStatus === status).map((task, index) => (
@@ -300,7 +306,7 @@ export default function MainHolder({ _id, taskFilter }: { _id: string, taskFilte
     }
     const renderDropZone = ({status, name}: {status: string, name: string}) => (
         <div 
-            className={`flex flex-col dark:border px-3 py-2 pb-4 rounded-md dark:bg-transparent bg-neutral-100/80 dark:border-neutral-900 w-full lg:w-1/4 ${dragOverStatus === status ? 'border-green-500' : ''}`}
+            className={`flex flex-col dark:border px-3 py-2 pb-4 rounded-md dark:bg-transparent bg-neutral-100/80 dark:border-neutral-900 w-full ${dragOverStatus === status ? 'border-green-500' : ''}`}
             onDragOver={(e) => onDragOver(e, status, projectTasks.filter(task => task.taskStatus === status).length)}
             onDrop={(e) => onDrop(e, status)}
         >
@@ -318,7 +324,7 @@ export default function MainHolder({ _id, taskFilter }: { _id: string, taskFilte
     );
 
     return (
-        <div className="flex-row justify-between mb-5 flex lg:flex-nowrap flex-wrap w-full sm:gap-5 gap-1">
+        <div className="flex-row justify-between mb-5 flex flex-nowrap max-[1624px]:flex-wrap w-full gap-5 lg:gap-1"> 
             {renderDropZone({status: 'backlog', name: 'Backlog'})}
             {renderDropZone({status: 'todo', name: 'To do'})}
             {renderDropZone({status: 'inprogress', name: 'In Progress'})}

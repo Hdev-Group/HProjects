@@ -71,7 +71,7 @@ export default function PagerEl({ _id }: any) {
         </div>
       </ContextMenuTrigger>
       <ContextMenuContent>
-        <ContextMenuItem className='text-green-300 cursor-pointer' onClick={handleClick}>Go on Pager</ContextMenuItem>
+        <a href='./pager'>        <ContextMenuItem className='text-green-300 cursor-pointer' onClick={handleClick}>Go on Pager</ContextMenuItem>        </a>
       </ContextMenuContent>
     </ContextMenu>
     );

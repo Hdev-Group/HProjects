@@ -190,15 +190,15 @@ export default function TaskFullView({ params }: { params: { _id: string, _taski
         const days = Math.floor(hours / 24);
     
         if (seconds < 60) {
-            return <p className='font-semibold critical rounded-md p-1' id='loadingidassigneenames'>{seconds} seconds ago</p>;
+            return <p className='font-semibold critical rounded-md p-1' id='loadingidassigneenames'>{seconds} {seconds === 1 ? 'second' : 'seconds'} ago</p>;
         } else if (minutes < 20) {
-            return <p className='font-semibold critical rounded-md p-1' id='loadingidassigneenames'>{minutes} minutes ago</p>;
+            return <p className='font-semibold critical rounded-md p-1' id='loadingidassigneenames'>{minutes} {minutes === 1 ? 'minute' : 'minutes'} ago</p>;
         } else if (minutes < 60) {
-            return <p className='font-semibold medium rounded-md p-1' id='loadingidassigneenames'>{minutes} minutes ago</p>;
+            return <p className='font-semibold medium rounded-md p-1' id='loadingidassigneenames'>{minutes} {minutes === 1 ? 'minute' : 'minutes'} ago</p>;
         } else if (hours < 24) {
-            return <p className='font-semibold critical rounded-md p-1' id='loadingidassigneenames'>{hours} hours ago</p>;
+            return <p className='font-semibold critical rounded-md p-1' id='loadingidassigneenames'>{hours} {hours === 1 ? 'hour' : 'hours'} ago</p>;
         } else {
-            return <span>{`${days} days ago`}</span>;
+            return <span>{`${days} ${days === 1 ? 'day' : 'days'} ago`}</span>;
         }
     }
 
@@ -240,17 +240,19 @@ export default function TaskFullView({ params }: { params: { _id: string, _taski
                     <div className="max-w-10/12 w-[100%] overflow-y-auto p-5 flex flex-col items-center">
                     <div className="flex-row w-full px-5 justify-between mb-5 mt-5 flex">
                                 <div className='flex flex-col w-full gap-4 items-center '>
-                                    <div className="flex w-full md:w-10/12 pt-4 gap-4 flex-col md:flex-row justify-between">
-                                        <div className='w-full flex flex-col'>
+                                    <div className="flex w-full md:w-10/12 pt-4 gap-4 flex-row justify-between">
+                                        <div className='w-full flex gap-3 flex-col'>
                                             {archived && <div className='font-semibold medium w-full rounded-md px-5 py-2 cursor-pointer hover:bg-orange-200/30 transition-all hover:border-orange-600' onClick={taskunarchive}><h1 className="text-2xl">{taskName} is archived</h1> <p className="font-normal text-xs">Click here to unarchive</p></div>}
                                         <div className='flex flex-row gap-3 mt-3 items-center h-8 w-50'>
                                             {!archived &&
                                             <>
-                                             <div className='flex justify-center items-center cursor-pointer hover:bg-neutral-500/60 bg-neutral-500/20 border hover:border-neutral-300 h-7 p-0.5 rounded-lg w-7 transition-all' onClick={edittask}>
-                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M15.7279 9.57627L14.3137 8.16206L5 17.4758V18.89H6.41421L15.7279 9.57627ZM17.1421 8.16206L18.5563 6.74785L17.1421 5.33363L15.7279 6.74785L17.1421 8.16206ZM7.24264 20.89H3V16.6473L16.435 3.21231C16.8256 2.82179 17.4587 2.82179 17.8492 3.21231L20.6777 6.04074C21.0682 6.43126 21.0682 7.06443 20.6777 7.45495L7.24264 20.89Z"></path></svg>
+                                            <div className="flex-row flex gap-2">
+                                            <div className='flex justify-center items-center cursor-pointer hover:bg-neutral-500/60 flex-row  bg-neutral-500/20 border hover:border-neutral-300 h-auto p-1 px-2 rounded-sm w-auto gap-2 transition-all' onClick={edittask}>
+                                                <svg xmlns="http://www.w3.org/2000/svg" className="w-5 flex" viewBox="0 0 24 24" fill="currentColor"><path d="M15.7279 9.57627L14.3137 8.16206L5 17.4758V18.89H6.41421L15.7279 9.57627ZM17.1421 8.16206L18.5563 6.74785L17.1421 5.33363L15.7279 6.74785L17.1421 8.16206ZM7.24264 20.89H3V16.6473L16.435 3.21231C16.8256 2.82179 17.4587 2.82179 17.8492 3.21231L20.6777 6.04074C21.0682 6.43126 21.0682 7.06443 20.6777 7.45495L7.24264 20.89Z"></path></svg> <p className="md:block hidden">Edit</p>
                                             </div>
-                                            <div className='flex justify-center items-center cursor-pointer hover:bg-red-500/60 bg-red-500/80 border hover:border-neutral-300 h-7 p-0.5 rounded-lg w-7 transition-all' onClick={deletetasktrigger}>
-                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M17 6H22V8H20V21C20 21.5523 19.5523 22 19 22H5C4.44772 22 4 21.5523 4 21V8H2V6H7V3C7 2.44772 7.44772 2 8 2H16C16.5523 2 17 2.44772 17 3V6ZM18 8H6V20H18V8ZM9 4V6H15V4H9Z"></path></svg>
+                                            <div className='flex justify-center items-center cursor-pointer hover:bg-red-500/60 gap-2 bg-red-500/80 border hover:border-neutral-300 h-auto p-1 px-2 rounded-sm w-auto flex-row transition-all' onClick={deletetasktrigger}>
+                                                <svg xmlns="http://www.w3.org/2000/svg" className="flex w-5" viewBox="0 0 24 24" fill="currentColor"><path d="M17 6H22V8H20V21C20 21.5523 19.5523 22 19 22H5C4.44772 22 4 21.5523 4 21V8H2V6H7V3C7 2.44772 7.44772 2 8 2H16C16.5523 2 17 2.44772 17 3V6ZM18 8H6V20H18V8ZM9 4V6H15V4H9Z"></path></svg> <p className="md:block hidden">Delete</p>
+                                            </div>
                                             </div>
                                             </>
                                             }
@@ -261,7 +263,7 @@ export default function TaskFullView({ params }: { params: { _id: string, _taski
                                                     <h1 className="font-bold text-3xl dark:text-white text-black text-wrap">{taskName}</h1>
                                                 </div>
                                                 
-                                                <div className='flex gap-3 mt-1 w-full sm:flex-row flex-col'>
+                                                <div className='flex gap-3 mt-1 w-full flex-row'>
                                                     {isEditing ? (
                                                         <>
                                                             <PriorityStatus 

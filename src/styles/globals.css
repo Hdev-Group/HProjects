@@ -596,3 +596,65 @@
   height: 2px;
   border-radius: 50%;
 }
+.doneanimation {
+  content: '\00a0';
+  animation: risedone 4.5s ease-out forwards;
+  background-size: 100% 20px;
+  background-repeat: no-repeat;
+  float:left;
+  border-radius: 10px;
+  width:100%;
+}
+.backloganimation{
+  content: '\00a0';
+  animation: risebacklog 4.5s ease-out forwards;
+  background-size: 100% 20px;
+  background-repeat: no-repeat;
+  float:left;
+  border-radius: 10px;
+  width:100%;
+}
+@keyframes risebacklog{
+  0%{
+    background-image:
+    radial-gradient(at 50% 0, #5ce1e6 0%, #5ce1e636 0%);
+    background-size: 100% 0px;
+  }
+  50%{
+    background-image:
+    radial-gradient(at 50% 0, #5ce1e6 0%, #5ce1e636 50%);
+    background-size: 100% 100%;
+  }
+  80%{
+    background-image:
+    radial-gradient(at 50% 0, #5ce1e6 0%, #5ce1e636 50%);
+    background-size: 100% 100%;
+  }
+  100%{
+    background-image:
+    radial-gradient(at 50% 0, #5ce1e6 0%, #5ce1e636 50%);
+    background-size: 100% 0%;
+  }
+}
+@keyframes risedone{
+  0%{
+    background-image:
+    radial-gradient(at 50% 0, rgb(44, 207, 11) 0%, rgba(44, 207, 11, 0.562));
+    background-size: 100% 0px;
+  }
+  50%{
+    background-image:
+    radial-gradient(at 50% 0, rgb(44, 207, 11) 0%, rgba(44, 207, 11, 0.562) 50%);
+    background-size: 100% 100%;
+  }
+  80%{
+    background-image:
+    radial-gradient(at 50% 0, rgb(44, 207, 11) 0%, rgba(44, 207, 11, 0.562) 50%);
+    background-size: 100% 100%;
+  }
+  100%{
+    background-image:
+    radial-gradient(at 50% 0, rgb(44, 207, 11) 0%, rgba(44, 207, 11, 0.562) 50%);
+    background-size: 100% 0%;
+  }
+}
