@@ -131,7 +131,7 @@ const NewPagerModal = ({ onClose, id }) => {
           <div className="flex flex-col gap-5 ">
 
           </div>
-          <button type="submit" className="dark:bg-cyan-600 w-1/6 dark:text-white bg-cyan-600 text-white rounded-lg px-3 py-2">
+          <button type="submit" className="dark:bg-cyan-600 w-auto dark:text-white bg-cyan-600 text-white rounded-lg px-3 py-2">
             Add Responder
           </button>
         </form>

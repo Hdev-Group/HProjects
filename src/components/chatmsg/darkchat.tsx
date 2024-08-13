@@ -1,4 +1,56 @@
+import { useUser } from "@clerk/nextjs";
+import { useQuery } from "convex/react";
+import { api } from '../../../convex/_generated/api';
+import { Critical, High, Medium, Low, Security, Feature } from '../dropdowns/priorities/critical';
+
+function ChatTaskEmbed({ projectid, taskid }: { projectid: string, taskid: string }) {
+    // Fetch the task details based on the project ID and task ID
+    const task = useQuery(api.getexacttask.get, { _id: taskid });
+  
+    if (!task || task.projectid !== projectid) {
+      return null; // If task not found or project ID doesn't match, return null
+    }
+    const taskPriority = task.taskPriority;
+  
+  
+    return (
+      <a href={`../../${projectid}/${taskid}`}>
+            <div className="bg-neutral-900 mt-1 rounded-md border cursor-pointer transition-all p-4 hover:border-white">
+        <p className="text-neutral-200 text-xs">Task</p>
+        <div className="flex  flex-col gap-2">
+          <div className="flex flex-row items-end gap-2">
+          <p className="text-neutral-200">{task.taskTitle}</p>
+          <div>
+              {taskPriority === 'critical' && <Critical />}
+              {taskPriority === 'high' && <High />}
+              {taskPriority === 'medium' && <Medium />}
+              {taskPriority === 'low' && <Low />}
+              {taskPriority === 'security' && <Security />}
+              {taskPriority === 'Feature' && <Feature />}
+            </div>
+          </div>
+        </div>
+      </div>
+      </a>
+    );
+  }
+  
+
 export default function DarkChat({assigneeData, message}: {assigneeData: any, message: string}) {
+    const { user } = useUser();
+
+    // Improved regex to capture task-related URLs more reliably
+    const urlPattern = /http:\/\/localhost:3000\/projects\/([^\/]+)\/([a-zA-Z0-9]+)\b/g;
+    const match = urlPattern.exec(message);
+  
+    // Log the extracted values for debugging
+    console.log("Message:", message);
+    console.log("Matched:", match);
+  
+    const extractedProjectId = match ? match[1] : null;
+    const taskid = match ? match[2] : null;
+    // remove that url from the message
+    message = message.replace(urlPattern, '');
     return(
         <div className="flex w-full justify-start flex-row items-end gap-4 rounded-md px-1 py-2 hover:bg-neutral-900">
             <div className="justify-between w-full flex flex-row">
@@ -11,6 +63,9 @@ export default function DarkChat({assigneeData, message}: {assigneeData: any, me
                 <div className="flex flex-col">
                 </div>
                 <p className="text-white text-wrap text-sm">{message}</p>
+                {extractedProjectId && taskid && (
+              <ChatTaskEmbed projectid={extractedProjectId} taskid={taskid} />
+            )}
                 </div>
             </div>
             </div>

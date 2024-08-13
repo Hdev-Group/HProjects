@@ -202,7 +202,7 @@ export default function TaskFullView({ params }: { params: { _id: string, _taski
         }
     }
 
-    const title = taskName + projectname + ' | Task Details';
+    const title = taskName + ' | ' + projectname + ' | Task Details';
 
     function taskunarchive() {
         const currenttime = new Date().toISOString();

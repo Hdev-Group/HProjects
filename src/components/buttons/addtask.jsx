@@ -31,7 +31,7 @@ const AddTaskButton = (id) => {
     <>
       <button
         onClick={handleClick}
-        className="bg-primary-500 dark:text-white text-black rounded-md p-2 border w-60 hover:bg-neutral-300/20 hover:border-neutral-400 transition-all bg-neutral-50 dark:bg-neutral-400/10 border-neutral-200"
+        className="bg-primary-500 dark:text-white text-black rounded-md p-2 border w-60 hover:bg-neutral-300/20 hover:border-neutral-400 transition-all bg-neutral-50 dark:bg-neutral-400/10 border-neutral-700"
       >
         Add Task
       </button>

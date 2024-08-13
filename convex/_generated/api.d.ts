@@ -22,6 +22,7 @@ import type * as draganddrop from "../draganddrop.js";
 import type * as getchat from "../getchat.js";
 import type * as getcomments from "../getcomments.js";
 import type * as getdm from "../getdm.js";
+import type * as getexacttask from "../getexacttask.js";
 import type * as getjob from "../getjob.js";
 import type * as getlogs from "../getlogs.js";
 import type * as getreplys from "../getreplys.js";
@@ -60,6 +61,7 @@ declare const fullApi: ApiFromModules<{
   getchat: typeof getchat;
   getcomments: typeof getcomments;
   getdm: typeof getdm;
+  getexacttask: typeof getexacttask;
   getjob: typeof getjob;
   getlogs: typeof getlogs;
   getreplys: typeof getreplys;

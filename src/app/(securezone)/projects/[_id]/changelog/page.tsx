@@ -231,9 +231,9 @@ function SenderChangelogger({ weekBlocks, ownerData, taskFilterThisWeek, _id }: 
               } else if (log.archived === true) {
                 changes += `${task?.taskTitle} has been archived by ${ownerData[log.usercommited]?.firstName} ${ownerData[log.usercommited]?.lastName}`;
               } else if (log.action === task?.taskStatus) {
-                changes += `${task?.taskTitle} status has changed to `;
-              } if (log.taskPriority) {
-                  changes += `${task?.taskTitle} priority has changed to ${log.taskPriority}.`;
+                changes += `${task?.taskTitle} priority has changed to ${log.taskPriority}`;
+              } else if (log.taskPriority) {
+                  changes += `${task?.taskTitle} status has changed to ${log.action}.`;
                 }
               let hovercardchanges = '';
               if (log.added === true) {
@@ -242,9 +242,9 @@ function SenderChangelogger({ weekBlocks, ownerData, taskFilterThisWeek, _id }: 
                 hovercardchanges += `archived ${task?.taskTitle}.`;
               }
               else if (log.action === task?.taskStatus) {
-                hovercardchanges += `changed ${task?.taskTitle} status changed to ${log.action} `;
+                hovercardchanges += `changed ${task?.taskTitle} priority to ${log.taskPriority} `;
               } else if (log.taskPriority) {
-                  hovercardchanges += `changed ${task?.taskTitle} priority to ${log.taskPriority}.`;
+                  hovercardchanges += `changed ${task?.taskTitle} status to ${log.action}.`;
                 }
               const assignee = ownerData[log.usercommited];
               return (

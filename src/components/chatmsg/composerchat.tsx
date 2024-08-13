@@ -21,7 +21,7 @@ export default function ComposerChat({ chatId, projectid, assigneeData }: { chat
             {chats.map((chat: any) => (
                 <div key={chat._id}>
                     {chat.userId === userId ? (
-                        <BlueChat message={chat.message} />
+                        <BlueChat message={chat.message} projectid={projectid} />
                     ) : (
                         <DarkChat assigneeData={assigneeData} message={chat.message} />
                     )}
