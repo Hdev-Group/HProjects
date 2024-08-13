@@ -1,7 +1,7 @@
 export default function Footer(){
     return(
         <>
-            <div className="border border-transparent flex items-center justify-center  border-t-neutral-700/60 w-full text-white text-center p-4">
+            <div className="border border-transparent flex items-center justify-center bg-black  border-t-neutral-700/60 w-full text-white text-center p-4">
                 <div className="flex justify-between flex-col max-w-[110rem] w-full mt-50">
                     <div className="flex justify-between w-full">
                     <div className="flex flex-col gap-2">

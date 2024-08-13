@@ -4,11 +4,16 @@ import { SignedOut, SignedIn, SignUp } from '@clerk/nextjs';
 import HeaderIndex from '../../components/header/header';
 import Footer from '../../components/footer/footer';
 import gsap from 'gsap';
-import { Critical } from '../../components/dropdowns/priorities/critical';
+import { High, Critical } from '../../components/dropdowns/priorities/critical';
 import { InProgress } from '../../components/dropdowns/status/status';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import '../../styles/globals.css';
 import './index.css';
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "../../components/ui/hover-card";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -206,12 +211,12 @@ export default function Home() {
   };
 
   return (
-    <div className='' ref={container}>
+    <div className='bg-[#09090B]'  ref={container}>
       <HeaderIndex />
       <main className='md:max-w-[100%] mt-[7rem] flex items-center flex-col justify-center overflow-x-hidden boxtexts'>
-        <div className='flex md:px-[4.5rem] px-0 justify-between w-[100%] flex-wrap lg:flex-nowrap flex-row gap-10 pt-[5rem] pb-40'>
+        <div className='flex md:px-[4.5rem] px-2 justify-between  w-[100%] flex-wrap lg:flex-nowrap flex-row gap-10 pt-[5rem] pb-40'>
           <div className='md:w-[70%] w-full flex flex-col justify-start gap-5'>
-            <div className="grid-background absolute w-[100%] h-10"></div>
+            <div className="grid-background absolute w-[100%]  h-10"></div>
             <img src='/logo.png' alt='logo' className='w-[50px] h-[50px] fadein' />
             <div className='flex flex-col gap-4'>
               <div className='flex items-center gap-4'>
@@ -270,9 +275,9 @@ export default function Home() {
             <img src='/indexmainphoto.png' alt='mainphoto' className='w-[100%] pushright h-[100%] rounded-l-[2rem] border' />
           </div>
         </div>
-        <div className='flex w-full flex-col boxtexts mt-10 mb-40'>
+        <div className='flex w-full flex-col  boxtexts bg-[#09090B] mt-10 mb-40'>
           <div className='flex gap-10 flex-col flex-wrap items-center w-full justify-between'>
-            <div className='flex flex-col w-full lg:w-1/2'>
+            <div className='flex flex-col w-full px-2 lg:w-1/2'>
               <div className='h-40 rounded-[20px] w-full shadow-md mb-5 text-white py-3 px-5 loadingimg'>
                 <div className='flex justify-between w-50 flex-col h-full'>
                   <h1 className='font-extrabold text-[20px]'>Got an idea?</h1>
@@ -312,7 +317,7 @@ export default function Home() {
 
               </div>
               <div className='md:w-[82%] w-full items-center flex-col flex gap-6 mb-40'>
-                <div className='flex flex-col gap-10 h-auto w-1/2'>
+                <div className='flex flex-col gap-10 h-auto w-full px-2 lg:w-1/2'>
                   <div className='flex flex-col relative'>
                     <h1 className='font-bold text-[30px] text-left'>Pager</h1>
                     <div className='bg-white w-full h-6 bottom-0 absolute' id='swiperwhiter'></div>
@@ -334,7 +339,7 @@ export default function Home() {
                 </div>
               </div>
               <div className='md:w-[82%]  w-full items-center flex-col flex gap-6'>
-                <div className='flex flex-col gap-10 h-auto w-1/2'>
+                <div className='flex flex-col gap-10 h-auto w-full px-2 lg:w-1/2'>
                   <div className='flex flex-col relative text-right'>
                     <h1 className='font-bold text-[30px] text-right'>Comments</h1>
                     <div className='bg-white w-full h-6 bottom-0 absolute' id='aacswhite'></div>
@@ -358,7 +363,7 @@ export default function Home() {
                   <div className='flex flex-col gap-4 w-full text-black' id='secondcomment'>
                     <div className='flex flex-col gap-4 w-full'>
                       <div className='border p-4 flex gap-4 w-full flex-col justify-center rounded-md hover:border-neutral-200 transition-all'>
-                        <p>90% finished the pager.</p>
+                        <p>Got caught with a bug going to fix this now.</p>
                         <div className="flex gap-4 items-center">
                           <div className="flex items-center gap-2">
                             <img src="/loadingimg.jpg" alt="Test Comment" className='w-8 h-8 rounded-full' />
@@ -383,35 +388,125 @@ export default function Home() {
                       </div>
                     </div>
                   </div>
-                  </div>
                   <div className='flex flex-col relative text-left'>
+                    <h1 className='font-bold text-[30px]'>Direct Messages</h1>
+                    <div className='bg-white w-full h-6 bottom-0 absolute' id='cacswhite'></div>
+                    <p className='font-semibold text-md' id='blurunblurc'>Read your tasks instantly from the project dashboard.</p>
+                  </div>
+                  </div>
+                  <div className='flex flex-col relative text-right'>
                     <h1 className='font-bold text-[30px]'>Tasks</h1>
                     <div className='bg-white w-full h-6 bottom-0 absolute' id='cacswhite'></div>
                     <p className='font-semibold text-md' id='blurunblurc'>Read your tasks instantly from the project dashboard.</p>
                   </div>
-                  <div className='flex flex-col w-full max-h-[30rem] gap-5 overflow-hidden'>
-                  <div id='databasetasks'
-            className='border-neutral-800 bg-neutral-300/60 cursor-pointer hover:border-neutral-300 transition-all py-2 border gap-3 flex flex-col rounded-md w-full'>
-            <div className='flex gap-3 pl-4'>
-                <h1 className='font-bold'>
-                    Database is down
-                </h1>
-            </div>
-            <div className='flex justify-between'>
-                <div className='flex gap-3 pl-3'>
-                    <Critical />
-                    <InProgress />
-                </div>
-                <div className='flex gap-3 pr-3 items-center'>
-                        <>
-                            <img src='/loadingimg.jpg' className='w-6 h-6 rounded-full' alt="Assignee" />
-                        </>
-                </div>
-            </div>
-        </div>
-                  </div>
-                  </div>
-
+                    <HoverCard>
+                        <HoverCardTrigger>
+                            <div
+                            id='databasetasks'
+                                className=' border-neutral-200 bg-white  text-black  cursor-pointer hover:border-neutral-300 transition-all py-2 border gap-3 flex flex-col rounded-md w-full'
+                            >
+                                <div className='flex gap-3 pl-4'>
+                                    <h1 className='font-semibold'>
+                                      Users are unable to log in
+                                    </h1>
+                                </div>
+                                <div className='flex justify-between'>
+                                    <div className='flex gap-3 pl-3'>
+                                      <High />
+                                      <InProgress />
+                                    </div>
+                                    <div className='flex gap-3 pr-3 items-center'>
+                                            <>
+                                                <img src="/loadingimg.jpg" className='w-6 h-6 rounded-full' alt="Assignee" />
+                                            </>
+                                    </div>
+                                </div>
+                            </div>
+                        </HoverCardTrigger>
+                        <HoverCardContent>
+                                <div className='border-neutral-800 cursor-pointer hover:border-neutral-300 transition-all py-2 gap-3 flex flex-col rounded-md w-full'>
+                                    <div className='flex gap-3 pl-4 flex-col'>
+                                        <div className='flex gap-3 pr-3 items-center'>
+                                                <>
+                                                    <img src="/loadingimg.jpg" className='w-6 h-6 rounded-full' alt="Assignee" />
+                                                    <div>
+                                                        <h2 className='font-semibold'>Harry Campbell</h2>
+                                                        <p className='text-xs text-neutral-400'>Lead Developer</p>
+                                                    </div>
+                                                </>
+                                        </div>
+                                        <h1 className='font-bold'>
+                                        Users are unable to log in
+                                        </h1>
+                                    </div>
+                                    <div className='flex justify-between'>
+                                        <div className='flex gap-3 pl-3'>
+                                            <High />
+                                            <InProgress />
+                                        </div>
+                                    </div>
+                                    <div className='flex gap-3 pl-4'>
+                                        <p className='text-sm max-w-[500px] text-wrap'>
+                                          Users are unable to log in to the system. We are currently investigating the issue and will provide updates as soon as possible.
+                                        </p>
+                                    </div>
+                                </div>
+                        </HoverCardContent>
+                    </HoverCard>
+                    <HoverCard>
+                        <HoverCardTrigger>
+                            <div
+                            id='databasetasks'
+                                className=' border-neutral-200 bg-white  text-black  cursor-pointer hover:border-neutral-300 transition-all py-2 border gap-3 flex flex-col rounded-md w-full'
+                            >
+                                <div className='flex gap-3 pl-4'>
+                                    <h1 className='font-semibold'>
+                                      Users are unable to log in
+                                    </h1>
+                                </div>
+                                <div className='flex justify-between'>
+                                    <div className='flex gap-3 pl-3'>
+                                      <Critical />
+                                      <InProgress />
+                                    </div>
+                                    <div className='flex gap-3 pr-3 items-center'>
+                                            <>
+                                                <img src="/loadingimg.jpg" className='w-6 h-6 rounded-full' alt="Assignee" />
+                                            </>
+                                    </div>
+                                </div>
+                            </div>
+                        </HoverCardTrigger>
+                        <HoverCardContent>
+                                <div className='border-neutral-800 cursor-pointer hover:border-neutral-300 transition-all py-2 gap-3 flex flex-col rounded-md w-full'>
+                                    <div className='flex gap-3 pl-4 flex-col'>
+                                        <div className='flex gap-3 pr-3 items-center'>
+                                                <>
+                                                    <img src="/loadingimg.jpg" className='w-6 h-6 rounded-full' alt="Assignee" />
+                                                    <div>
+                                                        <h2 className='font-semibold'>Harry Campbell</h2>
+                                                        <p className='text-xs text-neutral-400'>Lead Developer</p>
+                                                    </div>
+                                                </>
+                                        </div>
+                                        <h1 className='font-bold'>
+                                        Users are unable to log in
+                                        </h1>
+                                    </div>
+                                    <div className='flex justify-between'>
+                                        <div className='flex gap-3 pl-3'>
+                                            <Critical />
+                                            <InProgress />
+                                        </div>
+                                    </div>
+                                    <div className='flex gap-3 pl-4'>
+                                        <p className='text-sm max-w-[500px] text-wrap'>
+                                          Users are unable to log in to the system. We are currently investigating the issue and will provide updates as soon as possible.
+                                        </p>
+                                    </div>
+                                </div>
+                        </HoverCardContent>
+                    </HoverCard>
                 </div>
               </div>
             </div>
@@ -423,31 +518,11 @@ export default function Home() {
               </div>
             </div>
           </div>
-          <div className='md:w-1/2 md:max-w-[120rem] h-auto rounded-2xl border-2 mb-[5rem] border-blue-400 bg-white text-black p-10 flex gap-4 flex-col md:flex-row'>
-            <div className='flex justify-between flex-col'>
-            <div>
-              <h1 className='text-3xl font-bold max-w-[29rem]'>Planning starts with HCyber</h1>
-              <p className='text-sm text-neutral-700 mt-5'>
-              Start your next project with HCyber. Collaborate <b>for free</b> and enjoy standard incident management to keep your workflow smooth. Let’s create something amazing together!
-            </p>   
-            </div>
-
-            <a href="/dashboard" className='max-w-10'>
-            <button className='ease-in-out duration-300 hovmain mt-5 flex items-center justify-center border border-neutral-300 p-1 px-5 bg-neutral-500/30 rounded-md hover:border-neutral-900 hover:bg-neutral-200'>
-                      <h1 className='font-semibold text-[20px] flex'>Dashboard 
-                        <svg xmlns="http://www.w3.org/2000/svg" className='h-[30px] w-5 hovericon' viewBox="0 0 24 24" fill="currentColor">
-                          <path d="M16 12L10 18V6L16 12Z"></path>
-                        </svg>
-                      </h1>
-             </button>
-            </a>
-            </div>
-            <div className='md:max-w-[50%] w-full'>
-              <img src='/indexmainphoto.png' alt='mainphoto' className='w-full rounded-xl h-full' />
-            </div>
           </div>
+
+
       </main>
       <Footer />
-    </div>
+      </div>
   );
 }
