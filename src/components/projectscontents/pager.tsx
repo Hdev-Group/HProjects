@@ -73,7 +73,7 @@ export default function PagerEl({ _id, isSidebarClosed }: any) {
         </div>
       </ContextMenuTrigger>
       <ContextMenuContent>
-        <Link href={`./${_id}/pager?startpager=true`}>        <ContextMenuItem className='text-green-300 cursor-pointer' onClick={handleClick}>Go on Pager</ContextMenuItem>        </Link>
+        <Link href={`./${encodeURIComponent(_id)}/pager?startpager=true`}>        <ContextMenuItem className='text-green-300 cursor-pointer' onClick={handleClick}>Go on Pager</ContextMenuItem>        </Link>
       </ContextMenuContent>
     </ContextMenu>
     );

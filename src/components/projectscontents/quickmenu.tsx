@@ -21,7 +21,7 @@ export function QuickMenu({id, isSidebarClosed}: {id: string, isSidebarClosed: b
     const { user: userInfo } = useUser();
 
     return (
-      <div className="flex flex-col gap-10 pb-4 dark:bg-bgdarkbars">
+      <div className="flex flex-col ml-1 gap-10 pb-4 dark:bg-bgdarkbars">
         <PagerEl _id={id} isSidebarClosed={isSidebarClosed} />
         {sidebarchecker ? null : (
           <ContextMenu>

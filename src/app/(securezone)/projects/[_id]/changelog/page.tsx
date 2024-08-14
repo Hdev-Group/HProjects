@@ -31,6 +31,8 @@ export default function ChangelogPage({ params }: { params: { _id: string } }) {
   const [activeSection, setActiveSection] = useState("changelog");
   const [changelogfilter, setChangelogFilter] = useState('');
   const [weekBlocks, setWeekBlocks] = useState<Record<string, any[]>>({});
+  const [currentPage, setCurrentPage] = useState(1);
+  const logsPerPage = 10;
   async function fetchData(assignees: string[]) {
     if (assignees && assignees.length > 0) {
       try {
@@ -152,15 +154,20 @@ export default function ChangelogPage({ params }: { params: { _id: string } }) {
         <meta name="description" content="Plan, Build and Push with confidence" />
         <meta name="keywords" content="HProjects, Projects, Build, Plan, Push" />
       </head>
-      <div className="h-screen overflow-hidden bg-bglight dark:bg-bgdark" id="modal-root">
+      <div className="h-screen overflow-y-auto bg-bglight dark:bg-bgdark" id="modal-root">
         <div className="flex  h-full bg-bglightbars dark:bg-bgdarkbars">
         <SideBar _id={params._id} activeSection={activeSection} projectname={projectname} />
         <div className="flex w-full justify-center bg-bglight border mt-0.5 dark:bg-bgdark rounded-l-3xl">
 
-            <div className="max-w-10/12 w-[100%] md:p-5 flex flex-col items-center overflow-y-auto">
-              <div className="flex-col w-full px-5 gap-4 justify-between mb-5 mt-5 flex">
-                <div className="flex flex-row justify-between">
-                  <h1 className="flex text-2xl font-bold text-black dark:text-white" id="changelog">Changelog</h1>
+        <div className='flex flex-col w-full overflow-y-scroll pb-4 h-full'>
+            <div className="flex-row items-center px-6 w-full dark:border-b-neutral-800 border-b-neutral-900 border-transparent border gap-4 justify-between mb-5 pb-5 mt-5 flex">
+              <div className="flex flex-row items-center gap-2">
+                <div className="p-1 dark:bg-neutral-600/20 text-black dark:text-white rounded-md border">
+                  <svg className='w-6' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M6 4V8H18V4H20.0066C20.5552 4 21 4.44495 21 4.9934V21.0066C21 21.5552 20.5551 22 20.0066 22H3.9934C3.44476 22 3 21.5551 3 21.0066V4.9934C3 4.44476 3.44495 4 3.9934 4H6ZM9 17H7V19H9V17ZM9 14H7V16H9V14ZM9 11H7V13H9V11ZM16 2V6H8V2H16Z"></path></svg>
+                </div>
+                <h1 className="flex text-2xl font-bold text-black dark:text-white" id="tasksproject">ChangeLog</h1>
+              </div>
+
                   <input
                     type='text'
                     value={changelogfilter}
@@ -169,133 +176,161 @@ export default function ChangelogPage({ params }: { params: { _id: string } }) {
                     className='dark:bg-neutral-800 bg-white border  border-neutral-300 dark:border-neutral-700 w-full max-w-[15rem] rounded px-2 py-1'
                   />
                 </div>
-                <div className='w-full h-[1px] gradientedline'></div>
-                <div className="mt-1 w-full flex flex-col gap-3">
+                <div className='w-full h-full overflow-y-scroll gradientedline'></div>
+                <div className="mt-1 w-full h-auto px-6 flex flex-col gap-3">
                   <SenderChangelogger 
                     weekBlocks={weekBlocks} 
                     ownerData={ownerData}
                     taskFilterThisWeek={taskFilterThisWeek}
                     _id={_id}
+                    currentPage={currentPage}
+                    setCurrentPage={setCurrentPage}
+                    logsPerPage={logsPerPage}
                   />
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
+
     </>
   );
 }
 
-function SenderChangelogger({ weekBlocks, ownerData, taskFilterThisWeek, _id }: { weekBlocks: Record<string, any[]>, ownerData: Record<string, any>, taskFilterThisWeek: number, _id: string}) {
+function SenderChangelogger({ weekBlocks, ownerData, taskFilterThisWeek, _id, currentPage, setCurrentPage, logsPerPage }: { weekBlocks: Record<string, any[]>, ownerData: Record<string, any>, taskFilterThisWeek: number, _id: string, currentPage: number, setCurrentPage: React.Dispatch<React.SetStateAction<number>>, logsPerPage: number }) {
   const tasksthatweek = Object.values(weekBlocks).flat();
   const tasksholderunfiltered = useQuery(api.tasksget.get);
-  const {userId} = useAuth();
+  const { userId } = useAuth();
   const tasksholder = tasksholderunfiltered?.filter(task => tasksthatweek.some(log => log.taskId === task._id));
   const jobtitlealready = useQuery(api.getjob.get);
 
+  const totalLogs = Object.values(weekBlocks).flat().length;
+  const totalPages = Math.ceil(totalLogs / logsPerPage);
+
+  const paginateLogs = () => {
+    const logs = Object.entries(weekBlocks).flatMap(([weekKey, logs]) => logs).reverse();
+    const startIndex = (currentPage - 1) * logsPerPage;
+    const paginatedLogs = logs.slice(startIndex, startIndex + logsPerPage);
+
+    const groupedLogs = paginatedLogs.reduce((acc, log) => {
+      const logDate = new Date(log.timestamp).toDateString();
+      if (!acc[logDate]) acc[logDate] = [];
+      acc[logDate].push(log);
+      return acc;
+    }, {});
+
+    return groupedLogs;
+  };
+
+  const handlePreviousPage = () => {
+    setCurrentPage((prevPage) => Math.max(prevPage - 1, 1));
+  };
+
+  const handleNextPage = () => {
+    setCurrentPage((prevPage) => Math.min(prevPage + 1, totalPages));
+  };
+
+  const paginatedLogs = paginateLogs();
+
   const weekStart = new Date();
   weekStart.setDate(weekStart.getDate() - 7);
-  const filteredTasks = tasksholder?.filter(task => {
+  const filteredTasks = tasksholder?.filter((task) => {
     const taskDate = new Date(task.lastupdated);
     return taskDate >= weekStart;
   });
 
   return (
     <>
-{
-  Object.entries(weekBlocks).reverse().map(([weekKey, logs]) => (
-    <div className="pb-2 w-full bg-neutral-900 border border-neutral-700 p-2 rounded-md" key={weekKey}>
-      <div className="flex flex-col mb-3 w-full bg-neutral-400/5 p-1 rounded-md px-2">
-        <h2 className="font-semibold text-xl ">
-          Week of {new Date(weekKey.split('_')[0]).toLocaleDateString()} to {new Date(weekKey.split('_')[1]).toLocaleDateString()}
-        </h2>
-      </div>
-      <div className="flex flex-col w-full">
-        {Object.entries(
-          logs.reverse().reduce((acc, log) => {
-            const logDate = new Date(log.timestamp);
-            const dateKey = logDate.toDateString();
-            if (!acc[dateKey]) acc[dateKey] = [];
-            acc[dateKey].push(log);
-            return acc;
-          }, {})
-        ).reverse().map(([dateKey, dailyLogs]) => (
-          <div key={dateKey}>
-            <h3 className="font-semibold text-md mb-2 bg-neutral-900/20 my-2 w-full border border-transparent border-b-neutral-300/40 pb-1 ml-2">{new Date(dateKey).toLocaleDateString()}</h3>
-            {dailyLogs.map(log => {
-              const task = filteredTasks?.find(task => task._id === log.taskId);
-              let changes = '';
-              if (log.added === true) {
-                changes += `${task?.taskTitle} has been created with the assignee ${ownerData[log.taskAssignee]?.firstName} ${ownerData[log.taskAssignee]?.lastName} it is currently`;
-              } else if (log.archived === true) {
-                changes += `${task?.taskTitle} has been archived by ${ownerData[log.usercommited]?.firstName} ${ownerData[log.usercommited]?.lastName}`;
-              } else if (log.action === task?.taskStatus) {
-                changes += `${task?.taskTitle} priority has changed to ${log.taskPriority}`;
-              } else if (log.taskPriority) {
-                  changes += `${task?.taskTitle} status has changed to ${log.action}.`;
-                }
-              let hovercardchanges = '';
-              if (log.added === true) {
-                hovercardchanges += `created ${task?.taskTitle} with the assignee ${ownerData[log.taskAssignee]?.firstName} ${ownerData[log.taskAssignee]?.lastName} it is currently`;
-              } else if (log.archived === true) {
-                hovercardchanges += `archived ${task?.taskTitle}.`;
-              }
-              else if (log.action === task?.taskStatus) {
-                hovercardchanges += `changed ${task?.taskTitle} priority to ${log.taskPriority} `;
-              } else if (log.taskPriority) {
-                  hovercardchanges += `changed ${task?.taskTitle} status to ${log.action}.`;
-                }
-              const assignee = ownerData[log.usercommited];
-              return (
-                <HoverCard key={log.id}>
-                  <HoverCardTrigger>
-                    <a href={`/projects/${_id}/${task?._id}`}>
-                      <div className="log-entry mt-2">
-                        <div className="flex flex-col gap-1 bg-neutral-800/20 p-2 rounded-md cursor-pointer hover:bg-neutral-600/20 transition-all">
-                          <div className="gap-3 flex flex-row items-center">
-                            <div className="flex flex-row gap-2 items-center">
-                              {assignee ? (
-                                <>
-                                  <img src={assignee.imageUrl} className="w-8 h-8 rounded-full" alt={`${assignee.firstName} ${assignee.lastName}`} />
-                                  <h2 className="font-semibold">{assignee.firstName} {assignee.lastName}</h2>
-                                </>
-                              ) : (
-                                <div className="w-8 h-8 rounded-full bg-gray-400"></div> // Placeholder if no image
-                              )}
-                            </div>
-                            <p className="text-xs text-neutral-400 font-semibold">{new Date(log.timestamp).toLocaleString([], { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' })}</p>
+      {Object.entries(paginatedLogs).reverse().map(([dateKey, dailyLogs]) => (
+        <div key={dateKey}>
+          <h3 className="font-semibold  text-md mb-2 bg-neutral-900/20 my-2 w-full border border-transparent border-b-neutral-300/40 pb-1 ml-2">
+            {new Date(dateKey).toLocaleDateString()}
+          </h3>
+          {dailyLogs.map((log) => {
+            const task = filteredTasks?.find((task) => task._id === log.taskId);
+            let changes = '';
+            if (log.added === true) {
+              changes += `${task?.taskTitle} has been created with the assignee ${ownerData[log.taskAssignee]?.firstName} ${ownerData[log.taskAssignee]?.lastName} it is currently`;
+            } else if (log.archived === true) {
+              changes += `${task?.taskTitle} has been archived by ${ownerData[log.usercommited]?.firstName} ${ownerData[log.usercommited]?.lastName}`;
+            } else if (log.action === task?.taskStatus) {
+              changes += `${task?.taskTitle} priority has changed to ${log.taskPriority}`;
+            } else if (log.taskPriority) {
+              changes += `${task?.taskTitle} status has changed to ${log.action}.`;
+            }
+            let hovercardchanges = '';
+            if (log.added === true) {
+              hovercardchanges += `created ${task?.taskTitle} with the assignee ${ownerData[log.taskAssignee]?.firstName} ${ownerData[log.taskAssignee]?.lastName} it is currently`;
+            } else if (log.archived === true) {
+              hovercardchanges += `archived ${task?.taskTitle}.`;
+            } else if (log.action === task?.taskStatus) {
+              hovercardchanges += `changed ${task?.taskTitle} priority to ${log.taskPriority} `;
+            } else if (log.taskPriority) {
+              hovercardchanges += `changed ${task?.taskTitle} status to ${log.action}.`;
+            }
+            const assignee = ownerData[log.usercommited];
+            return (
+              <HoverCard key={log.id}>
+                <HoverCardTrigger>
+                  <a href={`/projects/${_id}/${task?._id}`}>
+                    <div className="log-entry mt-2">
+                      <div className="flex flex-col gap-1 bg-neutral-800/20 p-2 rounded-md cursor-pointer hover:bg-neutral-600/20 transition-all">
+                        <div className="gap-3 flex flex-row items-center">
+                          <div className="flex flex-row gap-2 items-center">
+                            {assignee ? (
+                              <>
+                                <img src={assignee.imageUrl} className="w-8 h-8 rounded-full" alt={`${assignee.firstName} ${assignee.lastName}`} />
+                                <h2 className="font-semibold">{assignee.firstName} {assignee.lastName}</h2>
+                              </>
+                            ) : (
+                              <div className="w-8 h-8 rounded-full bg-gray-400"></div> // Placeholder if no image
+                            )}
                           </div>
-                          <p className="flex flex-row gap-2">{changes}
-                          </p>
+                          <p className="text-xs text-neutral-400 font-semibold">{new Date(log.timestamp).toLocaleString([], { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' })}</p>
                         </div>
-                      </div>
-                    </a>
-                  </HoverCardTrigger>
-                  <HoverCardContent>
-                    <div className="flex flex-row gap-4">
-                      <img src={assignee?.imageUrl} className="w-8 h-8 rounded-full mt-2" alt={`${assignee?.firstName} ${assignee?.lastName}`} />
-                      <div className="flex flex-col">
-                        <div className="flex flex-col">
-                          <h1 className="font-semibold">{ownerData[log.usercommited]?.firstName} {ownerData[log.usercommited]?.lastName}</h1>
-                          <p className='text-xs text-neutral-400'>{jobtitlealready?.filter(jobtitlealready => jobtitlealready.userid === ownerData[log.usercommited]?.id)[0]?.jobtitle}</p>
-                        </div>
-                        <div>
-                          <p className="flex flex-row gap-2">{ownerData[log.usercommited]?.firstName} {ownerData[log.usercommited]?.lastName} has {hovercardchanges}</p>
-                        </div>
+                        <p className="flex flex-row gap-2">{changes}</p>
                       </div>
                     </div>
-                  </HoverCardContent>
-                </HoverCard>
-              );
-            })}
-          </div>
-        ))}
-      </div>
-    </div>
-  ))}
-  {Object.entries(weekBlocks).length === 0 && <NoChanges />}
-</>
-);
-
+                  </a>
+                </HoverCardTrigger>
+                <HoverCardContent>
+                  <div className="flex flex-row gap-4">
+                    <img src={assignee?.imageUrl} className="w-8 h-8 rounded-full mt-2" alt={`${assignee?.firstName} ${assignee?.lastName}`} />
+                    <div className="flex flex-col">
+                      <div className="flex flex-col">
+                        <h1 className="font-semibold">{ownerData[log.usercommited]?.firstName} {ownerData[log.usercommited]?.lastName}</h1>
+                        <p className='text-xs text-neutral-400'>{jobtitlealready?.filter(jobtitlealready => jobtitlealready.userid === ownerData[log.usercommited]?.id)[0]?.jobtitle}</p>
+                      </div>
+                      <div>
+                        <p className="flex flex-row gap-2">{ownerData[log.usercommited]?.firstName} {ownerData[log.usercommited]?.lastName} has {hovercardchanges}</p>
+                      </div>
+                    </div>
+                  </div>
+                </HoverCardContent>
+              </HoverCard>
+            );
+          })}
+        </div>
+      ))}
+      {totalPages > 1 && (
+        <div className="flex justify-center mt-4">
+          <button 
+            onClick={handlePreviousPage} 
+            disabled={currentPage === 1}
+            className="px-4 py-2 mx-2 text-sm text-white bg-blue-500 rounded disabled:bg-neutral-900 disabled:cursor-not-allowed"
+          >
+            Previous
+          </button>
+          <button 
+            onClick={handleNextPage} 
+            disabled={currentPage === totalPages}
+            className="px-4 py-2 mx-2 text-sm text-white bg-blue-500 rounded disabled:bg-neutral-900 disabled:cursor-not-allowed"
+          >
+            Next
+          </button>
+        </div>
+      )}
+      {Object.entries(weekBlocks).length === 0 && <NoChanges />}
+    </>
+  );
 }

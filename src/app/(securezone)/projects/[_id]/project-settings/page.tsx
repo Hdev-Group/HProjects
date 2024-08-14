@@ -77,13 +77,15 @@ export default function ProjectSettings({ params }) {
         <div className="flex h-full bg-bglightbars dark:bg-bgdarkbars">
           <SideBar _id={params._id} activeSection="Project settings" projectname={project.projectName} />
           <div className="flex w-full justify-center bg-bglight border mt-0.5 dark:bg-bgdark rounded-l-3xl">
-            <div className="max-w-10/12 w-[100%] md:p-5 flex flex-col items-center overflow-y-auto">
-              <div className="flex-col w-full px-5 gap-4 justify-between mb-5 mt-5 flex">
-                <div className="flex flex-col gap-4 justify-between">
-                  <h1 className="flex text-2xl font-bold text-black dark:text-white" id="project-settings">Project Settings</h1>
-                  <div className='w-full h-[1px] gradientedline'></div>
-                </div>
-                <div className='w-full'>
+          <div className='flex flex-col w-full'>
+            <div className="flex-col w-full dark:border-b-neutral-800 border-b-neutral-900 border-transparent border gap-4 justify-between mb-5 pb-5 mt-5 flex">
+              <div className="px-7 flex flex-row items-center gap-2">
+                <div className="p-1 dark:bg-neutral-600/20 text-black dark:text-white rounded-md border">
+                  <svg className='w-6' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 1L21.5 6.5V17.5L12 23L2.5 17.5V6.5L12 1ZM12 15C13.6569 15 15 13.6569 15 12C15 10.3431 13.6569 9 12 9C10.3431 9 9 10.3431 9 12C9 13.6569 10.3431 15 12 15Z"></path></svg> </div>
+                <h1 className="flex text-2xl font-bold text-black dark:text-white" id="tasksproject">Settings</h1>
+              </div>
+              </div>
+                <div className='w-full px-6'>
                   <div className='flex flex-col gap-3 bg-neutral-900/50 rounded-lg border px-4 p-5'>
                     <h2 className='font-semibold text-lg'>User Settings</h2>
                     <div>
@@ -106,7 +108,7 @@ export default function ProjectSettings({ params }) {
             </div>
           </div>
         </div>
-      </div>
+
     </>
   );
 }

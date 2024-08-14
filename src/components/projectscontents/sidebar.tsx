@@ -78,22 +78,25 @@ function SideBar({ activeSection, _id, projectname }: SideBarProps) {
             </button>
         </div>
         <div className='mt-4 flex justify-start w-full'>
-          <div className='flex flex-col justify-start max-w-[240px] w-full items-start font-semibold  text-md gap-4'>
+          <div className='flex flex-col justify-start max-w-[240px] w-full items-start font-semibold  text-md gap-2'>
           <Link href={`/projects/${encodeURIComponent(_id)}`} className={getItemClass("Dashboard")}>
           <svg className='w-6' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M21 20C21 20.5523 20.5523 21 20 21H4C3.44772 21 3 20.5523 3 20V9.48907C3 9.18048 3.14247 8.88917 3.38606 8.69972L11.3861 2.47749C11.7472 2.19663 12.2528 2.19663 12.6139 2.47749L20.6139 8.69972C20.8575 8.88917 21 9.18048 21 9.48907V20ZM7 15V17H17V15H7Z"></path></svg>              
               {!isSidebarClosed && <p>Dashboard</p>}
             </Link>
             <Link href={`/projects/${encodeURIComponent(_id)}/tasks`}  className={getItemClass("Tasks")}>
-              <svg className='w-6' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M2 4C2 3.44772 2.44772 3 3 3H21C21.5523 3 22 3.44772 22 4V20C22 20.5523 21.5523 21 21 21H3C2.44772 21 2 20.5523 2 20V4ZM16 19H20V5H16V19ZM14 5H10V19H14V5ZM4 5V19H8V5H4Z"></path></svg>
-              {!isSidebarClosed && <p>Tasks</p>}
+            <svg className='w-6' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M5.25098 3H18.751C19.993 3 21.001 4.00737 21.001 5.25V18.75C21.001 19.992 19.9935 21 18.751 21H5.25098C4.00898 21 3.00098 19.9925 3.00098 18.75V5.25C3.00098 4.008 4.00835 3 5.25098 3ZM13.171 6.42054V12.1795C13.171 12.7762 13.6545 13.26 14.2507 13.26H17.5812C18.1776 13.26 18.661 12.7765 18.661 12.1795V6.42054C18.661 5.82384 18.1774 5.34 17.5812 5.34H14.2507C13.6543 5.34 13.171 5.82348 13.171 6.42054ZM5.34098 6.42045V16.6796C5.34098 17.2762 5.82455 17.76 6.42071 17.76H9.75125C10.3476 17.76 10.831 17.277 10.831 16.6796V6.42045C10.831 5.82375 10.3474 5.34 9.75125 5.34H6.42071C5.82428 5.34 5.34098 5.82303 5.34098 6.42045Z"></path></svg>              {!isSidebarClosed && <p>Tasks</p>}
             </Link>
-            <a href={`./${_id}/incidents`} className={getItemClass("changelog")}>
+            <a href={`/projects/${encodeURIComponent(_id)}/incident`} className={getItemClass("incident")}>
               <svg className='w-6' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M4.00001 20V14C4.00001 9.58172 7.58173 6 12 6C16.4183 6 20 9.58172 20 14V20H21V22H3.00001V20H4.00001ZM6.00001 14H8.00001C8.00001 11.7909 9.79087 10 12 10V8C8.6863 8 6.00001 10.6863 6.00001 14ZM11 2H13V5H11V2ZM19.7782 4.80761L21.1924 6.22183L19.0711 8.34315L17.6569 6.92893L19.7782 4.80761ZM2.80762 6.22183L4.22183 4.80761L6.34315 6.92893L4.92894 8.34315L2.80762 6.22183Z"></path></svg>
               {!isSidebarClosed && <p>Incidents</p>}
             </a>
             <Link href={`/projects/${encodeURIComponent(_id)}/pager`}  className={getItemClass("pager")}>
               <svg className='w-6' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M6.38231 5.9681C7.92199 4.73647 9.87499 4 12 4C14.125 4 16.078 4.73647 17.6177 5.9681L19.0711 4.51472L20.4853 5.92893L19.0319 7.38231C20.2635 8.92199 21 10.875 21 13C21 17.9706 16.9706 22 12 22C7.02944 22 3 17.9706 3 13C3 10.875 3.73647 8.92199 4.9681 7.38231L3.51472 5.92893L4.92893 4.51472L6.38231 5.9681ZM13 12V7.4952L8 14H11V18.5L16 12H13ZM8 1H16V3H8V1Z"></path></svg>
               {!isSidebarClosed && <p>Pager</p>}
+            </Link>
+            <Link href={`/projects/${encodeURIComponent(_id)}/finances`} className={getItemClass("Finances")}>
+            <svg className='w-6' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12.0049 22.0027C6.48204 22.0027 2.00488 17.5256 2.00488 12.0027C2.00488 6.4799 6.48204 2.00275 12.0049 2.00275C17.5277 2.00275 22.0049 6.4799 22.0049 12.0027C22.0049 17.5256 17.5277 22.0027 12.0049 22.0027ZM9.00488 13.0027V15.0027H8.00488V17.0027H16.0049V15.0027H11.0049V13.0027H14.0049V11.0027H11.0049V10.0027C11.0049 9.17432 11.6765 8.50275 12.5049 8.50275C13.0329 8.50275 13.4971 8.77553 13.7644 9.18786L15.7509 8.69125C15.2319 7.40804 13.9741 6.50275 12.5049 6.50275C10.5719 6.50275 9.00488 8.06975 9.00488 10.0027V11.0027H8.00488V13.0027H9.00488Z"></path></svg>
+              {!isSidebarClosed && <p>Finances</p>}
             </Link>
             <Link href={`/projects/${encodeURIComponent(_id)}/changelog`} className={getItemClass("changelog")}>
               <svg className='w-6' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M6 4V8H18V4H20.0066C20.5552 4 21 4.44495 21 4.9934V21.0066C21 21.5552 20.5551 22 20.0066 22H3.9934C3.44476 22 3 21.5551 3 21.0066V4.9934C3 4.44476 3.44495 4 3.9934 4H6ZM9 17H7V19H9V17ZM9 14H7V16H9V14ZM9 11H7V13H9V11ZM16 2V6H8V2H16Z"></path></svg>
@@ -103,7 +106,7 @@ function SideBar({ activeSection, _id, projectname }: SideBarProps) {
               <svg className='w-6' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M10 3H14C18.4183 3 22 6.58172 22 11C22 15.4183 18.4183 19 14 19V22.5C9 20.5 2 17.5 2 11C2 6.58172 5.58172 3 10 3Z"></path></svg>
               {!isSidebarClosed && <p>Messages</p>}
             </Link>
-            <a href='' className={getItemClass("Project settings")}>
+            <a href={`/projects/${encodeURIComponent(_id)}/project-settings`} className={getItemClass("Project settings")}>
               <svg className='w-6' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 1L21.5 6.5V17.5L12 23L2.5 17.5V6.5L12 1ZM12 15C13.6569 15 15 13.6569 15 12C15 10.3431 13.6569 9 12 9C10.3431 9 9 10.3431 9 12C9 13.6569 10.3431 15 12 15Z"></path></svg>
               {!isSidebarClosed && <p>Settings</p>}
             </a>

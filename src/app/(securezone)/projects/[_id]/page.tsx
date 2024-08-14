@@ -86,10 +86,16 @@ export default function ProjectPage({ params }: { params: { _id: string } }) {
         <div className="flex flex-grow overflow-hidden bg-bglightbars dark:bg-bgdarkbars" id="modal-root">
           <SideBar _id={params._id} activeSection={activeSection} projectname={projectname} />
           <div className="flex w-full justify-center bg-bglight border mt-0.5 text-black dark:text-white dark:bg-bgdark rounded-l-3xl">
-            <div className="max-w-10/12 w-[100%] p-5 flex flex-col items-center overflow-y-auto">
-              <div className="w-full px-5 flex-col justify-between mb-5 mt-5 flex">
-              <h1 className="flex text-2xl font-bold mb-3 text-black dark:text-white" id="dashboardprojects">Dashboard</h1>
-              <div className='w-full h-[1px] mb-4 gradientedline'></div>
+          <div className='flex flex-col w-full'>
+            <div className="flex-col w-full dark:border-b-neutral-800 border-b-neutral-900 border-transparent border gap-4 justify-between mb-5 pb-5 mt-5 flex">
+              <div className="px-7 flex flex-row items-center gap-2">
+                <div className="p-1 dark:bg-neutral-600/20 text-black dark:text-white rounded-md border">
+                  <svg className='w-6' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M21 20C21 20.5523 20.5523 21 20 21H4C3.44772 21 3 20.5523 3 20V9.48907C3 9.18048 3.14247 8.88917 3.38606 8.69972L11.3861 2.47749C11.7472 2.19663 12.2528 2.19663 12.6139 2.47749L20.6139 8.69972C20.8575 8.88917 21 9.18048 21 9.48907V20ZM7 15V17H17V15H7Z"></path></svg>              
+                  </div>
+                <h1 className="flex text-2xl font-bold text-black dark:text-white" id="tasksproject">Dashboard</h1>
+              </div>
+              </div>
+              <div className='px-5 w-full mt-2'>
               <div className="w-full flex flex-col py-5 px-5 gap-3 dark:border-neutral-800 border-neutral-300 bg-neutral-300 dark:bg-neutral-900 border rounded">
                 <h2 className="text-lg font-semibold ">Hello {user?.firstName}! Your work queue.</h2>
                 <div className="overflow-y-auto w-full">
@@ -139,9 +145,10 @@ export default function ProjectPage({ params }: { params: { _id: string } }) {
               </div>
             </div>
           </div>
+          </div>
         </div>
       </div>
-      </div>
+
     </>
   );
 }
