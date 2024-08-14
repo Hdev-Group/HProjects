@@ -282,19 +282,19 @@ export default function MainHolder({ _id, taskFilter }: { _id: string, taskFilte
                 {dragOverStatus === status && dragOverPosition === index && (
                     <div className="h-1 bg-green-500"></div>
                 )}
-                <CardFrame 
-                    projectid={_id}
-                    taskId={task._id}
-                    taskName={task.taskTitle}
-                    taskPriority={task.taskPriority}
-                    taskStatus={task.taskStatus}
-                    taskAssignee={task.taskAssignee}
-                    taskDescription={task.taskDescription}
-                    onDragStart={onDragStart}
-                    onDragEnd={onDragEnd}
-                    onDragOver={onDragOver}
-                    onDrop={onDrop}
-                />
+                    <CardFrame 
+                        projectid={_id}
+                        taskId={task._id}
+                        taskName={task.taskTitle}
+                        taskPriority={task.taskPriority}
+                        taskStatus={task.taskStatus}
+                        taskAssignee={task.taskAssignee}
+                        taskDescription={task.taskDescription}
+                        onDragStart={onDragStart}
+                        onDragEnd={onDragEnd}
+                        onDragOver={onDragOver}
+                        onDrop={onDrop}
+                    />
             </div>
         ))
     );

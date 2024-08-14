@@ -20,6 +20,8 @@ export default function MainDMs({ params }: { params: { _id: string, _chatid: st
   const router = useRouter();
   const _id = params._id;
 
+
+
   // Memoize the project
   const project = useMemo(() => {
     return projectsholder?.find(project => project._id === params._id);
@@ -65,6 +67,7 @@ export default function MainDMs({ params }: { params: { _id: string, _chatid: st
   useEffect(() => {
     fetchAssigneeData();
   }, [fetchAssigneeData]);
+
 
   if (!chat) {
     const title = `Direct Messages`;

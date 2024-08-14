@@ -5,6 +5,7 @@ import { useMutation } from 'convex/react';
 import { useAuth } from "@clerk/nextjs";
 import NewPagerModal from '../modals/newpagermodal';
 import { useToast } from "../ui/use-toast"
+import Link from 'next/link';
 import {
   ContextMenu,
   ContextMenuContent,
@@ -12,7 +13,7 @@ import {
   ContextMenuSeparator,
   ContextMenuTrigger,
 } from "../ui/context-menu"
-export default function PagerEl({ _id }: any) {
+export default function PagerEl({ _id, isSidebarClosed }: any) {
   const { userId } = useAuth();
   const pagerholder = useQuery(api.pagerget.get);
   const pagerhold = pagerholder?.find(pager => pager.userId === userId);
@@ -59,19 +60,20 @@ export default function PagerEl({ _id }: any) {
     return (
       <ContextMenu>
       <ContextMenuTrigger id="pageroff" className="w-max flex items-center justify-center">
-        <div className='border dark:border-neutral-400 border-neutral-600 bg-neutral-900/20 dark:bg-neutral-400/20 pr-5 items-center h-[3rem] w-full flex rounded-lg'>
-          <div className='pl-2 flex justify-center items-center h-full'>
-            <div className='w-1.5 h-[2rem] flex items-end justify-center rounded-lg dark:bg-neutral-400/20 bg-neutral-700'>
-              <div className='w-full' style={{ height: '0%', backgroundColor: 'neutral' }}></div>
+        <div className={`${isSidebarClosed ? "pr-2" : "pr-5"} border dark:border-neutral-400 justify-center border-neutral-600 bg-neutral-900/20 dark:bg-neutral-400/20  items-center h-[3rem] w-full flex rounded-lg`}>
+          <div className='pl-2  flex justify-center items-center h-full'>
+            <div className='w-1.5 h-[2rem] flex items-center justify-center rounded-lg dark:bg-neutral-400/20 bg-neutral-700'>
+              <div className='w-full flex items-center justify-center' style={{ height: '0%', backgroundColor: 'neutral' }}></div>
             </div>
           </div>
+          {isSidebarClosed ? null : (
           <div className='pl-3 h-max flex justify-center flex-col text-left'>
             <h1 className='font-semibold text-md text-left text-white'>You're off pager</h1>
-          </div>
+          </div> )}
         </div>
       </ContextMenuTrigger>
       <ContextMenuContent>
-        <a href='./pager'>        <ContextMenuItem className='text-green-300 cursor-pointer' onClick={handleClick}>Go on Pager</ContextMenuItem>        </a>
+        <Link href={`./${_id}/pager?startpager=true`}>        <ContextMenuItem className='text-green-300 cursor-pointer' onClick={handleClick}>Go on Pager</ContextMenuItem>        </Link>
       </ContextMenuContent>
     </ContextMenu>
     );
@@ -114,7 +116,7 @@ export default function PagerEl({ _id }: any) {
     return (
       <ContextMenu>
         <ContextMenuTrigger id="pageroncall" className="w-max flex items-center justify-center">
-          <div className='border dark:border-green-400 border-green-600 bg-green-700/20 dark:bg-green-400/20 pr-5 items-center h-[4rem] w-full flex rounded-lg'>
+          <div className={`${isSidebarClosed ? "pr-2" : "pr-5"} border dark:border-green-400 border-green-600 bg-green-700/20 dark:bg-green-400/20 items-center h-[4rem] w-full flex rounded-lg`}>
             <div className='pl-2 flex justify-center items-center h-full'>
               <div className='w-1.5 h-[3rem] flex items-end justify-center rounded-lg dark:bg-green-400/20 bg-green-700/20 overflow-hidden'>
                 <div className='w-full' style={{ height: `${percentage}%`, backgroundColor: 'green' }}></div>
@@ -166,7 +168,7 @@ export default function PagerEl({ _id }: any) {
     } else if (pagerhold.status === 'active') {
       return <PagerOnCall percentage={percentage} time={timeRemaining} paramsmain={paramsmain} />;
     } else if (pagerhold.status === 'break') {
-      return <PagerOnBreak percentage={percentage} />;
+      return <PagerOnBreak percentage={percentage} isSidebarClosed={isSidebarClosed} />;
     } else 
       return <PagerOff />;
   } else {
@@ -176,7 +178,7 @@ export default function PagerEl({ _id }: any) {
 
 
 
-function PagerOnBreak({ percentage }: { percentage: number }) {
+function PagerOnBreak({ percentage, isSidebarClosed }: { percentage: number, isSidebarClosed: boolean }) {
   const { userId } = useAuth();
   const mutatebreak = useMutation(api.pagerupdate.editpager);
   const pagerholder = useQuery(api.pagerget.get);
@@ -209,7 +211,7 @@ function PagerOnBreak({ percentage }: { percentage: number }) {
   return (
     <ContextMenu>
     <ContextMenuTrigger id="pageronbreak" className="w-max flex items-center justify-center">
-      <div className='border dark:border-yellow-400 border-yellow-600 bg-yellow-700/20 dark:bg-yellow-400/20 pr-5 items-center h-[4rem] w-full flex rounded-lg'>
+      <div className={`${isSidebarClosed ? "pr-2" : "pr-5"} border dark:border-yellow-400 border-yellow-600 bg-yellow-700/20 dark:bg-yellow-400/20 items-center h-[4rem] w-full flex rounded-lg`}>
         <div className='pl-2 flex justify-center items-center h-full'>
           <div className='w-1.5 h-[3rem] flex items-end justify-center rounded-lg dark:bg-yellow-400/20 overflow-hidden bg-yellow-700'>
             <div className='w-full' style={{ height: `${percentage}%`, backgroundColor: 'yellow' }}></div>

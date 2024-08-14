@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import NewPagerModal from '../modals/newpagermodal';
 
@@ -11,6 +11,13 @@ const AddPagerButton = (id) => {
   const handleClose = () => {
     setIsModalOpen(false);
   };
+
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('startpager')) {
+      setIsModalOpen(true);
+    }
+  }, []);
 
   return (
     <>

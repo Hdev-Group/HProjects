@@ -87,7 +87,7 @@ export default function SideBarChat({ user, id }: SideBarChatProps) {
         <DropdownMenu>
                         <DropdownMenuTrigger className="">
                           <div className="border px-3  hover:bg-blue-400 transition-all rounded-sm text-2xl flex items-center justify-center font-extrabold">
-                            <p className="mb-1">+</p>
+                            <p className="mb-1 dark:text-white text-black">+</p>
                           </div>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent>

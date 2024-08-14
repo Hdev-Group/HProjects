@@ -614,6 +614,37 @@
   border-radius: 10px;
   width:100%;
 }
+.openedsidebaranim{
+  animation: sidebaropener 0.25s ease-in forwards;
+}
+@keyframes sidebaropener{
+  0%{
+    max-width: 48px;
+  }
+  100%{
+    max-width: 240px;
+  }
+}
+.closesidebaranim{
+  animation: sidebarcloser 0.25s ease-out forwards;
+}
+.closedsidebar{
+  max-width: 48px;
+}
+.openedsidebar{
+  max-width: 240px;
+}
+@keyframes sidebarcloser{
+  0%{
+    max-width: 240px;
+  }
+  100%{
+    max-width: 48px;
+  }
+}
+.active{
+  background-color: white;
+}
 @keyframes risebacklog{
   0%{
     background-image:
