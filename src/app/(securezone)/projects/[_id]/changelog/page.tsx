@@ -20,7 +20,7 @@ export default function ChangelogPage({ params }: { params: { _id: string } }) {
   const { userId, isLoaded, isSignedIn } = useAuth();
   const { user } = useUser();
   const projectsholder = useQuery(api.projectsget.get);
-  const project = projectsholder?.find(project => project._id === params._id);
+  const project = projectsholder?.find((project: any) => project._id === params._id);
   const projectname = project?.projectName;
   const [ownerData, setOwnerData] = useState<Record<string, any>>({});
   const projectUserId = project?.userId;
@@ -89,7 +89,7 @@ export default function ChangelogPage({ params }: { params: { _id: string } }) {
       const assigneesSet = new Set<string>();
   
       // Process logger data
-      logger.forEach(log => {
+      logger.forEach((log: any) => {
         if (log.ProjectId === _id) {
           const logDate = new Date(log.timestamp);
           const { startOfWeek, endOfWeek } = getWeekRange(logDate);
@@ -145,7 +145,7 @@ export default function ChangelogPage({ params }: { params: { _id: string } }) {
   }
 
   const title = `${projectname} | Changelog`;
-  const taskFilterThisWeek = tasksholder?.filter(task => task.projectid === _id && task.taskStatus === "done" && new Date(task.lastupdated).getTime() > new Date().getTime() - 7 * 24 * 60 * 60 * 1000)?.length ?? 0;
+  const taskFilterThisWeek = tasksholder?.filter((task: any) => task.projectid === _id && task.taskStatus === "done" && new Date(task.lastupdated).getTime() > new Date().getTime() - 7 * 24 * 60 * 60 * 1000)?.length ?? 0;
 
   return (
     <>
@@ -201,7 +201,7 @@ function SenderChangelogger({ weekBlocks, ownerData, taskFilterThisWeek, _id, cu
   const tasksthatweek = Object.values(weekBlocks).flat();
   const tasksholderunfiltered = useQuery(api.tasksget.get);
   const { userId } = useAuth();
-  const tasksholder = tasksholderunfiltered?.filter(task => tasksthatweek.some(log => log.taskId === task._id));
+  const tasksholder = tasksholderunfiltered?.filter((task: any) => tasksthatweek.some(log => log.taskId === task._id));
   const jobtitlealready = useQuery(api.getjob.get);
 
   const totalLogs = Object.values(weekBlocks).flat().length;
@@ -234,7 +234,7 @@ function SenderChangelogger({ weekBlocks, ownerData, taskFilterThisWeek, _id, cu
 
   const weekStart = new Date();
   weekStart.setDate(weekStart.getDate() - 7);
-  const filteredTasks = tasksholder?.filter((task) => {
+  const filteredTasks = tasksholder?.filter((task: any) => {
     const taskDate = new Date(task.lastupdated);
     return taskDate >= weekStart;
   });
@@ -246,8 +246,8 @@ function SenderChangelogger({ weekBlocks, ownerData, taskFilterThisWeek, _id, cu
           <h3 className="font-semibold  text-md mb-2 bg-neutral-900/20 my-2 w-full border border-transparent border-b-neutral-300/40 pb-1 ml-2">
             {new Date(dateKey).toLocaleDateString()}
           </h3>
-          {dailyLogs.map((log) => {
-            const task = filteredTasks?.find((task) => task._id === log.taskId);
+          {dailyLogs.map((log: any) => {
+            const task = filteredTasks?.find((task: any) => task._id === log.taskId);
             let changes = '';
             if (log.added === true) {
               changes += `${task?.taskTitle} has been created with the assignee ${ownerData[log.taskAssignee]?.firstName} ${ownerData[log.taskAssignee]?.lastName} it is currently`;

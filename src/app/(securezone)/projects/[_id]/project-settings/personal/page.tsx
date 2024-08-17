@@ -4,10 +4,10 @@ import { useRouter } from 'next/navigation';
 import { useAuth } from "@clerk/nextjs";
 import { useUser } from "@clerk/clerk-react";
 import { useMutation, useQuery } from "convex/react";
-import { api } from '../../../../../../convex/_generated/api';
+import { api } from '../../../../../../../convex/_generated/api';
 import React, { useEffect, useState } from "react";
-import SideBar from "../../../../../components/projectscontents/sidebar";
-import { useToast } from "../../../../../components/ui/use-toast";
+import SideBar from "../../../../../../components/projectscontents/sidebar";
+import { useToast } from "../../../../../../components/ui/use-toast";
 import Link from 'next/link';
 
 
@@ -18,14 +18,14 @@ export default function ProjectSettings({ params }: { params: { _id: string } })
   const { user } = useUser();
   const router = useRouter();
   const projectsholder = useQuery(api.projectsget.get);
-  const projectnamemu = useMutation(api.projectname.editProject);
+  const jobtitlealready = useQuery(api.getjob.get);
   const project = projectsholder?.find((project: any) => project._id === params._id);
   const projectUserId = project?.userId;
-  const [ProjectTitle, setProjectTitle] = useState("");
-
+  const [jobtitle, setJobTitle] = useState("");
+  const addJobTitle = useMutation(api.users.addjobtitle);
 
   useEffect(() => {
-    if (!isLoaded || !projectsholder ) return; // Wait until all data is loaded
+    if (!isLoaded || !projectsholder || !jobtitlealready) return; // Wait until all data is loaded
 
     if (!isSignedIn) {
       router.push('/sign-in'); // Redirect to sign-in page if not signed in
@@ -34,11 +34,13 @@ export default function ProjectSettings({ params }: { params: { _id: string } })
     } else if (projectUserId !== userId && !project.otherusers.includes(userId)) {
       router.push('/projects');
     }
-    if (project) {
-        setProjectTitle(project.projectName);
-      }
+
     // Find the job title for the current user
-  }, [isLoaded, isSignedIn, projectsholder, project, projectUserId, userId, router, ]);
+    const job = jobtitlealready.find(jobtitle => jobtitle.userid === userId);
+    if (job) {
+      setJobTitle(job.jobtitle);
+    }
+  }, [isLoaded, isSignedIn, projectsholder, project, projectUserId, userId, router, jobtitlealready]);
 
   if (!isLoaded || !projectsholder) {
     return <div>Loading...</div>;
@@ -57,15 +59,13 @@ export default function ProjectSettings({ params }: { params: { _id: string } })
   }
 
   const title = project.projectName + ' | Settings';
+  const fullname = user?.firstName + ' ' + user?.lastName;
 
-  function saveProjectName() {
+  function saveJobTitle() {
     toast({
-      description: 'Project title saved',
+      description: 'Job title saved',
     });
-    projectnamemu({
-      _id: params._id,
-      projectName: ProjectTitle,
-    });
+    addJobTitle({ userid: userId, jobtitle, projectID: params._id });
   }
 
   return (
@@ -87,10 +87,11 @@ export default function ProjectSettings({ params }: { params: { _id: string } })
                 <h1 className="flex text-2xl font-bold text-black dark:text-white" id="tasksproject">Settings</h1>
               </div>
               </div>
+              
                 <div className='w-full px-6'>
                   <div className='flex flex-row gap-6 mb-6 border border-transparent border-b-neutral-800 pb-2 items-center'>
-                  <div className='w-16 items-center justify-center flex relative'>
-                  <Link href={`../../projects/${encodeURI(params._id)}/project-settings`} className='w-full items-center justify-center flex'>
+                    <div className='w-16 items-center justify-center flex relative'>
+                    <Link href={`../../projects/${encodeURI(params._id)}/project-settings`} className='w-full items-center justify-center flex'>
                       <p>Project</p>
                       <div className='bg-white w-full h-0.5 bottom-[-9px] absolute'></div>
                       </Link>
@@ -113,23 +114,22 @@ export default function ProjectSettings({ params }: { params: { _id: string } })
                       <div className='bg-white w-full h-0.5 bottom-[-9px] absolute'></div>
                       </Link>
                     </div>
-                    </div>
+                  </div>
                   <div className='flex flex-col gap-3 overflow-hidden rounded-md border'>
                     <div className='bg-neutral-800/20 border border-b-neutral-800 border-transparent px-4 py-2'>
-                      <h2 className='font-semibold text-lg'>Project Name</h2>
+                      <h2 className='font-semibold text-lg'>User Settings</h2>
                     </div>
                     <div>
                       <div className='px-4 pb-2'>
-
-                        <h3 className='font-semibold mb-1'>Project Name</h3>
+                        <h3 className='font-semibold mb-1'>Job Title</h3>
                         <div className='flex flex-row gap-3'>
                           <input type='text'
                             className='border rounded-md w-auto bg-transparent text-black dark:text-white p-1'
-                            onChange={(e) => setProjectTitle(e.target.value)}
-                            value={ProjectTitle}
+                            onChange={(e) => setJobTitle(e.target.value)}
+                            value={jobtitle}
                             maxLength={25}
                           />
-                          <button onClick={saveProjectName} className='border rounded-md bg-transparent text-black dark:text-white px-6 py-1 hover:bg-neutral-500/40 transition-all'>Save</button>
+                          <button onClick={saveJobTitle} className='border rounded-md bg-transparent text-black dark:text-white px-6 py-1 hover:bg-neutral-500/40 transition-all'>Save</button>
                         </div>
                       </div>
                     </div>
@@ -139,6 +139,7 @@ export default function ProjectSettings({ params }: { params: { _id: string } })
             </div>
           </div>
         </div>
+
     </>
   );
 }

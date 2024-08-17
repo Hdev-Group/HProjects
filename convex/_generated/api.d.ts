@@ -33,6 +33,7 @@ import type * as pagerdelete from "../pagerdelete.js";
 import type * as pagerget from "../pagerget.js";
 import type * as pagerupdate from "../pagerupdate.js";
 import type * as pinProject from "../pinProject.js";
+import type * as projectname from "../projectname.js";
 import type * as projects from "../projects.js";
 import type * as projectsget from "../projectsget.js";
 import type * as replysender from "../replysender.js";
@@ -72,6 +73,7 @@ declare const fullApi: ApiFromModules<{
   pagerget: typeof pagerget;
   pagerupdate: typeof pagerupdate;
   pinProject: typeof pinProject;
+  projectname: typeof projectname;
   projects: typeof projects;
   projectsget: typeof projectsget;
   replysender: typeof replysender;

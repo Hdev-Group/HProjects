@@ -625,6 +625,14 @@
     max-width: 240px;
   }
 }
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type=number] {
+  -moz-appearance: textfield;
+}
 .closesidebaranim{
   animation: sidebarcloser 0.25s ease-out forwards;
 }
