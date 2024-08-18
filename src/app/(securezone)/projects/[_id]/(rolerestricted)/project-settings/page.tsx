@@ -4,12 +4,13 @@ import { useRouter } from 'next/navigation';
 import { useAuth } from "@clerk/nextjs";
 import { useUser } from "@clerk/clerk-react";
 import { useMutation, useQuery } from "convex/react";
-import { api } from '../../../../../../convex/_generated/api';
+import { api } from '../../../../../../../convex/_generated/api';
 import React, { useEffect, useState } from "react";
-import SideBar from "../../../../../components/projectscontents/sidebar";
-import { useToast } from "../../../../../components/ui/use-toast";
+import SideBar from "../../../../../../components/projectscontents/sidebar";
+import { useToast } from "../../../../../../components/ui/use-toast";
 import Link from 'next/link';
-
+import StatusSelect from '../../../../../../components/dropdowns/newprojects';
+import HeaderLinker from '../../../../../../components/settings/headerlinker';
 
 
 export default function ProjectSettings({ params }: { params: { _id: string } }) {
@@ -17,6 +18,7 @@ export default function ProjectSettings({ params }: { params: { _id: string } })
   const { userId, isLoaded, isSignedIn } = useAuth();
   const { user } = useUser();
   const router = useRouter();
+  const [projectStatus, setProjectStatus] = useState('');
   const projectsholder = useQuery(api.projectsget.get);
   const projectnamemu = useMutation(api.projectname.editProject);
   const project = projectsholder?.find((project: any) => project._id === params._id);
@@ -36,6 +38,9 @@ export default function ProjectSettings({ params }: { params: { _id: string } })
     }
     if (project) {
         setProjectTitle(project.projectName);
+      }
+      if (project) {
+        setProjectStatus(project.projectStatus);
       }
     // Find the job title for the current user
   }, [isLoaded, isSignedIn, projectsholder, project, projectUserId, userId, router, ]);
@@ -67,6 +72,16 @@ export default function ProjectSettings({ params }: { params: { _id: string } })
       projectName: ProjectTitle,
     });
   }
+  function saveProjectStatus() {
+    toast({
+      description: 'Project status saved',
+    });
+    projectnamemu({
+      _id: params._id,
+      projectStatus: projectStatus,
+    });
+  }
+
 
   return (
     <>
@@ -77,7 +92,7 @@ export default function ProjectSettings({ params }: { params: { _id: string } })
       </head>
       <div className="h-screen overflow-hidden bg-bglight dark:bg-bgdark" id="modal-root">
         <div className="flex h-full bg-bglightbars dark:bg-bgdarkbars">
-          <SideBar _id={params._id} activeSection="Project settings" projectname={project.projectName} />
+          <SideBar _id={params._id}  activeSection="Project settings" projectname={project.projectName} />
           <div className="flex w-full justify-center bg-bglight border mt-0.5 dark:bg-bgdark rounded-l-3xl">
           <div className='flex flex-col w-full'>
             <div className="flex-col w-full dark:border-b-neutral-800 border-b-neutral-900 border-transparent border gap-4 justify-between mb-5 pb-5 mt-5 flex">
@@ -87,33 +102,10 @@ export default function ProjectSettings({ params }: { params: { _id: string } })
                 <h1 className="flex text-2xl font-bold text-black dark:text-white" id="tasksproject">Settings</h1>
               </div>
               </div>
-                <div className='w-full px-6'>
-                  <div className='flex flex-row gap-6 mb-6 border border-transparent border-b-neutral-800 pb-2 items-center'>
-                  <div className='w-16 items-center justify-center flex relative'>
-                  <Link href={`../../projects/${encodeURI(params._id)}/project-settings`} className='w-full items-center justify-center flex'>
-                      <p>Project</p>
-                      <div className='bg-white w-full h-0.5 bottom-[-9px] absolute'></div>
-                      </Link>
-                    </div>
-                    <div className='w-16 items-center justify-center flex relative'>
-                    <Link href={`../../projects/${encodeURI(params._id)}/project-settings/team`} className='w-full items-center justify-center flex'>
-                    <p>Team</p>
-                      <div className='bg-white w-full h-0.5 bottom-[-9px] absolute'></div>
-                      </Link>
-                    </div>
-                    <div className='w-16 items-center justify-center flex relative'>
-                    <Link href={`../../projects/${encodeURI(params._id)}/project-settings/personal`} className='w-full items-center justify-center flex'>
-                      <p>Personal</p>
-                      <div className='bg-white w-full h-0.5 bottom-[-9px] absolute'></div>
-                      </Link>
-                    </div>
-                    <div className='w-25 items-center justify-center flex relative'>
-                    <Link href={`../../projects/${encodeURI(params._id)}/project-settings/danger`} className='w-full items-center justify-center flex'>
-                      <p>Danger Zone</p>
-                      <div className='bg-white w-full h-0.5 bottom-[-9px] absolute'></div>
-                      </Link>
-                    </div>
-                    </div>
+                <div className='w-full px-6 flex flex-row pb-2 mb-5 gap-3 border border-transparent border-b-neutral-700'>
+                  <HeaderLinker _id={params._id} currentpage={"project"} />
+                  </div>
+                  <div className='px-6 flex flex-col gap-3'>
                   <div className='flex flex-col gap-3 overflow-hidden rounded-md border'>
                     <div className='bg-neutral-800/20 border border-b-neutral-800 border-transparent px-4 py-2'>
                       <h2 className='font-semibold text-lg'>Project Name</h2>
@@ -134,11 +126,32 @@ export default function ProjectSettings({ params }: { params: { _id: string } })
                       </div>
                     </div>
                   </div>
+                    <div className='flex flex-col gap-3 mt-3 overflow-hidden rounded-md border'>
+                    <div className='bg-neutral-800/20 border border-b-neutral-800 border-transparent px-4 py-2'>
+                      <h2 className='font-semibold text-lg'>Project Status</h2>
+                    </div>
+                    <div>
+                      <div className='px-4 pb-2'>
+
+                        <h3 className='font-semibold mb-1'>Project Status</h3>
+                        <div className='flex flex-row gap-3'>
+                          <div className='w-[11rem]'>
+                          <StatusSelect 
+                            value={projectStatus}
+                            onChange={(value: string) => setProjectStatus(value)}
+                          />
+                          </div>
+                          <button onClick={saveProjectStatus} className='border rounded-md bg-transparent text-black dark:text-white px-6 py-1 hover:bg-neutral-500/40 transition-all'>Save</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
+
     </>
   );
 }
