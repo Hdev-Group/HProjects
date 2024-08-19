@@ -37,7 +37,7 @@ export default function ProjectSettings({ params }: { params: { _id: string } })
     }
 
     // Find the job title for the current user
-    const job = jobtitlealready.find(jobtitle => jobtitle.userid === userId);
+    const job = jobtitlealready.find(jobtitle => jobtitle.userid === userId && jobtitle.projectID === params._id);
     if (job) {
       setJobTitle(job.jobtitle);
     }

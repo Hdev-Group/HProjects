@@ -35,7 +35,7 @@ export function QuickMenu({id, isSidebarClosed}: {id: string, isSidebarClosed: b
                   {userInfo?.firstName} {userInfo?.lastName}
                 </h1>
                 <p className="text-neutral-500 text-xs text-left font-semibold">
-                  {jobtitlealready?.filter((jobtitlealready) => jobtitlealready.userid === userId)[0]?.jobtitle}
+                  {jobtitlealready?.filter((jobtitlealready) => jobtitlealready.userid === userId && jobtitlealready.projectID === id)[0]?.jobtitle}
                 </p>
               </div>
               )}

@@ -10,7 +10,12 @@ export const addjobtitle = mutation({
     handler: async (ctx, { userid, jobtitle, projectID }) => {
 
         // Check if the user exists by searching for the userid
-        const existingUser = await ctx.db.query("users").filter(q => q.eq(q.field("userid"), userid)).first();
+        const existingUser = await ctx.db.query("users")
+            .filter(q => q.and(
+            q.eq(q.field("projectID"), projectID),
+            q.eq(q.field("userid"), userid)
+            ))
+            .first();
 
         if (existingUser) {
             // If the user exists, update their job title using the unique _id
