@@ -88,6 +88,10 @@ const config: Config = {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0" },
         },
+        "slide-down": {
+          from: { transform: "translateY(-100%)" },
+          to: { transform: "translateY(0)" },
+        },
       },
       animation: {
         "ping-purple": "ping-purple 1s cubic-bezier(0, 0, 0.2, 1) infinite",

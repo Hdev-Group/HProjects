@@ -9,16 +9,23 @@ import {
 } from "../ui/dropdown-menu";
 import DeleteProject from '../modals/deleteproject';
 import { useMutation } from 'convex/react';
+import { useAuth } from "@clerk/clerk-react";
+import { useQuery } from 'convex/react';
 import { api } from '../../../convex/_generated/api';
 
-function DropdownMenuMain({ id, pname, pinned }) {
+function DropdownMenuMain({ id, pname, pinned }: { id: any, pname: string, pinned: boolean }) {
     const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const { userId } = useAuth();
     const pinProjectMutation = useMutation(api.pinProject.pinProject);
+    const projectsholder = useQuery(api.projectsget.get);
+    const project = projectsholder?.find((project: any) => project._id === id);
 
     function deleteclick() {
         setShowDeleteModal(true);
     }
+    function leaveclick(){
 
+    }
     function closeDeleteModal() {
         setShowDeleteModal(false);
     }
@@ -64,9 +71,22 @@ function DropdownMenuMain({ id, pname, pinned }) {
                         <a className='w-full' href={`/projects/${id}/project-settings`}>Settings</a>
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem className="text-red-400 cursor-pointer" onClick={deleteclick} id={`delete${id}`}>
-                        Delete
-                    </DropdownMenuItem>
+                    {
+                        project?.userId === userId && (
+                            <>
+                                <DropdownMenuItem className="dark:text-red-300 text-red-600 cursor-pointer" id="deleteproject" onClick={deleteclick}>
+                                    Delete Project
+                                </DropdownMenuItem>
+                            </>
+                        )} { 
+                            project?.otherusers.includes(userId) && (
+                            <>
+                                <DropdownMenuItem className="dark:text-red-300 text-red-600 cursor-pointer" id="leaveproject" onClick={leaveclick}>
+                                    Leave Project
+                                </DropdownMenuItem>
+                            </>
+                        )
+                    }
                 </DropdownMenuContent>
             </DropdownMenu>
 

@@ -55,6 +55,7 @@ const Teams = () => {
         _id: projectid,
         otherusers: userId,
       });
+      
 
       removeInvite({
         _id: addtoteamcheck[0]?._id,
@@ -62,6 +63,12 @@ const Teams = () => {
     } else {
       console.error('This user was not invited to this project')
     }
+  }
+
+  function declineInvite() {
+      removeInvite({
+        _id: addtoteamcheck[0]?._id,
+      });
   }
 
   if (!isLoaded) {
@@ -87,7 +94,7 @@ const Teams = () => {
   const renderInvites = ({projectfinder, addtoteamcheck}: any) => {
     return (
       <>
-        <div className="relative">
+        <div className="relative animate-slide-down">
             <div className="flex flex-col dark:bg-neutral-900/70 w-auto max-auto px-4 py-5 rounded-lg border bg-neutral-200 text-black dark:text-white border-neutral-500 dark:border-neutral-800">
               <div className="flex flex-col gap-1 items-start">
                 <p className='text-xs font-semibold'>Project Invite</p>
@@ -98,7 +105,7 @@ const Teams = () => {
               </div>
               <div className='flex flex-row items-center gap-3 '>
                 <button className="bg-green-600 hover:bg-green-700 transition-all font-semibold text-white rounded-md px-2 py-1" onClick={() => acceptInvite(addtoteamcheck[0]?.projectid)}>Accept</button>
-                <button className=" text-white hover:bg-red-500 border transition-all font-semibold rounded-md px-2 py-1">Decline</button>
+                <button className=" text-white hover:bg-red-500 border transition-all font-semibold rounded-md px-2 py-1" onClick={() => declineInvite()}>Decline</button>
               </div>
             </div>
         </div>

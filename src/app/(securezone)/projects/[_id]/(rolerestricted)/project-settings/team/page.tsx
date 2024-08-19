@@ -11,6 +11,7 @@ import { useToast } from "../../../../../../../components/ui/use-toast";
 import Link from 'next/link';
 import StatusSelect from '../../../../../../../components/dropdowns/newprojects';
 import HeaderLinker from '../../../../../../../components/settings/headerlinker';
+import { useCallback } from 'react';
 import Role from '../../../../../../../components/dropdowns/teamdrop';
 
 export default function ProjectSettings({ params }: { params: { _id: string } }) {
@@ -18,7 +19,9 @@ export default function ProjectSettings({ params }: { params: { _id: string } })
   const { userId, isLoaded, isSignedIn } = useAuth();
   const teamadders = useMutation(api.teamadders.add);
   const { user } = useUser();
+  const [dataLoaded, setDataLoaded] = useState(false);
   const router = useRouter();
+  const [userData, setUserData] = useState<{ [key: string]: { firstName: string, lastName: string, imageUrl: string, email: string } }>({});
   const [projectStatus, setProjectStatus] = useState('');
   const projectsholder = useQuery(api.projectsget.get);
   const projectnamemu = useMutation(api.projectname.editProject);
@@ -60,19 +63,19 @@ export default function ProjectSettings({ params }: { params: { _id: string } })
   const title = project.projectName + ' | Settings';
 
   async function inviteuser() {
-    // first we will check to see if the user is already in the team
-
-    // if the user is not in the team, we will send an invite to the user to join the team this will be done by sending an notification to the user
-    toast({
-      description: 'User invited',
-    });
     try {
       const response = await fetch(`/api/get-email-user?userEmail=${encodeURIComponent(adderEmail)}`);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       const data = await response.json();
-      console.log(data);
+      // check to see if the user is in the database already 
+      if (project.otherusers.includes(data.id)) {
+        return toast({
+          description: 'User already in the team',
+        });
+      }
+
       // send validator to the admin to make sure thats the person they want to add
       if (!data) {
         return toast({
@@ -87,6 +90,51 @@ export default function ProjectSettings({ params }: { params: { _id: string } })
       console.error('Error:', error);
     }
     // add user to pending team
+  }
+
+  const fetchUserData = useCallback(async (ids: string[]) => {
+    if (ids.length > 0) {
+      try {
+        const response = await fetch(`/api/getcommentuser?userIds=${ids.join(',')}`);
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        const dataById = data.reduce((acc: any, user: any) => {
+          acc[user.id] = user;
+          return acc;
+        }, {});
+        setUserData(dataById);
+        setDataLoaded(true);
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+        setUserData({});
+      }
+    }
+  }, []);
+  
+  useEffect(() => {
+    if (project) {
+      fetchUserData([project.userId, ...project.otherusers]);
+    }
+  }, [project, fetchUserData]);
+
+  function TeamMember({ user }: { user: { firstName: string, lastName: string, imageUrl: string, email: string } }){
+    console.log(user)
+    return(
+      <div className='flex-wrap flex gap-3 mt-3 mb-3 flex-row w-auto'>
+      <div className='border flex-col flex w-auto px-4 py-2 rounded-md'>
+        <p className='text-neutral-400 text-sm'>{user?.firstName} {user?.lastName}</p>
+        <div className='flex flex-row w-full items-center gap-10 justify-between'>
+          <p>{user?.email}</p>
+          <div className='flex flex-row gap-4'>
+          <Role />
+          <button className='bg-red-500 px-4 p-2 rounded-md text-white'>Remove</button>
+          </div>
+        </div>
+      </div>
+  </div>
+    )
   }
 
   return (
@@ -134,30 +182,9 @@ export default function ProjectSettings({ params }: { params: { _id: string } })
                                 <h1 className='text-xl'>Team members
                                 </h1>
                                 <div className='flex flex-row gap-3 flex-wrap'>
-                                <div className='flex-wrap flex gap-3 mt-3 mb-3 flex-row w-auto'>
-                                    <div className='border flex-col flex w-auto px-4 py-2 rounded-md'>
-                                      <p className='text-neutral-400 text-sm'>Harry Campbell</p>
-                                      <div className='flex flex-row w-full items-center gap-10 justify-between'>
-                                        <p>test@example.com</p>
-                                        <div className='flex flex-row gap-4'>
-                                        <Role />
-                                        <button className='bg-red-500 px-4 p-2 rounded-md text-white'>Remove</button>
-                                        </div>
-                                      </div>
-                                    </div>
-                                </div>
-                                <div className='flex-wrap flex gap-3 mt-3 mb-3 flex-row w-auto'>
-                                    <div className='border flex-col flex w-auto px-4 py-2 rounded-md'>
-                                      <p className='text-neutral-400 text-sm'>User</p>
-                                      <div className='flex flex-col md:flex-row w-auto md:items-center gap-2 md:gap-10 justify-between'>
-                                        <p>tesffdgdfgdfgsdgfsdfgt1@example.com</p>
-                                        <div className='flex flex-row gap-4'>
-                                        <Role />
-                                        <button className='bg-red-500 px-4 p-2 rounded-md text-white'>Remove</button>
-                                        </div>
-                                      </div>
-                                    </div>
-                                </div>
+                                  {project.otherusers.map((user: any) => (                                
+                                    <TeamMember key={user} user={userData[user]} />
+                                    ) )}
                                 </div>
                             </div>
                         </div>
