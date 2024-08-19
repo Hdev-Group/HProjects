@@ -21,10 +21,11 @@ export default function ProjectSettings({ params }: { params: { _id: string } })
   const { user } = useUser();
   const [dataLoaded, setDataLoaded] = useState(false);
   const router = useRouter();
-  const [userData, setUserData] = useState<{ [key: string]: { firstName: string, lastName: string, imageUrl: string, email: string } }>({});
+  const [userData, setUserData] = useState<{ [key: string]: { firstName: string, lastName: string, imageUrl: string, email: string, id: string } }>({});
   const [projectStatus, setProjectStatus] = useState('');
   const projectsholder = useQuery(api.projectsget.get);
   const projectnamemu = useMutation(api.projectname.editProject);
+  const removeusers = useMutation(api.teamadders.remove);
   const project = projectsholder?.find((project: any) => project._id === params._id);
   const projectUserId = project?.userId;
   const [adderEmail, setEmail] = useState("");
@@ -70,7 +71,7 @@ export default function ProjectSettings({ params }: { params: { _id: string } })
       }
       const data = await response.json();
       // check to see if the user is in the database already 
-      if (project.otherusers.includes(data.id)) {
+      if (project.otherusers.includes(data.id) || project.userId === data.id) {
         return toast({
           description: 'User already in the team',
         });
@@ -119,7 +120,12 @@ export default function ProjectSettings({ params }: { params: { _id: string } })
     }
   }, [project, fetchUserData]);
 
-  function TeamMember({ user }: { user: { firstName: string, lastName: string, imageUrl: string, email: string } }){
+  function removeuser({userid}: {userid: any}) {
+    console.log(userid)
+    removeusers({ _id: params._id, otherusers: userid});
+  }
+
+  function TeamMember({ user }: { user: { firstName: string, lastName: string, imageUrl: string, email: string, id: string } }){
     console.log(user)
     return(
       <div className='flex-wrap flex gap-3 mt-3 mb-3 flex-row w-auto'>
@@ -129,7 +135,7 @@ export default function ProjectSettings({ params }: { params: { _id: string } })
           <p>{user?.email}</p>
           <div className='flex flex-row gap-4'>
           <Role />
-          <button className='bg-red-500 px-4 p-2 rounded-md text-white'>Remove</button>
+          <button className='bg-red-500 px-4 p-2 rounded-md text-white' onClick={() => removeuser({userid: user?.id})}>Remove</button>
           </div>
         </div>
       </div>
@@ -182,9 +188,13 @@ export default function ProjectSettings({ params }: { params: { _id: string } })
                                 <h1 className='text-xl'>Team members
                                 </h1>
                                 <div className='flex flex-row gap-3 flex-wrap'>
-                                  {project.otherusers.map((user: any) => (                                
-                                    <TeamMember key={user} user={userData[user]} />
-                                    ) )}
+                                  {project.otherusers.length < 1 ? (
+                                    <p>No team members, Just you.</p>
+                                  ) : (
+                                    project.otherusers.map((user: any) => (                                
+                                      <TeamMember key={user} user={userData[user]} />
+                                    ))
+                                  )}
                                 </div>
                             </div>
                         </div>
