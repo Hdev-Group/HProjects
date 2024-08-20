@@ -12,7 +12,8 @@ import { BoxProjectBuilding, BoxProjectlive, BoxProjectPlanning } from '../../..
 const Teams = () => {
   const { userId } = useAuth();
   const { user } = useUser();
-  const { isLoaded, isSignedIn, error } = useAuth();
+  const { isLoaded, isSignedIn } = useAuth();
+  const [error, setError] = useState(null);
   const [activeSection, setActiveSection] = useState('teams'); 
   const router = useRouter();
 

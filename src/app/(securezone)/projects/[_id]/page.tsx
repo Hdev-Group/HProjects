@@ -9,12 +9,17 @@ import { api } from '../../../../../convex/_generated/api';
 import { useRouter } from 'next/navigation';
 import SideBar from "../../../../components/projectscontents/sidebar";
 import ClientLayout from './ClientLayout'; 
-
+interface Project {
+  _id: string;
+  userId: string;
+  otherusers: string[];
+  projectName: string;
+}
 export default function ProjectPage({ params }: { params: { _id: string } }) {
   const { userId, isLoaded, isSignedIn } = useAuth();
   const { user } = useUser();
   const projectsholder = useQuery(api.projectsget.get);
-  const project = projectsholder?.find(project => project._id === params._id);
+  const project = projectsholder?.find((project: Project) => project._id === params._id);
   const projectUserId = project?.userId;
   const [activeSection, setActiveSection] = useState("Dashboard");
   const router = useRouter();

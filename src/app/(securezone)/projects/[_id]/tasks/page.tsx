@@ -14,12 +14,18 @@ import {
   HoverCardContent,
   HoverCardTrigger,
 } from "../../../../../components/ui/hover-card";
+interface Project {
+    _id: string;
+    userId: string;
+    otherusers: string[];
+    projectName: string;
+}
 
 export default function ProjectPage({ params }: { params: { _id: string } }) {
   const { userId, isLoaded, isSignedIn } = useAuth();
   const { user } = useUser();
   const projectsholder = useQuery(api.projectsget.get);
-  const project = projectsholder?.find(project => project._id === params._id);
+  const project = projectsholder?.find((project: Project) => project._id === params._id);
   const projectname = project?.projectName;
   const projectUserId = project?.userId;
   const router = useRouter();

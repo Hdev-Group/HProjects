@@ -30,7 +30,7 @@ export default function TaskFullView({ params }: { params: { _id: string, _taski
     const router = useRouter();
     const jobtitlealready = useQuery(api.getjob.get);
     const projectsholder = useQuery(api.projectsget.get);
-    const project = projectsholder?.find(project => project._id === params._id);
+    const project = projectsholder?.find((project: any) => project._id === params._id);
     const tasks = useQuery(api.tasks.get);
     const task = tasks?.find(task => task._id === params._taskid);
     const taskPriority = task?.taskPriority;
@@ -44,8 +44,8 @@ export default function TaskFullView({ params }: { params: { _id: string, _taski
     const _id = params._id;
     const taskid = params._taskid;
     const [activeSection, setActiveSection] = useState("Tasks");
-    const [assigneeData, setAssigneeData] = useState<{ firstName: string, lastName: string, imageUrl: string } | null>(null);
-    const [creatorData, setCreatorData] = useState<{ firstName: string, lastName: string, imageUrl: string } | null>(null);
+    const [assigneeData, setAssigneeData] = useState<{ firstName: string, lastName: string, imageUrl: string, id: string } | null>(null);
+    const [creatorData, setCreatorData] = useState<{ firstName: string, lastName: string, imageUrl: string, id: string } | null>(null);
     const [isLoadingAssignee, setIsLoadingAssignee] = useState(false);
     const [isLoadingCreator, setIsLoadingCreator] = useState(false);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -181,6 +181,7 @@ export default function TaskFullView({ params }: { params: { _id: string, _taski
         setShowDeleteModal(false);
     }
 
+
     function formatTimeAgo(date: Date): JSX.Element {
         const now = new Date();
         const diff = Math.abs(now.getTime() - date.getTime());
@@ -257,7 +258,7 @@ export default function TaskFullView({ params }: { params: { _id: string, _taski
                                             </>
                                             }
                                         </div>
-                                            <BreadcrumbWithCustomSeparator projectid={_id} />
+                                            <BreadcrumbWithCustomSeparator />
                                             <div className='flex flex-col gap-2'>
                                                 <div className='flex flex-col'>
                                                     <h1 className="font-bold text-3xl dark:text-white text-black text-wrap">{taskName}</h1>

@@ -18,7 +18,7 @@ import {
 gsap.registerPlugin(ScrollTrigger);
 
 export default function Home() {
-  const container = useRef();
+  const container = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
       const ctx = gsap.context(() => {
@@ -211,7 +211,7 @@ export default function Home() {
   };
 
   return (
-    <div className='bg-[#09090B]'  ref={container}>
+    <div className='bg-[#09090B]' ref={container}>
       <HeaderIndex />
       <main className='md:max-w-[100%] mt-[7rem] flex items-center flex-col justify-center overflow-x-hidden boxtexts'>
         <div className='flex md:px-[4.5rem] px-2 justify-between  w-[100%] flex-wrap lg:flex-nowrap flex-row gap-10 pt-[5rem] pb-40'>

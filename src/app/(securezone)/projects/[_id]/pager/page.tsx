@@ -6,17 +6,22 @@ import { useUser } from "@clerk/clerk-react";
 import { useQuery } from "convex/react";
 import { api } from '../../../../../../convex/_generated/api';
 import React, { useEffect, useState } from "react";
-import DashboardHeaderProjects from "../../../../../components/header/dashboardprojects";
 import SideBar from "../../../../../components/projectscontents/sidebar";
 import PagerMain from "../../../../../components/pager/pagermain";
 import { PageeActive, PageeBreak} from "../../../../../components/pager/pagee";
+interface Project {
+    _id: string;
+    userId: string;
+    otherusers: string[];
+    projectName: string;
+}
 
 export default function Pager({ params }: { params: { _id: string, slug: string[] } }) {
     const { userId, isLoaded, isSignedIn } = useAuth();
     const { user } = useUser();
     const router = useRouter();
     const projectsholder = useQuery(api.projectsget.get);
-    const project = projectsholder?.find(project => project._id === params._id);
+    const project = projectsholder?.find((project: Project) => project._id === params._id);
     const projectUserId = project?.userId;
     const projectname = project?.projectName;
     const [activeSection, setActiveSection] = useState("pager");
