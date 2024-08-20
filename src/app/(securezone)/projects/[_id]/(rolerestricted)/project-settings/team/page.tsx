@@ -128,8 +128,9 @@ export default function ProjectSettings({ params }: { params: { _id: string } })
   }, [project, fetchUserData]);
 
   function removeuser({userid}: {userid: any}) {
+    const idfindera = getuserss?.find((user: any) => user.userid === userid && user.projectID === params._id);
     removeusers({ _id: params._id, otherusers: userid});
-    removerr({_id: idfinder?._id});
+    removerr({_id: idfindera?._id});
   }
 
   function TeamMember({ user }: { user: { firstName: string, lastName: string, imageUrl: string, email: string, id: string } }){

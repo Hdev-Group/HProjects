@@ -24,7 +24,14 @@ export default function ProjectSettings({ params }: { params: { _id: string } })
   const project = projectsholder?.find((project: any) => project._id === params._id);
   const projectUserId = project?.userId;
   const [ProjectTitle, setProjectTitle] = useState("");
+  const getuserss = useQuery(api.userstab.get);
+  const idfinder = getuserss?.find((user: any) => user.userid === userId && user.projectID === params._id);
 
+  useEffect(() => {
+    if (!(projectUserId === userId || idfinder && idfinder?.role == 'admin' || idfinder && idfinder?.role !== 'manager')) {
+      router.push(`/projects/${params._id}/project-settings/personal`);
+    }
+  }, [projectUserId, userId, idfinder, router, params._id]);
 
   useEffect(() => {
     if (!isLoaded || !projectsholder ) return; // Wait until all data is loaded
@@ -56,6 +63,7 @@ export default function ProjectSettings({ params }: { params: { _id: string } })
   if (!project) {
     return <div>Project not found</div>;
   }
+
 
   if (!(projectUserId === userId || project.otherusers.includes(userId))) {
     return <div>Unauthorized</div>;
