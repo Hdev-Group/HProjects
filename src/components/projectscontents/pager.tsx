@@ -17,12 +17,12 @@ export default function PagerEl({ _id, isSidebarClosed }: any) {
   const { userId } = useAuth();
   const pagerholder = useQuery(api.pagerget.get);
   const pagerhold = pagerholder?.find(pager => pager.userId === userId);
-
   const [currentTime, setCurrentTime] = useState(new Date());
   const [percentage, setPercentage] = useState(0);
   const [timeRemaining, setTimeRemaining] = useState('');
   const paramsmain = _id
   const [isModalOpen, setIsModalOpen] = useState(false);
+  console.log(pagerhold)
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -81,8 +81,7 @@ export default function PagerEl({ _id, isSidebarClosed }: any) {
   function PagerOnCall({ percentage, time, paramsmain }: { percentage: number, time: string, paramsmain: { _id: string } }) {
     const { userId } = useAuth();
     const mutatebreak = useMutation(api.pagerupdate.editpager);
-    
-
+  
     function startBreak() {
       if (userId) {
         mutatebreak({ id: pagerhold._id,  status: 'break'}).catch(err => console.error(err));
@@ -162,7 +161,7 @@ export default function PagerEl({ _id, isSidebarClosed }: any) {
     }
   }, [pagerhold]);
 
-  if (pagerhold && paramsmain.id === pagerhold.projectid) {
+  if (pagerhold && paramsmain === pagerhold.projectid) {
     if (timeRemaining.includes('-')) {
       return <PagerOff />;
     } else if (pagerhold.status === 'active') {
