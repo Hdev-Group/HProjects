@@ -21,6 +21,7 @@ const Teams = () => {
   const addtoteam = useQuery(api.invitegetter.get);
   const appendUser = useMutation(api.projectsadduser.appenduser);
   const removeInvite = useMutation(api.inviteremove.deleteinvite);
+  const usertableadder = useMutation(api.userstab.add);
 
   const userTeams = projectsholder?.filter((project: any) => project.otherusers.includes(userId)) || [];
   const addtoteamcheck = addtoteam?.filter(project => project.teamadderid.includes(userId)) || [];
@@ -55,8 +56,12 @@ const Teams = () => {
         _id: projectid,
         otherusers: userId,
       });
-      
-
+      usertableadder({
+        jobtitle: '',
+        projectID: projectid,
+        userid: userId,
+        role: 'member',
+      })
       removeInvite({
         _id: addtoteamcheck[0]?._id,
       });

@@ -4,7 +4,7 @@ import { v } from "convex/values";
 export const addjobtitle = mutation({
     args: {
         projectID: v.string(),
-        userid: v.string(),
+        userid: v.any(),
         jobtitle: v.string(),
     },
     handler: async (ctx, { userid, jobtitle, projectID }) => {

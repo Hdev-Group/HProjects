@@ -24,8 +24,10 @@ export default function ProjectSettings({ params }: { params: { _id: string } })
   const [userData, setUserData] = useState<{ [key: string]: { firstName: string, lastName: string, imageUrl: string, email: string, id: string } }>({});
   const [projectStatus, setProjectStatus] = useState('');
   const projectsholder = useQuery(api.projectsget.get);
+  const getuserss = useQuery(api.userstab.get);
   const projectnamemu = useMutation(api.projectname.editProject);
   const removeusers = useMutation(api.teamadders.remove);
+  const removerr = useMutation(api.userstab.remove);
   const project = projectsholder?.find((project: any) => project._id === params._id);
   const projectUserId = project?.userId;
   const [adderEmail, setEmail] = useState("");
@@ -121,20 +123,20 @@ export default function ProjectSettings({ params }: { params: { _id: string } })
   }, [project, fetchUserData]);
 
   function removeuser({userid}: {userid: any}) {
-    console.log(userid)
     removeusers({ _id: params._id, otherusers: userid});
+    const idfinder = getuserss?.find((user: any) => user.userid === userid && user.projectID === params._id);
+    removerr({_id: idfinder?._id});
   }
 
   function TeamMember({ user }: { user: { firstName: string, lastName: string, imageUrl: string, email: string, id: string } }){
-    console.log(user)
     return(
       <div className='flex-wrap flex gap-3 mt-3 mb-3 flex-row w-auto'>
       <div className='border flex-col flex w-auto px-4 py-2 rounded-md'>
         <p className='text-neutral-400 text-sm'>{user?.firstName} {user?.lastName}</p>
         <div className='flex flex-row w-full items-center gap-10 justify-between'>
           <p>{user?.email}</p>
-          <div className='flex flex-row gap-4'>
-          <Role />
+          <div className='flex flex-row mt-[-15px] gap-4'>
+          <Role _id={params._id} userid={user?.id} />
           <button className='bg-red-500 px-4 p-2 rounded-md text-white' onClick={() => removeuser({userid: user?.id})}>Remove</button>
           </div>
         </div>

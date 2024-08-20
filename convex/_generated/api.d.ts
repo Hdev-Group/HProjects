@@ -48,6 +48,7 @@ import type * as taskupdate from "../taskupdate.js";
 import type * as teamadders from "../teamadders.js";
 import type * as updater from "../updater.js";
 import type * as users from "../users.js";
+import type * as userstab from "../userstab.js";
 
 /**
  * A utility for referencing Convex functions in your app's API.
@@ -92,6 +93,7 @@ declare const fullApi: ApiFromModules<{
   teamadders: typeof teamadders;
   updater: typeof updater;
   users: typeof users;
+  userstab: typeof userstab;
 }>;
 export declare const api: FilterApi<
   typeof fullApi,
