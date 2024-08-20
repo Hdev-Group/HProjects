@@ -21,7 +21,7 @@ export default function Role({ value, onValueChange, _id, userid }: any) {
   const users = getuserss?.find((user: any) => user.userid === userid && user.projectID === _id);
 
   return (
-    <Select value={users.role} onValueChange={handleChange}>
+    <Select value={users?.role} onValueChange={handleChange}>
       <SelectTrigger>
         <SelectValue className="px-2" />
       </SelectTrigger>

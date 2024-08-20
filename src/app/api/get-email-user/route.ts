@@ -18,9 +18,6 @@ export async function GET(request: Request) {
       emailAddress: [userEmail],
     });
 
-    // Log the full API response for debugging
-    console.log("API Response:", JSON.stringify(response, null, 2));
-
     // Ensure response contains `data` and it's an array
     if (!response || !Array.isArray(response.data)) {
       console.error("Unexpected API response format:", response);

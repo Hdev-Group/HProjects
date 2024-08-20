@@ -31,6 +31,7 @@ export default function ProjectSettings({ params }: { params: { _id: string } })
   const project = projectsholder?.find((project: any) => project._id === params._id);
   const projectUserId = project?.userId;
   const [adderEmail, setEmail] = useState("");
+  const idfinder = getuserss?.find((user: any) => user.userid === userId && user.projectID === params._id);
 
 
   useEffect(() => {
@@ -54,7 +55,6 @@ export default function ProjectSettings({ params }: { params: { _id: string } })
   if (!isSignedIn) {
     return <div>Unauthorized</div>;
   }
-
   if (!project) {
     return <div>Project not found</div>;
   }
@@ -62,6 +62,11 @@ export default function ProjectSettings({ params }: { params: { _id: string } })
   if (!(projectUserId === userId || project.otherusers.includes(userId))) {
     return <div>Unauthorized</div>;
   }
+  useEffect(() => {
+    if (!(projectUserId === userId || idfinder && idfinder?.role == 'admin' || idfinder && idfinder?.role !== 'manager')) {
+      router.push(`/projects/${params._id}/project-settings/personal`);
+    }
+  }, [projectUserId, userId, idfinder, router, params._id]);
 
   const title = project.projectName + ' | Settings';
 
@@ -124,7 +129,6 @@ export default function ProjectSettings({ params }: { params: { _id: string } })
 
   function removeuser({userid}: {userid: any}) {
     removeusers({ _id: params._id, otherusers: userid});
-    const idfinder = getuserss?.find((user: any) => user.userid === userid && user.projectID === params._id);
     removerr({_id: idfinder?._id});
   }
 
