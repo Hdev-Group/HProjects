@@ -8,20 +8,16 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-import { useQuery } from "convex/react";
-import { api } from "../../../convex/_generated/api";
-export default function Role({ value, onValueChange, _id, userid }: any) {
-  const handleChange = ({ newValue }: any) => {
+
+export default function Role({ value, onValueChange }) {
+  const handleChange = (newValue) => {
     if (onValueChange) {
       onValueChange(newValue);
     }
-    // set users as the value of the role
   };
-  const getuserss = useQuery(api.userstab.get);
-  const users = getuserss?.find((user: any) => user.userid === userid && user.projectID === _id);
 
   return (
-    <Select value={users?.role} onValueChange={handleChange}>
+    <Select value={value} onValueChange={handleChange}>
       <SelectTrigger>
         <SelectValue className="px-2" />
       </SelectTrigger>

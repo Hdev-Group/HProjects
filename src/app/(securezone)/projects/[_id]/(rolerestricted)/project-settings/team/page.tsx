@@ -25,6 +25,7 @@ export default function ProjectSettings({ params }: { params: { _id: string } })
   const [projectStatus, setProjectStatus] = useState('');
   const projectsholder = useQuery(api.projectsget.get);
   const getuserss = useQuery(api.userstab.get);
+  const adderr = useMutation(api.userstab.edit);
   const projectnamemu = useMutation(api.projectname.editProject);
   const removeusers = useMutation(api.teamadders.remove);
   const removerr = useMutation(api.userstab.remove);
@@ -32,9 +33,8 @@ export default function ProjectSettings({ params }: { params: { _id: string } })
   const projectUserId = project?.userId;
   const [adderEmail, setEmail] = useState("");
   const idfinder = getuserss?.find((user: any) => user.userid === userId && user.projectID === params._id);
-
-
   useEffect(() => {
+
     if (!isLoaded || !projectsholder ) return; // Wait until all data is loaded
 
     if (!isSignedIn) {
@@ -46,7 +46,7 @@ export default function ProjectSettings({ params }: { params: { _id: string } })
     }
 
     // Find the job title for the current user
-  }, [isLoaded, isSignedIn, projectsholder, project, projectUserId, userId, router, ]);
+  }, [isLoaded, isSignedIn, projectsholder, project, projectUserId, userId, router, projectUserId, userId, idfinder, router, params._id]);
 
   if (!isLoaded || !projectsholder) {
     return <div>Loading...</div>;
@@ -62,11 +62,7 @@ export default function ProjectSettings({ params }: { params: { _id: string } })
   if (!(projectUserId === userId || project.otherusers.includes(userId))) {
     return <div>Unauthorized</div>;
   }
-  useEffect(() => {
-    if (!(projectUserId === userId || idfinder && idfinder?.role == 'admin' || idfinder && idfinder?.role !== 'manager')) {
-      router.push(`/projects/${params._id}/project-settings/personal`);
-    }
-  }, [projectUserId, userId, idfinder, router, params._id]);
+
 
   const title = project.projectName + ' | Settings';
 
@@ -100,55 +96,80 @@ export default function ProjectSettings({ params }: { params: { _id: string } })
     // add user to pending team
   }
 
-  const fetchUserData = useCallback(async (ids: string[]) => {
-    if (ids.length > 0) {
-      try {
-        const response = await fetch(`/api/getcommentuser?userIds=${ids.join(',')}`);
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const data = await response.json();
-        const dataById = data.reduce((acc: any, user: any) => {
-          acc[user.id] = user;
-          return acc;
-        }, {});
-        setUserData(dataById);
-        setDataLoaded(true);
-      } catch (error) {
-        console.error('Error fetching user data:', error);
-        setUserData({});
+const fetchUserData = useCallback(async (ids: string[]) => {
+  if (ids.length > 0) {
+    try {
+      const response = await fetch(`/api/getcommentuser?userIds=${ids.join(',')}`);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
+      const data = await response.json();
+
+      // Assuming data is an array of users
+      const idfinder = data.find((user: any) => 
+        getuserss?.some((guser: any) => guser.id === user.id && guser.projectID === params._id)
+      );
+      
+      const dataById = data.reduce((acc: any, user: any) => {
+        acc[user.id] = user;
+        return acc;
+      }, {});
+
+      setUserData(dataById);
+      setDataLoaded(true);
+    } catch (error) {
+      console.error('Error fetching user data:', error);
+      setUserData({});
     }
-  }, []);
-  
-  useEffect(() => {
-    if (project) {
-      fetchUserData([project.userId, ...project.otherusers]);
-    }
-  }, [project, fetchUserData]);
+  }
+}, [getuserss, params._id]);
+
+useEffect(() => {
+  if (project) {
+    fetchUserData([project.userId, ...project.otherusers]);
+  }
+}, [project, fetchUserData]);
 
   function removeuser({userid}: {userid: any}) {
     const idfindera = getuserss?.find((user: any) => user.userid === userid && user.projectID === params._id);
     removeusers({ _id: params._id, otherusers: userid});
     removerr({_id: idfindera?._id});
   }
-
   function TeamMember({ user }: { user: { firstName: string, lastName: string, imageUrl: string, email: string, id: string } }){
-    return(
+    const rolefinder = getuserss?.find((usera: any) => user?.id === usera.userid && usera?.projectID === params._id);
+    console.log(rolefinder);
+    const roler = rolefinder?.role;
+    const [status, setTaskStatus] = useState(roler);
+    // if role != rolefinder.role then update the role
+    if (status !== roler) {
+      console.log(rolefinder?._id)
+      adderr({ _id: rolefinder?._id, role: status });
+    }
+    
+    return (
       <div className='flex-wrap flex gap-3 mt-3 mb-3 flex-row w-auto'>
-      <div className='border flex-col flex w-auto px-4 py-2 rounded-md'>
-        <p className='text-neutral-400 text-sm'>{user?.firstName} {user?.lastName}</p>
-        <div className='flex flex-row w-full items-center gap-10 justify-between'>
-          <p>{user?.email}</p>
-          <div className='flex flex-row mt-[-15px] gap-4'>
-          <Role _id={params._id} userid={user?.id} />
-          <button className='bg-red-500 px-4 p-2 rounded-md text-white' onClick={() => removeuser({userid: user?.id})}>Remove</button>
+        <div className='border flex-col flex w-auto px-4 py-2 rounded-md'>
+          <p className='text-neutral-400 text-sm'>{user?.firstName} {user?.lastName}</p>
+          <div className='flex flex-row w-full items-center gap-10 justify-between'>
+            <p>{user?.email}</p>
+            <div className='flex flex-row mt-[-15px] gap-4'>
+              <Role
+                value={status}
+                onValueChange={setTaskStatus}
+              />
+              <button
+                className='bg-red-500 px-4 p-2 rounded-md text-white'
+                onClick={() => removeuser({ userid: user?.id })}
+              >
+                Remove
+              </button>
+            </div>
           </div>
         </div>
       </div>
-  </div>
-    )
+    );
   }
+    
 
   return (
     <>

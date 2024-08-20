@@ -138,7 +138,7 @@ export default function TaskFullView({ params }: { params: { _id: string, _taski
                         action: status !== taskStatus ? status : null,
                         taskPriority: priority !== taskPriority ? priority : null,
                         taskAssignee: taskAssignee !== task.taskAssignee ? taskAssignee : null,
-                        usercommited: user.id,
+                        usercommited: user?.id,
                         timestamp: currenttime,
                     });
                 } catch (error) {
@@ -216,7 +216,7 @@ export default function TaskFullView({ params }: { params: { _id: string, _taski
                     ProjectId: _id,
                     taskId: taskid,
                     action: 'unarchived',
-                    usercommited: user.id,
+                    usercommited: user?.id,
                     timestamp: currenttime,
                 });
             } catch (error) {

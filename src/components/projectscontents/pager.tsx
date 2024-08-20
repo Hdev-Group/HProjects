@@ -22,7 +22,6 @@ export default function PagerEl({ _id, isSidebarClosed }: any) {
   const [timeRemaining, setTimeRemaining] = useState('');
   const paramsmain = _id
   const [isModalOpen, setIsModalOpen] = useState(false);
-  console.log(pagerhold)
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -121,10 +120,12 @@ export default function PagerEl({ _id, isSidebarClosed }: any) {
                 <div className='w-full' style={{ height: `${percentage}%`, backgroundColor: 'green' }}></div>
               </div>
             </div>
+            {isSidebarClosed ? null : (
             <div className='pl-3 h-max flex justify-center flex-col text-left'>
               <h1 className='font-semibold text-md text-left text-white'>You're on pager</h1>
               <p className='text-neutral-300 text-xs'>For the next {time}</p>
             </div>
+            )}
           </div>
         </ContextMenuTrigger>
         <ContextMenuContent>
@@ -216,9 +217,11 @@ function PagerOnBreak({ percentage, isSidebarClosed }: { percentage: number, isS
             <div className='w-full' style={{ height: `${percentage}%`, backgroundColor: 'yellow' }}></div>
           </div>
         </div>
+        {isSidebarClosed ? null : (
         <div className='pl-3 h-max flex justify-center flex-col text-left'>
           <h1 className='font-semibold text-md text-left text-white'>You're on break</h1>
         </div>
+        )}
       </div>
       </ContextMenuTrigger>
         <ContextMenuContent>

@@ -43,3 +43,33 @@ export const remove = mutation({
         await ctx.db.delete(args._id);
     },
 });
+
+export const edit = mutation({
+    args: {
+        _id: v.string(),
+        role: v.string(),
+        jobtitle: v.optional(v.string()),
+        projectID: v.optional(v.string()),
+        userid: v.optional(v.string()),
+    },
+    handler: async (ctx, { _id, role, jobtitle, projectID, userid }) => {
+        // Validate the _id
+
+        console.log(_id, role, jobtitle, projectID, userid);
+
+        // Create an object only with the fields that are not null
+        const userUpdates = {
+            ...(role ? { role } : {}),
+            ...(jobtitle ? { jobtitle } : {}),
+            ...(projectID ? { projectID } : {}),
+            ...(userid ? { userid } : {}),
+        };
+
+        if (Object.keys(userUpdates).length > 0) {
+            await ctx.db.patch(_id, userUpdates);
+            return userUpdates;
+        } else {
+            return null;
+        }
+    },
+});
