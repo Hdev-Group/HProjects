@@ -242,7 +242,7 @@ function SenderChangelogger({ weekBlocks, ownerData, taskFilterThisWeek, _id, cu
 
   return (
     <>
-      {Object.entries(paginatedLogs).reverse().map(([dateKey, dailyLogs]: any) => (
+      {Object.entries(paginatedLogs).map(([dateKey, dailyLogs]: any) => (
         <div key={dateKey}>
           <h3 className="font-semibold  text-md mb-2 bg-neutral-900/20 my-2 w-full border border-transparent border-b-neutral-300/40 pb-1 ml-2">
             {new Date(dateKey).toLocaleDateString()}

@@ -9,8 +9,7 @@ import React, { useEffect, useState } from "react";
 import SideBar from "../../../../../../../components/projectscontents/sidebar";
 import HeaderLinker from '../../../../../../../components/settings/headerlinker';
 import { useToast } from "../../../../../../../components/ui/use-toast";
-import Link from 'next/link';
-
+import TimeZoner from '../../../../../../../components/dropdowns/TimeZoner';
 
 
 export default function ProjectSettings({ params }: { params: { _id: string } }) {
@@ -23,7 +22,9 @@ export default function ProjectSettings({ params }: { params: { _id: string } })
   const project = projectsholder?.find((project: any) => project._id === params._id);
   const projectUserId = project?.userId;
   const [jobtitle, setJobTitle] = useState("");
+  const [timezone, setTimezone] = useState("");
   const addJobTitle = useMutation(api.users.addjobtitle);
+  const addtimezone = useMutation(api.users.addtimezone);
 
   useEffect(() => {
     if (!isLoaded || !projectsholder || !jobtitlealready) return; // Wait until all data is loaded
@@ -40,6 +41,7 @@ export default function ProjectSettings({ params }: { params: { _id: string } })
     const job = jobtitlealready.find(jobtitle => jobtitle.userid === userId && jobtitle.projectID === params._id);
     if (job) {
       setJobTitle(job.jobtitle);
+      setTimezone(job.timezone);
     }
 
   }, [isLoaded, isSignedIn, projectsholder, project, projectUserId, userId, router, jobtitlealready]);
@@ -70,6 +72,12 @@ export default function ProjectSettings({ params }: { params: { _id: string } })
     addJobTitle({ userid: userId, jobtitle, projectID: params._id });
   }
 
+  function saveTimeZone() {
+    toast({
+      description: 'Time-Zone saved',
+    });
+    addtimezone({ userid: userId, timezone: timezone, projectID: params._id });
+  }
   return (
     <>
       <head>
@@ -109,6 +117,20 @@ export default function ProjectSettings({ params }: { params: { _id: string } })
                             maxLength={25}
                           />
                           <button onClick={saveJobTitle} className='border rounded-md bg-transparent text-black dark:text-white px-6 py-1 hover:bg-neutral-500/40 transition-all'>Save</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className='flex flex-col  gap-3 overflow-hidden rounded-md border'>
+                    <div className='bg-neutral-800/20 border border-b-neutral-800 border-transparent px-4 py-2'>
+                      <h2 className='font-semibold text-lg'>Time-Zone</h2>
+                    </div>
+                    <div>
+                      <div className='px-4 pb-2'>
+                        <h3 className='font-semibold mb-1'>Time-Zone</h3>
+                        <div className='flex flex-row gap-3'>
+                          <TimeZoner value={timezone} onValueChange={setTimezone} />
+                          <button onClick={saveTimeZone} className='border rounded-md bg-transparent text-black dark:text-white px-6 py-1 hover:bg-neutral-500/40 transition-all'>Save</button>
                         </div>
                       </div>
                     </div>

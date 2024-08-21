@@ -88,7 +88,7 @@ export default function ProjectSettings({ params }: { params: { _id: string } })
       const rolefinder = getuserss?.find((usera: any) => user?.id === usera.userid && usera?.projectID === params._id);
 
       if (status !== rolefinder?.role) {
-        adderr({ _id: rolefinder?._id, role: status });
+      adderr({ _id: rolefinder?._id, role: status });
       }
     }, [status, adderr, getuserss, params._id, user?.id]);
     if (rolefinder?.userid === project?.userId) {

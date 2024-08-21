@@ -77,7 +77,7 @@ function SideBar({ activeSection, _id, projectname }: SideBarProps) {
           {!isSidebarClosed &&
             <a href='/dashboard' className='hover:bg-neutral-500/50 transition-all p-1 rounded-md px-2'><h1 className='w-full font-semibold overflow-clip flex-nowrap'>{projectname}</h1></a>
           }
-            <button onClick={sidebarcloser} className="w-9 bg-neutral-500/20 p-0.5 dark:bg-neutral-500/20 dark:hover:bg-neutral-200/20 transition-all hover:bg-neutral-700/20 rounded-md flex items-center justify-center">
+            <button onClick={sidebarcloser} className="w-6 bg-neutral-500/20 p-0.5 dark:bg-neutral-500/20 dark:hover:bg-neutral-200/20 transition-all hover:bg-neutral-700/20 rounded-md flex items-center justify-center">
               {!isSidebarClosed ? (<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M10.071 4.92902L11.4852 6.34323L6.82834 11.0001L16.0002 11.0002L16.0002 13.0002L6.82839 13.0001L11.4852 17.6569L10.071 19.0712L2.99994 12.0001L10.071 4.92902ZM18.0001 19V5.00003H20.0001V19H18.0001Z"></path>
               </svg>) : (
@@ -113,10 +113,10 @@ function SideBar({ activeSection, _id, projectname }: SideBarProps) {
               <svg className='w-6' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M10 3H14C18.4183 3 22 6.58172 22 11C22 15.4183 18.4183 19 14 19V22.5C9 20.5 2 17.5 2 11C2 6.58172 5.58172 3 10 3Z"></path></svg>
               {!isSidebarClosed && <p>Messages</p>}
             </Link>
-            <a href={`/projects/${encodeURIComponent(_id)}/project-settings`} className={getItemClass("Project settings")}>
+            <Link href={`/projects/${encodeURIComponent(_id)}/project-settings`} className={getItemClass("Project settings")}>
               <svg className='w-6' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 1L21.5 6.5V17.5L12 23L2.5 17.5V6.5L12 1ZM12 15C13.6569 15 15 13.6569 15 12C15 10.3431 13.6569 9 12 9C10.3431 9 9 10.3431 9 12C9 13.6569 10.3431 15 12 15Z"></path></svg>
               {!isSidebarClosed && <p>Settings</p>}
-            </a>
+            </Link>
           </div>
         </div>
       </div>
