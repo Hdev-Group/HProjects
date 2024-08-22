@@ -33,17 +33,31 @@ export default function ProjectSettings({ params }: { params: { _id: string } })
 
   // Check authentication and authorization
   useEffect(() => {
-    if (!isLoaded || !projectsholder) return; // Wait until all data is loaded
-
+    if (!isLoaded || !projectsholder || !getuserss) return; // Wait until all data is loaded
+  
     if (!isSignedIn) {
       router.push('/sign-in'); // Redirect to sign-in page if not signed in
     } else if (!project) {
-      router.push('/projects');
-    } else if (projectUserId !== userId && !project.otherusers.includes(userId)) {
-      router.push('/projects');
+      router.push('/projects'); // Redirect if the project is not found
+    } else {
+      // Find the current user's role within the project
+      const currentUserEntry = getuserss.find((user: any) => user.projectID === params._id && user.userid === userId);
+      
+      if (currentUserEntry) {
+        const currentUserRole = currentUserEntry.role;
+  
+        // Check if the user is the project owner or has the correct role
+        if (projectUserId !== userId && !project.otherusers.includes(userId)) {
+          router.push(`./personal`);
+        } else if (currentUserRole !== 'manager' && currentUserRole !== 'admin' && projectUserId !== userId) {
+          router.push(`./personal`);        }
+      } else {
+        router.push('/dashboard'); 
+      }
     }
-    // also check if their role is manager or admin
-  }, [isLoaded, isSignedIn, projectsholder, project, projectUserId, userId, router, params._id]);
+  }, [isLoaded, isSignedIn, projectsholder, project, projectUserId, userId, router, params._id, getuserss]);
+  
+
 
   // Fetch user data
   const fetchUserData = useCallback(async (ids: string[]) => {
@@ -74,9 +88,29 @@ export default function ProjectSettings({ params }: { params: { _id: string } })
   }, [project, fetchUserData]);
 
   function removeuser({ userid }: { userid: any }) {
+    // check the role priority if its an admin that a manager is removing do not allow it goes owner > admin > manager > member
     const idfindera = getuserss?.find((user: any) => user.userid === userid && user.projectID === params._id);
+    // check what user is being removed and the role of that user
+    // if its an admin being removed only the project owner can remove them
+    // if its a manager being removed only the project owner and admins can remove them
+    // if its a member being removed only the project owner, admins and managers can remove them
+    if (idfindera?.role === 'admin' && project.userId !== userId) {
+      return toast({
+        description: 'Only the project owner can remove an admin',
+      });
+    } else if (idfindera?.role === 'manager' && project.userId !== userId) {
+      return toast({
+        description: 'Only the project owner and admins can remove a manager',
+      });
+    } else if (idfindera?.role === 'member' && project.userId !== userId) {
+      return toast({
+        description: 'Only the project owner, admins and managers can remove a member',
+      });
+    }
+    else if (project.userId === userId) {
     removeusers({ _id: params._id, otherusers: userid });
     removerr({ _id: idfindera?._id });
+    }
   }
 
   function TeamMember({ user }: { user: { firstName: string, lastName: string, imageUrl: string, email: string, id: string } }) {
@@ -85,13 +119,27 @@ export default function ProjectSettings({ params }: { params: { _id: string } })
       return rolefinder?.role || '';
     });
 
-    useEffect(() => {
-      const rolefinder = getuserss?.find((usera: any) => user?.id === usera.userid && usera?.projectID === params._id);
-
-      if (status !== rolefinder?.role) {
-      adderr({ _id: rolefinder?._id, role: status });
+    if (status !== rolefinder?.role) {
+      // Check to see the role if its an admin that is removing do not allow it goes owner > admin > manager > member
+      if (rolefinder?.role === 'admin' && project.userId !== userId) {
+        toast({
+          description: 'Only the project owner can remove an admin',
+        });
+        return; // Prevent further execution
+      } else if (rolefinder?.role === 'manager' && project.userId !== userId) {
+        toast({
+          description: 'Only the project owner and admins can remove a manager',
+        });
+        return; // Prevent further execution
+      } else if (rolefinder?.role === 'member' && project.userId !== userId) {
+        toast({
+          description: 'Only the project owner, admins and managers can remove a member',
+        });
+        return; // Prevent further execution
       }
-    }, [status, adderr, getuserss, params._id, user?.id]);
+      adderr({ _id: rolefinder?._id, role: status });
+    }
+    
     if (rolefinder?.userid === project?.userId) {
       return null;
     }
@@ -138,6 +186,12 @@ export default function ProjectSettings({ params }: { params: { _id: string } })
   const title = `${project.projectName} | Settings`;
 
   async function inviteuser() {
+    // check if its an manager or admin that is inviting
+    if (project.userId !== userId) {
+      return toast({
+        description: 'Only the project owner can invite team members',
+      });
+    } else if (project.userId === userId) {
     try {
       const response = await fetch(`/api/get-email-user?userEmail=${encodeURIComponent(adderEmail)}`);
       if (!response.ok) {
@@ -162,6 +216,7 @@ export default function ProjectSettings({ params }: { params: { _id: string } })
       console.error('Error:', error);
     }
   }
+}
 
   return (
     <>
