@@ -97,14 +97,17 @@ export default function ProjectSettings({ params }: { params: { _id: string } })
     if (idfindera?.role === 'admin' && project.userId !== userId) {
       return toast({
         description: 'Only the project owner can remove an admin',
+        variant: "destructive"
       });
     } else if (idfindera?.role === 'manager' && project.userId !== userId) {
       return toast({
         description: 'Only the project owner and admins can remove a manager',
+        variant: "destructive"
       });
     } else if (idfindera?.role === 'member' && project.userId !== userId) {
       return toast({
         description: 'Only the project owner, admins and managers can remove a member',
+        variant: "destructive"
       });
     }
     else if (project.userId === userId) {
@@ -125,16 +128,19 @@ export default function ProjectSettings({ params }: { params: { _id: string } })
       if (rolefinder?.role === 'admin' && project.userId !== userId) {
         toast({
         description: 'Only the project owner can change the role of an admin',
+        variant: "destructive"
         });
         return; // Prevent further execution
       } else if (rolefinder?.role === 'manager' && project.userId !== userId) {
         toast({
         description: 'Only the project owner and admins can change the role of a manager',
+        variant: "destructive"
         });
         return; // Prevent further execution
       } else if (rolefinder?.role === 'member' && project.userId !== userId) {
         toast({
         description: 'Only the project owner, admins and managers can change the role of a member',
+        variant: "destructive"
         });
         return; // Prevent further execution
       }
