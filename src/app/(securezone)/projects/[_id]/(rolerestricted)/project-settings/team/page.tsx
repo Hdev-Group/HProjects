@@ -42,6 +42,7 @@ export default function ProjectSettings({ params }: { params: { _id: string } })
     } else if (projectUserId !== userId && !project.otherusers.includes(userId)) {
       router.push('/projects');
     }
+    // also check if their role is manager or admin
   }, [isLoaded, isSignedIn, projectsholder, project, projectUserId, userId, router, params._id]);
 
   // Fetch user data

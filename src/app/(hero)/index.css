@@ -80,3 +80,10 @@
   height: 100%;
   width: 100%;
 }
+.gridthing {
+  background-size: 20px 20px;
+  background-image:
+    linear-gradient(to right, #ffffff0a 1px, transparent 1px),
+    linear-gradient(to bottom, #ffffff0a 1px, transparent 1px);
+    mask-image: linear-gradient(transparent, blue 90px);
+}
