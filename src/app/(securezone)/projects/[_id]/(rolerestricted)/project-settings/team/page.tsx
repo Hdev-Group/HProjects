@@ -123,17 +123,17 @@ export default function ProjectSettings({ params }: { params: { _id: string } })
       // Check to see the role if its an admin that is removing do not allow it goes owner > admin > manager > member
       if (rolefinder?.role === 'admin' && project.userId !== userId) {
         toast({
-          description: 'Only the project owner can remove an admin',
+          description: 'Only the project owner can change the role of an admin',
         });
         return; // Prevent further execution
       } else if (rolefinder?.role === 'manager' && project.userId !== userId) {
         toast({
-          description: 'Only the project owner and admins can remove a manager',
+          description: 'Only the project owner and admins can change the role of a manager',
         });
         return; // Prevent further execution
       } else if (rolefinder?.role === 'member' && project.userId !== userId) {
         toast({
-          description: 'Only the project owner, admins and managers can remove a member',
+          description: 'Only the project owner, admins and managers can change the role of a member',
         });
         return; // Prevent further execution
       }
