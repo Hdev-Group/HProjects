@@ -19,7 +19,7 @@ export default function NotFound() {
         <div className='w-full z-[100] relative md:w-[45%] mt-[4rem] flex flex-col gap-10'>
           <h1 className='font-bold text-5xl w-full boxtexts leading-snug'>{randomtext()}</h1>
           <p className='text-xl'>Get back to your projects.</p>
-          <a href='/dashboard' className='font-semibold text-white p-2 rounded-3xl w-full md:w-1/6 text-center bg-black border'>Dashboard</a>
+          <a href='/dashboard' className='font-semibold text-white p-2 rounded-3xl w-full md:w-auto text-center bg-black border'>Dashboard</a>
           <p className='text-xs'><b>Nerd stuff:</b> 404 - Unable to find page: <br></br> <b>{pathname}</b></p>
         </div>
         <div className='flex relative pt-[50rem]  items-center  justify-center w-full md:w-[50%] z-[-10]'>

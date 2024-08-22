@@ -24,7 +24,7 @@ export default function MainDMs({ params }: { params: { _id: string, _chatid: st
 
   // Memoize the project
   const project = useMemo(() => {
-    return projectsholder?.find(project => project._id === params._id);
+    return projectsholder?.find((project: any) => project._id === params._id);
   }, [projectsholder, params._id]);
 
   // Memoize the chat
@@ -118,7 +118,7 @@ export default function MainDMs({ params }: { params: { _id: string, _chatid: st
               <div className="flex-col w-full gap-4 px-5 h-full justify-between mb-5 mt-5 flex">
                 <div className="flex flex-col justify-end h-full">
                   <div className="mb-5 flex flex-col h-auto w-full">
-                    <ComposerChat chatId={params._chatid} projectid={params._id} assigneeData={assigneeData} user={user}  />
+                    <ComposerChat chatId={params._chatid} projectid={params._id} assigneeData={assigneeData} />
                   </div>
                   <div className="flex overflow-x-hidden flex-row border bg-transparent items-center border-neutral-600/40 rounded-lg w-full">
                     <MessageSubmitter chatid={params._chatid} _id={params._id}  />

@@ -91,7 +91,7 @@ const NewProjectModal = ({ onClose }) => {
               value={projectStatus}
               onChange={(value) => setProjectStatus(value)}
               required
-             />
+            />
           </div>
           <button type="submit" className="dark:bg-cyan-600 dark:text-white bg-cyan-600 text-white rounded-lg px-3 py-2">
             Add Project

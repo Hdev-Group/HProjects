@@ -27,13 +27,17 @@ import type * as getjob from "../getjob.js";
 import type * as getlogs from "../getlogs.js";
 import type * as getreplys from "../getreplys.js";
 import type * as idgetprojects from "../idgetprojects.js";
+import type * as invitegetter from "../invitegetter.js";
+import type * as inviteremove from "../inviteremove.js";
 import type * as messagesender from "../messagesender.js";
 import type * as pageradd from "../pageradd.js";
 import type * as pagerdelete from "../pagerdelete.js";
 import type * as pagerget from "../pagerget.js";
 import type * as pagerupdate from "../pagerupdate.js";
 import type * as pinProject from "../pinProject.js";
+import type * as projectname from "../projectname.js";
 import type * as projects from "../projects.js";
+import type * as projectsadduser from "../projectsadduser.js";
 import type * as projectsget from "../projectsget.js";
 import type * as replysender from "../replysender.js";
 import type * as startchat from "../startchat.js";
@@ -41,8 +45,10 @@ import type * as tasks from "../tasks.js";
 import type * as tasksget from "../tasksget.js";
 import type * as taskssender from "../taskssender.js";
 import type * as taskupdate from "../taskupdate.js";
+import type * as teamadders from "../teamadders.js";
 import type * as updater from "../updater.js";
 import type * as users from "../users.js";
+import type * as userstab from "../userstab.js";
 
 /**
  * A utility for referencing Convex functions in your app's API.
@@ -66,13 +72,17 @@ declare const fullApi: ApiFromModules<{
   getlogs: typeof getlogs;
   getreplys: typeof getreplys;
   idgetprojects: typeof idgetprojects;
+  invitegetter: typeof invitegetter;
+  inviteremove: typeof inviteremove;
   messagesender: typeof messagesender;
   pageradd: typeof pageradd;
   pagerdelete: typeof pagerdelete;
   pagerget: typeof pagerget;
   pagerupdate: typeof pagerupdate;
   pinProject: typeof pinProject;
+  projectname: typeof projectname;
   projects: typeof projects;
+  projectsadduser: typeof projectsadduser;
   projectsget: typeof projectsget;
   replysender: typeof replysender;
   startchat: typeof startchat;
@@ -80,8 +90,10 @@ declare const fullApi: ApiFromModules<{
   tasksget: typeof tasksget;
   taskssender: typeof taskssender;
   taskupdate: typeof taskupdate;
+  teamadders: typeof teamadders;
   updater: typeof updater;
   users: typeof users;
+  userstab: typeof userstab;
 }>;
 export declare const api: FilterApi<
   typeof fullApi,

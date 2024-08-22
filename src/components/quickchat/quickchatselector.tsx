@@ -23,7 +23,7 @@ interface UserData {
 interface ChatSelectorProps {
   value: string;
   onValueChange: (value: string) => void;
-  id: { id: string };
+  id: any;
 }
 
 export default function ChatSelector({ value, onValueChange, id }: ChatSelectorProps) {
@@ -58,7 +58,7 @@ export default function ChatSelector({ value, onValueChange, id }: ChatSelectorP
     async function fetchOtherUsersData(){
       if (projectsholder && projectsholder.otherusers.length > 0) {
         try {
-          const userPromises = projectsholder.otherusers.map(async (userId) => {
+          const userPromises = projectsholder.otherusers.map(async (userId: any) => {
             const response = await fetch(`/api/get-user?userId=${userId}`);
             if (!response.ok) {
               throw new Error(`HTTP error! status: ${response.status}`);

@@ -1,15 +1,14 @@
 import React, { useRef } from 'react';
 import { useMutation } from 'convex/react';
 import { api } from '../../../convex/_generated/api';
-import AES from 'crypto-js/aes';
 import { useAuth } from "@clerk/nextjs";
 
 interface MessageSubmitterProps {
   chatid: string;
-  chatmsg: string;
+  _id: string;
 }
 
-export default function MessageSubmitter({ chatid, chatmsg, _id }: MessageSubmitterProps) {
+export default function MessageSubmitter({ chatid, _id }: MessageSubmitterProps) {
   const sendermsg = useMutation(api.messagesender.add);
   const { userId } = useAuth();
   const messageInputRef = useRef<HTMLInputElement>(null);

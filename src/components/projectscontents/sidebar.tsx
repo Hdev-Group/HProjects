@@ -4,6 +4,13 @@ import { IncidentDeclaration } from './incidentdec';
 import { QuickMenu } from './quickmenu';
 import '../../styles/globals.css';
 import { AppProgressBar as ProgressBar } from 'next-nprogress-bar';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "../ui/dropdown-menu";
 
 interface SideBarProps {
   activeSection: string;
@@ -67,8 +74,10 @@ function SideBar({ activeSection, _id, projectname }: SideBarProps) {
       />
       <div className='w-full mt-2 flex items-center justify-center flex-col'>
         <div className='w-full flex flex-row px-2 justify-between items-center'>
-          {!isSidebarClosed && <h1 className='w-full font-semibold overflow-clip flex-nowrap'>{projectname}</h1>}
-            <button onClick={sidebarcloser} className="w-9 bg-neutral-500/20 p-0.5 dark:bg-neutral-500/20 dark:hover:bg-neutral-200/20 transition-all hover:bg-neutral-700/20 rounded-md flex items-center justify-center">
+          {!isSidebarClosed &&
+            <a href='/dashboard' className='hover:bg-neutral-500/50 transition-all p-1 rounded-md px-2'><h1 className='w-full font-semibold overflow-clip flex-nowrap'>{projectname}</h1></a>
+          }
+            <button onClick={sidebarcloser} className="w-6 bg-neutral-500/20 p-0.5 dark:bg-neutral-500/20 dark:hover:bg-neutral-200/20 transition-all hover:bg-neutral-700/20 rounded-md flex items-center justify-center">
               {!isSidebarClosed ? (<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M10.071 4.92902L11.4852 6.34323L6.82834 11.0001L16.0002 11.0002L16.0002 13.0002L6.82839 13.0001L11.4852 17.6569L10.071 19.0712L2.99994 12.0001L10.071 4.92902ZM18.0001 19V5.00003H20.0001V19H18.0001Z"></path>
               </svg>) : (
@@ -78,16 +87,17 @@ function SideBar({ activeSection, _id, projectname }: SideBarProps) {
             </button>
         </div>
         <div className='mt-4 flex justify-start w-full'>
-          <div className='flex flex-col justify-start max-w-[240px] w-full items-start font-semibold  text-md gap-4'>
-          <Link href={`/projects/${encodeURIComponent(_id)}`} className={getItemClass("Dashboard")}>
-          <svg className='w-6' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M21 20C21 20.5523 20.5523 21 20 21H4C3.44772 21 3 20.5523 3 20V9.48907C3 9.18048 3.14247 8.88917 3.38606 8.69972L11.3861 2.47749C11.7472 2.19663 12.2528 2.19663 12.6139 2.47749L20.6139 8.69972C20.8575 8.88917 21 9.18048 21 9.48907V20ZM7 15V17H17V15H7Z"></path></svg>              
-              {!isSidebarClosed && <p>Dashboard</p>}
-            </Link>
+          <div className='flex flex-col justify-start max-w-[240px] w-full items-start font-semibold  text-md gap-2'>
+
+              <Link href={`/projects/${encodeURIComponent(_id)}`} className={getItemClass("Dashboard")}>
+              <svg className='w-6' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M21 20C21 20.5523 20.5523 21 20 21H4C3.44772 21 3 20.5523 3 20V9.48907C3 9.18048 3.14247 8.88917 3.38606 8.69972L11.3861 2.47749C11.7472 2.19663 12.2528 2.19663 12.6139 2.47749L20.6139 8.69972C20.8575 8.88917 21 9.18048 21 9.48907V20ZM7 15V17H17V15H7Z"></path></svg>              
+                  {!isSidebarClosed && <p>Dashboard</p>}
+                </Link>
+
             <Link href={`/projects/${encodeURIComponent(_id)}/tasks`}  className={getItemClass("Tasks")}>
-              <svg className='w-6' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M2 4C2 3.44772 2.44772 3 3 3H21C21.5523 3 22 3.44772 22 4V20C22 20.5523 21.5523 21 21 21H3C2.44772 21 2 20.5523 2 20V4ZM16 19H20V5H16V19ZM14 5H10V19H14V5ZM4 5V19H8V5H4Z"></path></svg>
-              {!isSidebarClosed && <p>Tasks</p>}
+            <svg className='w-6' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M5.25098 3H18.751C19.993 3 21.001 4.00737 21.001 5.25V18.75C21.001 19.992 19.9935 21 18.751 21H5.25098C4.00898 21 3.00098 19.9925 3.00098 18.75V5.25C3.00098 4.008 4.00835 3 5.25098 3ZM13.171 6.42054V12.1795C13.171 12.7762 13.6545 13.26 14.2507 13.26H17.5812C18.1776 13.26 18.661 12.7765 18.661 12.1795V6.42054C18.661 5.82384 18.1774 5.34 17.5812 5.34H14.2507C13.6543 5.34 13.171 5.82348 13.171 6.42054ZM5.34098 6.42045V16.6796C5.34098 17.2762 5.82455 17.76 6.42071 17.76H9.75125C10.3476 17.76 10.831 17.277 10.831 16.6796V6.42045C10.831 5.82375 10.3474 5.34 9.75125 5.34H6.42071C5.82428 5.34 5.34098 5.82303 5.34098 6.42045Z"></path></svg>              {!isSidebarClosed && <p>Tasks</p>}
             </Link>
-            <a href={`./${_id}/incidents`} className={getItemClass("changelog")}>
+            <a href={`/projects/${encodeURIComponent(_id)}/incident`} className={getItemClass("incident")}>
               <svg className='w-6' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M4.00001 20V14C4.00001 9.58172 7.58173 6 12 6C16.4183 6 20 9.58172 20 14V20H21V22H3.00001V20H4.00001ZM6.00001 14H8.00001C8.00001 11.7909 9.79087 10 12 10V8C8.6863 8 6.00001 10.6863 6.00001 14ZM11 2H13V5H11V2ZM19.7782 4.80761L21.1924 6.22183L19.0711 8.34315L17.6569 6.92893L19.7782 4.80761ZM2.80762 6.22183L4.22183 4.80761L6.34315 6.92893L4.92894 8.34315L2.80762 6.22183Z"></path></svg>
               {!isSidebarClosed && <p>Incidents</p>}
             </a>
@@ -103,10 +113,10 @@ function SideBar({ activeSection, _id, projectname }: SideBarProps) {
               <svg className='w-6' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M10 3H14C18.4183 3 22 6.58172 22 11C22 15.4183 18.4183 19 14 19V22.5C9 20.5 2 17.5 2 11C2 6.58172 5.58172 3 10 3Z"></path></svg>
               {!isSidebarClosed && <p>Messages</p>}
             </Link>
-            <a href='' className={getItemClass("Project settings")}>
+            <Link href={`/projects/${encodeURIComponent(_id)}/project-settings`} className={getItemClass("Project settings")}>
               <svg className='w-6' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 1L21.5 6.5V17.5L12 23L2.5 17.5V6.5L12 1ZM12 15C13.6569 15 15 13.6569 15 12C15 10.3431 13.6569 9 12 9C10.3431 9 9 10.3431 9 12C9 13.6569 10.3431 15 12 15Z"></path></svg>
               {!isSidebarClosed && <p>Settings</p>}
-            </a>
+            </Link>
           </div>
         </div>
       </div>

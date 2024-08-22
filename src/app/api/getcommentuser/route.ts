@@ -31,6 +31,7 @@ export async function GET(request: Request) {
         firstName: user.firstName,
         lastName: user.lastName,
         id: user.id,
+        email: user.emailAddresses[0]?.emailAddress,
         imageUrl: user.imageUrl
       };
     }));

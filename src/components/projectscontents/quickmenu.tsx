@@ -21,23 +21,24 @@ export function QuickMenu({id, isSidebarClosed}: {id: string, isSidebarClosed: b
     const { user: userInfo } = useUser();
 
     return (
-      <div className="flex flex-col gap-10 pb-4 dark:bg-bgdarkbars">
+      <div className="flex flex-col ml-1 gap-10  dark:bg-bgdarkbars">
         <PagerEl _id={id} isSidebarClosed={isSidebarClosed} />
-        {sidebarchecker ? null : (
           <ContextMenu>
           <ContextMenuTrigger>
             <div className="flex-row flex gap-3">
               <div className="w-[40px] h-[40px] rounded-full flex flex-row">
-                <img src={userInfo?.imageUrl} alt="logo" className="w-[40px] h-[40px] rounded-full" />
+                <img src={userInfo?.imageUrl} alt="logo" className={`${sidebarchecker ? "h-[25px] w-[25px]" : "h-[40px] w-[40px]"} rounded-full`} />
               </div>
+              {sidebarchecker ? null : (
               <div className="flex flex-col text-left justify-center">
                 <h1 className="text-neutral-100 text-sm font-semibold text-left">
                   {userInfo?.firstName} {userInfo?.lastName}
                 </h1>
                 <p className="text-neutral-500 text-xs text-left font-semibold">
-                  {jobtitlealready?.filter((jobtitlealready) => jobtitlealready.userid === userId)[0]?.jobtitle}
+                  {jobtitlealready?.filter((jobtitlealready) => jobtitlealready.userid === userId && jobtitlealready.projectID === id)[0]?.jobtitle}
                 </p>
               </div>
+              )}
             </div>
           </ContextMenuTrigger>
           <ContextMenuContent>
@@ -48,8 +49,9 @@ export function QuickMenu({id, isSidebarClosed}: {id: string, isSidebarClosed: b
               <div onClick={() => signOut({ redirectUrl: '/' })}>Logout</div>
             </ContextMenuItem>
           </ContextMenuContent>
+
         </ContextMenu>
-        )}
+
       </div>
     );
 }

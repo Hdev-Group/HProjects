@@ -17,7 +17,6 @@ export default function PagerEl({ _id, isSidebarClosed }: any) {
   const { userId } = useAuth();
   const pagerholder = useQuery(api.pagerget.get);
   const pagerhold = pagerholder?.find(pager => pager.userId === userId);
-
   const [currentTime, setCurrentTime] = useState(new Date());
   const [percentage, setPercentage] = useState(0);
   const [timeRemaining, setTimeRemaining] = useState('');
@@ -73,7 +72,7 @@ export default function PagerEl({ _id, isSidebarClosed }: any) {
         </div>
       </ContextMenuTrigger>
       <ContextMenuContent>
-        <Link href={`./${_id}/pager?startpager=true`}>        <ContextMenuItem className='text-green-300 cursor-pointer' onClick={handleClick}>Go on Pager</ContextMenuItem>        </Link>
+        <Link href={`./pager?startpager=true`}>        <ContextMenuItem className='text-green-300 cursor-pointer' onClick={handleClick}>Go on Pager</ContextMenuItem>        </Link>
       </ContextMenuContent>
     </ContextMenu>
     );
@@ -81,8 +80,7 @@ export default function PagerEl({ _id, isSidebarClosed }: any) {
   function PagerOnCall({ percentage, time, paramsmain }: { percentage: number, time: string, paramsmain: { _id: string } }) {
     const { userId } = useAuth();
     const mutatebreak = useMutation(api.pagerupdate.editpager);
-    
-
+  
     function startBreak() {
       if (userId) {
         mutatebreak({ id: pagerhold._id,  status: 'break'}).catch(err => console.error(err));
@@ -122,10 +120,12 @@ export default function PagerEl({ _id, isSidebarClosed }: any) {
                 <div className='w-full' style={{ height: `${percentage}%`, backgroundColor: 'green' }}></div>
               </div>
             </div>
+            {isSidebarClosed ? null : (
             <div className='pl-3 h-max flex justify-center flex-col text-left'>
               <h1 className='font-semibold text-md text-left text-white'>You're on pager</h1>
               <p className='text-neutral-300 text-xs'>For the next {time}</p>
             </div>
+            )}
           </div>
         </ContextMenuTrigger>
         <ContextMenuContent>
@@ -162,7 +162,7 @@ export default function PagerEl({ _id, isSidebarClosed }: any) {
     }
   }, [pagerhold]);
 
-  if (pagerhold && paramsmain.id === pagerhold.projectid) {
+  if (pagerhold && paramsmain === pagerhold.projectid) {
     if (timeRemaining.includes('-')) {
       return <PagerOff />;
     } else if (pagerhold.status === 'active') {
@@ -217,9 +217,11 @@ function PagerOnBreak({ percentage, isSidebarClosed }: { percentage: number, isS
             <div className='w-full' style={{ height: `${percentage}%`, backgroundColor: 'yellow' }}></div>
           </div>
         </div>
+        {isSidebarClosed ? null : (
         <div className='pl-3 h-max flex justify-center flex-col text-left'>
           <h1 className='font-semibold text-md text-left text-white'>You're on break</h1>
         </div>
+        )}
       </div>
       </ContextMenuTrigger>
         <ContextMenuContent>
