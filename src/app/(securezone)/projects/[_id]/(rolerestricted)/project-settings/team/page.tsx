@@ -119,26 +119,28 @@ export default function ProjectSettings({ params }: { params: { _id: string } })
       return rolefinder?.role || '';
     });
 
-    if (status !== rolefinder?.role) {
+    useEffect(() => {
+      if (status !== rolefinder?.role) {
       // Check to see the role if its an admin that is removing do not allow it goes owner > admin > manager > member
       if (rolefinder?.role === 'admin' && project.userId !== userId) {
         toast({
-          description: 'Only the project owner can change the role of an admin',
+        description: 'Only the project owner can change the role of an admin',
         });
         return; // Prevent further execution
       } else if (rolefinder?.role === 'manager' && project.userId !== userId) {
         toast({
-          description: 'Only the project owner and admins can change the role of a manager',
+        description: 'Only the project owner and admins can change the role of a manager',
         });
         return; // Prevent further execution
       } else if (rolefinder?.role === 'member' && project.userId !== userId) {
         toast({
-          description: 'Only the project owner, admins and managers can change the role of a member',
+        description: 'Only the project owner, admins and managers can change the role of a member',
         });
         return; // Prevent further execution
       }
       adderr({ _id: rolefinder?._id, role: status });
-    }
+      }
+    }, [status, rolefinder, project, userId, adderr, toast]);
     
     if (rolefinder?.userid === project?.userId) {
       return null;
