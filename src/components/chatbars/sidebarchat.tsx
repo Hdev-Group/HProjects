@@ -92,9 +92,9 @@ export default function SideBarChat({ user, id }: SideBarChatProps) {
                             <p className="mb-1 dark:text-white text-black">+</p>
                           </div>
                         </DropdownMenuTrigger>
-                        <DropdownMenuContent>
+                        <DropdownMenuContent className="z-1">
                           <DropdownMenuItem>
-                            <div className="flex flex-row gap-2">
+                            <div className="flex flex-row gap-2 z-10">
                             <ChatSelector
                               id={id}
                               value={taskAssignee}

@@ -26,7 +26,7 @@ export default function MessageSubmitter({ chatid, _id }: MessageSubmitterProps)
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-row w-full h-full" id="messagesubmitter">
+    <form onSubmit={handleSubmit} className="flex flex-row w-full items-center justify-center h-full" id="messagesubmitter">
       <input
         type="text"
         id="messageinput"
