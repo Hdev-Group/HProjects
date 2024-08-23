@@ -155,7 +155,7 @@ import { stat } from 'fs';
                                         <div className='flex gap-3 pr-3 items-center'>
                                             {assigneeData ? (
                                                 <>
-                                                    <img src={assigneeData.imageUrl} className='w-6 h-6 rounded-full' alt="Assignee" />
+                                                    <img src={assigneeData.imageUrl} className='w-8 h-8 rounded-full' alt="Assignee" />
                                                     <div>
                                                         <h2 className='font-semibold'>{assigneeData.firstName} {assigneeData.lastName}</h2>
                                                         <p className='text-xs text-neutral-400'>{jobtitlealready?.filter(jobtitlealready => jobtitlealready.userid === assigneeData.id)[0]?.jobtitle}</p>

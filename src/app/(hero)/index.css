@@ -85,5 +85,13 @@
   background-image:
     linear-gradient(to right, #ffffff0a 1px, transparent 1px),
     linear-gradient(to bottom, #ffffff0a 1px, transparent 1px);
-    mask-image: linear-gradient(transparent, blue 90px);
+    mask-image: linear-gradient(transparent, blue 50px);
+}
+
+.gridthing1 {
+  background-size: 20px 20px;
+  background-image:
+    linear-gradient(to right, #ffffff0a 1px, transparent 1px),
+    linear-gradient(to bottom, #ffffff0a 1px, transparent 1px);
+    mask-image: linear-gradient(transparent, blue 50px);
 }
