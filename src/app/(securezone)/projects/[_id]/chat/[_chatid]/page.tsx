@@ -115,12 +115,12 @@ export default function MainDMs({ params }: { params: { _id: string, _chatid: st
               <div className="flex flex-row items-center gap-4 transition-all  w-full">
                 {chat && <Chatside chat={chat} projectid={_id} />}
               </div>
-              <div className="flex-col w-full gap-4 px-5 h-full justify-between mb-5 mt-5 flex">
+              <div className="flex-col w-full gap-4 px-5 h-full overflow-hidden justify-between mb-5 mt-5 flex">
                 <div className="flex flex-col justify-end h-full">
-                  <div className="mb-5 flex flex-col h-auto w-full">
+                  <div className="mb-5 flex flex-col overflow-y-scroll h-auto w-full">
                     <ComposerChat chatId={params._chatid} projectid={params._id} assigneeData={assigneeData} />
                   </div>
-                  <div className="flex mt-10 pt-5 pb-5 mb-1 overflow-x-hidden flex-row justify-center border bg-transparent items-center border-neutral-600/40 rounded-lg w-full">
+                  <div className="flex h-[6rem] overflow-x-hidden flex-row justify-center border bg-transparent items-center border-neutral-600/40 rounded-lg w-full">
                     <MessageSubmitter chatid={params._chatid} _id={params._id}  />
                   </div>
                 </div>
