@@ -14,7 +14,7 @@ export const editpager = mutation({
     };
 
     if (Object.keys(projectUpdates).length > 0) {
-      await ctx.db.patch(id ,projectUpdates);
+      await ctx.db.patch(id as any ,projectUpdates);
       return projectUpdates;
     } else {
       return null;

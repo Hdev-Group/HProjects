@@ -29,7 +29,7 @@ export const remove = mutation({
     console.log('remove');
     
     // Fetch the project document
-    const project = await ctx.db.get(_id);
+    const project = await ctx.db.get(_id as any);
 
     if (!project) {
       throw new Error(`Project with id ${_id} not found`);
@@ -39,7 +39,7 @@ export const remove = mutation({
     const updatedOtherUsers = project.otherusers.filter((u: string) => u !== otherusers);
 
     // Update the database with the new array
-    await ctx.db.patch(_id, {
+    await ctx.db.patch(_id as any, {
       otherusers: updatedOtherUsers,
     });
 

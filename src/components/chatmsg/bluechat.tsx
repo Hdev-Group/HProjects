@@ -3,7 +3,7 @@ import { useQuery } from "convex/react";
 import { api } from '../../../convex/_generated/api';
 import { Critical, High, Medium, Low, Security, Feature } from '../dropdowns/priorities/critical';
 
-function ChatTaskEmbed({ projectid, taskid }: { projectid: string, taskid: string }) {
+function ChatTaskEmbed({ projectid, taskid }: { projectid: string, taskid: any }) {
   // Fetch the task details based on the project ID and task ID
   const task = useQuery(api.getexacttask.get, { _id: taskid });
 

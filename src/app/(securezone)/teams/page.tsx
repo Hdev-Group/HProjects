@@ -55,14 +55,14 @@ const Teams = () => {
     if (addtoteamcheck[0]?.projectid === projectid) {
       appendUser({
         _id: projectid,
-        otherusers: userId,
+        otherusers: userId  ?? '',
       });
       usertableadder({
         jobtitle: '',
         projectID: projectid,
-        userid: userId,
+        userid: userId as string,
         role: 'member',
-      })
+      });
       removeInvite({
         _id: addtoteamcheck[0]?._id,
       });

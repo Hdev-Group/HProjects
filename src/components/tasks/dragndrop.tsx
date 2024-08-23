@@ -1,3 +1,4 @@
+import React from 'react';
 import { Critical, High, Medium, Low, Security, Feature } from '../dropdowns/priorities/critical';
 import { BackLog, Todo, InProgress, Done } from '../dropdowns/status/status';
 import { api } from '../../../convex/_generated/api';
@@ -298,7 +299,7 @@ export default function MainHolder({ _id, taskFilter }: { _id: string, taskFilte
             </div>
         ))
     );
-    const dropzoneimages = {
+    const dropzoneimages: Record<string, string> = {
         'Backlog': '/5.png',
         'To do': '/!.png',
         'In Progress': '/7.png',

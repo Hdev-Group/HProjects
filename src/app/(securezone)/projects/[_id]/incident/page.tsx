@@ -11,7 +11,7 @@ export default function IncidentsPage({ params }: { params: { _id: string } }) {
   const { userId, isLoaded, isSignedIn } = useAuth();
   const { user } = useUser();
   const projectsholder = useQuery(api.projectsget.get);
-  const project = projectsholder?.find(project => project._id === params._id);
+  const project = projectsholder?.find((project: any) => project._id === params._id);
   const projectname = project?.projectName;
   const projectUserId = project?.userId;
   const router = useRouter();

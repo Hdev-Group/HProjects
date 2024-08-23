@@ -4,13 +4,33 @@ import { api } from '../../../convex/_generated/api';
 import { useEffect, useState, useCallback, useRef } from "react";
 import DropdownCommentMenu from "../dropdowns/comment";
 import React from 'react';
+import { useUser } from "@clerk/clerk-react";
 
-export default function CommentBoxer({ taskId }: { taskId: string }) {
+interface Comment {
+  _id: string;
+  taskId: string;
+  userId: string;
+  CommenterMessage: string;
+  _creationTime: string;
+}
+
+interface UserData {
+  firstName: string;
+  lastName: string;
+  imageUrl: string;
+}
+
+interface CommentBoxerProps {
+  taskId: string;
+}
+
+export default function CommentBoxer({ taskId }: { taskId: any }) {
   const { userId } = useAuth();
+
   const useridentifier = userId;
   const comments = useQuery(api.getcomments.get);
   const filteredComments = comments?.filter((comment: any) => comment.taskId === taskId);
-  const [commenterData, setCommenterData] = useState<{ [key: string]: { firstName: string, lastName: string, imageUrl: string } }>({});
+  const [commenterData, setCommenterData] = useState<{ [key: string]: { firstName: string, lastName: string, imageUrl: any } }>({});
   const [dataLoaded, setDataLoaded] = useState(false);
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const [showReplyDropdown, setShowReplyDropdown] = useState<string | null>(null);
@@ -89,6 +109,7 @@ export default function CommentBoxer({ taskId }: { taskId: string }) {
       </div>
     );
   };
+  
 
   const CommentReply = ({ commentdata }: { commentdata: any }) => {
     const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -118,7 +139,7 @@ export default function CommentBoxer({ taskId }: { taskId: string }) {
           ref={textareaRef}
           onInput={handleInput}
           id="textreplyarea"
-          placeholder={`Reply to ${useridentifier === userId ? 'your' : `${commenterData[userId]?.firstName} ${commenterData[userId]?.lastName}'s`} comment.`}
+          placeholder={`Reply to ${useridentifier === userId ? 'your' : `${commenterData?.firstName} ${commenterData?.lastName}'s`} comment.`}
           className="w-full p-2 break-words h-auto bg-transparent text-wrap overflow-x-hidden resize-none"
           style={{ overflow: 'hidden' }}
         />
@@ -156,7 +177,9 @@ export default function CommentBoxer({ taskId }: { taskId: string }) {
       </div>
     );
   };
-
+  const user = useUser();
+  const userimage = user?.user?.imageUrl;
+  console.log(user);
   return (
     <div className='flex flex-col gap-4 border p-1 rounded-t-lg w-full dark:text-white text-black  '>
       <div className='flex flex-col gap-4 w-full '>
@@ -203,7 +226,7 @@ export default function CommentBoxer({ taskId }: { taskId: string }) {
             {showReplyDropdown === comment._id && (
               <div className="flex flex-row gap-3">
                 <div className="mt-1 beforetoperreply">
-                  <img src={commenterData[userId]?.imageUrl} alt={commenterData[userId]?.firstName} className='w-8 h-8 rounded-full' />
+                  <img src={userimage} alt={`${commenterData?.firstName} ${commenterData?.lastName}`} className='w-8 h-8 rounded-full' />
                 </div>
                 <CommentReply commentdata={comment} />
               </div>

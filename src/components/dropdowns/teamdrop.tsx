@@ -9,8 +9,8 @@ import {
   SelectValue,
 } from "../ui/select";
 
-export default function Role({ value, onValueChange }) {
-  const handleChange = (newValue) => {
+export default function Role({ value, onValueChange }: any) {
+  const handleChange = (newValue: string) => {
     if (onValueChange) {
       onValueChange(newValue);
     }

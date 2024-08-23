@@ -21,11 +21,11 @@ export function DropdownCommentMenu(commentid: any) {
                     </div>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="">
-                    <DropdownMenuItem className='cursor-pointer' commentid={commentid}>Reply</DropdownMenuItem>
-                    <DropdownMenuItem className='cursor-pointer' commentid={commentid}>Reaction</DropdownMenuItem>
+                    <DropdownMenuItem className='cursor-pointer' ref={commentid}>Reply</DropdownMenuItem>
+                    <DropdownMenuItem className='cursor-pointer' ref={commentid}>Reaction</DropdownMenuItem>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem className='cursor-pointer' commentid={commentid}>Edit</DropdownMenuItem>
-                    <DropdownMenuItem className='cursor-pointer' commentid={commentid}>Delete</DropdownMenuItem>
+                    <DropdownMenuItem className='cursor-pointer' ref={commentid}>Edit</DropdownMenuItem>
+                    <DropdownMenuItem className='cursor-pointer' ref={commentid}>Delete</DropdownMenuItem>
                 </DropdownMenuContent>
             </DropdownMenu>
         </>
