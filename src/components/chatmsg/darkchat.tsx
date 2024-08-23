@@ -40,7 +40,7 @@ export default function DarkChat({assigneeData, message}: {assigneeData: any, me
     const { user } = useUser();
 
     // Improved regex to capture task-related URLs more reliably
-    const urlPattern = /http:\/\/localhost:3000\/projects\/([^\/]+)\/([a-zA-Z0-9]+)\b/g;
+    const urlPattern = /https:\/\/h-projects.vercel.app\/projects\/([^\/]+)\/([a-zA-Z0-9]+)\b/g;
     const match = urlPattern.exec(message);
   
     // Log the extracted values for debugging

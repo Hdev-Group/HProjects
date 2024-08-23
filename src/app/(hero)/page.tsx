@@ -108,9 +108,9 @@ export default function Home() {
           <p className='font-medium text-sm text-neutral-400 pushuptext2'>
             Build projects and communicate in real time with your team, manage incidents and tasks with ease.
           </p>
-          <div className='flex flex-col md:flex-row h-auto gap-2 md:gap-6 w-full'>
+          <div className='flex flex-col items-center md:flex-row h-auto gap-2 md:gap-6 w-full'>
           <SignedOut>
-            <div className='flex flex-row mt-6 gap-2 w-full md:w-1/2 md:gap-6 '>
+            <div className='flex flex-row gap-2 w-full md:w-1/2 md:gap-6 '>
               <a href='/sign-up'>
                 <button className='ease-in-out duration-300 hovmain py-2 px-2 flex items-center justify-center bg-blue-600 rounded-md hover:bg-blue-800'>
                   <h1 className='font-semibold  flex'>Sign up - It's free
@@ -123,7 +123,7 @@ export default function Home() {
             </div>
           </SignedOut>
           <SignedIn>
-            <div className='flex flex-row mt-2 w-full md:w-1/2 gap-2 md:gap-6 '>
+            <div className='flex flex-row w-full md:w-1/2 gap-2 md:gap-6 '>
               <a href='/dashboard' className='h-auto w-full'>
               <button className='ease-in-out duration-300 w-full hovmain py-2 px-2 flex items-center justify-center bg-blue-600 rounded-md hover:bg-blue-800'>
               <h1 className='font-semibold flex'>Dashboard 
@@ -135,7 +135,7 @@ export default function Home() {
               </a>
             </div>
           </SignedIn>
-          <div className='flex flex-row mt-2 gap-2 md:gap-6 w-full md:w-1/4'>
+          <div className='flex flex-row  gap-2 md:gap-6 w-full md:w-1/4'>
               <a href='/'  className='h-auto w-full'>
               <button className='ease-in-out duration-300 w-full hovmain py-2 px-2 flex items-center justify-center border bg-blue-600/20 hover:bg-blue-600/70 border-blue-600 rounded-md hover:border-blue-800'>
               <h1 className='font-semibold flex'>Learn more 
