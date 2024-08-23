@@ -1,5 +1,5 @@
 import { clerkClient } from "@clerk/nextjs/server";
-import { NextResponse } from "next/server";
+import { NextResponse, NextRequest  } from "next/server";
 import { LRUCache } from "lru-cache";
 import { getAuth } from '@clerk/nextjs/server';
 
@@ -14,7 +14,7 @@ const cache = new LRUCache<string, CacheEntry>({
   maxAge: 1000 * 60 * 5, // items will be removed after 5 minutes
 } as any);
 
-export async function GET(request: Request) {
+export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const userIda = searchParams.get("userId");
 

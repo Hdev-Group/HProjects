@@ -4,15 +4,30 @@ import { useQuery } from 'convex/react';
 import AddPagerButton from "../../components/buttons/addpager";
 
 
+export interface Pager {
+    id: string;
+    projectid: string;
+    userId: string;
+    _creationTime: string; 
+    time: string; 
+    status: 'active' | 'break' | 'inactive';
+}
+
+interface User {
+    firstName: string;
+    lastName: string;
+}
+
 interface PagerMainProps {
     id: string;
 }
 
 export default function PagerMain({ id }: PagerMainProps) {
-    const pagerholder = useQuery(api.pagerget.get);
-    const pager = pagerholder?.find((pager) => pager.projectid === id);
+    const pagerholder: Pager[] | undefined = useQuery(api.pagerget.get);
+
+    const pager: Pager | undefined = pagerholder?.find((pager) => pager.projectid === id);
     const pageruuid = pager?.userId;
-    const [pageruuidData, setpageruuidData] = useState<{ firstName: string; lastName: string } | null>(null);
+    const [pageruuidData, setpageruuidData] = useState<User | null>(null);
 
     const [nameFilter, setNameFilter] = useState('');
 
@@ -36,7 +51,7 @@ export default function PagerMain({ id }: PagerMainProps) {
         fetchAssigneeData();
     }, [pageruuid]);
 
-    const [currentTime, setCurrentTime] = useState(new Date());
+    const [currentTime, setCurrentTime] = useState<Date>(new Date());
 
     useEffect(() => {
         const interval = setInterval(() => setCurrentTime(new Date()), 60000);
@@ -51,14 +66,13 @@ export default function PagerMain({ id }: PagerMainProps) {
 
     const PagerDetailAdder = pagerholder
         ?.filter(pager => pager.projectid === id)
-
         .filter(pager => {
             const name = `${pageruuidData?.firstName} ${pageruuidData?.lastName}`.toLowerCase();
             return name.includes(nameFilter.toLowerCase());
         })
         .sort((a, b) => {
-            const nameA = `${a.firstName} ${a.lastName}`.toLowerCase();
-            const nameB = `${b.firstName} ${b.lastName}`.toLowerCase();
+            const nameA = `${pageruuidData?.firstName} ${pageruuidData?.lastName}`.toLowerCase();
+            const nameB = `${pageruuidData?.firstName} ${pageruuidData?.lastName}`.toLowerCase();
             return nameA.localeCompare(nameB);
         })
         .map((pager) => {
@@ -82,6 +96,7 @@ export default function PagerMain({ id }: PagerMainProps) {
                 );
             } else if (pager.status === 'break') {
                 return (
+                <>
                     <tr key={pager.id} className='flex flex-row items-start justify-between !border-yellow-200 my-1 bg-yellow-400/20 border p-1 rounded-md'>
                         <td className='dark:text-neutral-100 text-neutral-900 text-sm font-semibold text-left w-[25%] min-w-[5rem]'>{pageruuidData?.firstName} {pageruuidData?.lastName}</td>
                         <td className='dark:text-neutral-100 text-neutral-900 text-sm font-semibold text-left w-[20%] min-w-[5rem]'>Break</td>
@@ -89,6 +104,7 @@ export default function PagerMain({ id }: PagerMainProps) {
                         <td className='dark:text-neutral-100 text-neutral-900 text-sm font-semibold text-left w-[25%] min-w-[5rem]'>{formatTime(totalTime)}</td>
                         <td className='dark:text-neutral-100 text-neutral-900 text-sm font-semibold text-left w-[0%] min-w-[5rem]'>{formatTime(remainingTime)}</td>
                     </tr>
+                </>
                 );
             }
             return null;

@@ -18,10 +18,10 @@ export const editTask = mutation({
 
     // Only call the db.patch method and return if there are actual fields to update
     if (Object.keys(taskUpdates).length > 0){
-        await ctx.db.patch(_id, taskUpdates); 
-        return taskUpdates;
-    } else {
-        return null;
-    }
+      await ctx.db.patch(_id as any, taskUpdates); 
+      return taskUpdates;
+  } else {
+      return null;
+  }
   },
 });

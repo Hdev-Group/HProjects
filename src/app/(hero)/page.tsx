@@ -4,204 +4,66 @@ import { SignedOut, SignedIn, SignUp } from '@clerk/nextjs';
 import HeaderIndex from '../../components/header/header';
 import Footer from '../../components/footer/footer';
 import gsap from 'gsap';
-import { High, Critical } from '../../components/dropdowns/priorities/critical';
-import { InProgress } from '../../components/dropdowns/status/status';
+import { Critical, High, Medium, Low, Security, Feature } from '../../components/dropdowns/priorities/critical';
+import { BackLog, Todo, InProgress, Done } from '../../components/dropdowns/status/status';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import '../../styles/globals.css';
 import './index.css';
 import {
-  HoverCard,
-  HoverCardContent,
-  HoverCardTrigger,
-} from "../../components/ui/hover-card";
+  ContextMenu,
+  ContextMenuContent,
+  ContextMenuItem,
+  ContextMenuTrigger,
+} from "../../components/ui/context-menu";
+import { HoverCard, HoverCardContent, HoverCardTrigger } from "../../components/ui/hover-card";
 
 
 gsap.registerPlugin(ScrollTrigger);
 
 export default function Home() {
-  const container = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const target = document.querySelector('#datasowers');
+    const target2 = document.querySelector('#datasowers2');
+    const target3 = document.querySelector('#datasowers3');
+      gsap.fromTo(
+        target, 
+        { x: -3000 }, // Starting position
+        {
+          x: 0, // Ending position
+          duration: 2.5,
+          scrollTrigger: {
+            trigger: target,
+            start: 'top center',
+          },
+        }
+      );
+      gsap.fromTo(
+        target2, 
+        { x: 3000 }, // Starting position
+        {
+          x: 0, // Ending position
+          duration: 2.5,
+          scrollTrigger: {
+            trigger: target2,
+            start: 'top center',
+          },
+        }
+      );
+      gsap.fromTo(
+        target3, 
+        { y: -30, opacity: 0 }, // Starting position
+        {
+          y: 0, // Ending position
+          opacity: 1,
+          duration: 2.5,
+          scrollTrigger: {
+            trigger: target3,
+            start: 'top center',
+          },
+        }
+      );
 
-    useEffect(() => {
-      const ctx = gsap.context(() => {
-      const element = document.getElementById('blurunblur');
-      gsap.set(element, { filter: 'blur(10px)' });
-
-      gsap.fromTo(element, 
-        { filter: 'blur(10px)', opacity: 0 },
-        { 
-        filter: 'blur(0px)',
-        opacity: 1,
-        duration: 1,
-        ease: 'power1.inOut',
-        scrollTrigger: {
-          trigger: element,
-          start: 'top 110%',
-          end: 'bottom 110%', 
-          toggleActions: 'play none none',
-        },
-        }
-      );
-
-      gsap.fromTo('#swiperwhiter',
-        { width: '100%', zIndex: '1000000000000', translateX: '0%' },
-        {
-        width: '100%',
-        translateX: '100%',
-        duration: 5,
-        ease: 'power1.inOut',
-        scrollTrigger: {
-          trigger: '#swiperwhiter',
-          start: 'top 110%', 
-          end: 'bottom 110%',
-          toggleActions: 'play none none',
-        },
-        }
-      );
-
-      gsap.fromTo("#blurunblurb", 
-        { filter: 'blur(10px)', opacity: 0 },
-        { 
-        filter: 'blur(0px)',
-        opacity: 1,
-        duration: 1,
-        ease: 'power1.inOut',
-        scrollTrigger: {
-          trigger: "#blurunblurb",
-          start: 'top 80%', 
-          end: 'bottom 70%',
-          toggleActions: 'play none none reverse',
-        },
-        }
-      );
-      gsap.fromTo('#aacswhite',
-        { width: '100%', zIndex: '1000000000000', translateX: '0%' },
-        {
-        width: '100%',
-        translateX: '100%',
-        duration: 5,
-        ease: 'power1.inOut',
-        scrollTrigger: {
-          trigger: '#aacswhite',
-          start: 'top 80%', 
-          end: 'bottom 70%',
-          toggleActions: 'play none none reverse',
-        },
-        }
-      );
-      gsap.fromTo("#blurunblurc", 
-        { filter: 'blur(10px)', opacity: 0 },
-        { 
-        filter: 'blur(0px)',
-        opacity: 1,
-        duration: 1,
-        ease: 'power1.inOut',
-        scrollTrigger: {
-          trigger: "#blurunblurc",
-          start: 'top 80%', 
-          end: 'bottom 70%',
-          toggleActions: 'play none none reverse',
-        },
-        }
-      );
-      gsap.fromTo('#cacswhite',
-        { width: '100%', zIndex: '1000000000000', translateX: '0%' },
-        {
-        width: '100%',
-        translateX: '100%',
-        duration: 5,
-        ease: 'power1.inOut',
-        scrollTrigger: {
-          trigger: '#cacswhite',
-          start: 'top 80%', 
-          end: 'bottom 70%',
-          toggleActions: 'play none none reverse',
-        },
-        }
-      );
-      gsap.fromTo('#firstcomment',
-        { width: '100%', opacity: 0, zIndex: '1000000000000', translateY: '100%' },
-        {
-        opacity: 1,
-        width: '100%',
-        translateY: '0%',
-        duration: 0.5,
-        ease: 'power1.inOut',
-        scrollTrigger: {
-          trigger: '#firstcomment',
-          start: 'top 80%', 
-          end: 'bottom 70%',
-          toggleActions: 'play none none reverse',
-        },
-        }
-      );
-      gsap.fromTo('#secondcomment',
-        { width: '100%', opacity: 0, zIndex: '1000000000000', translateY: '100%' },
-        {
-        opacity: 1,
-        width: '100%',
-        translateY: '0%',
-        duration: 0.5,
-        ease: 'power1.inOut',
-        scrollTrigger: {
-          trigger: '#secondcomment',
-          start: 'top 60%', 
-          end: 'bottom 50%',
-          toggleActions: 'play none none reverse',
-        },
-        }
-      );
-      gsap.fromTo('#thirdcomment',
-        { width: '100%', opacity: 0, zIndex: '1000000000000', translateY: '100%' },
-        {
-        opacity: 1,
-        width: '100%',
-        translateY: '0%',
-        duration: 0.5,
-        ease: 'power1.inOut',
-        scrollTrigger: {
-          trigger: '#thirdcomment',
-          start: 'top 60%', 
-          end: 'bottom 50%',
-          toggleActions: 'play none none reverse',
-        },
-        }
-      );
-      gsap.fromTo('#databasetasks',
-        { width: '100%', opacity: 0, zIndex: '1000000000000', translateX: '100%' },
-        {
-        opacity: 1,
-        width: '100%',
-        translateX: '0%',
-        duration: 0.5,
-        ease: 'power1.inOut',
-        scrollTrigger: {
-          trigger: '#databasetasks',
-          start: 'top 60%', 
-          end: 'bottom 60%',
-          toggleActions: 'play none none reverse',
-        },
-        }
-      );
-      gsap.fromTo('#databasetasks1',
-        { width: '100%', opacity: 0, zIndex: '1000000000000', translateX: '100%' },
-        {
-        opacity: 1,
-        width: '100%',
-        translateX: '0%',
-        duration: 0.5,
-        ease: 'power1.inOut',
-        scrollTrigger: {
-          trigger: '#databasetasks',
-          start: 'top 50%', 
-          end: 'bottom 50%',
-          toggleActions: 'play none none reverse',
-        },
-        }
-      );
-      }, container);
-
-      return () => ctx.revert();
-    }, []);
+  }, []);
 
 
   const [showSignUp, setShowSignUp] = useState(false);
@@ -225,7 +87,7 @@ export default function Home() {
   return (
     <>
     <HeaderIndex />
-    <main className='md:max-w-[100%] flex items-center flex-col justify-center overflow-x-hidden boxtexts'>
+    <main className='md:max-w-[100%] bg-[#0B1120] flex items-center flex-col justify-center overflow-x-hidden boxtexts'>
     <section className='bg-[#0B1120] gridthing w-full  h-full flex items-center flex-col'>
     <div className='flex md:px-[4.5rem] z-10 px-2 justify-between max-w-[120rem] w-[100%] flex-wrap lg:flex-nowrap flex-row gap-10 pt-[5rem] pb-40'>
       <div className='md:w-[70%] w-full flex relative flex-col justify-start gap-5'>
@@ -246,9 +108,9 @@ export default function Home() {
           <p className='font-medium text-sm text-neutral-400 pushuptext2'>
             Build projects and communicate in real time with your team, manage incidents and tasks with ease.
           </p>
-          <div className='flex flex-row h-auto gap-6 w-full'>
+          <div className='flex flex-col md:flex-row h-auto gap-2 md:gap-6 w-full'>
           <SignedOut>
-            <div className='flex flex-row mt-6 gap-2 md:gap-6 '>
+            <div className='flex flex-row mt-6 gap-2 w-full md:w-1/2 md:gap-6 '>
               <a href='/sign-up'>
                 <button className='ease-in-out duration-300 hovmain py-2 px-2 flex items-center justify-center bg-blue-600 rounded-md hover:bg-blue-800'>
                   <h1 className='font-semibold  flex'>Sign up - It's free
@@ -261,11 +123,11 @@ export default function Home() {
             </div>
           </SignedOut>
           <SignedIn>
-            <div className='flex flex-row mt-2 gap-2 md:gap-6 '>
-              <a href='/dashboard' className='h-auto'>
-              <button className='ease-in-out duration-300 hovmain py-2 px-2 flex items-center justify-center bg-blue-600 rounded-md hover:bg-blue-800'>
+            <div className='flex flex-row mt-2 w-full md:w-1/2 gap-2 md:gap-6 '>
+              <a href='/dashboard' className='h-auto w-full'>
+              <button className='ease-in-out duration-300 w-full hovmain py-2 px-2 flex items-center justify-center bg-blue-600 rounded-md hover:bg-blue-800'>
               <h1 className='font-semibold flex'>Dashboard 
-                    <svg xmlns="http://www.w3.org/2000/svg" className='] w-5 hovericon' viewBox="0 0 24 24" fill="currentColor">
+                    <svg xmlns="http://www.w3.org/2000/svg" className='w-5 hovericon' viewBox="0 0 24 24" fill="currentColor">
                       <path d="M16 12L10 18V6L16 12Z"></path>
                     </svg>
                   </h1>
@@ -273,11 +135,11 @@ export default function Home() {
               </a>
             </div>
           </SignedIn>
-          <div className='flex flex-row mt-2 gap-2 md:gap-6 '>
-              <a href='/'  className='h-auto'>
-              <button className='ease-in-out duration-300 hovmain py-2 px-2 flex items-center justify-center border bg-blue-600/20 hover:bg-blue-600/70 border-blue-600 rounded-md hover:border-blue-800'>
+          <div className='flex flex-row mt-2 gap-2 md:gap-6 w-full md:w-1/4'>
+              <a href='/'  className='h-auto w-full'>
+              <button className='ease-in-out duration-300 w-full hovmain py-2 px-2 flex items-center justify-center border bg-blue-600/20 hover:bg-blue-600/70 border-blue-600 rounded-md hover:border-blue-800'>
               <h1 className='font-semibold flex'>Learn more 
-                    <svg xmlns="http://www.w3.org/2000/svg" className='] w-5 hovericon' viewBox="0 0 24 24" fill="currentColor">
+                    <svg xmlns="http://www.w3.org/2000/svg" className='w-5 hovericon' viewBox="0 0 24 24" fill="currentColor">
                       <path d="M16 12L10 18V6L16 12Z"></path>
                     </svg>
                   </h1>
@@ -297,48 +159,258 @@ export default function Home() {
         </div>
       </div>
       <div>
-        <img src='/indexmainphoto.png' alt='mainphoto' className='w-[100%] pushright h-[100%] rounded-[0.5rem] border' />
+        <img src='/indexmainphoto.png' alt='mainphoto' className='w-[100%]  pushright h-[100%] rounded-[0.5rem] border' />
       </div>
     </div>
     </section>
     <section className='bg-[#0B1120] w-full border  border-transparent border-t-[#1f3468]'>
-      <div className='md:px-[4.5rem] py-5 w-full my-10 flex itmes-center justify-center'>
-        <div className='max-w-[120rem] w-full flex flex-col gap-5'>
-          <div className='w-full items-start flex justify-start'>
-            <div className='flex flex-col'>
-              <h1 className='font-semibold text-2xl'>Task managment</h1>
-              <p className='text-neutral-300 text-sm'>Manage tasks with your team in real time seamlessly</p>
+      <div className='py-5 w-full my-10 flex itmes-center justify-center'>
+        <div className='w-full flex flex-col gap-5'>
+          <div className='w-full items-start flex-col flex justify-start'>
+            <div className='flex md:px-[4.5rem] flex-col gap-3 w-full items-center mb-10 justify-center mt-10'>
+              <h1 className='text-5xl font-bold text-white md:text-left text-center '>Making tasks work for you</h1>
+              <p className='text-neutral-300 text-center md:w-[39rem]'>Using other project planning tools I realized that I was using multiple different softwares. HProjects makes all that clutter into one simple software for you and your team.</p>
+              <div className='flex flex-row gap-3 items-center'>
+                <img src='https://media.licdn.com/dms/image/v2/D4E03AQE8xiUVqps7_g/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1720299869628?e=1729728000&v=beta&t=9DGH8kVD2Pwi9gdvG_pW_Q15mYALpQVOD1uL1JyTq9s' alt='logo' className='w-[50px] rounded-full h-[50px]' />
+                <div>
+                  <h4 className='font-semibold'>Harry Campbell</h4>
+                  <p className='text-neutral-300 text-xs'>CEO of HProjects</p>
+                </div>
+              </div>
             </div>
+            <div className='gap-4 flex-col w-full mt-10  items-center flex'>
+            <div className='flex flex-col w-full justify-center md:px-[4.5rem] px-2 '>
+              <img src='/8.png' alt='logo' className='w-[50px] rounded-full p-1 bg-indigo-500/40 h-[50px]' />
+              <h1 className='text-md font-semibold mt-4 mb-3 text-indigo-400'>Task Management</h1>
+              <p className='text-xl font-semibold'>A real time task management system.</p>
+              <p className='text-sm text-neutral-300 mt-1'>Lead your next project into production with HProjects with our real time system so you can instantly stay up to date with who is updating what.</p>
+            </div>
+            <div className='mt-5 bg-[#0B1120]/20 h-[40rem] border-b-[#1f3468] border border-transparent gridthing w-full flex items-center flex-col'>
+              <div className='mt-14 md:px-[4.5rem] flex items-center justify-center w-full flex-col gap-5'>
+                <div className='flex flex-row items-center justify-center gap-5 w-full' id='datasowers'>
+                  <Critical /> <High /> <Medium /> <Low /> <Security /> <Feature />
+                </div>
+                <div className='flex flex-row gap-5 items-center justify-center w-full' id='datasowers2'>
+                  <BackLog /> <Todo /> <InProgress /> <Done />
+                </div>
+              </div>
+              <div className='flex flex-col items-center w-full md:px-[4.5rem] px-2 mt-10' id='datasowers3'>
+                <h1 className='text-3xl font-semibold md:text-left text-center'>Simple but <span className='text-cyan-400'>effective</span> task labelling</h1>
+                <div className='flex flex-col w-full md:w-1/3 mt-5 gap-5'>
+                <ContextMenu>
+                <ContextMenuTrigger>
+                    <HoverCard>
+                        <HoverCardTrigger>
+                            <div
+                                className='dark:border-neutral-800 border-neutral-200 bg-white dark:bg-neutral-900/60 text-black dark:text-white cursor-pointer hover:border-neutral-300 transition-all py-2 border gap-3 flex flex-col rounded-md w-full'
+                            >
+                                <div className='flex gap-3 pl-4'>
+                                    <h1 className='font-semibold'>
+                                        Payments Integration
+                                    </h1>
+                                </div>
+                                <div className='flex justify-between'>
+                                    <div className='flex gap-3 pl-3'>
+                                        <High />
+                                        <InProgress />
+                                    </div>
+                                    <div className='flex gap-3 pr-3 items-center'>
+                                            <>
+                                                <img src='https://media.licdn.com/dms/image/v2/D4E03AQE8xiUVqps7_g/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1720299869628?e=1729728000&v=beta&t=9DGH8kVD2Pwi9gdvG_pW_Q15mYALpQVOD1uL1JyTq9s' className='w-6 h-6 rounded-full' alt="Assignee" />
+                                            </>      
+                                    </div>
+                                </div>
+                            </div>
+                        </HoverCardTrigger>
+                        <HoverCardContent>
+                                <div className='border-neutral-800 cursor-pointer hover:border-neutral-300 transition-all py-2 gap-3 flex flex-col rounded-md w-full'>
+                                    <div className='flex gap-3 pl-4 flex-col'>
+                                        <div className='flex gap-3 pr-3 items-center'>
+                                                <>
+                                                    <img src='https://media.licdn.com/dms/image/v2/D4E03AQE8xiUVqps7_g/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1720299869628?e=1729728000&v=beta&t=9DGH8kVD2Pwi9gdvG_pW_Q15mYALpQVOD1uL1JyTq9s' className='w-8 h-8 rounded-full' alt="Assignee" />
+                                                    <div>
+                                                        <h2 className='font-semibold'>Harry Campbell</h2>
+                                                        <p className='text-xs text-neutral-400'>Lead Developer</p>
+                                                    </div>
+                                                </>
 
-          </div>
-          <div className='w-full items-end flex justify-end'>
-            <div className='flex flex-col items-end'>
-              <h1 className='font-semibold text-2xl'>Incident Response</h1>
-              <p className='text-neutral-300 text-sm'>Get instantly up to date even when an intern sudo RM -RF's the production database</p>
+                                        </div>
+                                        <h1 className='font-bold'>
+                                          Payments Integration
+                                        </h1>
+                                    </div>
+                                    <div className='flex justify-between'>
+                                        <div className='flex gap-3 pl-3'>
+                                            <High /> <InProgress />
+                                        </div>
+                                    </div>
+                                    <div className='flex gap-3 pl-4'>
+                                        <p className='text-sm max-w-[500px] text-wrap'>
+                                            Payments Integration is a task that needs to be completed by the end of the week. It is a high priority task that needs to be completed by the end of the week.
+                                        </p>
+                                    </div>
+                                    
+                                </div>
+                        </HoverCardContent>
+                    </HoverCard>
+                </ContextMenuTrigger>
+                <ContextMenuContent>
+                    <ContextMenuItem className='cursor-pointer hover:bg-yellow-400/20 text-yellow-200'>
+                        Archive 
+                    </ContextMenuItem>
+                </ContextMenuContent>
+            </ContextMenu>
+            <ContextMenu>
+                <ContextMenuTrigger>
+                    <HoverCard>
+                        <HoverCardTrigger>
+                            <div
+                                className='dark:border-neutral-800 border-neutral-200 bg-white dark:bg-neutral-900/60 text-black dark:text-white cursor-pointer hover:border-neutral-300 transition-all py-2 border gap-3 flex flex-col rounded-md w-full'
+                            >
+                                <div className='flex gap-3 pl-4'>
+                                    <h1 className='font-semibold'>
+                                        Users dont like the new UI changes
+                                    </h1>
+                                </div>
+                                <div className='flex justify-between'>
+                                    <div className='flex gap-3 pl-3'>
+                                        <Medium />
+                                        <Done />
+                                    </div>
+                                    <div className='flex gap-3 pr-3 items-center'>
+                                            <>
+                                                <img src='/staff/jamesblackhurst.jpeg' className='w-6 h-6 rounded-full' alt="Assignee" />
+                                            </>      
+                                    </div>
+                                </div>
+                            </div>
+                        </HoverCardTrigger>
+                        <HoverCardContent>
+                                <div className='border-neutral-800 cursor-pointer hover:border-neutral-300 transition-all py-2 gap-3 flex flex-col rounded-md w-full'>
+                                    <div className='flex gap-3 pl-4 flex-col'>
+                                        <div className='flex gap-3 pr-3 items-center'>
+                                                <>
+                                                    <img src='/staff/jamesblackhurst.jpeg' className='w-8  h-8 rounded-full' alt="Assignee" />
+                                                    <div>
+                                                        <h2 className='font-semibold'>James Blackhurst</h2>
+                                                        <p className='text-xs text-neutral-400'>UI / UX Engineer</p>
+                                                    </div>
+                                                </>
+
+                                        </div>
+                                        <h1 className='font-bold'>
+                                          Users dont like the new UI changes
+                                        </h1>
+                                    </div>
+                                    <div className='flex justify-between'>
+                                        <div className='flex gap-3 pl-3'>
+                                          <Medium />
+                                          <Done />
+                                        </div>
+                                    </div>
+                                    <div className='flex gap-3 pl-4'>
+                                        <p className='text-sm max-w-[500px] text-wrap'>
+                                        Users have been complaining about the new UI changes that have been made. We need to revert back to the old UI changes or deploy updates to fix the issues.
+                                        </p>
+                                    </div> 
+                                    <div className='flex gap-3 pl-4'>
+                                        <p className='text-sm max-w-[500px] w-auto text-wrap border border-green-400 bg-green-500/20 p-1 rounded-md font-semibold flex px-2'>
+                                            Task Completed - This task will be archived in 30 days.
+                                        </p>
+                                    </div>
+                                </div>
+                        </HoverCardContent>
+                    </HoverCard>
+                </ContextMenuTrigger>
+                <ContextMenuContent>
+                    <ContextMenuItem className='cursor-pointer hover:bg-yellow-400/20 text-yellow-200'>
+                        Archive 
+                    </ContextMenuItem>
+                </ContextMenuContent>
+            </ContextMenu>
+                </div>
+              </div>
             </div>
-          </div>
-          <div className='w-full items-start flex justify-start'>
-            <div className='flex flex-col'>
-              <h1 className='font-semibold text-2xl'>Pager</h1>
-              <p className='text-neutral-300 text-sm'>Get your responders where they need to be and call them instantly</p>
+            <div className='flex flex-col w-full md:px-[4.5rem] mt-10'>
+              <img src='/logo.png' alt='logo' className='w-[50px] rounded-full p-1 bg-green-500/40 h-[50px]' />
+              <h1 className='text-md font-semibold mt-4 mb-3 text-indigo-400'>Pager</h1>
+              <p className='text-xl font-semibold'>Get people where they need to be if a service goes down.</p>
+              <p className='text-sm text-neutral-300 mt-1'>Pager is a system that lets you know when a service goes down. It will alert you and whoever is on call to let you know that a service is down and needs to be fixed.</p>
             </div>
-          </div>
-          <div className='w-full items-end flex justify-end'>
-            <div className='flex flex-col items-end'>
-              <h1 className='font-semibold text-2xl'>Direct Messages</h1>
-              <p className='text-neutral-300 text-sm'>Collaborate with your team on tasks in a 1 to 1 chat or group chat!</p>
+            <div className='mt-5 bg-[#0B1120]/20 h-[40rem] border-b-[#1f3468] border border-transparent gridthing w-full flex items-center flex-col'>
+              <div className='mt-10 relative w-full md:px-[4.5rem]flex flex-col max-w-[120rem] justify-center md:px-[4.5rem] px-2'>
+              <div className='flex flex-row ml-5 w-full'>
+              <div className='flex absolute top-[2.4rem]  left-[-67px] md:left-[-7px] w-full h-full px-[4.5rem]'>
+                  <div className='w-[15px] h-[15px] border-2 border-neutral-400 rounded-full'></div>
+                </div>
+                <div className='flex absolute top-[3.5rem] left-[-60px] md:left-[0px] w-full h-full px-[4.5rem]'>
+                  <div className='w-[1px] h-[7rem] bg-gradient-to-b from-neutral-400 to-green-400'></div>
+                </div>
+                <div className='flex absolute top-[10.7rem]  left-[-67px] md:left-[-7px] w-full h-full px-[4.5rem]'>
+                  <div className='w-[15px] h-[15px] border-2 border-green-400 rounded-full'></div>
+                </div>
+                <div className='flex absolute top-[11.85rem] left-[-60px] md:left-[0px] w-full h-full px-[4.5rem]'>
+                  <div className='w-[1px] h-[7rem] bg-gradient-to-b from-green-400 to-red-400'></div>
+                </div>
+                <div className='flex absolute top-[18.99rem] left-[-67px] md:left-[-7px] w-full h-full px-[4.5rem]'>
+                  <div className='w-[15px] h-[15px] border-2 border-red-400 rounded-full'></div>
+                </div>
+                <div className='flex relative w-full flex-col'>
+                <div className='w-full relative top-[1rem]'>
+                  <div id="pageroncall" className="w-full flex items-center justify-center">
+                    <div className={`pr-2 border dark:border-neutral-400 border-neutral-600 dark:bg-neutral-400/20 bg-neutral-700 items-center h-[4rem] w-full flex rounded-lg`}>
+                      <div className='pl-2 flex justify-center items-center h-full'>
+                        <div className='w-1.5 h-[3rem] flex items-end justify-center rounded-lg dark:bg-neutral-400/20 bg-neutral-700 overflow-hidden'>
+                          <div className='w-full' style={{ height: `0%`, backgroundColor: 'green' }}></div>
+                        </div>
+                      </div>
+                      <div className='pl-3 h-max flex justify-center flex-col text-left'>
+                        <h1 className='font-semibold text-md text-left text-white'>You're off pager</h1>
+                      </div>
+                    </div>
+                </div>
+              </div>
+                <div className='w-full relative top-[5.2rem]'>
+                  <div id="pageroncall" className="w-full flex items-center justify-center">
+                    <div className={`pr-2 border dark:border-green-400 border-green-600 bg-green-700/20 dark:bg-green-400/20 items-center h-[4rem] w-full flex rounded-lg`}>
+                      <div className='pl-2 flex justify-center items-center h-full'>
+                        <div className='w-1.5 h-[3rem] flex items-end justify-center rounded-lg dark:bg-green-400/20 bg-green-700/20 overflow-hidden'>
+                          <div className='w-full' style={{ height: `80%`, backgroundColor: 'green' }}></div>
+                        </div>
+                      </div>
+                      <div className='pl-3 h-max flex justify-center flex-col text-left'>
+                        <h1 className='font-semibold text-md text-left text-white'>You're on pager</h1>
+                        <p className='text-neutral-300 text-xs'>For the next 2 hours 40 mins</p>
+                      </div>
+                    </div>
+                </div>
+                </div>
+                <div className='w-full relative top-[9.2rem]'>
+                  <div id="pageroncall" className="w-full flex items-center justify-center">
+                    <div className={`pr-2 border dark:border-red-400 border-red-600 bg-red-700/20 dark:bg-red-400/20 items-center h-[4rem] w-full flex rounded-lg`}>
+                      <div className='pl-2 flex justify-center items-center h-full'>
+                        <div className='w-1.5 h-[3rem] flex items-end justify-center rounded-lg dark:bg-red-400/20 bg-red-700/20 overflow-hidden'>
+                          <div className='w-full flex items-center justify-center font-semibold text-xl' style={{ height: `100%`, backgroundColor: 'red' }}>!</div>
+                        </div>
+                      </div>
+                      <div className='pl-3 h-max flex justify-center flex-col text-left'>
+                        <h1 className='font-semibold text-md text-left text-white'>Incident Reported!</h1>
+                        <p className='text-neutral-300 text-xs'>Service: Log in</p>
+                      </div>
+                    </div>
+                </div>
+                </div>
+                </div>
+              </div>
+              </div>
             </div>
-          </div>
-          <div className='w-full items-start flex justify-start'>
-            <div className='flex flex-col'>
-              <h1 className='font-semibold text-2xl'>Real Time Team Collaboration</h1>
-              <p className='text-neutral-300 text-sm'>Our real time system </p>
             </div>
           </div>
         </div>
       </div>
     </section>
     </main>
+    <Footer />
     </>
   );
 }

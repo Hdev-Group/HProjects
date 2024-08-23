@@ -22,7 +22,7 @@ export default function MessageSubmitter({ chatid, _id }: MessageSubmitterProps)
       messageInputRef.current.value = '';
     }
 
-    await sendermsg({ chatId: chatid, userId: userId, message: chatmsg, projectid: _id });
+    await sendermsg({ chatId: chatid, userId: userId!, message: chatmsg!, projectid: _id });
   };
 
   return (

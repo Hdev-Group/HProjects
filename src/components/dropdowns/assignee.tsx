@@ -45,7 +45,7 @@ export default function AssigneeSelect({ value, onValueChange, id }: { value: st
     async function fetchOtherUsersData(){
       if (projectsholder && projectsholder.otherusers.length > 0) {
         try {
-          const userPromises = projectsholder.otherusers.map(async (userId) => {
+          const userPromises = projectsholder.otherusers.map(async (userId: any) => {
             const response = await fetch(`/api/get-user?userId=${userId}`);
             if (!response.ok) {
               throw new Error(`HTTP error! status: ${response.status}`);
@@ -75,7 +75,7 @@ export default function AssigneeSelect({ value, onValueChange, id }: { value: st
     return <div>No project owner found</div>;
   }
 
-  const renderUser = (user) => {
+  const renderUser = (user: any) => {
     return (
       <SelectItem key={user.id} value={user.id}>
         <div className="flex flex-row items-center gap-2 p-1">

@@ -13,10 +13,20 @@ import {
   ContextMenuSeparator,
   ContextMenuTrigger,
 } from "../ui/context-menu"
+
+interface Pagerr {
+  _id: string;
+  projectid: string;
+  userId: string;
+  _creationTime: string;
+  time: string;
+  status: 'active' | 'break' | 'inactive';
+}
+
 export default function PagerEl({ _id, isSidebarClosed }: any) {
   const { userId } = useAuth();
   const pagerholder = useQuery(api.pagerget.get);
-  const pagerhold = pagerholder?.find(pager => pager.userId === userId);
+  const pagerhold = pagerholder?.find((pager: Pagerr) => pager.userId === userId);
   const [currentTime, setCurrentTime] = useState(new Date());
   const [percentage, setPercentage] = useState(0);
   const [timeRemaining, setTimeRemaining] = useState('');
@@ -182,7 +192,7 @@ function PagerOnBreak({ percentage, isSidebarClosed }: { percentage: number, isS
   const { userId } = useAuth();
   const mutatebreak = useMutation(api.pagerupdate.editpager);
   const pagerholder = useQuery(api.pagerget.get);
-  const pagerhold = pagerholder?.find(pager => pager.userId === userId);
+  const pagerhold = pagerholder?.find((pager: Pagerr) => pager.userId === userId);
   const ToastBeginPager = () => {
     const { toast } = useToast()
   

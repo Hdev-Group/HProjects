@@ -8,7 +8,7 @@ export const appenduser = mutation({
     },
     handler: async (ctx, { _id, otherusers }) => {
         // Fetch the project document
-        const project = await ctx.db.get(_id);
+        const project = await ctx.db.get(_id as any);
 
         if (!project) {
             throw new Error(`Project with id ${_id} not found`);
@@ -18,7 +18,7 @@ export const appenduser = mutation({
         const updatedOtherUsers = [...project.otherusers, otherusers];
 
         // Update the project document with the new otherusers array
-        await ctx.db.patch(_id, {
+        await ctx.db.patch(_id as any, {
             otherusers: updatedOtherUsers,
         });
 

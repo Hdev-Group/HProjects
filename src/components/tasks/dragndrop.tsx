@@ -1,3 +1,4 @@
+import React from 'react';
 import { Critical, High, Medium, Low, Security, Feature } from '../dropdowns/priorities/critical';
 import { BackLog, Todo, InProgress, Done } from '../dropdowns/status/status';
 import { api } from '../../../convex/_generated/api';
@@ -155,7 +156,7 @@ import { stat } from 'fs';
                                         <div className='flex gap-3 pr-3 items-center'>
                                             {assigneeData ? (
                                                 <>
-                                                    <img src={assigneeData.imageUrl} className='w-6 h-6 rounded-full' alt="Assignee" />
+                                                    <img src={assigneeData.imageUrl} className='w-8 h-8 rounded-full' alt="Assignee" />
                                                     <div>
                                                         <h2 className='font-semibold'>{assigneeData.firstName} {assigneeData.lastName}</h2>
                                                         <p className='text-xs text-neutral-400'>{jobtitlealready?.filter(jobtitlealready => jobtitlealready.userid === assigneeData.id)[0]?.jobtitle}</p>
@@ -298,7 +299,7 @@ export default function MainHolder({ _id, taskFilter }: { _id: string, taskFilte
             </div>
         ))
     );
-    const dropzoneimages = {
+    const dropzoneimages: Record<string, string> = {
         'Backlog': '/5.png',
         'To do': '/!.png',
         'In Progress': '/7.png',

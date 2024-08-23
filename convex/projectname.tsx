@@ -23,7 +23,7 @@ export const editProject = mutation({
 
     // Only call the db.patch method and return if there are actual fields to update
     if (Object.keys(ProjectUpdates).length > 0){
-        await ctx.db.patch(_id, ProjectUpdates); 
+        await ctx.db.patch(_id as any, ProjectUpdates); 
         return ProjectUpdates;
     } else {
         return null;

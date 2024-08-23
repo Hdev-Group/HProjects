@@ -9,10 +9,15 @@ export const get = query({
 
   // Define the handler function that will be executed when this query is run
   handler: async (ctx, { _id }) => {
-    // Fetch the task with the specific _id from the "tasks" collection
-    const task = await ctx.db.get(_id);
+    try {
+      // Fetch the task with the specific _id from the "tasks" collection
+      const task = await ctx.db.get(_id);
 
-    // Return the task, or null if not found
-    return task;
+      // Return the task, or null if not found
+      return task;
+    } catch (error) {
+      console.error('Failed to fetch task:', error);
+      throw new Error('Failed to fetch task');
+    }
   },
 });

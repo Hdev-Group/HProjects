@@ -26,6 +26,7 @@ interface AssigneeData {
 interface Chat {
   _id: string;
   userId: string;
+  chatupdated: string;
   otherchatter: string;
   projectid: string;
 }
@@ -33,6 +34,7 @@ interface Chat {
 interface ChatStart {
   userId: string;
   otherchatter: string;
+  chatupdated: string;
   projectid: string;
 }
 

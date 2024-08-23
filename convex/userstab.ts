@@ -66,7 +66,7 @@ export const edit = mutation({
         };
 
         if (Object.keys(userUpdates).length > 0) {
-            await ctx.db.patch(_id, userUpdates);
+            await ctx.db.patch(_id as any, userUpdates);
             return userUpdates;
         } else {
             return null;
