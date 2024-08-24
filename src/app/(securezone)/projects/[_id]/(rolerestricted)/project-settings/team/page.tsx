@@ -151,12 +151,13 @@ export default function ProjectSettings({ params }: { params: { _id: string } })
     if (rolefinder?.userid === project?.userId) {
       return null;
     }
+
     return (
       <div className='flex-wrap flex gap-3 mt-3 mb-3 flex-row w-auto'>
         <div className='border flex-col flex w-auto px-4 py-2 rounded-md'>
           <p className='text-neutral-400 text-sm'>{user?.firstName} {user?.lastName}</p>
           <div className='flex flex-row w-full items-center gap-10 justify-between'>
-            <p>{user?.email}</p>
+            <p>{user.email}</p>
             <div className='flex flex-row mt-[-15px] gap-4'>
               <Role
                 value={status}

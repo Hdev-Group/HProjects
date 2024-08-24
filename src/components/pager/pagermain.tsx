@@ -51,7 +51,6 @@ export default function PagerMain({ id }: PagerMainProps) {
         });
 
         setUserData(userDataMap);
-        console.log("User Data Map:", userDataMap); // Debugging line to check the user data being fetched
       }
     }
 
@@ -88,7 +87,6 @@ export default function PagerMain({ id }: PagerMainProps) {
       const user = userData[pager.userId];
       if (!user) return null;
 
-      console.log("Rendering Pager:", pager, "User Data:", user); // Debugging line to ensure correct user data is used for each pager
 
       const pagerStartTime = new Date(pager._creationTime);
       const pagerEndTime = new Date(pager.time);

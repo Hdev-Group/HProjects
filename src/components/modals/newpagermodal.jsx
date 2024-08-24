@@ -47,7 +47,6 @@ const NewPagerModal = ({ onClose, id }) => {
       return;
     }
     try {
-      console.log(taskAssignee)
       await addPager({ projectid: id.id, userId: taskAssignee, time: time, status: 'active'});
       document.getElementById
       onClose();
