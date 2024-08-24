@@ -17,6 +17,19 @@ export default function MessageSubmitter({ chatid, _id }: MessageSubmitterProps)
     event.preventDefault();
     const chatmsg = messageInputRef.current?.value;
 
+    // check if the input is empty
+    if (!chatmsg) {
+      return;
+    }
+    // check if the input is only spaces
+    if (chatmsg.trim() === '') {
+      return;
+    }
+    // check if input is over 2000 characters
+    if (chatmsg.length > 2000) {
+      return;
+    }
+
 
     if (messageInputRef.current) {
       messageInputRef.current.value = '';
@@ -30,6 +43,7 @@ export default function MessageSubmitter({ chatid, _id }: MessageSubmitterProps)
       <input
         type="text"
         id="messageinput"
+        maxLength={2000}
         placeholder={`Type a message`}
         className="w-full px-3 bg-transparent h-full text-black dark:text-white placeholder:text-black placeholder:dark:text-white"
         ref={messageInputRef}
