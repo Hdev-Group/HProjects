@@ -57,7 +57,7 @@ export default function SideBarChat({ user, id }: SideBarChatProps) {
           const assigneeId: string = taskAssigneeArray[0];
           const assigneeName: string = taskAssigneeArray[1];
 
-          const assigneeExists = filteredgetchat?.some((chat: Chat) => chat.userId === userId);
+          const assigneeExists = filteredgetchat?.some((chat: Chat) => chat.userId === userId && chat.otherchatter === assigneeId);
           if (assigneeExists) {
             console.warn('Direct message with this user already exists.');
           } else {

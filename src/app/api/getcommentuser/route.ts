@@ -1,16 +1,10 @@
 import { clerkClient } from "@clerk/nextjs/server";
-import { NextResponse, NextRequest } from "next/server";
-import { getAuth } from '@clerk/nextjs/server';
+import { NextResponse } from "next/server";
 
 // Create a cache object to store the user data
 const userCache = new Map<string, any>();
 
-export async function GET(request: NextRequest) {
-  // before we do that lets check if the user is authenticated
-  const { userId } = getAuth(request);
-  if (!userId) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-  }
+export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const userIds = searchParams.get("userIds");
 
@@ -20,7 +14,6 @@ export async function GET(request: NextRequest) {
 
   const userIdArray = userIds.split(',');
 
-
   try {
     const users = await Promise.all(userIdArray.map(async (id) => {
       // Check if the user data is already cached
@@ -28,21 +21,30 @@ export async function GET(request: NextRequest) {
         return userCache.get(id);
       }
 
-      // Fetch the user data from Clerk API
-      const user = await clerkClient.users.getUser(id);
-      // Cache the user data
-
-      // Return only the desired fields
-      return {
-        firstName: user.firstName,
-        lastName: user.lastName,
-        id: user.id,
-        email: user.emailAddresses[0]?.emailAddress,
-        imageUrl: user.imageUrl
-      };
+      try {
+        // Fetch the user data from Clerk API
+        const user = await clerkClient.users.getUser(id);
+        // Cache the user data
+        userCache.set(id, user);
+        // Return only the desired fields
+        return {
+          firstName: user.firstName,
+          lastName: user.lastName,
+          id: user.id,
+          email: user.emailAddresses[0]?.emailAddress,
+          imageUrl: user.imageUrl
+        };
+      } catch (error) {
+        console.warn(`User with ID ${id} not found. Skipping this user.`);
+        // Return null or some indication that the user wasn't found
+        return null;
+      }
     }));
 
-    return NextResponse.json(users);
+    // Filter out null results
+    const filteredUsers = users.filter(user => user !== null);
+
+    return NextResponse.json(filteredUsers);
   } catch (error) {
     console.error("Error fetching user data:", error);
     return NextResponse.json({ error: "Error fetching user data" }, { status: 500 });

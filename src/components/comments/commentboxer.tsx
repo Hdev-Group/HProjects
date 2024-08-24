@@ -93,10 +93,9 @@ export default function CommentBoxer({ taskId }: { taskId: any }) {
           {filteredReplys.map((reply: any) => (
             <div key={reply._id} className="flex flex-col gap-3 justify-center relative">
               <div className="flex flex-row items-center gap-3">
-                <img
+              <img
                   src={commenterData[reply.userId]?.imageUrl || '/default-avatar.png'} // Provide a fallback image
-                  alt={`${commenterData[reply.userId]?.firstName} ${commenterData[reply.userId]?.lastName}`}
-                  className="w-8 h-8 z-10 rounded-full"
+                  alt={`${commenterData[reply.userId]?.firstName || 'Unknown'} ${commenterData[reply.userId]?.lastName || ''}`}
                 />
                 <h2 className="font-semibold text-xs">
                   {commenterData[reply.userId]?.firstName || 'Unknown'} {commenterData[reply.userId]?.lastName || ''}
