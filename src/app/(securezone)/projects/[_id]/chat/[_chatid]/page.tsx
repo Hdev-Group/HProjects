@@ -120,7 +120,7 @@ export default function MainDMs({ params }: { params: { _id: string, _chatid: st
                   <div className="mb-5 flex flex-col overflow-y-scroll h-auto w-full">
                     <ComposerChat chatId={params._chatid} projectid={params._id} assigneeData={assigneeData} />
                   </div>
-                  <div className="flex h-[6rem] overflow-x-hidden flex-row justify-center border bg-transparent items-center border-neutral-600/40 rounded-lg w-full">
+                  <div className="flex h-[3rem] overflow-x-hidden flex-row justify-center border bg-transparent items-center border-neutral-600/40 rounded-lg w-full">
                     <MessageSubmitter chatid={params._chatid} _id={params._id}  />
                   </div>
                 </div>
