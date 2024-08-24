@@ -1,10 +1,16 @@
 import { clerkClient } from "@clerk/nextjs/server";
-import { NextResponse } from "next/server";
+import { NextResponse, NextRequest } from "next/server";
+import { getAuth } from '@clerk/nextjs/server';
 
 // Create a cache object to store the user data
 const userCache = new Map<string, any>();
 
-export async function GET(request: Request) {
+export async function GET(request: NextRequest) {
+  // before we do that lets check if the user is authenticated
+  const { userId } = getAuth(request);
+  if (!userId) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
   const { searchParams } = new URL(request.url);
   const userIds = searchParams.get("userIds");
 
