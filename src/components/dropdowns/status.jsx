@@ -22,7 +22,7 @@ export default function StatusTime({ value, onValueChange }) {
       <SelectTrigger>
         <SelectValue placeholder="Project Status" />
       </SelectTrigger>
-      <SelectContent className="z-[100000000000000000000000]">
+      <SelectContent className="z-50">
         <SelectGroup>
           <SelectLabel>Project Status</SelectLabel>
           <SelectItem value="backlog">
