@@ -99,7 +99,7 @@ const NewPagerModal = ({ onClose, id }) => {
   if (!isLoaded || !isSignedIn) return null;
 
   return (
-    <div id="outerclickclose" className="absolute modalmain top-0 justify-end items-center flex h-[100%] w-[100%] bg-neutral-950/40  z-[1000000]">
+    <div id="outerclickclose" className="absolute modalmain top-0 justify-end items-center flex h-[100%] w-[100%] bg-neutral-950/40 z-10">
       <div id='innercloser' className="flex flex-col px-5 py-5 slide-in-right bg--400 shadow-lg rounded-tl-[1rem] border-neutral-600 border-l shadow-black bg-neutral-900 h-[100%] md:w-[40%] w-[100%]">
         <div className="flex items-center flex-row justify-between">
           <h1 className="text-2xl font-bold dark:text-white text-dark">Add Responder</h1>
