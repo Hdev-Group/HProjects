@@ -43,10 +43,6 @@ export default function BlueChat({ message, projectid }: { message: string, proj
   const urlPattern = /https:\/\/h-projects.vercel.app\/projects\/([^\/]+)\/([a-zA-Z0-9]+)\b/g;
   const match = urlPattern.exec(message);
 
-  // Log the extracted values for debugging
-  console.log("Message:", message);
-  console.log("Matched:", match);
-
   const extractedProjectId = match ? match[1] : null;
   const taskid = match ? match[2] : null;
   // remove that url from the message

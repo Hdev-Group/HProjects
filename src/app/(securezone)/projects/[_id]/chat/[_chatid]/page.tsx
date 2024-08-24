@@ -39,13 +39,11 @@ export default function MainDMs({ params }: { params: { _id: string, _chatid: st
     if (chat?.userId === userId || chat?.otherchatter === userId) {
       try {
         const otherchatter = chat?.userId === userId ? chat?.otherchatter : chat?.userId ;
-        console.log(`Fetching data for assignee with ID: ${otherchatter}`);
         const response = await fetch(`/api/get-user?userId=${otherchatter}`);
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
         const data = await response.json();
-        console.log("Assignee data:", data);
         setAssigneeData(data);
       } catch (error) {
         console.error('Error fetching assignee data:', error);

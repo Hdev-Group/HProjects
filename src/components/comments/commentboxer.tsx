@@ -179,7 +179,6 @@ export default function CommentBoxer({ taskId }: { taskId: any }) {
   };
   const user = useUser();
   const userimage = user?.user?.imageUrl;
-  console.log(user);
   return (
     <div className='flex flex-col gap-4 border p-1 rounded-t-lg w-full dark:text-white text-black  '>
       <div className='flex flex-col gap-4 w-full '>
