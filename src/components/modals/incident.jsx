@@ -4,7 +4,7 @@ import { useAuth } from '@clerk/nextjs';
 import { useMutation } from 'convex/react';
 import { api } from '../../../convex/_generated/api';
 import { ConvexClient } from "convex/browser";
-import PriorityStatus from '../dropdowns/priority';
+import PriorityResponse from '../dropdowns/responderp';
 
 const NewIncidentModal = ({ onClose, id }) => {
   const client = new ConvexClient(process.env.NEXT_PUBLIC_CONVEX_URL);
@@ -92,6 +92,13 @@ const NewIncidentModal = ({ onClose, id }) => {
 
   if (!isLoaded || !isSignedIn) return null;
 
+  // if user clicks out of modal check if any data is entered and prompt user to save or discard
+  window.onbeforeunload = function() {
+    if (taskTitle !== '' || taskDescription !== '') {
+      return 'You have unsaved changes. Do you really want to leave?';
+    }
+  }
+
   return (
     <div id="outerclickclose" className="absolute top-0 justify-center flex items-center  overflow-y-hidden overflow-x-hidden min-h-[100%] h-full w-[100%] bg-neutral-950/40 z-10">
       <div id='innercloser' className="flex flex-col zoomin overflow-y-auto bg--400 md:shadow-lg md:rounded-xl shadow-md rounded-md border dark:shadow-black bg-neutral-100 dark:bg-neutral-900 h-auto md:w-[50%] w-[100%]">
@@ -117,12 +124,40 @@ const NewIncidentModal = ({ onClose, id }) => {
             </div>
             <div className='flex w-full flex-col'>
             <label htmlFor="projecttitle" className="text-sm mb-2 font-bold text-black dark:text-white text-dark">Priority</label>
-            <PriorityStatus 
+            <PriorityResponse 
               required
               id='priority'
               onChange={(value) => setTaskPriority(value)}
               invalidator='priorityinvalidatorinput'
             />
+              {taskPriority === 'low' && (
+                <span className='text-neutral-300 mt-1 text-xs'>
+                  Issues with minor impact. These can be resolved within hours. Most customers are unlikely to notice any problems. 
+                  <br />
+                  Example: Minor UI bug in an admin panel.
+                </span>
+              )}
+              {taskPriority === 'medium' && (
+                <span className='text-yellow-300 mt-1 text-xs'>
+                  Issues causing moderate service disruption. These may require prompt attention but are not urgent. 
+                  <br />
+                  Example: Degraded performance in a non-critical service.
+                </span>
+              )}
+              {taskPriority === 'high' && (
+                <span className='text-red-300 mt-1 text-xs'>
+                  Issues causing significant service disruption. Immediate action is required, though there may be workarounds to mitigate the impact.
+                  <br />
+                  Example: A key microservice is failing, impacting a subset of users.
+                </span>
+              )}
+              {taskPriority === 'critical' && (
+                <span className='text-red-400 mt-1 text-xs'>
+                  Critical issues causing severe service disruption. Immediate response is essential.
+                  <br />
+                  Example: Data breach or full system outage affecting all users.
+                </span>
+              )}
             <span className='text-red-400 hidden' id='priorityinvalidator'>Invalid Priority</span>
             </div>
           <div className="flex flex-col pb-4">

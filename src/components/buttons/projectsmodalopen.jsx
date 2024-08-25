@@ -12,6 +12,11 @@ const AddProjectButton = () => {
   const handleClose = () => {
     setIsModalOpen(false);
   };
+  if (isModalOpen) {
+    document.body.style.overflow = 'hidden';
+  } else {
+    document.body.style.overflow = 'auto';
+  }
 
   return (
     <>

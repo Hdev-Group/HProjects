@@ -95,8 +95,8 @@ const NewPagerModal = ({ onClose, id }) => {
   if (!isLoaded || !isSignedIn) return null;
 
   return (
-    <div id="outerclickclose" className="absolute top-0 justify-center flex items-center  overflow-y-hidden overflow-x-hidden min-h-[100%] h-full w-[100%] bg-neutral-950/40 z-10">
-      <div id='innercloser' className="flex flex-col zoomin overflow-y-auto bg--400 md:shadow-lg md:rounded-xl shadow-md rounded-md border dark:shadow-black bg-neutral-100 dark:bg-neutral-900 h-auto md:w-[50%] w-[100%]">
+    <div id="outerclickclose" className="absolute top-0 justify-center flex overflow-y-hidden overflow-x-hidden min-h-[100%] h-full w-[100%] bg-neutral-950/40 z-10">
+      <div id='innercloser' className="flex flex-col zoomin overflow-y-auto z-[10000000000000000] md:shadow-lg mt-[9rem] md:rounded-xl shadow-md rounded-md border dark:shadow-black bg-neutral-100 dark:bg-neutral-900 h-[23.2rem] md:w-[50%] w-[100%]">
       <div className="flex items-center flex-row px-5 justify-between border-b-neutral-600  border  border-t-transparent border-x-transparent w-full h-auto py-3">
         <h1 className="text-2xl font-bold dark:text-white text-dark">Add Responder</h1>
           <p onClick={onClose} className="text-2xl text-red-600 cursor-pointer hover:text-red-400 transition-all-300">x</p>
