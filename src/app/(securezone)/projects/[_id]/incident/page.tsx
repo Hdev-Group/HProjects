@@ -6,6 +6,7 @@ import { useQuery } from "convex/react";
 import { api } from '../../../../../../convex/_generated/api';
 import { useRouter } from 'next/navigation';
 import SideBar from "../../../../../components/projectscontents/sidebar";
+import AddIncidentButton from "../../../../../components/buttons/addincident";
 
 export default function IncidentsPage({ params }: { params: { _id: string } }) {
   const { userId, isLoaded, isSignedIn } = useAuth();
@@ -74,6 +75,11 @@ export default function IncidentsPage({ params }: { params: { _id: string } }) {
                 <h1 className="flex text-2xl font-bold text-black dark:text-white" id="tasksproject">Incidents</h1>
               </div>
               </div>
+              <div className="flex flex-row justify-between w-full p-5">
+                <div className="flex flex-row gap-4 w-full justify-start items-center">
+                  <AddIncidentButton id={params._id} />
+                </div>
+                </div>
               </div>
             </div>
         </div>

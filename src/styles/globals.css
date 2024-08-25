@@ -220,14 +220,12 @@
     text-underline-offset: 8px;
     text-decoration-thickness: 3px;
   }
-  @keyframes slideInRight {
+  @keyframes zoomin {
     from {
-      transform: translateX(100%);
-      opacity: 0;
+      transform: scale(0);
     }
     to {
-      transform: translateX(0);
-      opacity: 1;
+      transform: scale(1);
     }
   }
   
@@ -264,8 +262,8 @@
     }
   }
   
-  .slide-in-right {
-    animation: slideInRight 0.3s ease-out forwards;
+  .zoomin {
+    animation: zoomin 0.06s ease-out forwards;
   }
   
   .slide-out-left {

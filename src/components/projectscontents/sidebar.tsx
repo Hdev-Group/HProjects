@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { IncidentDeclaration } from './incidentdec';
 import { QuickMenu } from './quickmenu';
 import '../../styles/globals.css';
 import { AppProgressBar as ProgressBar } from 'next-nprogress-bar';
@@ -89,18 +88,17 @@ function SideBar({ activeSection, _id, projectname }: SideBarProps) {
         <div className='mt-4 flex justify-start w-full'>
           <div className='flex flex-col justify-start max-w-[240px] w-full items-start font-semibold  text-md gap-2'>
 
-              <Link href={`/projects/${encodeURIComponent(_id)}`} className={getItemClass("Dashboard")}>
+            <Link href={`/projects/${encodeURIComponent(_id)}`} className={getItemClass("Dashboard")}>
               <svg className='w-6' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M21 20C21 20.5523 20.5523 21 20 21H4C3.44772 21 3 20.5523 3 20V9.48907C3 9.18048 3.14247 8.88917 3.38606 8.69972L11.3861 2.47749C11.7472 2.19663 12.2528 2.19663 12.6139 2.47749L20.6139 8.69972C20.8575 8.88917 21 9.18048 21 9.48907V20ZM7 15V17H17V15H7Z"></path></svg>              
                   {!isSidebarClosed && <p>Dashboard</p>}
-                </Link>
-
+            </Link>
             <Link href={`/projects/${encodeURIComponent(_id)}/tasks`}  className={getItemClass("Tasks")}>
             <svg className='w-6' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M5.25098 3H18.751C19.993 3 21.001 4.00737 21.001 5.25V18.75C21.001 19.992 19.9935 21 18.751 21H5.25098C4.00898 21 3.00098 19.9925 3.00098 18.75V5.25C3.00098 4.008 4.00835 3 5.25098 3ZM13.171 6.42054V12.1795C13.171 12.7762 13.6545 13.26 14.2507 13.26H17.5812C18.1776 13.26 18.661 12.7765 18.661 12.1795V6.42054C18.661 5.82384 18.1774 5.34 17.5812 5.34H14.2507C13.6543 5.34 13.171 5.82348 13.171 6.42054ZM5.34098 6.42045V16.6796C5.34098 17.2762 5.82455 17.76 6.42071 17.76H9.75125C10.3476 17.76 10.831 17.277 10.831 16.6796V6.42045C10.831 5.82375 10.3474 5.34 9.75125 5.34H6.42071C5.82428 5.34 5.34098 5.82303 5.34098 6.42045Z"></path></svg>              {!isSidebarClosed && <p>Tasks</p>}
             </Link>
-            <a href={`/projects/${encodeURIComponent(_id)}/incident`} className={getItemClass("incident")}>
+            <Link href={`/projects/${encodeURIComponent(_id)}/incident`} className={getItemClass("incident")}>
               <svg className='w-6' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M4.00001 20V14C4.00001 9.58172 7.58173 6 12 6C16.4183 6 20 9.58172 20 14V20H21V22H3.00001V20H4.00001ZM6.00001 14H8.00001C8.00001 11.7909 9.79087 10 12 10V8C8.6863 8 6.00001 10.6863 6.00001 14ZM11 2H13V5H11V2ZM19.7782 4.80761L21.1924 6.22183L19.0711 8.34315L17.6569 6.92893L19.7782 4.80761ZM2.80762 6.22183L4.22183 4.80761L6.34315 6.92893L4.92894 8.34315L2.80762 6.22183Z"></path></svg>
               {!isSidebarClosed && <p>Incidents</p>}
-            </a>
+            </Link>
             <Link href={`/projects/${encodeURIComponent(_id)}/pager`}  className={getItemClass("pager")}>
               <svg className='w-6' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M6.38231 5.9681C7.92199 4.73647 9.87499 4 12 4C14.125 4 16.078 4.73647 17.6177 5.9681L19.0711 4.51472L20.4853 5.92893L19.0319 7.38231C20.2635 8.92199 21 10.875 21 13C21 17.9706 16.9706 22 12 22C7.02944 22 3 17.9706 3 13C3 10.875 3.73647 8.92199 4.9681 7.38231L3.51472 5.92893L4.92893 4.51472L6.38231 5.9681ZM13 12V7.4952L8 14H11V18.5L16 12H13ZM8 1H16V3H8V1Z"></path></svg>
               {!isSidebarClosed && <p>Pager</p>}

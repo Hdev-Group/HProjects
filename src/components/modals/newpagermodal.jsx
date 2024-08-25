@@ -75,13 +75,9 @@ const NewPagerModal = ({ onClose, id }) => {
   };
   useEffect(() => {
     const outerclickclose = document.getElementById('outerclickclose');
-    const innercloser = document.getElementById('innercloser');
     const handleClickOutside = (e) => {
       if (e.target.id === 'outerclickclose') {
-        innercloser.classList.add('slide-out-right');
-        setTimeout(() => {
           onClose();
-        }, 500);
       }
     };
 
@@ -99,15 +95,16 @@ const NewPagerModal = ({ onClose, id }) => {
   if (!isLoaded || !isSignedIn) return null;
 
   return (
-    <div id="outerclickclose" className="absolute modalmain top-0 justify-end items-center flex h-[100%] w-[100%] bg-neutral-950/40 z-10">
-      <div id='innercloser' className="flex flex-col px-5 py-5 slide-in-right bg--400 shadow-lg rounded-tl-[1rem] border-neutral-600 border-l shadow-black bg-neutral-900 h-[100%] md:w-[40%] w-[100%]">
-        <div className="flex items-center flex-row justify-between">
-          <h1 className="text-2xl font-bold dark:text-white text-dark">Add Responder</h1>
+    <div id="outerclickclose" className="absolute top-0 justify-center flex items-center  overflow-y-hidden overflow-x-hidden min-h-[100%] h-full w-[100%] bg-neutral-950/40 z-10">
+      <div id='innercloser' className="flex flex-col zoomin overflow-y-auto bg--400 md:shadow-lg md:rounded-xl shadow-md rounded-md border dark:shadow-black bg-neutral-100 dark:bg-neutral-900 h-auto md:w-[50%] w-[100%]">
+      <div className="flex items-center flex-row px-5 justify-between border-b-neutral-600  border  border-t-transparent border-x-transparent w-full h-auto py-3">
+        <h1 className="text-2xl font-bold dark:text-white text-dark">Add Responder</h1>
           <p onClick={onClose} className="text-2xl text-red-600 cursor-pointer hover:text-red-400 transition-all-300">x</p>
         </div>
-        <form onSubmit={handleFormSubmit} className="flex flex-col gap-4 mt-10">
-          <div className="flex flex-col gap-5 border-b border-neutral-100/20 pb-4">
-            <label htmlFor="taskAssignee" className="text-lg font-bold dark:text-white text-dark">Responder</label>
+        <form onSubmit={handleFormSubmit} className="flex flex-col gap-4 mt-4 ">
+        <div className='px-4 flex flex-col'>
+          <div className="flex flex-col gap-3 pb-4">
+            <label htmlFor="taskAssignee" className="text-sm  font-bold text-black dark:text-white text-dark">Responder</label>
             <AssigneeSelect
               id={id}
               name='taskAssignee'
@@ -116,7 +113,7 @@ const NewPagerModal = ({ onClose, id }) => {
               onValueChange={setTaskAssignee}
               required
             />
-            <label htmlFor="time" className="text-lg font-bold dark:text-white text-dark">Work Until</label>
+            <label htmlFor="time" className="text-sm  font-bold text-black dark:text-white text-dark">Work Until</label>
             <input
               name="time"
               value={time}
@@ -131,10 +128,13 @@ const NewPagerModal = ({ onClose, id }) => {
           <div className="flex flex-col gap-5 ">
 
           </div>
-          <button type="submit" className="dark:bg-cyan-600 w-auto dark:text-white bg-cyan-600 text-white rounded-lg px-3 py-2">
+          </div>
+          <div className='px-2 py-3 flex justify-end  border-t-neutral-600 border border-b-transparent border-x-transparent'>
+          <button type="submit" className="bg-black font-semibold dark:text-white  text-white rounded-md w-auto px-5 py-2">
             Add Responder
           </button>
-        </form>
+          </div>
+          </form>
       </div>
     </div>
   );

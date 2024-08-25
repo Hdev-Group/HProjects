@@ -25,6 +25,14 @@ export default function Home() {
     const target = document.querySelector('#datasowers');
     const target2 = document.querySelector('#datasowers2');
     const target3 = document.querySelector('#datasowers3');
+    const target4 = document.querySelector('#datasowers4');
+    const target5 = document.querySelector('#datasowers5');
+    const target6 = document.querySelector('#datasowers6');
+    const target7 = document.querySelector('#datasowers7');
+    const target8 = document.querySelector('#datasowers8');
+    const pager1 = document.querySelector('#pageroncall');
+    const pager2 = document.querySelector('#pageroncall2');
+    const pager3 = document.querySelector('#pageroncall3');
       gsap.fromTo(
         target, 
         { x: -3000 }, // Starting position
@@ -62,7 +70,116 @@ export default function Home() {
           },
         }
       );
-
+      gsap.fromTo(
+        target4, 
+        { y: -60, opacity: 0 }, // Starting position
+        {
+          y: 0, // Ending position
+          opacity: 1,
+          duration: 2.5,
+          scrollTrigger: {
+            trigger: target4,
+            start: 'top center',
+          },
+        }
+      );
+      gsap.fromTo(
+        target5, 
+        { height: 0, opacity: 0 }, // Starting position
+        {
+          height: 113, // Ending position
+          opacity: 1,
+          duration: 2.5,
+          scrollTrigger: {
+            trigger: target5,
+            start: 'top center',
+          },
+        }
+      );
+      gsap.fromTo(
+        target6, 
+        { y: -60, opacity: 0 }, // Starting position
+        {
+          y: 0, // Ending position
+          delay: 0.4,
+          opacity: 1,
+          duration: 2.5,
+          scrollTrigger: {
+            trigger: target5,
+            start: 'top center',
+          },
+        }
+      );
+      gsap.fromTo(
+        target7, 
+        { height: 0, opacity: 0 }, // Starting position
+        {
+          height: 111, // Ending position
+          delay: 0.4,
+          opacity: 1,
+          duration: 2.5,
+          scrollTrigger: {
+            trigger: target6,
+            start: 'top center',
+          },
+        }
+      );
+      gsap.fromTo(
+        target8, 
+        { y: -60, opacity: 0 }, // Starting position
+        {
+          y: 0, // Ending position
+          delay: 0.1,
+          opacity: 1,
+          duration: 2.5,
+          scrollTrigger: {
+            trigger: target7,
+            start: 'top center',
+          },
+        }
+      );
+      gsap.fromTo(
+        pager1, 
+        { y: -60, opacity: 0 }, // Starting position
+        {
+          y: 0, // Ending position
+          delay: 0.1,
+          opacity: 1,
+          duration: 2.5,
+          scrollTrigger: {
+            trigger: target4,
+            start: 'top center',
+          },
+        }
+      );
+      gsap.fromTo(
+        pager2, 
+        { y: -60, opacity: 0 }, // Starting position
+        {
+          y: 0, // Ending position
+          delay: 0.1,
+          opacity: 1,
+          duration: 2.5,
+          scrollTrigger: {
+            trigger: target6,
+            start: 'top center',
+          },
+        }
+      );
+      gsap.fromTo(
+        pager3, 
+        { y: -60, opacity: 0 }, // Starting position
+        {
+          y: 0, // Ending position
+          delay: 0.1,
+          opacity: 1,
+          duration: 2.5,
+          scrollTrigger: {
+            trigger: target8,
+            start: 'top center',
+          },
+        }
+      );
   }, []);
 
 
@@ -340,19 +457,19 @@ export default function Home() {
             <div className='mt-5 bg-[#0B1120]/20 h-[40rem] border-b-[#1f3468] border border-transparent gridthing w-full flex items-center flex-col'>
               <div className='mt-10 relative w-full md:px-[4.5rem]flex flex-col max-w-[120rem] justify-center md:px-[4.5rem] px-2'>
               <div className='flex flex-row ml-5 w-full'>
-              <div className='flex absolute top-[2.4rem]  left-[-67px] md:left-[-7px] w-full h-full px-[4.5rem]'>
+              <div className='flex absolute top-[2.4rem]  left-[-67px] md:left-[-7px] w-full h-full px-[4.5rem]' id='datasowers4'>
                   <div className='w-[15px] h-[15px] border-2 border-neutral-400 rounded-full'></div>
                 </div>
-                <div className='flex absolute top-[3.5rem] left-[-60px] md:left-[0px] w-full h-full px-[4.5rem]'>
-                  <div className='w-[1px] h-[7rem] bg-gradient-to-b from-neutral-400 to-green-400'></div>
+                <div className='flex absolute top-[3.5rem] left-[-60px] md:left-[0px] w-full h-full px-[4.5rem]' >
+                  <div className='w-[1px] h-[7rem] bg-gradient-to-b from-neutral-400 to-green-400' id='datasowers5'></div>
                 </div>
-                <div className='flex absolute top-[10.7rem]  left-[-67px] md:left-[-7px] w-full h-full px-[4.5rem]'>
+                <div className='flex absolute top-[10.7rem]  left-[-67px] md:left-[-7px] w-full h-full px-[4.5rem]' id='datasowers6'>
                   <div className='w-[15px] h-[15px] border-2 border-green-400 rounded-full'></div>
                 </div>
                 <div className='flex absolute top-[11.85rem] left-[-60px] md:left-[0px] w-full h-full px-[4.5rem]'>
-                  <div className='w-[1px] h-[7rem] bg-gradient-to-b from-green-400 to-red-400'></div>
+                  <div className='w-[1px] h-[7rem] bg-gradient-to-b from-green-400 to-red-400' id='datasowers7'></div>
                 </div>
-                <div className='flex absolute top-[18.99rem] left-[-67px] md:left-[-7px] w-full h-full px-[4.5rem]'>
+                <div className='flex absolute top-[18.99rem] left-[-67px] md:left-[-7px] w-full h-full px-[4.5rem]' id='datasowers8'>
                   <div className='w-[15px] h-[15px] border-2 border-red-400 rounded-full'></div>
                 </div>
                 <div className='flex relative w-full flex-col'>
@@ -371,7 +488,7 @@ export default function Home() {
                 </div>
               </div>
                 <div className='w-full relative top-[5.2rem]'>
-                  <div id="pageroncall" className="w-full flex items-center justify-center">
+                  <div id="pageroncall2" className="w-full flex items-center justify-center">
                     <div className={`pr-2 border dark:border-green-400 border-green-600 bg-green-700/20 dark:bg-green-400/20 items-center h-[4rem] w-full flex rounded-lg`}>
                       <div className='pl-2 flex justify-center items-center h-full'>
                         <div className='w-1.5 h-[3rem] flex items-end justify-center rounded-lg dark:bg-green-400/20 bg-green-700/20 overflow-hidden'>
@@ -386,7 +503,7 @@ export default function Home() {
                 </div>
                 </div>
                 <div className='w-full relative top-[9.2rem]'>
-                  <div id="pageroncall" className="w-full flex items-center justify-center">
+                  <div id="pageroncall3" className="w-full flex items-center justify-center">
                     <div className={`pr-2 border dark:border-red-400 border-red-600 bg-red-700/20 dark:bg-red-400/20 items-center h-[4rem] w-full flex rounded-lg`}>
                       <div className='pl-2 flex justify-center items-center h-full'>
                         <div className='w-1.5 h-[3rem] flex items-end justify-center rounded-lg dark:bg-red-400/20 bg-red-700/20 overflow-hidden'>
@@ -399,11 +516,28 @@ export default function Home() {
                       </div>
                     </div>
                 </div>
-                </div>
-                </div>
-              </div>
               </div>
             </div>
+          </div>
+        </div>
+      </div>
+      <div className='flex flex-col w-full md:px-[4.5rem] mt-10'>
+        <img src='/logo.png' alt='logo' className='w-[50px] rounded-full p-1 bg-pink-500/40 h-[50px]' />
+        <h1 className='text-md font-semibold mt-4 mb-3 text-indigo-400'>Changelogs</h1>
+        <p className='text-xl font-semibold'>Track, Check and manage in real time.</p>
+        <p className='text-sm text-neutral-300 mt-1'>Pager is a system that lets you know when a service goes down. It will alert you and whoever is on call to let you know that a service is down and needs to be fixed.</p>
+        </div>
+            <div className='mt-5 bg-[#0B1120]/20 h-[40rem] border-b-[#1f3468] border border-transparent gridthing w-full flex items-center flex-col'>
+              <div className='mt-10 relative w-full md:px-[4.5rem]flex flex-col max-w-[120rem] justify-center md:px-[4.5rem] px-2'>
+              <div className='flex flex-row ml-5 w-full'>
+                <div className='flex absolute top-[2.4rem]  left-[-67px] md:left-[-7px] w-full h-full px-[4.5rem]' id='datasowers4'>
+                  <div className='w-[25px] h-[25px] bg-black rounded-full'>
+                    <div className="rounded-full w-[25px] h-[25px] bg-gradient-to-b from-gray-200 to-blue-300"></div>
+                  </div>
+                  </div>
+                </div>
+              </div>
+              </div>
             </div>
           </div>
         </div>

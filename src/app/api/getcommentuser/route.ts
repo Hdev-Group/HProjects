@@ -24,19 +24,18 @@ export async function GET(request: Request) {
       try {
         // Fetch the user data from Clerk API
         const user = await clerkClient.users.getUser(id);
-        // Cache the user data
-        userCache.set(id, user);
-        // Return only the desired fields
-        return {
+        // Cache the user data with desired fields
+        const cachedUser = {
           firstName: user.firstName,
           lastName: user.lastName,
           id: user.id,
           email: user.emailAddresses[0]?.emailAddress,
           imageUrl: user.imageUrl
         };
+        userCache.set(id, cachedUser);
+        return cachedUser;
       } catch (error) {
         console.warn(`User with ID ${id} not found. Skipping this user.`);
-        // Return null or some indication that the user wasn't found
         return null;
       }
     }));

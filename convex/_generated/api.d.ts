@@ -27,6 +27,7 @@ import type * as getjob from "../getjob.js";
 import type * as getlogs from "../getlogs.js";
 import type * as getreplys from "../getreplys.js";
 import type * as idgetprojects from "../idgetprojects.js";
+import type * as incident from "../incident.js";
 import type * as invitegetter from "../invitegetter.js";
 import type * as inviteremove from "../inviteremove.js";
 import type * as messagesender from "../messagesender.js";
@@ -72,6 +73,7 @@ declare const fullApi: ApiFromModules<{
   getlogs: typeof getlogs;
   getreplys: typeof getreplys;
   idgetprojects: typeof idgetprojects;
+  incident: typeof incident;
   invitegetter: typeof invitegetter;
   inviteremove: typeof inviteremove;
   messagesender: typeof messagesender;
