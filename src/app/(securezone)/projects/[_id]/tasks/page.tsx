@@ -23,7 +23,6 @@ interface Project {
 
 export default function ProjectPage({ params }: { params: { _id: string } }) {
   const { userId, isLoaded, isSignedIn } = useAuth();
-  const { user } = useUser();
   const projectsholder = useQuery(api.projectsget.get);
   const project = projectsholder?.find((project: Project) => project._id === params._id);
   const projectname = project?.projectName;
@@ -33,8 +32,6 @@ export default function ProjectPage({ params }: { params: { _id: string } }) {
 
   const tasksget = useQuery(api.tasks.get);
   const totaltasksarchived = tasksget?.filter(task => task.archived === true && task.projectid === _id).length ?? 0;
-
-
   const [taskFilter, setTaskFilter] = useState('');
   const [activeSection, setActiveSection] = useState("Tasks");
 

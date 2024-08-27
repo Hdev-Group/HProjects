@@ -3,13 +3,6 @@ import Link from 'next/link';
 import { QuickMenu } from './quickmenu';
 import '../../styles/globals.css';
 import { AppProgressBar as ProgressBar } from 'next-nprogress-bar';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "../ui/dropdown-menu";
 
 interface SideBarProps {
   activeSection: string;

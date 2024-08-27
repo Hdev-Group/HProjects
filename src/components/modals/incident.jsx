@@ -15,62 +15,61 @@ const NewIncidentModal = ({ onClose, id }) => {
   const [taskPriority, setTaskPriority] = useState('low');
   const [taskStatus, setTaskStatus] = useState('');
   const [taskAssignee, setTaskAssignee] = useState('');
-  const [taskId, setTaskId] = useState('');
+  const [incidentid, setincidentid] = useState('');
   const [showExitModal, setShowExitModal] = useState(false); // State to control ExitModal
-  const addTask = useMutation(api.taskssender.add);
+  const addIncident = useMutation(api.incident.add);
+  const addTimeStamps = useMutation(api.incident.timestamps);
   const logger = useMutation(api.updater.logger);
   const [currentpage, setCurrentPage] = useState("1");
 
-  const handleFormSubmit = useCallback(async (e) => {
+  const handleFormSubmitReal = useCallback(async (e) => {
     e.preventDefault();
     
     if (!userId) {
       console.error('User is not authenticated');
       return;
     }
-    
+    if (taskTitle === '') {
+      document.getElementById('titleinvalidator').classList.remove('hidden');
+      return;
+    }
     if (taskPriority === '') {
       document.getElementById('priorityinvalidator').classList.remove('hidden');
       return;
     }
-    if (taskStatus === '') {
-      document.getElementById('statusinvalidator').classList.remove('hidden');
-      return;
-    }
 
     try {
-      const response = await addTask({
+      const response = await addIncident({
         projectid: id.id,
-        userId,
-        taskTitle,
-        taskDescription,
-        taskPriority,
-        taskStatus,
-        taskAssignee
+        title: taskTitle,
+        reporterid: userId,
+        leadresponder: "",
+        responders: [],
+        description: taskDescription,
+        priority: taskPriority,
+        status: 'active',
+        process: 'investigation',
       });
-  
-      setTaskId(response);
-  
-      if (response) {
-        await logger({
-          taskId: response,
-          ProjectId: id.id,
-          action: taskStatus,
-          taskPriority,
-          taskAssignee,
-          usercommited: userId,
-          added: true,
-          timestamp: new Date().toISOString()
+
+      setincidentid(response);
+      console.log(response);
+
+      if (response){
+        await addTimeStamps({
+          projectid: id.id,
+          incidentid: response,
+          reported: new Date().toISOString(),
+          investigating: new Date().toISOString(),
         });
-      } else {
-        console.error('Failed to retrieve taskId.');
       }
   
       onClose(); // Close the modal after successful submission
+      // take them to the incident page
+      window.location.href = `/projects/${id.id}/incident/${response}`;
     } catch (error) {
       console.error('Error adding task:', error);
     }
-  }, [taskId, addTask, id, taskTitle, taskDescription, taskPriority, taskStatus, taskAssignee, onClose]);
+  }, [id, taskTitle, taskDescription, taskPriority, taskStatus, taskAssignee, onClose]);
 
   const handleCloseModal = () => {
     if (taskTitle || taskDescription || taskPriority || taskStatus || taskAssignee) {
@@ -125,81 +124,90 @@ const NewIncidentModal = ({ onClose, id }) => {
             </div>
           </div>
           </div>
-          <form onSubmit={handleFormSubmit} className="flex flex-col gap-4 mt-4">
-            <div className='px-4 flex flex-col'>
-              <div className="flex flex-col gap-3">
-                <div className='flex w-full flex-col'>
-                  <label htmlFor="projecttitle" className="text-sm mb-2 font-bold text-black dark:text-white text-dark">Title</label>
-                  <input
-                    required
-                    type="text"
-                    id='title'
-                    className="dark:bg-neutral-800 dark:border-neutral-800 pb-1 border-neutral-300 text-black dark:text-white border rounded-lg px-3 py-2"
-                    placeholder="Incident Title"
-                    value={taskTitle}
-                    onChange={(e) => setTaskTitle(e.target.value)}
-                  />
-                  <span className='text-red-400 hidden' id='titleinvalidator'>Invalid Title</span>
-                </div>
-                <div className='flex w-full flex-col'>
-                  <label htmlFor="projecttitle" className="text-sm mb-2 font-bold text-black dark:text-white text-dark">Priority</label>
-                  <PriorityResponse 
-                    required
-                    value={taskPriority}
-                    id='priority'
-                    onChange={(value) => setTaskPriority(value)}
-                    invalidator='priorityinvalidatorinput'
-                  />
-                  {/* Priority Helper Text */}
-                  {taskPriority === 'low' && (
-                    <span className='text-neutral-300 mt-1 text-xs'>
-                      Issues with minor impact. These can be resolved within hours. Most customers are unlikely to notice any problems. 
-                      <br />
-                      Example: Minor UI bug in an admin panel.
-                    </span>
-                  )}
-                  {taskPriority === 'medium' && (
-                    <span className='text-yellow-300 mt-1 text-xs'>
-                      Issues causing moderate service disruption. These may require prompt attention but are not urgent. 
-                      <br />
-                      Example: Degraded performance in a non-critical service.
-                    </span>
-                  )}
-                  {taskPriority === 'high' && (
-                    <span className='text-red-300 mt-1 text-xs'>
-                      Issues causing significant service disruption. Immediate action is required, though there may be workarounds to mitigate the impact.
-                      <br />
-                      Example: A key microservice is failing, impacting a subset of users.
-                    </span>
-                  )}
-                  {taskPriority === 'critical' && (
-                    <span className='text-red-400 mt-1 text-xs'>
-                      Critical issues causing severe service disruption. Immediate response is essential.
-                      <br />
-                      Example: Data breach or full system outage affecting all users.
-                    </span>
-                  )}
-                  <span className='text-red-400 hidden' id='priorityinvalidator'>Invalid Priority</span>
-                </div>
-                <div className="flex flex-col pb-4">
-                  <label htmlFor="projectdescription" className="text-sm mb-2 font-bold text-black dark:text-white text-dark">Summary <span className='text-neutral-500 text-xs'>(optional)</span></label>
-                  <textarea
-                    className="dark:bg-neutral-800 dark:border-neutral-800 border-neutral-300 text-black dark:text-white border rounded-lg px-3 py-2 resize-y"
-                    placeholder="What would you like to read at 3am getting paged?"
-                    invalidator='descriptioninvalidatorinput'
-                    value={taskDescription}
-                    onChange={(e) => setTaskDescription(e.target.value)}
-                  />
-                  <span className='text-red-400 hidden' id='descriptioninvalidator'>Invalid Description</span>
+          {
+            currentpage === "1" ? (
+              <form onSubmit={handleFormSubmitReal} className="flex flex-col gap-4 mt-4">
+              <div className='px-4 flex flex-col'>
+                <div className="flex flex-col gap-3">
+                  <div className='flex w-full flex-col'>
+                    <label htmlFor="projecttitle" className="text-sm mb-2 font-bold text-black dark:text-white text-dark">Title</label>
+                    <input
+                      required
+                      type="text"
+                      id='title'
+                      className="dark:bg-neutral-800 dark:border-neutral-800 pb-1 border-neutral-300 text-black dark:text-white border rounded-lg px-3 py-2"
+                      placeholder="Incident Title"
+                      value={taskTitle}
+                      onChange={(e) => setTaskTitle(e.target.value)}
+                    />
+                    <span className='text-red-400 hidden' id='titleinvalidator'>Invalid Title</span>
+                  </div>
+                  <div className='flex w-full flex-col'>
+                    <label htmlFor="projecttitle" className="text-sm mb-2 font-bold text-black dark:text-white text-dark">Priority</label>
+                    <PriorityResponse 
+                      required
+                      value={taskPriority}
+                      id='priority'
+                      onChange={(value) => setTaskPriority(value)}
+                      invalidator='priorityinvalidatorinput'
+                    />
+                    {/* Priority Helper Text */}
+                    {taskPriority === 'low' && (
+                      <span className='text-neutral-300 mt-1 text-xs'>
+                        Issues with minor impact. These can be resolved within hours. Most customers are unlikely to notice any problems. 
+                        <br />
+                        Example: Minor UI bug in an admin panel.
+                      </span>
+                    )}
+                    {taskPriority === 'medium' && (
+                      <span className='text-yellow-300 mt-1 text-xs'>
+                        Issues causing moderate service disruption. These may require prompt attention but are not urgent. 
+                        <br />
+                        Example: Degraded performance in a non-critical service.
+                      </span>
+                    )}
+                    {taskPriority === 'high' && (
+                      <span className='text-red-300 mt-1 text-xs'>
+                        Issues causing significant service disruption. Immediate action is required, though there may be workarounds to mitigate the impact.
+                        <br />
+                        Example: A key microservice is failing, impacting a subset of users.
+                      </span>
+                    )}
+                    {taskPriority === 'critical' && (
+                      <span className='text-red-400 mt-1 text-xs'>
+                        Critical issues causing severe service disruption. Immediate response is essential.
+                        <br />
+                        Example: Data breach or full system outage affecting all users.
+                      </span>
+                    )}
+                    <span className='text-red-400 hidden' id='priorityinvalidator'>Invalid Priority</span>
+                  </div>
+                  <div className="flex flex-col pb-4">
+                    <label htmlFor="projectdescription" className="text-sm mb-2 font-bold text-black dark:text-white text-dark">Summary <span className='text-neutral-500 text-xs'>(optional)</span></label>
+                    <textarea
+                      className="dark:bg-neutral-800 dark:border-neutral-800 border-neutral-300 text-black dark:text-white border rounded-lg px-3 py-2 resize-y"
+                      placeholder="What would you like to read at 3am getting paged?"
+                      invalidator='descriptioninvalidatorinput'
+                      value={taskDescription}
+                      onChange={(e) => setTaskDescription(e.target.value)}
+                    />
+                    <span className='text-red-400 hidden' id='descriptioninvalidator'>Invalid Description</span>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div className='px-2 py-3 flex justify-end border-t-neutral-600 border border-b-transparent border-x-transparent'>
-              <button type="submit" className="bg-black font-semibold dark:text-white text-white rounded-md w-auto px-5 py-2">
-                Declare Incident
-              </button>
-            </div>
-          </form>
+              <div className='px-2 py-3 flex justify-end border-t-neutral-600 border border-b-transparent border-x-transparent'>
+                <button type="submit" className="bg-black font-semibold dark:text-white text-white rounded-md w-auto px-5 py-2">
+                  Declare Incident
+                </button>
+              </div>
+            </form>
+            ) : null
+          }
+          {
+            currentpage === "2" ? (
+              <p>TBA</p>
+            ) : null
+          }
         </div>
       </div>
     </>

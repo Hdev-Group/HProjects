@@ -15,6 +15,7 @@ export interface Pager {
 interface User {
   firstName: string;
   lastName: string;
+  
 }
 
 interface PagerMainProps {
