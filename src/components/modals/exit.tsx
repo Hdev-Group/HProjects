@@ -8,7 +8,7 @@ interface ExitModalProps {
 export default function ExitModal({ onClose, mainholdRemove }: ExitModalProps) {
     return (
         <div className="inset-1 w-full h-full rounded-md bg-black bg-opacity-50 z-40 flex justify-center absolute top-0 left-0" id="mainhold">
-            <div className="bg-white dark:bg-neutral-800 rounded-md absolute pb-4 h-auto w-[60%]">
+            <div className="bg-white dark:bg-neutral-800 rounded-md absolute pb-4 h-auto w-[100%]">
                 <div className="flex items-center flex-row px-5 pt-4 justify-between border-b-neutral-600 border border-t-transparent border-x-transparent w-full h-auto py-3">
                     <h1 className="text-xl font-semibold text-black dark:text-white">Close modal</h1>
                 </div>

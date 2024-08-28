@@ -7,13 +7,13 @@ export default function HeaderLinker({_id, currentpage}: { _id: any, currentpage
             <Link href={`/projects/${encodeURI(_id)}/project-settings/`} className={`${currentpage === "project" ? "text-white" : "text-neutral-500 rounded-md hover:bg-neutral-600/20 p-1"} w-full transition-all items-center justify-center flex`}>
                 <p>Project</p>
                 { currentpage === "project" && <div className='bg-white w-full h-0.5 bottom-[-9px] absolute'></div> }
-                </Link>
+            </Link>
             </div>
             <div className='w-16 items-center justify-center flex relative transition-all'>
             <Link href={`/projects/${encodeURI(_id)}/project-settings/team`} className={`${currentpage === "team" ? "text-white" : "text-neutral-500 rounded-md hover:bg-neutral-600/20 p-1"} transition-all w-full items-center justify-center flex`}>
             <p>Team</p>
                 { currentpage === "team" && <div className='bg-white w-full h-0.5 bottom-[-9px] absolute'></div> }
-                </Link>
+            </Link>
             </div>
             <div className='w-16 items-center justify-center flex relative'>
             <Link href={`/projects/${encodeURI(_id)}/project-settings/personal`} className={`${currentpage === "personal" ? "text-white" : "text-neutral-500 rounded-md hover:bg-neutral-600/20 p-1"} w-full transition-all items-center justify-center flex`}>

@@ -7,7 +7,12 @@ import { useQuery } from "convex/react";
 import { api } from "../../../../../../../convex/_generated/api";
 import SideBar from "../../../../../../components/projectscontents/sidebar";
 import { Critical, High, Medium, Low } from "../../../../../../components/dropdowns/priorities/critical";
-import { Overview, StatusChanges, LeadResponder, PriorityChanges } from "../../../../../../components/incidents/overviews";
+import { FirstSend, StatusChanges, LeadResponder, PriorityChanges } from "../../../../../../components/incidents/overviews";
+import AddLeadResponder from "../../../../../../components/buttons/addleadresponder";
+import ReactDOM from 'react-dom';
+import LeadResponderchange from '../../../../../../components/incidents/leadresponderadd';
+import IncidentPrioritychange from '../../../../../../components/incidents/prioritychanger';
+import IncidentProcesschange from '../../../../../../components/incidents/incidentprocess';
 
 type User = {
     id: string;
@@ -22,38 +27,118 @@ interface Project {
   projectName: string;
 }
 
-function IncidentProcess({ response }: { response: string }) {
-  return (
-    <div className="flex flex-row gap-1 py-1 bg-white dark:bg-transparent dark:border-neutral-600 border-neutral-300 px-4 rounded-md w-auto justify-start items-center border">
-      {["investigation", "fixing", "monitoring", "resolved"].map((step, index) => (
-        <div key={index} className="flex flex-row gap-1 items-center">
-          <div className="flex flex-row gap-2">
-            <p className={`${response === step ? `font-semibold dark:text-white text-black` : "text-neutral-500"}`}>
-              {step.charAt(0).toUpperCase() + step.slice(1)}
-            </p>
-          </div>
-          {index < 3 && (
-            <svg className="w-4 dark:text-white text-black" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M16 12L10 18V6L16 12Z"></path>
-            </svg>
-          )}
+function IncidentProcess({ response, onOpenModal }: { response: string, onOpenModal: () => void}) {
+    function editactiveclick() {
+        const edit = document.getElementById('priorityeditt');
+        edit?.classList.remove('hidden');
+        edit?.classList.add('flex');
+
+        const priorityshower = document.getElementById('priorityshowerr');
+        priorityshower?.classList.add('hidden');
+        priorityshower?.classList.remove('flex');
+    }
+
+    function hideedit() {
+        const edit = document.getElementById('priorityeditt');
+        edit?.classList.remove('flex');
+        edit?.classList.add('hidden');
+
+        const priorityshower = document.getElementById('priorityshowerr');
+        priorityshower?.classList.add('flex');
+        priorityshower?.classList.remove('hidden');
+    }
+
+    return (
+        <>
+                <div
+                className="relative border w-[25rem] rounded-lg flex cursor-pointer items-center justify-center"
+                onClick={onOpenModal}
+                onMouseEnter={editactiveclick}
+                onMouseLeave={hideedit}
+                >
+                <div
+                    className="border-neutral-500 w-full bg-neutral-700/50 border hover:flex hidden rounded-md items-center transition-all justify-center"
+                    id="priorityeditt">
+                    Edit
+                </div>
+                <div className="hover:hidden flex w-full items-center justify-center py-0.5 px-2 hover:opacity-0 opacity-100 transition-all" id="priorityshowerr">
+                    {["investigation", "fixing", "monitoring", "resolved"].map((step, index) => (
+                        <div key={index} className="flex flex-row gap-1 items-center">
+                            <div className="flex flex-row gap-2">
+                                <p className={`${response === step ? `font-semibold dark:text-white text-black` : "text-neutral-500"}`}>
+                                    {step.charAt(0).toUpperCase() + step.slice(1)}
+                                </p>
+                            </div>
+                            {index < 3 && (
+                                <svg
+                                    className="w-4 dark:text-white text-black"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    viewBox="0 0 24 24"
+                                    fill="currentColor"
+                                >
+                                    <path d="M16 12L10 18V6L16 12Z"></path>
+                                </svg>
+                            )}
+                        </div>
+                    ))}
+                </div>
+            </div>
+        </>
+    );
+}
+
+
+function TypeOfPriority({ priority, onOpenModal }: { priority: string, onOpenModal: () => void }) {
+    const PriorityComponent = {
+      critical: Critical,
+      high: High,
+      medium: Medium,
+      low: Low,
+    }[priority];
+  
+    function editactiveclick() {
+      const edit = document.getElementById('priorityedit');
+      edit?.classList.remove('hidden');
+      edit?.classList.add('flex');
+  
+      const priorityshower = document.getElementById('priorityshower');
+      priorityshower?.classList.add('hidden');
+      priorityshower?.classList.remove('flex');
+    }
+  
+    function hideedit() {
+      const edit = document.getElementById('priorityedit');
+      edit?.classList.remove('flex');
+      edit?.classList.add('hidden');
+  
+      const priorityshower = document.getElementById('priorityshower');
+      priorityshower?.classList.add('flex');
+      priorityshower?.classList.remove('hidden');
+    }
+  
+    return (
+      <div
+        className="relative w-20 flex cursor-pointer items-center justify-center"
+        onClick={onOpenModal} // Use the prop function here
+        onMouseEnter={editactiveclick}
+        onMouseLeave={hideedit}
+      >
+        <div
+          className="w-full border-neutral-500 bg-neutral-700/50 border hover:flex hidden rounded-md items-center transition-all justify-center"
+          id="priorityedit"
+        >
+          Edit
         </div>
-      ))}
-    </div>
-  );
-}
-
-
-function TypeOfPriority({ priority }: { priority: string }) {
-  const PriorityComponent = {
-    critical: Critical,
-    high: High,
-    medium: Medium,
-    low: Low,
-  }[priority];
-
-  return PriorityComponent ? <PriorityComponent /> : null;
-}
+        <div
+          className="hover:hidden flex hover:opacity-0 opacity-100 transition-all"
+          id="priorityshower"
+        >
+          {PriorityComponent ? <PriorityComponent /> : null}
+        </div>
+      </div>
+    );
+  }
+  
 
 function TimeOngoing({ time }: { time: any }) {
     // it gives the time like: 1724707619736.1836 so we need to convert it to a readable format
@@ -147,6 +232,8 @@ function SummarySender() {
 function NavMenu({ currentpage, _id, incidentid }: any) {
     const router = useRouter();
 
+    console.log(currentpage);
+
     function handleChangePage(page: string) {
         router.push(`/projects/${_id}/incident/${incidentid}/?tab=${page}`);
     }
@@ -154,22 +241,18 @@ function NavMenu({ currentpage, _id, incidentid }: any) {
     return (
         <div className="flex flex-row justify-between w-full">
             <div className="flex flex-row gap-4">
-                {["overview", "timeline"].map((page, index) => (
-                    <button
-                        key={index}
-                        onClick={() => handleChangePage(page)}
-                        className={`w-16 items-center justify-center flex flex-row relative ${
-                            currentpage === page || (page === "overview" && !currentpage)
-                                ? "text-white"
-                                : "text-neutral-500 rounded-md hover:bg-neutral-600/20 p-1"
-                        }`}
-                    >
-                        <p>{page.charAt(0).toUpperCase() + page.slice(1)}</p>
-                        {(currentpage === page || (!currentpage && page === "overview")) && (
-                            <div className="bg-white w-full h-0.5 bottom-[-9px] absolute"></div>
-                        )}
-                    </button>
-                ))}
+            <div className='w-16 items-center justify-center flex relative transition-all' onClick={() => handleChangePage("overview")}>
+                <div className={`${currentpage === "overview" ? "dark:text-white text-black" : "text-neutral-500 rounded-md hover:bg-neutral-600/20 p-1"} transition-all w-full items-center justify-center flex`}>
+                    <p>Overview</p>
+                    { currentpage === "overview" && <div className='dark:bg-white bg-black w-full h-0.5 bottom-[-9px] absolute'></div> }
+                </div>
+            </div>
+            <div className='w-16 items-center justify-center flex relative transition-all' onClick={() => handleChangePage("timeline")}>
+                <div className={`${currentpage === "timeline" ? "dark:text-white text-black" : "text-neutral-500 rounded-md hover:bg-neutral-600/20 p-1"} transition-all w-full items-center justify-center flex`}>
+                    <p>Timeline</p>
+                    { currentpage === "timeline" && <div className='dark:bg-white bg-black w-full h-0.5 bottom-[-9px] absolute'></div> }
+                </div>
+            </div>
             </div>
             <button className="flex flex-row font-medium dark:hover:text-neutral-100 hover:text-neutral-800 items-center dark:text-neutral-400 text-black px-2 py-1 rounded-md transition-all">
                 <svg className="w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
@@ -185,7 +268,7 @@ export default function IncidentEr({ params }: { params: { _id: string; _inciden
     const { userId, isLoaded, isSignedIn } = useAuth();
     const { user } = useUser();
     const router = useRouter();
-    const searchParams = useSearchParams();
+    const searchParams = new URLSearchParams(window.location.search); // Updated this part
     const projectsholder = useQuery(api.projectsget.get);
     const [activeSection, setActiveSection] = useState("incident");
 
@@ -196,14 +279,25 @@ export default function IncidentEr({ params }: { params: { _id: string; _inciden
 
     // Get the current page from the URL
     const currentpage = searchParams.get('tab');
+    // set the active page to the current page
+    const [activePage, setActivePage] = useState(currentpage || "overview");
     console.log(currentpage);
     const filteredIncident = incident?.find((incident: any) => incident._id === params._incidentid);
+    const incidentlogs = useQuery(api.incidentlogs.get);
+    const incidentlog = incidentlogs?.filter((log: any) => log.incidentid === params._incidentid);
     console.log(filteredIncident);
     const incidenttitle = filteredIncident?.title;
     const response = filteredIncident?.process;
     const priority = filteredIncident?.priority;
     const [userData, setUserData] = useState([]);
-
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isPriorityModalOpen, setIsPriorityModalOpen] = useState<boolean>(false);
+    const [isProcessModalOpen, setIsProcessModalOpen] = useState<boolean>(false);
+    const handlePriorityOpen = () => setIsPriorityModalOpen(true);
+    const handlePriorityClose = () => setIsPriorityModalOpen(false);
+    const handleProcessOpen = () => setIsProcessModalOpen(true);
+    const handleProcessClose = () => setIsProcessModalOpen(false);
+    console.log(incidentlog)
     const time = filteredIncident?._creationTime;
 
     const leadresponder = filteredIncident?.leadresponder;
@@ -264,6 +358,13 @@ export default function IncidentEr({ params }: { params: { _id: string; _inciden
 
     const title = `: ${incidenttitle} | ${projectname}`;
 
+    const handleClick = () => {
+        setIsModalOpen(true);
+    };
+    const handleClose = () => {
+        setIsModalOpen(false);
+    };
+
 
     return (
         <>
@@ -274,124 +375,164 @@ export default function IncidentEr({ params }: { params: { _id: string; _inciden
             </head>
             <div className="overflow-hidden h-screen" id="modal-root">
                 <div className="flex h-full bg-bglightbars dark:bg-bgdarkbars">
-                <SideBar _id={params._id} activeSection={activeSection} projectname={projectname} />
-                <div className="flex w-full justify-center bg-bglight border mt-0.5 dark:bg-bgdark rounded-l-3xl">
+                    <SideBar _id={params._id} activeSection={activeSection} projectname={projectname} />
+                    <div className="flex w-full justify-center bg-bglight border mt-0.5 dark:bg-bgdark rounded-l-3xl">
                         <div className="w-full bg-bglight dark:bg-bgdark rounded-l-3xl">
                             <div className='flex flex-col'>
-                            <div className="flex-col w-full dark:border-b-neutral-800 border-b-neutral-900 border-transparent border gap-4 justify-between pb-5 mt-5 flex">
-                                <div className="px-7 flex  flex-row items-center justify-between">
-                                    <div className='flex flex-row gap-2 items-center'>
-                                        <div className="p-2 dark:bg-red-500 text-black dark:text-white rounded-md border">
-                                            <svg className='w-6' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M4.00001 20V14C4.00001 9.58172 7.58173 6 12 6C16.4183 6 20 9.58172 20 14V20H21V22H3.00001V20H4.00001ZM6.00001 14H8.00001C8.00001 11.7909 9.79087 10 12 10V8C8.6863 8 6.00001 10.6863 6.00001 14ZM11 2H13V5H11V2ZM19.7782 4.80761L21.1924 6.22183L19.0711 8.34315L17.6569 6.92893L19.7782 4.80761ZM2.80762 6.22183L4.22183 4.80761L6.34315 6.92893L4.92894 8.34315L2.80762 6.22183Z"></path></svg>
+                                <div className="flex-col w-full dark:border-b-neutral-800 border-b-neutral-900 border-transparent border gap-4 justify-between pb-5 mt-5 flex">
+                                    <div className="px-7 flex flex-row items-center justify-between">
+                                        <div className='flex flex-row gap-2 items-center'>
+                                            <div className="p-2 dark:bg-red-500 text-black dark:text-white rounded-md border">
+                                                <svg className='w-6' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M4.00001 20V14C4.00001 9.58172 7.58173 6 12 6C16.4183 6 20 9.58172 20 14V20H21V22H3.00001V20H4.00001ZM6.00001 14H8.00001C8.00001 11.7909 9.79087 10 12 10V8C8.6863 8 6.00001 10.6863 6.00001 14ZM11 2H13V5H11V2ZM19.7782 4.80761L21.1924 6.22183L19.0711 8.34315L17.6569 6.92893L19.7782 4.80761ZM2.80762 6.22183L4.22183 4.80761L6.34315 6.92893L4.92894 8.34315L2.80762 6.22183Z"></path></svg>
+                                            </div>
+                                            <div className='flex flex-col'>
+                                                <p className='text-sm mb-[-6px] font-medium'>Incidents</p>
+                                                <h1 className="flex text-2xl font-bold text-black dark:text-white gap-2" id="tasksproject">IND-00 <span>{incidenttitle}</span></h1>
+                                            </div>
                                         </div>
-                                        <div className='flex flex-col'>
-                                            <p className='text-sm mb-[-6px] font-medium'>Incidents</p>
-                                            <h1 className="flex text-2xl font-bold text-black dark:text-white gap-2" id="tasksproject">IND-00 <span>{incidenttitle}</span></h1>
-                                        </div>
-                                    </div>
-                                    <div className='flex flex-row gap-2'>
-                                        <div className="p-2 font-semibold items-center lg:hidden flex justify-center text-lg dark:bg-neutral-600/20 text-black dark:text-white rounded-md border">
-                                            <svg className='w-6' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M8 12L14 6V18L8 12Z"></path></svg><p>Information</p>
-                                        </div>
-                                        <div className="p-2 font-semibold items-center flex justify-center text-lg dark:bg-neutral-600/20 text-black dark:text-white rounded-md border">
-                                            <svg className='w-6' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M5 10C3.9 10 3 10.9 3 12C3 13.1 3.9 14 5 14C6.1 14 7 13.1 7 12C7 10.9 6.1 10 5 10ZM19 10C17.9 10 17 10.9 17 12C17 13.1 17.9 14 19 14C20.1 14 21 13.1 21 12C21 10.9 20.1 10 19 10ZM12 10C10.9 10 10 10.9 10 12C10 13.1 10.9 14 12 14C13.1 14 14 13.1 14 12C14 10.9 13.1 10 12 10Z"></path></svg>
+                                        <div className='flex flex-row gap-2'>
+                                            <div className="p-2 font-semibold items-center lg:hidden flex justify-center text-lg dark:bg-neutral-600/20 text-black dark:text-white rounded-md border">
+                                                <svg className='w-6' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M8 12L14 6V18L8 12Z"></path></svg><p>Information</p>
+                                            </div>
+                                            <div className="p-2 font-semibold items-center flex justify-center text-lg dark:bg-neutral-600/20 text-black dark:text-white rounded-md border">
+                                                <svg className='w-6' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M5 10C3.9 10 3 10.9 3 12C3 13.1 3.9 14 5 14C6.1 14 7 13.1 7 12C7 10.9 6.1 10 5 10ZM19 10C17.9 10 17 10.9 17 12C17 13.1 17.9 14 19 14C20.1 14 21 13.1 21 12C21 10.9 20.1 10 19 10ZM12 10C10.9 10 10 10.9 10 12C10 13.1 10.9 14 12 14C13.1 14 14 13.1 14 12C14 10.9 13.1 10 12 10Z"></path></svg>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div className='dark:bg-neutral-900 bg-neutral-200 py-3 mb-1 flex flex-row w-full px-7'>
-                                <div className='flex flex-row flex-wrap gap-4 justify-start items-center'>
-                                    <IncidentProcess response={response} />
-                                    <TypeOfPriority priority={priority} />
-                                    <TimeOngoing time={time} />
+                                <div className='dark:bg-neutral-900 bg-neutral-200 py-3 mb-1 flex flex-row w-full px-7'>
+                                    <div className='flex flex-row flex-wrap gap-4 justify-start items-center'>
+                                        <IncidentProcess response={response} onOpenModal={() => setIsProcessModalOpen(true)}  />
+                                        <TypeOfPriority priority={priority} onOpenModal={() => setIsPriorityModalOpen(true)} />
+                                        <TimeOngoing time={time} />
+                                    </div>
                                 </div>
                             </div>
-                        </div>
                             <div className='w-full items-center flex justify-center overflow-y-scroll  h-full'>
                                 <div className='w-full max-w-[1447px] px-3 h-full justify-center'>
-                                        <div className='flex-row flex justify-center mt-10 w-full h-full gap-10'>
-                                            <div className='flex flex-col h-full gap-4 w-full '>
-                                                {
-                                                    response != "investigation"  && SummarySender()
-                                                }
-                                                <div className='w-full h-auto  flex flex-row pb-2 mb-1 gap-3 border border-transparent border-b-neutral-700'>
-                                                    <NavMenu currentpage={currentpage} _id={params._id} incidentid={params._incidentid} />
-                                                </div>
-                                                <div>
-                                                    {currentpage === "overview" || currentpage === null ? (
-                                                        <div className='flex flex-col w-full h-full'>
-                                                            <PriorityChanges />
-                                                            <LeadResponder />
-                                                            <StatusChanges />
-                                                            <Overview firstchild={true} />
-                                                        </div>
-                                                    ) : null}
-                                                    {currentpage === "timeline" && (
-                                                        <div className='flex flex-col  w-full h-full'>
-                                                            timeline section
-                                                        </div>
+                                    <div className='flex-row flex justify-center mt-10 w-full h-full gap-10'>
+                                        <div className='flex flex-col h-full gap-4 w-full '>
+                                            {
+                                                response !== "investigation" && SummarySender()
+                                            }
+                                            <div className='w-full h-auto  flex flex-row pb-2 mb-1 gap-3 border border-transparent border-b-neutral-700'>
+                                                <NavMenu currentpage={activePage} _id={params._id} incidentid={params._incidentid} />
+                                            </div>
+                                            <div>
+                                                {activePage === "overview"  ? (
+                                                    <div className='flex flex-col w-full h-full'>
+                                                        {   
+                                                            incidentlog?.reverse()?.map((log: any, index: number) => {
+                                                                switch (log.action) {
+                                                                    case "LeadResponderChanged":
+                                                                        return <LeadResponder key={index} log={log} />;
+                                                                    case "StatusChanged":
+                                                                        return <StatusChanges key={index} log={log} />;
+                                                                    case "PriorityChanged":
+                                                                        return <PriorityChanges key={index} log={log} />;
+                                                                    default:
+                                                                        return null; 
+                                                                }
+                                                            })}
+                                                        <FirstSend firstchild={true} reporter={userData.filter((user: User) => user.id === reporter)} incidentstarted={filteredIncident?._creationTime} incidentdetails={filteredIncident} />
+                                                    </div>
+                                                ) : null}
+                                                {activePage === "timeline" && (
+                                                    <div className='flex flex-col  w-full h-full'>
+                                                        timeline section
+                                                    </div>
+                                                )}
+                                            </div>
+                                        </div>
+                                        <div className='lg:flex flex-col hidden h-full items-center gap-4 w-80 min-w-80'>
+                                            <div className='gap-3 w-full flex flex-col border-b pb-4 border-neutral-600'>
+                                                <div className='flex justify-between w-full flex-row gap-4'>
+                                                    <p className='font-medium text-neutral-400'>Lead Responder</p>
+                                                    {leadresponder === "" || leadresponder === "none" ? (
+                                                        <AddLeadResponder id={params._incidentid} projectid={params._id} />
+                                                    ) : (
+                                                        userData.filter((user: User) => user.id === leadresponder).map((user: User) => (
+                                                            <div key={`reporter-${user.id}`} className="flex text-black dark:text-white flex-row gap-2 py-0.5 px-2 transition-all cursor-pointer border border-transparent rounded-lg hover:bg-neutral-700/20 hover:border-neutral-400/20" onClick={handleClick}>
+                                                                <img src={user.imageUrl || "/loadingimg.jpg"} className='w-6 h-6 rounded-full' alt={`${user.firstName} ${user.lastName}`} />
+                                                                <p>{user.firstName} {user.lastName}</p>
+                                                            </div>
+                                                        ))
                                                     )}
                                                 </div>
+                                                <div className='flex justify-between w-full flex-row gap-4'>
+                                                    <p className='font-medium text-neutral-400'>Reporter</p>
+                                                    {userData.filter((user: User) => user.id === reporter).map((user: User) => (
+                                                        <div key={`reporter-${user.id}`} className="flex text-black dark:text-white flex-row gap-2">
+                                                            <img src={user.imageUrl || "/loadingimg.jpg"} className='w-6 h-6 rounded-full' alt={`${user.firstName} ${user.lastName}`} />
+                                                            <p>{user.firstName} {user.lastName}</p>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                                <div className='flex justify-between w-full flex-row gap-4'>
+                                                    <p className='font-medium text-neutral-400'>Participants</p>
+                                                    <div className='flex flex-row gap-4'>
+                                                        {userData.filter((user: User) => responders.includes(user.id) || reporter || leadresponder).map((user: User) => (
+                                                            <img key={`participant-${user.id}`} src={user.imageUrl} className='w-6 h-6 rounded-full' alt={`${user.firstName} ${user.lastName}`} />
+                                                        ))}
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <div className='lg:flex flex-col hidden h-full items-center gap-4 w-80 min-w-80'>
-                                                <div className='gap-3 w-full flex flex-col border-b pb-4 border-neutral-600'>
-                                                    <div className='flex justify-between w-full flex-row gap-4'>
-                                                        <p className='font-medium text-neutral-400'>Lead Responder</p>
-                                                        {userData.filter((user: User) => user.id === leadresponder).map((user: User) => (
-                                                            <div key={`reporter-${user.id}`} className="flex flex-row gap-1">
-                                                                <img src={user.imageUrl || "/loadingimg.jpg"} className='w-6 h-6 rounded-full' alt={`${user.firstName} ${user.lastName}`} />
-                                                                <p>{user.firstName} {user.lastName}</p>
-                                                            </div>
-                                                        ))}
+                                            <div className='gap-3 w-full flex flex-col  border-b pb-4 border-neutral-600'>
+                                                <h2 className='font-semibold text-black dark:text-white'>Related Incidents</h2>
+                                                <div className='flex flex-row gap-1 text-black dark:text-white hover:text-neutral-300 transition-all cursor-pointer'>
+                                                    <svg className='w-4' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M13.0607 8.11097L14.4749 9.52518C17.2086 12.2589 17.2086 16.691 14.4749 19.4247L14.1214 19.7782C11.3877 22.5119 6.95555 22.5119 4.22188 19.7782C1.48821 17.0446 1.48821 12.6124 4.22188 9.87874L5.6361 11.293C3.68348 13.2456 3.68348 16.4114 5.6361 18.364C7.58872 20.3166 10.7545 20.3166 12.7072 18.364L13.0607 18.0105C15.0133 16.0578 15.0133 12.892 13.0607 10.9394L11.6465 9.52518L13.0607 8.11097ZM19.7782 14.1214L18.364 12.7072C20.3166 10.7545 20.3166 7.58872 18.364 5.6361C16.4114 3.68348 13.2456 3.68348 11.293 5.6361L10.9394 5.98965C8.98678 7.94227 8.98678 11.1081 10.9394 13.0607L12.3536 14.4749L10.9394 15.8891L9.52518 14.4749C6.79151 11.7413 6.79151 7.30911 9.52518 4.57544L9.87874 4.22188C12.6124 1.48821 17.0446 1.48821 19.7782 4.22188C22.5119 6.95555 22.5119 11.3877 19.7782 14.1214Z"></path></svg> <p className='font-normal'>Link an incident</p>
+                                                </div>
+                                            </div>
+                                            <div className='gap-3 w-full flex flex-col border-b pb-4 border-neutral-600'>
+                                                <h2 className='font-semibold text-black dark:text-white'>Timestamps</h2>
+                                                <div className='flex flex-col gap-1 w-full'> 
+                                                    <div className='flex flex-row text-black dark:text-neutral-400 justify-between'>
+                                                        <p className='font-normal  text-sm'>Reported at</p>
+                                                        <p className='font-normal'>26/8/24, 13:00</p>
                                                     </div>
-                                                    <div className='flex justify-between w-full flex-row gap-4'>
-                                                        <p className='font-medium text-neutral-400'>Reporter</p>
-                                                        {userData.filter((user: User) => user.id === reporter).map((user: User) => (
-                                                            <div key={`reporter-${user.id}`} className="flex flex-row gap-1">
-                                                                <img src={user.imageUrl || "/loadingimg.jpg"} className='w-6 h-6 rounded-full' alt={`${user.firstName} ${user.lastName}`} />
-                                                                <p>{user.firstName} {user.lastName}</p>
-                                                            </div>
-                                                        ))}
-                                                    </div>
-                                                    <div className='flex justify-between w-full flex-row gap-4'>
-                                                        <p className='font-medium text-neutral-400'>Participants</p>
-                                                        <div className='flex flex-row gap-4'>
-                                                            {userData.filter((user: User) => responders.includes(user.id) || reporter || leadresponder).map((user: User) => (
-                                                                <img key={`participant-${user.id}`} src={user.imageUrl} className='w-6 h-6 rounded-full' alt={`${user.firstName} ${user.lastName}`} />
-                                                            ))}
-                                                        </div>
+                                                    <div className='flex flex-row text-black dark:text-neutral-400 justify-between'>
+                                                        <p className='font-normal text-sm'>Identified at</p>
+                                                        <p className='font-normal'>26/8/24, 13:20</p>
                                                     </div>
                                                 </div>
-                                                <div className='gap-3 w-full flex flex-col  border-b pb-4 border-neutral-600'>
-                                                    <h2 className='font-semibold'>Related Incidents</h2>
-                                                    <div className='flex flex-row gap-1 hover:text-neutral-300 transition-all cursor-pointer'>
-                                                        <svg className='w-4' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M13.0607 8.11097L14.4749 9.52518C17.2086 12.2589 17.2086 16.691 14.4749 19.4247L14.1214 19.7782C11.3877 22.5119 6.95555 22.5119 4.22188 19.7782C1.48821 17.0446 1.48821 12.6124 4.22188 9.87874L5.6361 11.293C3.68348 13.2456 3.68348 16.4114 5.6361 18.364C7.58872 20.3166 10.7545 20.3166 12.7072 18.364L13.0607 18.0105C15.0133 16.0578 15.0133 12.892 13.0607 10.9394L11.6465 9.52518L13.0607 8.11097ZM19.7782 14.1214L18.364 12.7072C20.3166 10.7545 20.3166 7.58872 18.364 5.6361C16.4114 3.68348 13.2456 3.68348 11.293 5.6361L10.9394 5.98965C8.98678 7.94227 8.98678 11.1081 10.9394 13.0607L12.3536 14.4749L10.9394 15.8891L9.52518 14.4749C6.79151 11.7413 6.79151 7.30911 9.52518 4.57544L9.87874 4.22188C12.6124 1.48821 17.0446 1.48821 19.7782 4.22188C22.5119 6.95555 22.5119 11.3877 19.7782 14.1214Z"></path></svg> <p className='font-normal'>Link an incident</p>
-                                                    </div>
-                                                </div>
-                                                <div className='gap-3 w-full flex flex-col border-b pb-4 border-neutral-600'>
-                                                    <h2 className='font-semibold'>Timestamps</h2>
-                                                    <div className='flex flex-col gap-1 w-full'> 
-                                                        <div className='flex flex-row justify-between'>
-                                                            <p className='font-normal text-neutral-400 text-sm'>Reported at</p>
-                                                            <p className='font-normal'>26/8/24, 13:00</p>
-                                                        </div>
-                                                        <div className='flex flex-row justify-between'>
-                                                            <p className='font-normal text-neutral-400 text-sm'>Identified at</p>
-                                                            <p className='font-normal'>26/8/24, 13:20</p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div className='gap-3 w-full flex flex-col pb-4'>
-                                                    <textarea className='resize-y border bg-transparent rounded-md px-2 min-h-[40px]' placeholder='Incident Notes' value={filteredIncident?.description} />
-                                                </div>
+                                            </div>
+                                            <div className='gap-3 w-full flex flex-col pb-4'>
+                                                <h2 className='font-semibold text-black dark:text-white'>Incident Notes</h2>
+                                                <textarea className='resize-y border bg-transparent text-black dark:text-white rounded-md px-2 min-h-[40px]' placeholder='Incident Notes' value={filteredIncident?.description} />
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
+                        {isModalOpen && ReactDOM.createPortal(
+                            <LeadResponderchange id={params._incidentid} projectid={params._id} onClose={handleClose} />,
+                            document.getElementById('modal-root')!
+                        )}
+                        {isPriorityModalOpen &&
+                            ReactDOM.createPortal(
+                            <IncidentPrioritychange 
+                                taskPriorityold={priority}
+                                id={params._incidentid} 
+                                projectid={params._id} 
+                                onClose={handlePriorityClose} 
+                            />,
+                            document.getElementById('modal-root')!
+                            )
+                        }
+                        {isProcessModalOpen &&
+                            ReactDOM.createPortal(
+                            <IncidentProcesschange 
+                                taskProcessold={response}
+                                id={params._incidentid} 
+                                projectid={params._id} 
+                                onClose={handleProcessClose} 
+                            />,
+                            document.getElementById('modal-root')!
+                            )
+                        }
                     </div>
                 </div>
+                </div>
+            </div>
+            </div>
         </>
-    )
-}
+    )};

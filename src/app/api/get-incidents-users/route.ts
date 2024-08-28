@@ -8,7 +8,6 @@ export async function GET(request: NextResponse) {
   const { searchParams } = new URL(request.url);
   const userIds = searchParams.get("userIds")?.split(',');
 
-
   if (!userIds) {
     return NextResponse.json({ error: "Invalid userIds" }, { status: 400 });
   }
@@ -23,16 +22,21 @@ export async function GET(request: NextResponse) {
       try {
         // Fetch the user data from Clerk API
         const user = await clerkClient.users.getUser(id);
-        // Cache the user data
-        userCache.set(id, user);
-        // Return only the desired fields
-        return {
+        
+        // Filter the user data to return only the desired fields
+        const filteredUser = {
           firstName: user.firstName,
           lastName: user.lastName,
           id: user.id,
           email: user.emailAddresses[0]?.emailAddress,
           imageUrl: user.imageUrl
         };
+
+        // Cache the filtered user data
+        userCache.set(id, filteredUser);
+        
+        // Return the filtered user data
+        return filteredUser;
       } catch (error) {
         console.warn(`User with ID ${id} not found. Skipping this user.`);
         // Return null or some indication that the user wasn't found

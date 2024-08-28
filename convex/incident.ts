@@ -83,3 +83,61 @@ export const timestamps = mutation({
     return timestamp;
   },
 })
+
+// edit lead responder
+export const editLeadResponder = mutation({
+  args: {
+    incidentid: v.string(),
+    leadresponder: v.string(),
+  },
+  handler: async (ctx, { incidentid, leadresponder }: {incidentid: any, leadresponder: any}) => {
+    const updates = {
+      ...(leadresponder ? { leadresponder } : {}),
+    };
+
+    if (Object.keys(updates).length > 0) {
+      await ctx.db.patch(incidentid, updates);
+      return updates;
+    } else {
+      return null;
+    }
+  },
+});
+
+export const editPriority = mutation({
+  args: {
+    incidentid: v.string(),
+    priority: v.string(),
+  },
+  handler: async (ctx, { incidentid, priority }: {incidentid: any, priority: any}) => {
+    const updates = {
+      ...(priority ? { priority } : {}),
+    };
+
+    if (Object.keys(updates).length > 0) {
+      await ctx.db.patch(incidentid, updates);
+      return updates;
+    } else {
+      return null;
+    }
+  },
+});
+
+export const editprocess = mutation({
+  args: {
+    incidentid: v.string(),
+    process: v.string(),
+  },
+  handler: async (ctx, { incidentid, process }: {incidentid: any, process: any}) => {
+    const updates = {
+      ...(process ? { process } : {}),
+    };
+
+    if (Object.keys(updates).length > 0) {
+      await ctx.db.patch(incidentid, updates);
+      return updates;
+    } else {
+      return null;
+    }
+  },
+});
