@@ -96,6 +96,7 @@ export default function CommentBoxer({ taskId }: { taskId: any }) {
               <img
                   src={commenterData[reply.userId]?.imageUrl || '/default-avatar.png'} // Provide a fallback image
                   alt={`${commenterData[reply.userId]?.firstName || 'Unknown'} ${commenterData[reply.userId]?.lastName || ''}`}
+                  className="w-8 h-8 rounded-full"
                 />
                 <h2 className="font-semibold text-xs">
                   {commenterData[reply.userId]?.firstName || 'Unknown'} {commenterData[reply.userId]?.lastName || ''}
