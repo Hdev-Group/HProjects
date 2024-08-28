@@ -16,18 +16,23 @@ const LeadResponderchange = ({ onClose, id, projectid }) => {
   const addTimeStamps = useMutation(api.incident.timestamps);
   const addlog = useMutation(api.incidentlogs.add);
   const logger = useMutation(api.updater.logger);
-  console.log(id)
-  const [currentpage, setCurrentPage] = useState("1");
+  console.log(taskAssignee);
 
   const handleFormSubmitReal = useCallback(async (e) => {
     e.preventDefault();
+    console.log(taskAssignee);
     
     if (!userId) {
       console.error('User is not authenticated');
       return;
     }
-
+  
     try {
+      console.log('Adding Lead Responder');
+      if (!taskAssignee) {
+        console.error('Task Assignee is null or empty');
+        return;
+      }
       await addLeadResponder({
         incidentid: id,
         leadresponder: taskAssignee,
@@ -37,14 +42,14 @@ const LeadResponderchange = ({ onClose, id, projectid }) => {
         incidentid: id,
         action: 'LeadResponderChanged',
         description: taskAssignee,
-      })
+      });
   
       onClose(); // Close the modal after successful submission
       // take them to the incident page
     } catch (error) {
       console.error('Error adding incident:', error);
     }
-  }, [id, onClose]);
+  }, [id, onClose, taskAssignee, addLeadResponder, addlog, userId]);
 
   const handleCloseModal = () => {
     if (taskAssignee) {

@@ -1,10 +1,10 @@
 import { clerkClient } from "@clerk/nextjs/server";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 // Create a cache object to store the user data
 const userCache = new Map<string, any>();
 
-export async function GET(request: NextResponse) {
+export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const userIds = searchParams.get("userIds")?.split(',');
 

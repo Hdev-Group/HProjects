@@ -5,6 +5,7 @@ import { useMutation } from 'convex/react';
 import { api } from '../../../convex/_generated/api';
 import ExitModal from '../modals/exit';
 import IncidentProcess from '../dropdowns/IncidentProcess';
+import { timestamps } from '../../../convex/incident';
 
 const IncidentProcesschange = ({ onClose, id, projectid, taskProcessold }) => {
   const { userId, isLoaded, isSignedIn } = useAuth();
@@ -21,7 +22,6 @@ const IncidentProcesschange = ({ onClose, id, projectid, taskProcessold }) => {
       return;
     }
 
-    console.log('Task Priority before API call:', taskProcess);
 
     if (!taskProcess) {
       console.error('Task Priority is null or empty');

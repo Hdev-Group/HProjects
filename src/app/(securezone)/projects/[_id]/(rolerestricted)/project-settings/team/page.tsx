@@ -121,9 +121,7 @@ export default function ProjectSettings({ params }: { params: { _id: string } })
     const [status, setTaskStatus] = useState<string>(() => {
       return rolefinder?.role || '';
     });
-    console.log(user);
     const email = user?.email;
-    console.log(email);
 
     useEffect(() => {
       if (status !== rolefinder?.role) {

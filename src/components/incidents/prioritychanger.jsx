@@ -22,7 +22,6 @@ const IncidentPrioritychange = ({ onClose, id, projectid, taskPriorityold }) => 
       return;
     }
 
-    console.log('Task Priority before API call:', taskPriority);
 
     if (!taskPriority) {
       console.error('Task Priority is null or empty');

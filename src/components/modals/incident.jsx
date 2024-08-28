@@ -52,7 +52,6 @@ const NewIncidentModal = ({ onClose, id }) => {
       });
 
       setincidentid(response);
-      console.log(response);
 
       if (response){
         await addTimeStamps({

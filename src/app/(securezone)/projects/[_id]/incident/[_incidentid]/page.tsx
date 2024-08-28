@@ -232,7 +232,6 @@ function SummarySender() {
 function NavMenu({ currentpage, _id, incidentid }: any) {
     const router = useRouter();
 
-    console.log(currentpage);
 
     function handleChangePage(page: string) {
         router.push(`/projects/${_id}/incident/${incidentid}/?tab=${page}`);
@@ -264,6 +263,11 @@ function NavMenu({ currentpage, _id, incidentid }: any) {
     );
 }
 
+
+function firstlettercapital(string: string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
 export default function IncidentEr({ params }: { params: { _id: string; _incidentid: string; slug: string[] } }) {
     const { userId, isLoaded, isSignedIn } = useAuth();
     const { user } = useUser();
@@ -281,11 +285,9 @@ export default function IncidentEr({ params }: { params: { _id: string; _inciden
     const currentpage = searchParams.get('tab');
     // set the active page to the current page
     const [activePage, setActivePage] = useState(currentpage || "overview");
-    console.log(currentpage);
     const filteredIncident = incident?.find((incident: any) => incident._id === params._incidentid);
     const incidentlogs = useQuery(api.incidentlogs.get);
     const incidentlog = incidentlogs?.filter((log: any) => log.incidentid === params._incidentid);
-    console.log(filteredIncident);
     const incidenttitle = filteredIncident?.title;
     const response = filteredIncident?.process;
     const priority = filteredIncident?.priority;
@@ -297,7 +299,6 @@ export default function IncidentEr({ params }: { params: { _id: string; _inciden
     const handlePriorityClose = () => setIsPriorityModalOpen(false);
     const handleProcessOpen = () => setIsProcessModalOpen(true);
     const handleProcessClose = () => setIsProcessModalOpen(false);
-    console.log(incidentlog)
     const time = filteredIncident?._creationTime;
 
     const leadresponder = filteredIncident?.leadresponder;
@@ -305,8 +306,7 @@ export default function IncidentEr({ params }: { params: { _id: string; _inciden
     const responders = filteredIncident?.responders || [];
 
     const allUserIds = [leadresponder, reporter, ...responders].filter(Boolean).join(',');
-    console.log(allUserIds);
-
+    
     useEffect(() => {
         if (!isLoaded || !projectsholder) return;
 
@@ -365,6 +365,12 @@ export default function IncidentEr({ params }: { params: { _id: string; _inciden
         setIsModalOpen(false);
     };
 
+    const statusOrder = ['investigating', 'fixing', 'monitoring', 'resolved'];
+    const uniqueDescriptions = new Set();
+
+    const sortedLogs = incidentlog?.sort((a: any, b: any) => {
+        return statusOrder.indexOf(a.description) - statusOrder.indexOf(b.description);
+    });
 
     return (
         <>
@@ -408,10 +414,10 @@ export default function IncidentEr({ params }: { params: { _id: string; _inciden
                                     </div>
                                 </div>
                             </div>
-                            <div className='w-full items-center flex justify-center overflow-y-scroll  h-full'>
-                                <div className='w-full max-w-[1447px] px-3 h-full justify-center'>
+                            <div className='w-full items-center flex justify-center h-full'>
+                                <div className='w-full max-w-[1447px] px-3 h-full justify-center '>
                                     <div className='flex-row flex justify-center mt-10 w-full h-full gap-10'>
-                                        <div className='flex flex-col h-full gap-4 w-full '>
+                                        <div className='flex flex-col h-full gap-4 w-full scroll-pb-20 pb-[20rem] overflow-y-scroll'>
                                             {
                                                 response !== "investigation" && SummarySender()
                                             }
@@ -419,23 +425,34 @@ export default function IncidentEr({ params }: { params: { _id: string; _inciden
                                                 <NavMenu currentpage={activePage} _id={params._id} incidentid={params._incidentid} />
                                             </div>
                                             <div>
-                                                {activePage === "overview"  ? (
-                                                    <div className='flex flex-col w-full h-full'>
-                                                        {   
-                                                            incidentlog?.reverse()?.map((log: any, index: number) => {
-                                                                switch (log.action) {
-                                                                    case "LeadResponderChanged":
-                                                                        return <LeadResponder key={index} log={log} />;
-                                                                    case "StatusChanged":
-                                                                        return <StatusChanges key={index} log={log} />;
-                                                                    case "PriorityChanged":
-                                                                        return <PriorityChanges key={index} log={log} />;
-                                                                    default:
-                                                                        return null; 
-                                                                }
-                                                            })}
-                                                        <FirstSend firstchild={true} reporter={userData.filter((user: User) => user.id === reporter)} incidentstarted={filteredIncident?._creationTime} incidentdetails={filteredIncident} />
-                                                    </div>
+                                            {activePage === "overview" ? (
+                                                <div className='flex flex-col w-full h-full'>
+                                                    {
+                                                    // Ensure incidentlog is defined and sort it by _creationTime before mapping
+                                                    incidentlog?.sort((a: any, b: any) => {
+                                                        const dateA = new Date(a._creationTime);
+                                                        const dateB = new Date(b._creationTime);
+                                                        return dateA.getTime() - dateB.getTime();
+                                                    }).reverse().map((log: any, index: number) => {
+                                                        switch (log.action) {
+                                                        case "LeadResponderChanged":
+                                                            return <LeadResponder key={index} log={log} />;
+                                                        case "StatusChanged":
+                                                            return <StatusChanges key={index} log={log} />;
+                                                        case "PriorityChanged":
+                                                            return <PriorityChanges key={index} log={log} />;
+                                                        default:
+                                                            return null; 
+                                                        }
+                                                    })
+                                                    }
+                                                    <FirstSend
+                                                    firstchild={true}
+                                                    reporter={userData.filter((user: User) => user.id === reporter)}
+                                                    incidentstarted={filteredIncident?._creationTime}
+                                                    incidentdetails={filteredIncident}
+                                                    />
+                                                </div>
                                                 ) : null}
                                                 {activePage === "timeline" && (
                                                     <div className='flex flex-col  w-full h-full'>
@@ -486,14 +503,25 @@ export default function IncidentEr({ params }: { params: { _id: string; _inciden
                                             <div className='gap-3 w-full flex flex-col border-b pb-4 border-neutral-600'>
                                                 <h2 className='font-semibold text-black dark:text-white'>Timestamps</h2>
                                                 <div className='flex flex-col gap-1 w-full'> 
-                                                    <div className='flex flex-row text-black dark:text-neutral-400 justify-between'>
-                                                        <p className='font-normal  text-sm'>Reported at</p>
-                                                        <p className='font-normal'>26/8/24, 13:00</p>
-                                                    </div>
-                                                    <div className='flex flex-row text-black dark:text-neutral-400 justify-between'>
-                                                        <p className='font-normal text-sm'>Identified at</p>
-                                                        <p className='font-normal'>26/8/24, 13:20</p>
-                                                    </div>
+                                                    {    
+                                                        sortedLogs?.map((log: any, index: number) => {
+                                                            // Check if the log action is 'StatusChanged' and the description is unique
+                                                            if (log.action === 'StatusChanged' && !uniqueDescriptions.has(log.description)) {
+                                                                // Add the description to the Set
+                                                                uniqueDescriptions.add(log.description);
+                                                                
+                                                                return (
+                                                                    <div key={index} className='flex flex-row gap-2'>
+                                                                        <p className='font-normal text-neutral-400'>{firstlettercapital(log.description)} at</p>
+                                                                        <p className='font-semibold text-black dark:text-white'>{timesince(new Date(log?._creationTime))}</p>
+                                                                    </div>
+                                                                );
+                                                            }
+
+                                                            // Return null if the log description is a duplicate
+                                                            return null;
+                                                        })
+                                                    }
                                                 </div>
                                             </div>
                                             <div className='gap-3 w-full flex flex-col pb-4'>
@@ -536,3 +564,14 @@ export default function IncidentEr({ params }: { params: { _id: string; _inciden
             </div>
         </>
     )};
+
+    function timesince(date: Date) {
+        const timenow = date.getTime();
+        const now = new Date().getTime();
+        const diff = now - timenow;
+
+        // now lets format it to be like 1/2/2022 12:00:00
+        const dateobj = new Date(date);
+        return dateobj.toLocaleString();
+        
+    }

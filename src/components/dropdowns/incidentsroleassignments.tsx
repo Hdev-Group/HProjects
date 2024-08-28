@@ -55,7 +55,6 @@ export default function RolerAssigneeSelect({
         ].filter((id) => id && id.trim() !== "");
 
         // Log the user IDs to debug
-        console.log("User IDs to fetch:", userIds);
 
         try {
           // Fetch user data for each userId
@@ -73,7 +72,6 @@ export default function RolerAssigneeSelect({
           setUsers(fetchedUsers);
 
           // Log out fetched users to debug
-          console.log("Fetched Users:", fetchedUsers);
         } catch (error) {
           console.error("Error fetching user data:", error);
           setUsers([]);

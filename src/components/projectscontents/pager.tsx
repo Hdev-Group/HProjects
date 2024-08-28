@@ -264,9 +264,9 @@ export default function PagerEl({ _id, isSidebarClosed }: any) {
       return <PagerOnCall percentage={percentage} time={timeRemaining} paramsmain={paramsmain} />;
     } else if (pagerhold.status === 'break') {
       return <PagerOnBreak percentage={percentage} isSidebarClosed={isSidebarClosed} />;
-    } else if (incidentdatbase.projectid === pagerhold.projectid && incidentdatbase.status === 'active') {
-      return <PagerIncident percentage={percentage} time={timeRemaining} paramsmain={paramsmain} />;
-    }
+    // } else if (incidentdatbase?.projectid === pagerhold.projectid && incidentdatbase?.status === 'active') {
+    //   return <PagerIncident percentage={percentage} time={timeRemaining} paramsmain={paramsmain} />;
+  }
     else 
       return <PagerOff />;
   } else {

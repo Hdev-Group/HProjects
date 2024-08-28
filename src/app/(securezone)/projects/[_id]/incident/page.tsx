@@ -55,6 +55,8 @@ export default function IncidentsPage({ params }: { params: { _id: string } }) {
 
   const title = projectname + ' | Incidents';
 
+  // <AddIncidentButton id={params._id} />
+
   return (
     <>
       <head>
@@ -76,8 +78,12 @@ export default function IncidentsPage({ params }: { params: { _id: string } }) {
               </div>
               </div>
               <div className="flex flex-row justify-between w-full p-5">
-                <div className="flex flex-row gap-4 w-full justify-start items-center">
-                  <AddIncidentButton id={params._id} />
+                <div className="flex flex-row gap-4 w-full h-full justify-center items-center">
+                  <div className="flex flex-col items-center justify-center w-full h-full">
+                    <h2 className="text-3xl font-bold text-gray-400">Coming Soon</h2>
+                    <p className="text-gray-300 font-semibold">Stay tuned for updates!</p>
+                    <p className="text-gray-300">Our engineers are hard at work developing incidents for you. We will let you know when its out!</p>
+                  </div>
                 </div>
                 </div>
               </div>

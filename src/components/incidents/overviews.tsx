@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-function timesince(date: Date) {
+export function timesince(date: Date) {
     const timenow = date.getTime();
     const now = new Date().getTime();
     const diff = now - timenow;
