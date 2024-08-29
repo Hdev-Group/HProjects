@@ -20,7 +20,7 @@ const AddProjectButton = () => {
 
   return (
     <>
-      <button onClick={handleClick}        className="dark:text-white text-black rounded-md p-2 border w-auto hover:bg-blue-700 hover:border-neutral-400 transition-all bg-blue-500 dark:bg-blue-600 "
+      <button onClick={handleClick}        className="dark:text-white text-black rounded-md p-2 border w-60 flex items-center justify-center hover:bg-blue-700 hover:border-neutral-400 transition-all bg-blue-500 dark:bg-blue-600 "
       >
         <span className='md:flex hidden'>Add Project</span>
         <span className='md:hidden font-semibold text-xl'>+</span>

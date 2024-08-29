@@ -32,7 +32,11 @@ export default function RootLayout({
         <html lang="en">
           <head>
             <link rel="icon" href="/favicon.ico" />
-
+            <title>HProjects</title>
+            <meta
+              name="description"
+              content="HProjects, Plan, Build and Push and respond with confidence"
+            />
           </head>
           <body
         className={cn(

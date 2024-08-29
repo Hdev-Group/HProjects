@@ -42,10 +42,13 @@ const NewPagerModal = ({ onClose, id }) => {
     }
     try {
 
-      // calculate it in ms
-      const calctime = Math.floor(new Date(time).getTime());
+      // calculate it in seconds
+      console.log(time);
+      const calctime = new Date(time).getTime();
+      const timestampInSeconds = calctime / 1000;
+      console.log(timestampInSeconds);
 
-      await addPager({ projectid: id.id, userId: taskAssignee, time, calctime: calctime, status: 'active' });
+      await addPager({ projectid: id.id, userId: taskAssignee, time, calctime: timestampInSeconds, status: 'active' });
       onClose();
     } catch (error) {
       console.error('Error adding project:', error);

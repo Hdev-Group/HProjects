@@ -9,6 +9,7 @@ import { BackLog, Todo, InProgress, Done } from '../../components/dropdowns/stat
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import '../../styles/globals.css';
 import './index.css';
+import { ClerkProvider, GoogleOneTap } from '@clerk/nextjs'
 import {
   ContextMenu,
   ContextMenuContent,
@@ -221,7 +222,7 @@ export default function Home() {
               </svg>
             </h1>
           </div>
-          <h1 className='font-bold text-5xl font-sans text-white pushuptext1'>Plan, Build and Push with confidence</h1>
+          <h1 className='font-bold text-5xl font-sans text-white pushuptext1'>Plan, Build, Push and Respond with confidence</h1>
           <p className='font-medium text-sm text-neutral-400 pushuptext2'>
             Build projects and communicate in real time with your team, manage incidents and tasks with ease.
           </p>

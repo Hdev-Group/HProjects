@@ -1,11 +1,15 @@
-import { mutation } from "./_generated/server";
+import { mutation, internalMutation } from "./_generated/server";
 import { v } from "convex/values";
+import { internal } from "./_generated/api";
+import { api } from "./_generated/api";
+
 export const deletePager = mutation({
     args: { 
         _id: v.optional(v.id('pager')),
         userId: v.optional(v.string()),
     },
     handler: async (ctx, args) => {
+
 
         if (!args._id) {
             throw new Error('Missing required field: _id');
@@ -31,6 +35,8 @@ export const add = mutation({
           calctime,
       };
       await ctx.db.insert("pager", pager);
+      console.log(calctime);
+      await ctx.scheduler.runAfter(calctime, api.pageradd.deletePager, { _id: pager._id, userId: pager.userId });
       return pager;
     },
 });
