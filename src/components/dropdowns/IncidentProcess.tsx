@@ -19,11 +19,11 @@ export default function IncidentProcess({ value, onValueChange }: any) {
   return (
     <Select value={value} onValueChange={handleChange}>
       <SelectTrigger>
-        <SelectValue className="px-2" />
+        <SelectValue className="px-2" placeholder="Process" />
       </SelectTrigger>
       <SelectContent className="z-[100000000000000000000000]">
         <SelectGroup>
-          <SelectLabel>Role</SelectLabel>
+          <SelectLabel>Process</SelectLabel>
           <SelectItem value="investigation">Investigation</SelectItem>
           <SelectItem value="fixing">Fixing</SelectItem>
           <SelectItem value="monitoring">Monitoring</SelectItem>

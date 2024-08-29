@@ -43,7 +43,7 @@ export default function PagerEl({ _id, isSidebarClosed }: any) {
   }, []);
 
   // if minus is detected we will remove the pager from the database
-  const deletePager = useMutation(api.pagerdelete.deletePager);
+  const deletePager = useMutation(api.pageradd.deletePager);
 
   useEffect(() => {
     if (pagerhold && timeRemaining.includes('-')) {
@@ -83,7 +83,7 @@ export default function PagerEl({ _id, isSidebarClosed }: any) {
         </div>
       </ContextMenuTrigger>
       <ContextMenuContent>
-        <Link href={`./pager?startpager=true`}>        <ContextMenuItem className='text-green-300 cursor-pointer' onClick={handleClick}>Go on Pager</ContextMenuItem>        </Link>
+        <Link href={`/projects/${encodeURI(_id)}/pager?startpager=true`}>        <ContextMenuItem className='text-green-300 cursor-pointer' onClick={handleClick}>Go on Pager</ContextMenuItem>        </Link>
       </ContextMenuContent>
     </ContextMenu>
     );

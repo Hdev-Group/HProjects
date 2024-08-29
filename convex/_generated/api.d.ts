@@ -33,7 +33,6 @@ import type * as invitegetter from "../invitegetter.js";
 import type * as inviteremove from "../inviteremove.js";
 import type * as messagesender from "../messagesender.js";
 import type * as pageradd from "../pageradd.js";
-import type * as pagerdelete from "../pagerdelete.js";
 import type * as pagerget from "../pagerget.js";
 import type * as pagerupdate from "../pagerupdate.js";
 import type * as pinProject from "../pinProject.js";
@@ -80,7 +79,6 @@ declare const fullApi: ApiFromModules<{
   inviteremove: typeof inviteremove;
   messagesender: typeof messagesender;
   pageradd: typeof pageradd;
-  pagerdelete: typeof pagerdelete;
   pagerget: typeof pagerget;
   pagerupdate: typeof pagerupdate;
   pinProject: typeof pinProject;

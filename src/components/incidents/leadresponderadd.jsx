@@ -16,11 +16,9 @@ const LeadResponderchange = ({ onClose, id, projectid }) => {
   const addTimeStamps = useMutation(api.incident.timestamps);
   const addlog = useMutation(api.incidentlogs.add);
   const logger = useMutation(api.updater.logger);
-  console.log(taskAssignee);
 
   const handleFormSubmitReal = useCallback(async (e) => {
     e.preventDefault();
-    console.log(taskAssignee);
     
     if (!userId) {
       console.error('User is not authenticated');
@@ -28,7 +26,6 @@ const LeadResponderchange = ({ onClose, id, projectid }) => {
     }
   
     try {
-      console.log('Adding Lead Responder');
       if (!taskAssignee) {
         console.error('Task Assignee is null or empty');
         return;
@@ -82,7 +79,7 @@ const LeadResponderchange = ({ onClose, id, projectid }) => {
   return (
     <>
       <div id="outerclickclose" className="absolute top-0 justify-center flex items-center overflow-y-hidden overflow-x-hidden min-h-[100%] h-full w-[100%] bg-neutral-950/40 z-10">
-        <div id='innercloser' className="flex overflow-hidden flex-col zoomin bg--400 md:shadow-lg md:rounded-xl rounded-md border dark:shadow-black bg-neutral-100 dark:bg-neutral-900 h-auto md:w-[30%] w-[100%]">
+        <div id='innercloser' className="flex overflow-hidden flex-col zoomin bg--400 md:shadow-lg md:rounded-lg rounded-md border dark:shadow-black bg-neutral-100 dark:bg-neutral-900 h-auto md:w-[30%] w-[100%]">
           {showExitModal && (
             <ExitModal onClose={() => onClose()} mainholdRemove={() => hideexitmodal()} /> 
           )}
@@ -96,7 +93,7 @@ const LeadResponderchange = ({ onClose, id, projectid }) => {
               <div className='px-4 flex flex-col'>
                 <div className="flex flex-col gap-3">
                   <div className='flex w-full flex-col'>
-                    <label htmlFor="projecttitle" className="text-sm mb-2 font-bold text-black dark:text-white text-dark">Lead Responder <span className='text-neutral-500 text-sm font-normal'>(optional)</span></label>
+                    <label htmlFor="projecttitle" className="text-md mb-2 font-bold text-black dark:text-white text-dark">Lead Responder <span className='text-neutral-500 text-sm font-normal'>(optional)</span></label>
                     <RolerAssigneeSelect
                       id={projectid}
                       value={taskAssignee}

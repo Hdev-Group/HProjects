@@ -11,15 +11,17 @@ export const add = mutation({
         description: v.string(),
         previous: v.optional(v.string()),
         userid: v.optional(v.string()),
+        nextupdate: v.optional(v.string()),
     },
-    handler: async (ctx, { projectid, userid, incidentid, action, description, previous}) => {
+    handler: async (ctx, { projectid,nextupdate, userid, incidentid, action, description, previous}) => {
         const reports = {
             projectid,
             incidentid,
             action,
             description,
             previous,
-            userid
+            userid,
+            nextupdate
         };
 
         const insertedincident = await ctx.db.insert("incidentlogs", reports);

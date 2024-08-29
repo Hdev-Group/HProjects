@@ -1,6 +1,7 @@
 import { query, mutation } from "./_generated/server";
 import { LRUCache } from "lru-cache";
 import { v } from "convex/values";
+import incident from "../src/components/modals/incident";
 
 // Create an LRUCache instance
 const cache = new LRUCache<string, any>({ max: 100 });
@@ -12,25 +13,6 @@ export const get = query({
   },
 });
 
-export const gettimestamp = query({
-  args: {},
-  handler: async (ctx) => {
-    // Check if the result is already in the cache
-    const cacheKey = "get_incidentimestamp";
-    const cachedResult = cache.get(cacheKey);
-    if (cachedResult) {
-      return cachedResult;
-    }
-
-    // If not in cache, fetch the result from the database
-    const result = await ctx.db.query("incidenttimestamps").collect();
-
-    // Store the result in the cache
-    cache.set(cacheKey, result);
-
-    return result;
-  },
-});
 
 export const add = mutation({
   args: {
@@ -78,7 +60,7 @@ export const timestamps = mutation({
       investigating,
     };
 
-    await ctx.db.insert("incidenttimestamps", timestamp);
+    await ctx.db.insert("incidentlogs", timestamp);
 
     return timestamp;
   },
@@ -131,6 +113,51 @@ export const editprocess = mutation({
   handler: async (ctx, { incidentid, process }: {incidentid: any, process: any}) => {
     const updates = {
       ...(process ? { process } : {}),
+    };
+
+    if (Object.keys(updates).length > 0) {
+      await ctx.db.patch(incidentid, updates);
+      return updates;
+    } else {
+      return null;
+    }
+  },
+});
+
+export const summaryupdate = mutation({
+  args: {
+    projectid: v.string(),
+    incidentid: v.string(),
+    summary: v.string(),
+    responders: v.array(v.string()),
+  },
+  handler: async (ctx, { incidentid, summary, responders }: {incidentid: any, summary: any, responders: any}) => {
+    const updates = {
+      ...(summary ? { summary } : {}),
+      ...(responders ? { responders } : {}),
+    };
+
+    if (Object.keys(updates).length > 0) {
+      await ctx.db.patch(incidentid, updates);
+      return updates;
+    } else {
+      return null;
+    }
+  },
+});
+
+export const updater = mutation({
+  args: {
+    incidentid: v.string(),
+    process: v.string(),
+    priority: v.string(),
+    responders: v.array(v.string()),
+  },
+  handler: async (ctx, { incidentid, process, priority, responders }: {incidentid: any, process: any, priority: any, responders: any}) => {
+    const updates = {
+      ...(process ? { process } : {}),
+      ...(priority ? { priority } : {}),
+      ...(responders ? { responders } : {}),
     };
 
     if (Object.keys(updates).length > 0) {

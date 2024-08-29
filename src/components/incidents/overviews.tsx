@@ -44,7 +44,45 @@ async function getuserdata(userid: string) {
 }
 
 function firstlettercapital(string: string) {
-    return string.charAt(0).toUpperCase() + string.slice(1);
+    return string?.charAt(0).toUpperCase() + string?.slice(1);
+}
+
+export function IncidentUpdate({ log }: any): JSX.Element {
+    const [userData, setUserData] = useState<any>(null); 
+    const [error, setError] = useState<any>(null); 
+
+    useEffect(() => {
+        async function fetchData() {
+            try {
+                const data = await getuserdata(log?.userid);
+                setUserData(data);
+            } catch (error) {
+                setError(error);
+                console.error(error);
+            }
+        }
+
+        fetchData();
+    }, [log?.userid]);
+    return(
+        <div className="w-full h-auto gap-2 flex-row flex">
+            <div className="flex flex-col items-center">
+                <img className="w-8 rounded-full h-8" src={userData?.imageUrl}></img>
+                <div className="border-l h-full" />
+            </div>
+            <div className="flex flex-col h-full pb-9 w-full gap-4 justify-center">
+                <div className="flex flex-row items-center gap-3 ml-2">
+                    <p className="text-md font-normal text-black dark:text-white"><span className="font-semibold">{userData?.firstName} {userData?.lastName}</span> provided an update</p>
+                    <p className="text-md font-normal text-neutral-400">{timesince(new Date(log._creationTime))} ago</p>
+                </div>
+                <div className="flex flex-col bg-neutral-900/20 rounded-md gap-1 py-3 px-4 ml-2">
+                    <p className="text-neutral-300 font-semibold gap-4 flex">
+                        {log.description}
+                    </p>
+                </div>
+            </div>
+        </div>
+    )
 }
 
 export function FirstSend({ firstchild, reporter, incidentdetails, incidentstarted }: { firstchild?: boolean; reporter: any; incidentdetails: any, incidentstarted: any }) {
@@ -64,7 +102,7 @@ export function FirstSend({ firstchild, reporter, incidentdetails, incidentstart
     return (
         <div className="w-full h-auto gap-2 flex-row flex">
             <div className="flex flex-col items-center">
-                <img className="w-8 rounded-full" src={reportera?.imageUrl} alt={`${reportera?.firstName} ${reportera?.lastName}`} />
+                <img className="w-8 h-8 rounded-full" src={reportera?.imageUrl} alt={`${reportera?.firstName} ${reportera?.lastName}`} />
                 {firstchild !== true && <div className="border-l h-full" />}
             </div>
             <div className="flex flex-col h-full pb-9 w-full gap-4 justify-center">

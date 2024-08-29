@@ -51,7 +51,7 @@ const IncidentProcesschange = ({ onClose, id, projectid, taskProcessold }) => {
   }, [id, onClose, taskProcess, userId, addlog, projectid]);
 
   const handleCloseModal = () => {
-    if (taskProcess) {
+    if (taskProcess !== taskProcessold) {
       setShowExitModal(true); 
     } else {
       onClose();
@@ -80,7 +80,7 @@ const IncidentProcesschange = ({ onClose, id, projectid, taskProcessold }) => {
 
   return (
     <div id="outerclickclose" className="absolute top-0 justify-center flex items-center overflow-y-hidden overflow-x-hidden min-h-[100%] h-full w-[100%] bg-neutral-950/40 z-10">
-      <div id='innercloser' className="flex overflow-hidden flex-col zoomin bg--400 md:shadow-lg md:rounded-xl rounded-md border dark:shadow-black bg-neutral-100 dark:bg-neutral-900 h-auto md:w-[30%] w-[100%]">
+      <div id='innercloser' className="flex overflow-hidden flex-col zoomin bg--400 md:shadow-lg md:rounded-lg rounded-md border dark:shadow-black bg-neutral-100 dark:bg-neutral-900 h-auto md:w-[30%] w-[100%]">
         {showExitModal && (
           <ExitModal onClose={onClose} mainholdRemove={hideexitmodal} /> 
         )}
@@ -94,7 +94,7 @@ const IncidentProcesschange = ({ onClose, id, projectid, taskProcessold }) => {
           <div className='px-4 flex flex-col'>
             <div className="flex flex-col gap-3">
               <div className='flex w-full flex-col' role='radiogroup'>
-                <label htmlFor="projecttitle" className="text-sm mb-2 font-bold text-black dark:text-white text-dark">Incident Category</label>
+                <label htmlFor="projecttitle" className="text-md mb-2 font-bold text-black dark:text-white text-dark">Incident Category</label>
                 <div className='flex flex-col w-full border rounded-xl'>
                   <div className='flex flex-row items-center gap-4 border-b px-4 py-2'>
                     <button className='border h-4 w-4 border-neutral-700 rounded-full' role='radio' value="ongoing"/><p className='font-semibold'>Ongoing Incident</p>
@@ -108,11 +108,27 @@ const IncidentProcesschange = ({ onClose, id, projectid, taskProcessold }) => {
                 </div>
               </div>
                 <div className='flex w-full flex-col'>
-                    <label htmlFor="projecttitle" className="text-sm mb-2 font-bold text-black dark:text-white text-dark">Incident Status</label>
+                    <label htmlFor="projecttitle" className="text-md mb-2 font-bold text-black dark:text-white text-dark">Incident Status</label>
                     <IncidentProcess
                     value={taskProcess}
                     onValueChange={setTaskProcess}
                     />
+                    <p className='text-sm text-neutral-400'>
+                    {taskProcess === "investigation" && (
+                      <span>Something has gone wrong. We are investigating what has.</span>
+                    )
+                  }
+                   { taskProcess === "fixing" && (
+                      <span>We have found the issue and working on a fix.</span>
+                    )
+                    } {taskProcess === "monitoring" && (
+                      <span>We have fixed the issue and are monitoring the situation.</span>
+                    )
+                    } {taskProcess === "resolved" && (
+                      <span>The issue has been resolved.</span>
+                    )
+                    }
+                    </p>
                 </div>
             </div>
           </div>

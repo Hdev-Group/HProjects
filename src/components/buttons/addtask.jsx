@@ -31,9 +31,10 @@ const AddTaskButton = (id) => {
     <>
       <button
         onClick={handleClick}
-        className="dark:text-white text-black rounded-md p-2 border w-60 hover:bg-blue-700 hover:border-neutral-400 transition-all bg-blue-500 dark:bg-blue-600 "
+        className="dark:text-white text-black rounded-md p-2 px-4 border w-auto hover:bg-blue-700 hover:border-neutral-400 transition-all bg-blue-500 dark:bg-blue-600 "
       >
-        Add Task
+        <span className='md:flex hidden'>Add Task</span>
+        <span className='md:hidden font-semibold text-xl'>+</span>
       </button>
       {isModalOpen && ReactDOM.createPortal(
         <NewTaskModal id={id} onClose={handleClose} />,

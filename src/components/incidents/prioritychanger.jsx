@@ -51,7 +51,7 @@ const IncidentPrioritychange = ({ onClose, id, projectid, taskPriorityold }) => 
   }, [id, onClose, taskPriority, userId, editPriority, addlog, projectid]);
 
   const handleCloseModal = () => {
-    if (taskPriority) {
+    if (taskPriority !== taskPriorityold) {
       setShowExitModal(true);
     } else {
       onClose();
@@ -76,7 +76,7 @@ const IncidentPrioritychange = ({ onClose, id, projectid, taskPriorityold }) => 
 
   return (
     <div id="outerclickclose" className="absolute top-0 justify-center flex items-center overflow-y-hidden overflow-x-hidden min-h-[100%] h-full w-[100%] bg-neutral-950/40 z-10">
-      <div id='innercloser' className="flex overflow-hidden flex-col zoomin bg--400 md:shadow-lg md:rounded-xl rounded-md border dark:shadow-black bg-neutral-100 dark:bg-neutral-900 h-auto md:w-[30%] w-[100%]">
+      <div id='innercloser' className="flex overflow-hidden flex-col zoomin bg--400 md:shadow-lg md:rounded-lg rounded-md border dark:shadow-black bg-neutral-100 dark:bg-neutral-900 h-auto md:w-[30%] w-[100%]">
         {showExitModal && (
           <ExitModal onClose={onClose} mainholdRemove={hideexitmodal} /> 
         )}
@@ -90,12 +90,40 @@ const IncidentPrioritychange = ({ onClose, id, projectid, taskPriorityold }) => 
           <div className='px-4 flex flex-col'>
             <div className="flex flex-col gap-3">
               <div className='flex w-full flex-col'>
-                <label htmlFor="projecttitle" className="text-sm mb-2 font-bold text-black dark:text-white text-dark">Incident Priority</label>
+                <label htmlFor="projecttitle" className="text-md mb-2 font-bold text-black dark:text-white text-dark">Incident Priority</label>
                 <PriorityResponse 
                   required
                   value={taskPriority}
                   onChange={setTaskPriority} 
                 />
+                {taskPriority === 'low' && (
+                      <span className='text-neutral-300 mt-1 text-xs'>
+                        Issues with minor impact. These can be resolved within hours. Most customers are unlikely to notice any problems. 
+                        <br />
+                        Example: Minor UI bug in an admin panel.
+                      </span>
+                    )}
+                    {taskPriority === 'medium' && (
+                      <span className='text-yellow-300 mt-1 text-xs'>
+                        Issues causing moderate service disruption. These may require prompt attention but are not urgent. 
+                        <br />
+                        Example: Degraded performance in a non-critical service.
+                      </span>
+                    )}
+                    {taskPriority === 'high' && (
+                      <span className='text-red-300 mt-1 text-xs'>
+                        Issues causing significant service disruption. Immediate action is required, though there may be workarounds to mitigate the impact.
+                        <br />
+                        Example: A key microservice is failing, impacting a subset of users.
+                      </span>
+                    )}
+                    {taskPriority === 'critical' && (
+                      <span className='text-red-400 mt-1 text-xs'>
+                        Critical issues causing severe service disruption. Immediate response is essential.
+                        <br />
+                        Example: Data breach or full system outage affecting all users.
+                      </span>
+                    )}
               </div>
             </div>
           </div>

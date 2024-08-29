@@ -3,16 +3,18 @@ import { useEffect, useState, useCallback, use } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useAuth } from "@clerk/nextjs";
 import { useUser } from "@clerk/clerk-react";
-import { useQuery } from "convex/react";
+import { useMutation, useQuery } from "convex/react";
 import { api } from "../../../../../../../convex/_generated/api";
 import SideBar from "../../../../../../components/projectscontents/sidebar";
 import { Critical, High, Medium, Low } from "../../../../../../components/dropdowns/priorities/critical";
-import { FirstSend, StatusChanges, LeadResponder, PriorityChanges } from "../../../../../../components/incidents/overviews";
+import { FirstSend, StatusChanges, LeadResponder, PriorityChanges, IncidentUpdate } from "../../../../../../components/incidents/overviews";
 import AddLeadResponder from "../../../../../../components/buttons/addleadresponder";
 import ReactDOM from 'react-dom';
 import LeadResponderchange from '../../../../../../components/incidents/leadresponderadd';
 import IncidentPrioritychange from '../../../../../../components/incidents/prioritychanger';
 import IncidentProcesschange from '../../../../../../components/incidents/incidentprocess';
+import UpdateSender from '../../../../../../components/incidents/updates';
+
 
 type User = {
     id: string;
@@ -210,26 +212,7 @@ function TimeOngoing({ time }: { time: any }) {
   );
 }
 
-function SummarySender() {
-  return (
-    <div className="w-full flex flex-row justify-between gap-2 hover:bg-neutral-700/20 border rounded-lg px-4 py-4 dark:hover:shadow-neutral-800 hover:shadow-neutral-300 transition-all shadow-md">
-      <div className="flex flex-row gap-2 items-center">
-        <svg className="w-6 text-neutral-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M12.8995 6.85453L17.1421 11.0972L7.24264 20.9967H3V16.754L12.8995 6.85453ZM14.3137 5.44032L16.435 3.319C16.8256 2.92848 17.4587 2.92848 17.8492 3.319L20.6777 6.14743C21.0682 6.53795 21.0682 7.17112 20.6777 7.56164L18.5563 9.68296L14.3137 5.44032Z"></path>
-        </svg>
-        <p className="font-semibold text-neutral-400">Summary not added</p>
-      </div>
-      <button className="flex flex-row font-medium gap-2 items-center bg-neutral-100 dark:bg-neutral-800 dark:text-white text-black px-2 py-1 rounded-md hover:bg-neutral-200 dark:hover:bg-neutral-700 transition-all">
-        <svg className="w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M11 11V5H13V11H19V13H13V19H11V13H5V11H11Z"></path>
-        </svg>
-        Add Summary
-      </button>
-    </div>
-  );
-}
-
-function NavMenu({ currentpage, _id, incidentid }: any) {
+function NavMenu({ currentpage, _id, incidentid, onOpenModalEdit }: { currentpage: string, _id: string, incidentid: string, onOpenModalEdit: () => void }) {
     const router = useRouter();
 
 
@@ -253,7 +236,7 @@ function NavMenu({ currentpage, _id, incidentid }: any) {
                 </div>
             </div>
             </div>
-            <button className="flex flex-row font-medium dark:hover:text-neutral-100 hover:text-neutral-800 items-center dark:text-neutral-400 text-black px-2 py-1 rounded-md transition-all">
+            <button onClick={onOpenModalEdit} className="flex flex-row font-medium dark:hover:text-neutral-100 hover:text-neutral-800 items-center dark:text-neutral-400 text-black px-2 py-1 rounded-md transition-all">
                 <svg className="w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M11 11V5H13V11H19V13H13V19H11V13H5V11H11Z"></path>
                 </svg>
@@ -265,25 +248,25 @@ function NavMenu({ currentpage, _id, incidentid }: any) {
 
 
 function firstlettercapital(string: string) {
-    return string.charAt(0).toUpperCase() + string.slice(1);
+    return string?.charAt(0)?.toUpperCase() + string?.slice(1);
 }
+
 
 export default function IncidentEr({ params }: { params: { _id: string; _incidentid: string; slug: string[] } }) {
     const { userId, isLoaded, isSignedIn } = useAuth();
     const { user } = useUser();
     const router = useRouter();
-    const searchParams = new URLSearchParams(window.location.search); // Updated this part
+    const searchParams = new URLSearchParams(window.location.search);
     const projectsholder = useQuery(api.projectsget.get);
     const [activeSection, setActiveSection] = useState("incident");
 
     const project = projectsholder?.find((project: Project) => project._id === params._id);
+    const summarychanger = useMutation(api.incident.summaryupdate);
     const projectname = project?.projectName;
     const projectUserId = project?.userId;
     const incident = useQuery(api.incident.get);
 
-    // Get the current page from the URL
     const currentpage = searchParams.get('tab');
-    // set the active page to the current page
     const [activePage, setActivePage] = useState(currentpage || "overview");
     const filteredIncident = incident?.find((incident: any) => incident._id === params._incidentid);
     const incidentlogs = useQuery(api.incidentlogs.get);
@@ -291,6 +274,7 @@ export default function IncidentEr({ params }: { params: { _id: string; _inciden
     const incidenttitle = filteredIncident?.title;
     const response = filteredIncident?.process;
     const priority = filteredIncident?.priority;
+    const summary = filteredIncident?.summary;
     const [userData, setUserData] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isPriorityModalOpen, setIsPriorityModalOpen] = useState<boolean>(false);
@@ -299,6 +283,9 @@ export default function IncidentEr({ params }: { params: { _id: string; _inciden
     const handlePriorityClose = () => setIsPriorityModalOpen(false);
     const handleProcessOpen = () => setIsProcessModalOpen(true);
     const handleProcessClose = () => setIsProcessModalOpen(false);
+    const [isUpdateModalOpen, setIsUpdateModalOpen] = useState<boolean>(false);
+    const handleUpdateOpen = () => setIsUpdateModalOpen(true);
+    const handleUpdateClose = () => setIsUpdateModalOpen(false);
     const time = filteredIncident?._creationTime;
 
     const leadresponder = filteredIncident?.leadresponder;
@@ -306,16 +293,29 @@ export default function IncidentEr({ params }: { params: { _id: string; _inciden
     const responders = filteredIncident?.responders || [];
 
     const allUserIds = [leadresponder, reporter, ...responders].filter(Boolean).join(',');
+
     
+
     useEffect(() => {
         if (!isLoaded || !projectsholder) return;
 
         if (!isSignedIn) {
-            router.push('/sign-in'); // Redirect to sign-in page if not signed in
-        } else if (!project) {
+            router.push('/sign-in');
+            return;
+        }
+        if (!project) {            
             router.push('/projects');
-        } else if (projectUserId !== userId && !project.otherusers.includes(userId)) {
+            return;
+        }
+
+        if (projectUserId !== userId && !project.otherusers.includes(userId)) {
             router.push('/projects');
+            return;
+        }
+
+        if (!filteredIncident) {
+            router.push(`/projects/${params._id}/incident`);
+            return;
         }
 
         async function fetchUserData() {
@@ -338,7 +338,7 @@ export default function IncidentEr({ params }: { params: { _id: string; _inciden
         }
     
         fetchUserData();
-    }, [isLoaded, isSignedIn, projectsholder, project, userId, router, allUserIds]);
+    }, [isLoaded, isSignedIn, projectsholder, project, filteredIncident, userId, router, allUserIds]);
 
     if (!isLoaded || !projectsholder) {
         return <div>Loading...</div>;
@@ -371,6 +371,100 @@ export default function IncidentEr({ params }: { params: { _id: string; _inciden
     const sortedLogs = incidentlog?.sort((a: any, b: any) => {
         return statusOrder.indexOf(a.description) - statusOrder.indexOf(b.description);
     });
+
+
+
+    function SummarySender(summary: string, incidentid: string, projectid: string) {
+        let summaryinfo = summary?.trim() || ""; // Handle undefined, null, and trim whitespace
+        
+        function turnintotextareansave() {
+            const savearea = document.getElementById('savearea');
+            savearea?.classList.add('hidden');
+            savearea?.classList.remove('flex');
+            const summary = document.getElementById('summaryarea');
+            if (summary) {
+                summary.classList.add('flex');
+                summary.classList.remove('hidden');
+            }
+    
+            // Add event listener to the textarea to handle empty state dynamically
+            const textarea = document.getElementById('textsummary') as HTMLTextAreaElement;
+            textarea?.addEventListener('input', handleTextAreaInput);
+        }
+    
+        function hidesummary() {
+            const summaryarea = document.getElementById('summaryarea');
+            summaryarea?.classList.add('hidden');
+            summaryarea?.classList.remove('flex');
+            const savearea = document.getElementById('savearea');
+            savearea?.classList.remove('hidden');
+            savearea?.classList.add('flex');
+        }
+    
+        function handleTextAreaInput(e: Event) {
+            const textarea = e.target as HTMLTextAreaElement;
+            const trimmedValue = textarea.value.trim();
+            // Update summaryinfo dynamically based on textarea content
+            summaryinfo = trimmedValue;
+        }
+    
+        function checkersummary(e: any) {
+            e.preventDefault();
+            const summaryarea = document.getElementById('summaryarea');
+            const summary = summaryarea?.querySelector('textarea');
+            
+            if (summary) {
+            const summaryinfovalue = summary.value.trim(); // Trim whitespace
+            summaryinfo = summaryinfovalue; // Update global summaryinfo
+
+            const responders = [...filteredIncident?.responders]; // Create a copy of responders array        // Append the user id to the responders array if it's not already present
+            if (!responders.includes(user?.id)) {
+                responders.push(user?.id);
+            }
+
+            // Send the summary to the server, even if empty
+            summarychanger({
+                projectid: projectid,
+                incidentid: incidentid,
+                summary: summaryinfovalue,
+                responders: responders
+            });
+            hidesummary();
+            }
+        }
+        return (
+            <div className="w-full flex flex-row justify-between gap-2 border rounded-lg dark:hover:shadow-neutral-800/40 hover:shadow-neutral-300 transition-all shadow-md">
+                <div id="savearea" className="flex flex-row px-4 py-4 justify-between w-full items-center">
+                    <div className="flex flex-row gap-2 items-center">
+                        {
+                            !summaryinfo ? ( // Check for empty or undefined summary
+                                <p className="text-neutral-500 font-semibold">No Summary</p>
+                            ) : (
+                                <p className="text-white w-full" onClick={turnintotextareansave}>{summaryinfo}</p>
+                            )
+                        }
+                    </div>
+                    {!summaryinfo ? (
+                        <button onClick={turnintotextareansave} className="flex flex-row font-medium gap-2 items-center bg-neutral-100 dark:bg-neutral-800 dark:text-white text-black px-2 py-1 rounded-md hover:bg-neutral-200 dark:hover:bg-neutral-700 transition-all">
+                            <svg className="w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M11 11V5H13V11H19V13H13V19H11V13H5V11H11Z"></path>
+                            </svg>
+                            Add Summary
+                        </button>
+                    ) : null}
+                </div>
+                <div id="summaryarea" className="hidden flex-row justify-between w-full items-center">
+                    <form className="flex flex-col px-4 py-4 w-full" onSubmit={checkersummary}>
+                        <textarea id="textsummary" className="w-full h-20 focus:outline-none bg-transparent dark:text-white text-black rounded-md p-2" placeholder="Add a summary">{summaryinfo}</textarea>
+                        <div className="flex flex-row gap-4">
+                            <button type="submit" className="flex w-20 justify-center flex-row font-medium gap-2 items-center bg-neutral-100 dark:bg-neutral-900 dark:text-white text-black px-2 py-1 rounded-md hover:bg-neutral-200 dark:hover:bg-neutral-700 transition-all">Save</button>
+                            <button type="button" onClick={hidesummary} className="flex w-20 justify-center flex-row font-medium gap-2 items-center dark:text-white text-black px-2 py-1 rounded-md border hover:border-neutral-200 dark:hover:border-neutral-700 transition-all">Cancel</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <>
@@ -418,11 +512,11 @@ export default function IncidentEr({ params }: { params: { _id: string; _inciden
                                 <div className='w-full max-w-[1447px] px-3 h-full justify-center '>
                                     <div className='flex-row flex justify-center mt-10 w-full h-full gap-10'>
                                         <div className='flex flex-col h-full gap-4 w-full scroll-pb-20 pb-[20rem] overflow-y-scroll'>
-                                            {
-                                                response !== "investigation" && SummarySender()
+                                            {   
+                                                response !== "investigation" && summary != "" || summary != undefined ? ( SummarySender(summary, params._incidentid, params._id)) : null
                                             }
                                             <div className='w-full h-auto  flex flex-row pb-2 mb-1 gap-3 border border-transparent border-b-neutral-700'>
-                                                <NavMenu currentpage={activePage} _id={params._id} incidentid={params._incidentid} />
+                                                <NavMenu currentpage={activePage} _id={params._id} incidentid={params._incidentid} onOpenModalEdit={() => setIsUpdateModalOpen(true)} />
                                             </div>
                                             <div>
                                             {activePage === "overview" ? (
@@ -441,6 +535,8 @@ export default function IncidentEr({ params }: { params: { _id: string; _inciden
                                                             return <StatusChanges key={index} log={log} />;
                                                         case "PriorityChanged":
                                                             return <PriorityChanges key={index} log={log} />;
+                                                        case "IncidentUpdate":
+                                                            return <IncidentUpdate key={index} log={log} />;
                                                         default:
                                                             return null; 
                                                         }
@@ -555,6 +651,19 @@ export default function IncidentEr({ params }: { params: { _id: string; _inciden
                                 onClose={handleProcessClose} 
                             />,
                             document.getElementById('modal-root')!
+                            )
+                        }
+                        {isUpdateModalOpen &&
+                            ReactDOM.createPortal(
+                                <UpdateSender
+                                    id={params._incidentid}
+                                    projectid={params._id}
+                                    onClose={handleUpdateClose}
+                                    taskProcesser={response}
+                                    taskPriorityy={priority}
+                                    responders={responders}
+                                />,
+                                document.getElementById('modal-root')!
                             )
                         }
                     </div>

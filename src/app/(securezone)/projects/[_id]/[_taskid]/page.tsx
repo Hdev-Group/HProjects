@@ -191,13 +191,13 @@ export default function TaskFullView({ params }: { params: { _id: string, _taski
         const days = Math.floor(hours / 24);
     
         if (seconds < 60) {
-            return <p className='font-semibold critical rounded-md p-1' id='loadingidassigneenames'>{seconds} {seconds === 1 ? 'second' : 'seconds'} ago</p>;
+            return <p className='font-semibold rounded-md' id='loadingidassigneenames'>{seconds} {seconds === 1 ? 'second' : 'seconds'} ago</p>;
         } else if (minutes < 20) {
-            return <p className='font-semibold critical rounded-md p-1' id='loadingidassigneenames'>{minutes} {minutes === 1 ? 'minute' : 'minutes'} ago</p>;
+            return <p className='font-semibold rounded-md' id='loadingidassigneenames'>{minutes} {minutes === 1 ? 'minute' : 'minutes'} ago</p>;
         } else if (minutes < 60) {
-            return <p className='font-semibold medium rounded-md p-1' id='loadingidassigneenames'>{minutes} {minutes === 1 ? 'minute' : 'minutes'} ago</p>;
+            return <p className='font-semibold rounded-md' id='loadingidassigneenames'>{minutes} {minutes === 1 ? 'minute' : 'minutes'} ago</p>;
         } else if (hours < 24) {
-            return <p className='font-semibold critical rounded-md p-1' id='loadingidassigneenames'>{hours} {hours === 1 ? 'hour' : 'hours'} ago</p>;
+            return <p className='font-semibold rounded-md' id='loadingidassigneenames'>{hours} {hours === 1 ? 'hour' : 'hours'} ago</p>;
         } else {
             return <span>{`${days} ${days === 1 ? 'day' : 'days'} ago`}</span>;
         }

@@ -52,15 +52,6 @@ const NewIncidentModal = ({ onClose, id }) => {
       });
 
       setincidentid(response);
-
-      if (response){
-        await addTimeStamps({
-          projectid: id.id,
-          incidentid: response,
-          reported: new Date().toISOString(),
-          investigating: new Date().toISOString(),
-        });
-      }
   
       onClose(); // Close the modal after successful submission
       // take them to the incident page
@@ -101,7 +92,7 @@ const NewIncidentModal = ({ onClose, id }) => {
   return (
     <>
       <div id="outerclickclose" className="absolute top-0 justify-center flex items-center overflow-y-hidden overflow-x-hidden min-h-[100%] h-full w-[100%] bg-neutral-950/40 z-10">
-        <div id='innercloser' className="flex overflow-hidden flex-col zoomin bg--400 md:shadow-lg md:rounded-xl rounded-md border dark:shadow-black bg-neutral-100 dark:bg-neutral-900 h-auto md:w-[50%] w-[100%]">
+        <div id='innercloser' className="flex overflow-hidden flex-col zoomin bg--400 md:shadow-lg md:rounded-lg rounded-md border dark:shadow-black bg-neutral-100 dark:bg-neutral-900 h-auto md:w-[50%] w-[100%]">
           {showExitModal && (
             <ExitModal onClose={() => onClose()} mainholdRemove={() => hideexitmodal()} /> 
           )}
