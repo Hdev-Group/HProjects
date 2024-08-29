@@ -42,13 +42,17 @@ const NewPagerModal = ({ onClose, id }) => {
     }
     try {
 
-      // calculate it in seconds
-      console.log(time);
-      const calctime = new Date(time).getTime();
-      const timestampInSeconds = calctime / 1000;
-      console.log(timestampInSeconds);
+      const timestampInSeconds = Math.floor(new Date(time).getTime() / 1);
 
-      await addPager({ projectid: id.id, userId: taskAssignee, time, calctime: timestampInSeconds, status: 'active' });
+      // Get the current Unix timestamp in seconds
+      const currentTimestampInms = Math.floor(Date.now() / 1);
+      
+      // Calculate the difference in seconds
+      const differenceInSeconds = timestampInSeconds - currentTimestampInms;
+      console.log('Time difference in ms:', differenceInSeconds);
+
+
+      await addPager({ projectid: id.id, userId: taskAssignee, time, calctime: differenceInSeconds, status: 'active' });
       onClose();
     } catch (error) {
       console.error('Error adding project:', error);
