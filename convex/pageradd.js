@@ -35,8 +35,6 @@ export const add = mutation({
           calctime,
       };
       const response = await ctx.db.insert("pager", pager);
-      console.log(calctime);
-      console.log(time)
       await ctx.scheduler.runAfter(calctime, api.pageradd.deletePager, { _id: response, userId: pager.userId });
       return pager;
     },

@@ -1,5 +1,5 @@
 "use client";
-import HeaderIndex from '../components/header/header';
+import NavigationMenuMain from '../components/header/header';
 import { usePathname } from 'next/navigation';
 
 export default function NotFound() {
@@ -13,7 +13,7 @@ export default function NotFound() {
       <title>
         404 - Page Not Found
       </title>
-      <HeaderIndex />
+      <NavigationMenuMain />
       <div className='h-full pt-40 px-2 md:px-20 relative bg-gradient-to-r from-cyan-500 to-blue-500 w-full flex-row md:flex-row'>
         <div className='flex flex-col md:flex-row w-full'>
         <div className='w-full z-[100] relative md:w-[45%] mt-[0rem] flex flex-col gap-10'>

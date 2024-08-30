@@ -27,10 +27,14 @@ export default function PagerEl({ _id, isSidebarClosed }: any) {
   const incidentdatbase = useQuery(api.incident.get);
   const { userId } = useAuth();
   const pagerholder = useQuery(api.pagerget.get);
-  const pagerhold = pagerholder?.find((pager: Pagerr) => pager.userId === userId);
+  const pagerhold = pagerholder?.find((pager: Pagerr) => pager.userId === userId && pager.projectid === _id);
   const [currentTime, setCurrentTime] = useState(new Date());
+  const getincident = useQuery(api.pagerincidents.get);
+  const filteredincident = getincident?.filter((inc: any) => inc.pagerid === userId && inc.acknowledged === false && inc.projectid === _id);
   const [percentage, setPercentage] = useState(0);
   const [timeRemaining, setTimeRemaining] = useState('');
+  const removeincident = useMutation(api.pagerincidents.deletepage);
+
   const paramsmain = _id
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -179,6 +183,11 @@ export default function PagerEl({ _id, isSidebarClosed }: any) {
         </ContextMenuItem>
       )
     }
+    const filtermain = filteredincident[0]
+    function acknowledgedpager() {
+      removeincident
+      ({_id: filtermain?._id }).catch(err => console.error(err));
+    }
     // differentiate between the time then show the appropriate message
     function textloop() {
       const [isCritical, setIsCritical] = useState(false);
@@ -196,7 +205,7 @@ export default function PagerEl({ _id, isSidebarClosed }: any) {
           {isCritical ? (
             <>
               <h1 className='text-red-200 font-semibold text-md text-left'>You have been paged.</h1>
-              <p className='text-neutral-300 text-xs'>Incident: Major database failed</p>
+              <p className='text-neutral-300 text-xs'>Click to go to the incident</p>
             </>
           ) : (
             <>
@@ -207,28 +216,32 @@ export default function PagerEl({ _id, isSidebarClosed }: any) {
         </>
       );
     }
+
+
     return (
-      <ContextMenu>
-      <ContextMenuTrigger id="pageroncall" className="w-max flex items-center justify-center animate-ping rounded-lg">
-        <div className={`${isSidebarClosed ? "pr-2" : "pr-5"} border dark:border-red-400 border-red-600 bg-red-700/20 dark:bg-red-400/20 items-center h-[4rem] w-full flex rounded-lg`}>
-        <div className='pl-2 flex justify-center items-center h-full'>
-          <div className='w-1.5 h-[3rem] flex items-end justify-center rounded-lg dark:border-red-400 border-red-600 bg-red-700/20 dark:bg-red-400/20 overflow-hidden'>
-          <div className='w-full flex items-center justify-center font-semibold text-xl' style={{ height: `${percentage}%`, backgroundColor: 'red' }}>!</div>
-          </div>
-        </div>
-        {isSidebarClosed ? null : (
-        <div className='pl-3 h-max flex justify-center flex-col text-left'>
-          {textloop()}
-        </div>
-        )}
-        </div>
-      </ContextMenuTrigger>
-      <ContextMenuContent>
-        <ToastOnBreak />
-        <ContextMenuSeparator />
-        <ContextMenuItem className='text-red-400 cursor-pointer' onClick={endPager}>End Pager</ContextMenuItem>
-      </ContextMenuContent>
-      </ContextMenu>
+      <Link href={`/projects/${_id}/incident/${filtermain.incidentid}`} onClick={acknowledgedpager}>
+        <ContextMenu>
+          <ContextMenuTrigger id="pageroncall" className="w-max flex items-center justify-center animate-ping rounded-lg">
+            <div className={`${isSidebarClosed ? "pr-2" : "pr-5"} border dark:border-red-400 border-red-600 bg-red-700/20 dark:bg-red-400/20 items-center h-[4rem] w-full flex rounded-lg`}>
+            <div className='pl-2 flex justify-center items-center h-full'>
+              <div className='w-1.5 h-[3rem] flex items-end justify-center rounded-lg dark:border-red-400 border-red-600 bg-red-700/20 dark:bg-red-400/20 overflow-hidden'>
+              <div className='w-full flex items-center justify-center font-semibold text-xl' style={{ height: `${percentage}%`, backgroundColor: 'red' }}>!</div>
+              </div>
+            </div>
+            {isSidebarClosed ? null : (
+            <div className='pl-3 h-max flex justify-center flex-col text-left'>
+              {textloop()}
+            </div>
+            )}
+            </div>
+          </ContextMenuTrigger>
+          <ContextMenuContent>
+            <ToastOnBreak />
+            <ContextMenuSeparator />
+            <ContextMenuItem className='text-red-400 cursor-pointer' onClick={endPager}>End Pager</ContextMenuItem>
+          </ContextMenuContent>
+        </ContextMenu>
+      </Link>
     );
   }
   useEffect(() => {
@@ -256,16 +269,15 @@ export default function PagerEl({ _id, isSidebarClosed }: any) {
       return () => clearInterval(interval); // Cleanup interval on component unmount
     }
   }, [pagerhold]);
-
   if (pagerhold && paramsmain === pagerhold.projectid) {
     if (timeRemaining.includes('-')) {
       return <PagerOff />;
+    } else if (filteredincident && filteredincident.length > 0) {
+      return <PagerIncident percentage={percentage} time={timeRemaining} paramsmain={paramsmain} />;
     } else if (pagerhold.status === 'active') {
       return <PagerOnCall percentage={percentage} time={timeRemaining} paramsmain={paramsmain} />;
     } else if (pagerhold.status === 'break') {
       return <PagerOnBreak percentage={percentage} isSidebarClosed={isSidebarClosed} />;
-    // } else if (incidentdatbase?.projectid === pagerhold.projectid && incidentdatbase?.status === 'active') {
-    //   return <PagerIncident percentage={percentage} time={timeRemaining} paramsmain={paramsmain} />;
   }
     else 
       return <PagerOff />;

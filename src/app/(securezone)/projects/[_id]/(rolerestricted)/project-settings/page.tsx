@@ -79,13 +79,20 @@ export default function ProjectSettings({ params }: { params: { _id: string } })
   const title = project.projectName + ' | Settings';
 
   function saveProjectName() {
-    toast({
-      description: 'Project title saved',
-    });
-    projectnamemu({
-      _id: params._id,
-      projectName: ProjectTitle,
-    });
+    if (ProjectTitle.length > 40) {
+      toast({
+        description: 'Project title saved',
+      });
+      projectnamemu({
+        _id: params._id,
+        projectName: ProjectTitle,
+      });
+    }else {
+      toast({
+        variant: 'destructive',
+        description: 'Error saving project title - must be less than 40 characters',
+      });
+    }
   }
   function saveProjectStatus() {
     toast({
@@ -134,7 +141,7 @@ export default function ProjectSettings({ params }: { params: { _id: string } })
                             className='border rounded-md w-auto bg-transparent text-black dark:text-white p-1'
                             onChange={(e) => setProjectTitle(e.target.value)}
                             value={ProjectTitle}
-                            maxLength={25}
+                            maxLength={40}
                           />
                           <button onClick={saveProjectName} className='border rounded-md bg-transparent text-black dark:text-white px-6 py-1 hover:bg-neutral-500/40 transition-all'>Save</button>
                         </div>

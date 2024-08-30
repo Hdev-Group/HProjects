@@ -38,7 +38,7 @@ export default function ProjectSettings({ params }: { params: { _id: string } })
     }
 
     // Find the job title for the current user
-    const job = jobtitlealready.find(jobtitle => jobtitle.userid === userId && jobtitle.projectID === params._id);
+    const job = jobtitlealready.find((jobtitle: any) => jobtitle.userid === userId && jobtitle.projectID === params._id);
     if (job) {
       setJobTitle(job.jobtitle);
       setTimezone(job.timezone);
@@ -66,10 +66,17 @@ export default function ProjectSettings({ params }: { params: { _id: string } })
   const fullname = user?.firstName + ' ' + user?.lastName;
 
   function saveJobTitle() {
-    toast({
-      description: 'Job title saved',
-    });
-    addJobTitle({ userid: userId, jobtitle, projectID: params._id });
+    if (jobtitle.length < 25) {
+      toast({
+        description: 'Job title saved',
+      });
+      addJobTitle({ userid: userId, jobtitle, projectID: params._id });
+    } else {
+      toast({
+        variant: 'destructive',
+        description: 'Job title must be less than 25 characters',
+      });
+    }
   }
 
   function saveTimeZone() {

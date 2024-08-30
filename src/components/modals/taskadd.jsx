@@ -52,6 +52,13 @@ const NewTaskModal = ({ onClose, id }) => {
     }
 
     try {
+      if (taskTitle.length > 50) {
+        document.getElementById('titleinvalidatorr').classList.remove('hidden');
+        return;
+      } else if (taskDescription.length > 600) {
+        document.getElementById('descriptioninvalidatorr').classList.remove('hidden');
+        return;
+      }
       const response = await addTask({
         projectid: id.id,
         userId,
@@ -139,9 +146,11 @@ const NewTaskModal = ({ onClose, id }) => {
                 invalidator='titleinvalidatorinput'
                 placeholder="Add a dashboard"
                 value={taskTitle}
+                maxLength={50}
                 onChange={(e) => setTaskTitle(e.target.value)}
               />
               <span className='text-red-400 hidden' id='titleinvalidator'>Invalid Title</span>
+              <span className='text-red-400 hidden' id='titleinvalidatorr'>Title is too long</span>
               <h1 htmlFor="" className="text-sm mb-2 mt-2 font-bold text-black dark:text-white text-dark">Assignee</h1>
               <AssigneeSelect
                 id={id}
@@ -181,9 +190,11 @@ const NewTaskModal = ({ onClose, id }) => {
                 placeholder="The server room is on fire, Send help."
                 invalidator='descriptioninvalidatorinput'
                 value={taskDescription}
+                maxLength={600}
                 onChange={(e) => setTaskDescription(e.target.value)}
               />
               <span className='text-red-400 hidden' id='descriptioninvalidator'>Invalid Description</span>
+              <span className='text-red-400 hidden' id='descriptioninvalidatorr'>Description is too long</span>
             </div>
           </div>
           <div className='px-2 py-3 flex justify-end border-t-neutral-600 border border-b-transparent border-x-transparent'>

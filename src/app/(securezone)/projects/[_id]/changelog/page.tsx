@@ -300,7 +300,7 @@ function SenderChangelogger({ weekBlocks, ownerData, taskFilterThisWeek, _id, cu
                     <div className="flex flex-col">
                       <div className="flex flex-col">
                         <h1 className="font-semibold">{ownerData[log.usercommited]?.firstName} {ownerData[log.usercommited]?.lastName}</h1>
-                        <p className='text-xs text-neutral-400'>{jobtitlealready?.filter(jobtitlealready => jobtitlealready.userid === ownerData[log.usercommited]?.id)[0]?.jobtitle}</p>
+                        <p className='text-xs text-neutral-400'>{jobtitlealready?.filter((jobtitlealready: any) => jobtitlealready.userid === ownerData[log.usercommited]?.id)[0]?.jobtitle}</p>
                       </div>
                       <div>
                         <p className="flex flex-row gap-2">{ownerData[log.usercommited]?.firstName} {ownerData[log.usercommited]?.lastName} has {hovercardchanges}</p>

@@ -11,12 +11,12 @@ const IncidentProcesschange = ({ onClose, id, projectid, taskProcessold }) => {
   const { userId, isLoaded, isSignedIn } = useAuth();
   const [taskProcess, setTaskProcess] = useState(taskProcessold);
   const [showExitModal, setShowExitModal] = useState(false);
+  const [status, setStatus] = useState('');
   const editProcess = useMutation(api.incident.editprocess);
   const addlog = useMutation(api.incidentlogs.add);
 
   const handleFormSubmitReal = useCallback(async (e) => {
     e.preventDefault();
-
     if (!userId) {
       console.error('User is not authenticated');
       return;
@@ -93,19 +93,21 @@ const IncidentProcesschange = ({ onClose, id, projectid, taskProcessold }) => {
         <form onSubmit={handleFormSubmitReal} className="flex flex-col gap-4 mt-4">
           <div className='px-4 flex flex-col'>
             <div className="flex flex-col gap-3">
-              <div className='flex w-full flex-col' role='radiogroup'>
+              <div className='flex w-full flex-col'>
                 <label htmlFor="projecttitle" className="text-md mb-2 font-bold text-black dark:text-white text-dark">Incident Category</label>
+                <fieldset>
                 <div className='flex flex-col w-full border rounded-xl'>
                   <div className='flex flex-row items-center gap-4 border-b px-4 py-2'>
-                    <button className='border h-4 w-4 border-neutral-700 rounded-full' role='radio' value="ongoing"/><p className='font-semibold'>Ongoing Incident</p>
+                    <input type='radio' className='border h-4 w-4 border-neutral-700 rounded-full'  name="radiostatus" value="ongoing"/><p className='font-semibold'>Ongoing Incident</p>
                   </div>
                   <div className='flex items-center flex-row gap-4 border-b px-4 py-2'>
-                    <button className='border h-4 w-4 border-neutral-700 rounded-full' role='radio' value="paused" /><p className='font-semibold'>Paused</p>
+                    <input type='radio' className='border h-4 w-4 border-neutral-700 rounded-full' name="radiostatus" value="paused" /><p className='font-semibold'>Paused</p>
                   </div>
                   <div className='flex items-center flex-row gap-4 border-b px-4 py-2'>
-                    <button className='border h-4 w-4 border-neutral-700 rounded-full' role='radio' value="resolved" /><p className='font-semibold'>Resolved</p>
+                    <input type='radio' className='border h-4 w-4 border-neutral-700 rounded-full' name="radiostatus" value="resolved" /><p className='font-semibold'>Resolved</p>
                   </div>
                 </div>
+                </fieldset>
               </div>
                 <div className='flex w-full flex-col'>
                     <label htmlFor="projecttitle" className="text-md mb-2 font-bold text-black dark:text-white text-dark">Incident Status</label>

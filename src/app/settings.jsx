@@ -33,7 +33,7 @@ const Settings = () => {
                         <div className='flex flex-col gap-3 w-[100%]'>
                             <label htmlFor='displayname' className='dark:text-neutral-200 text-neutral-900 font-bold text-sm'>Display Name</label>
                             <div className='flex gap-3 items-center'>
-                            <input type='text' value={userInfo.firstName} id='displayname' name='displayname' className='border-neutral-800 bg-transparent rounded-lg border-[1px] w-[100%] max-w-[400px] px-4 py-1' />
+                            <input type='text' maxLength={30} value={userInfo.firstName} id='displayname' name='displayname' className='border-neutral-800 bg-transparent rounded-lg border-[1px] w-[100%] max-w-[400px] px-4 py-1' />
                             <button className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded-lg w-[70px]'>Save</button>
                             </div>
                         </div>

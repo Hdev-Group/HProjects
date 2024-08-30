@@ -5,6 +5,7 @@ import { useEffect, useState, useCallback, useRef } from "react";
 import DropdownCommentMenu from "../dropdowns/comment";
 import React from 'react';
 import { useUser } from "@clerk/clerk-react";
+import { useToast } from "../ui/use-toast";
 
 interface Comment {
   _id: string;
@@ -26,7 +27,7 @@ interface CommentBoxerProps {
 
 export default function CommentBoxer({ taskId }: { taskId: any }) {
   const { userId } = useAuth();
-
+  const {toast} = useToast();
   const useridentifier = userId;
   const comments = useQuery(api.getcomments.get);
   const filteredComments = comments?.filter((comment: any) => comment.taskId === taskId);
@@ -118,6 +119,13 @@ export default function CommentBoxer({ taskId }: { taskId: any }) {
       const textarea = textareaRef.current;
       if (textarea) {
         const reply = textarea.value;
+        if (reply.length > 500) {
+          toast({
+            variant: 'destructive',
+            description: 'Reply is too long. Please keep it under 500 characters.',
+          })
+          return;
+        }
         if (reply) {
           await sendReplyMutation({ commentId: commentdata._id, taskId: commentdata.taskId, userId: userId!, CommenterMessage: reply });
           textarea.value = '';
@@ -139,6 +147,7 @@ export default function CommentBoxer({ taskId }: { taskId: any }) {
           ref={textareaRef}
           onInput={handleInput}
           id="textreplyarea"
+          maxLength={500}
           placeholder={`Reply to ${useridentifier === userId ? 'your' : `${commenterData?.firstName} ${commenterData?.lastName}'s`} comment.`}
           className="w-full p-2 break-words h-auto bg-transparent text-wrap overflow-x-hidden resize-none"
           style={{ overflow: 'hidden' }}

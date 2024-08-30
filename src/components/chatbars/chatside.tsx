@@ -62,7 +62,7 @@ export default function Chatside({ chat, projectid }: ChatsideProps) {
                 {assigneeData.firstName} {assigneeData.lastName}
               </p>
               <p className="text-sm text-neutral-500">
-                {jobtitlealready?.find(job => job.userid === assigneeData.id)?.jobtitle || 'No job title'}
+                {jobtitlealready?.find((job: any) => job.userid === assigneeData.id)?.jobtitle || 'No job title'}
               </p>
             </div>
           </a>

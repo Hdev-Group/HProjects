@@ -37,6 +37,14 @@ const NewIncidentModal = ({ onClose, id }) => {
       document.getElementById('priorityinvalidator').classList.remove('hidden');
       return;
     }
+    if (taskTitle.length > 90) {
+      document.getElementById('titleinvalidatorr').classList.remove('hidden');
+      return;
+    }
+    if (taskDescription.length > 600) {
+      document.getElementById('descriptioninvalidatorr').classList.remove('hidden');
+      return;
+    }
 
     try {
       const response = await addIncident({
@@ -128,9 +136,11 @@ const NewIncidentModal = ({ onClose, id }) => {
                       className="dark:bg-neutral-800 dark:border-neutral-800 pb-1 border-neutral-300 text-black dark:text-white border rounded-lg px-3 py-2"
                       placeholder="Incident Title"
                       value={taskTitle}
+                      maxLength={90}
                       onChange={(e) => setTaskTitle(e.target.value)}
                     />
                     <span className='text-red-400 hidden' id='titleinvalidator'>Invalid Title</span>
+                    <span className='text-red-400 hidden' id='titleinvalidatorr'>Title too long</span>
                   </div>
                   <div className='flex w-full flex-col'>
                     <label htmlFor="projecttitle" className="text-sm mb-2 font-bold text-black dark:text-white text-dark">Priority</label>
@@ -179,9 +189,11 @@ const NewIncidentModal = ({ onClose, id }) => {
                       placeholder="What would you like to read at 3am getting paged?"
                       invalidator='descriptioninvalidatorinput'
                       value={taskDescription}
+                      maxLength={600}
                       onChange={(e) => setTaskDescription(e.target.value)}
                     />
                     <span className='text-red-400 hidden' id='descriptioninvalidator'>Invalid Description</span>
+                    <span className='text-red-400 hidden' id='descriptioninvalidatorr'>Description is too long max 600 chars</span>
                   </div>
                 </div>
               </div>

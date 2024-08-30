@@ -86,6 +86,25 @@ export const editLeadResponder = mutation({
   },
 });
 
+export const editResponder = mutation({
+  args: {
+    _id: v.id('incidents'),
+    responders: v.array(v.string()),
+  },
+  handler: async (ctx, { _id, responders }: {_id: any, responders: any}) => {
+    const updates = {
+      ...(responders ? { responders } : {}),
+    };
+
+    if (Object.keys(updates).length > 0) {
+      await ctx.db.patch(_id, updates);
+      return updates;
+    } else {
+      return null;
+    }
+  },
+});
+
 export const editPriority = mutation({
   args: {
     incidentid: v.string(),

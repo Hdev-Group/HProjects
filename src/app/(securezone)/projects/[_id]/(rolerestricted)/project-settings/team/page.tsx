@@ -263,7 +263,7 @@ export default function ProjectSettings({ params }: { params: { _id: string } })
                         <div className='flex flex-col gap-3'>
                           <label className='font-semibold'>Email</label>
                           <div className='flex flex-row gap-3'>
-                            <input type='text'
+                            <input type='email'
                               placeholder='your-team-member@example.com'
                               className='md:w-1/3 w-full p-2 border border-neutral-800 bg-transparent rounded-md'
                               onChange={(e) => setEmail(e.target.value)}

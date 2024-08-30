@@ -7,14 +7,23 @@ import { useMutation, useQuery } from "convex/react";
 import { api } from "../../../../../../../convex/_generated/api";
 import SideBar from "../../../../../../components/projectscontents/sidebar";
 import { Critical, High, Medium, Low } from "../../../../../../components/dropdowns/priorities/critical";
-import { FirstSend, StatusChanges, LeadResponder, PriorityChanges, IncidentUpdate } from "../../../../../../components/incidents/overviews";
+import { FirstSend, StatusChanges, LeadResponder, PriorityChanges, IncidentUpdate, PagedResponders } from "../../../../../../components/incidents/overviews";
 import AddLeadResponder from "../../../../../../components/buttons/addleadresponder";
 import ReactDOM from 'react-dom';
 import LeadResponderchange from '../../../../../../components/incidents/leadresponderadd';
 import IncidentPrioritychange from '../../../../../../components/incidents/prioritychanger';
 import IncidentProcesschange from '../../../../../../components/incidents/incidentprocess';
 import UpdateSender from '../../../../../../components/incidents/updates';
-
+import PageSelectResponder from '../../../../../../components/incidents/pageresponders';
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+  } from '../../../../../../components/ui/dropdown-menu';
+  import { useToast } from "../../../../../../components/ui/use-toast";
 
 type User = {
     id: string;
@@ -265,7 +274,7 @@ export default function IncidentEr({ params }: { params: { _id: string; _inciden
     const projectname = project?.projectName;
     const projectUserId = project?.userId;
     const incident = useQuery(api.incident.get);
-
+    const {toast} = useToast();
     const currentpage = searchParams.get('tab');
     const [activePage, setActivePage] = useState(currentpage || "overview");
     const filteredIncident = incident?.find((incident: any) => incident._id === params._incidentid);
@@ -279,6 +288,7 @@ export default function IncidentEr({ params }: { params: { _id: string; _inciden
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isPriorityModalOpen, setIsPriorityModalOpen] = useState<boolean>(false);
     const [isProcessModalOpen, setIsProcessModalOpen] = useState<boolean>(false);
+    const [isPageModalOpen, setIsPageModalOpen] = useState<boolean>(false);
     const handlePriorityOpen = () => setIsPriorityModalOpen(true);
     const handlePriorityClose = () => setIsPriorityModalOpen(false);
     const handleProcessOpen = () => setIsProcessModalOpen(true);
@@ -421,7 +431,13 @@ export default function IncidentEr({ params }: { params: { _id: string; _inciden
             if (!responders.includes(user?.id)) {
                 responders.push(user?.id);
             }
-
+            if (summaryinfovalue.length > 2000){
+                toast({
+                    variant: "destructive",
+                    description: "Summary is too long",
+                })
+                return;
+            }
             // Send the summary to the server, even if empty
             summarychanger({
                 projectid: projectid,
@@ -455,7 +471,7 @@ export default function IncidentEr({ params }: { params: { _id: string; _inciden
                 </div>
                 <div id="summaryarea" className="hidden flex-row justify-between w-full items-center">
                     <form className="flex flex-col px-4 py-4 w-full" onSubmit={checkersummary}>
-                        <textarea id="textsummary" className="w-full h-20 focus:outline-none bg-transparent dark:text-white text-black rounded-md p-2" placeholder="Add a summary">{summaryinfo}</textarea>
+                        <textarea id="textsummary" className="w-full h-20 focus:outline-none bg-transparent dark:text-white text-black rounded-md p-2" maxLength={2000} placeholder="Add a summary">{summaryinfo}</textarea>
                         <div className="flex flex-row gap-4">
                             <button type="submit" className="flex w-20 justify-center flex-row font-medium gap-2 items-center bg-neutral-100 dark:bg-neutral-900 dark:text-white text-black px-2 py-1 rounded-md hover:bg-neutral-200 dark:hover:bg-neutral-700 transition-all">Save</button>
                             <button type="button" onClick={hidesummary} className="flex w-20 justify-center flex-row font-medium gap-2 items-center dark:text-white text-black px-2 py-1 rounded-md border hover:border-neutral-200 dark:hover:border-neutral-700 transition-all">Cancel</button>
@@ -494,9 +510,18 @@ export default function IncidentEr({ params }: { params: { _id: string; _inciden
                                             <div className="p-2 font-semibold items-center lg:hidden flex justify-center text-lg dark:bg-neutral-600/20 text-black dark:text-white rounded-md border">
                                                 <svg className='w-6' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M8 12L14 6V18L8 12Z"></path></svg><p>Information</p>
                                             </div>
-                                            <div className="p-2 font-semibold items-center flex justify-center text-lg dark:bg-neutral-600/20 text-black dark:text-white rounded-md border">
-                                                <svg className='w-6' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M5 10C3.9 10 3 10.9 3 12C3 13.1 3.9 14 5 14C6.1 14 7 13.1 7 12C7 10.9 6.1 10 5 10ZM19 10C17.9 10 17 10.9 17 12C17 13.1 17.9 14 19 14C20.1 14 21 13.1 21 12C21 10.9 20.1 10 19 10ZM12 10C10.9 10 10 10.9 10 12C10 13.1 10.9 14 12 14C13.1 14 14 13.1 14 12C14 10.9 13.1 10 12 10Z"></path></svg>
-                                            </div>
+                                            <DropdownMenu>
+                                                <DropdownMenuTrigger>
+                                                <div className="p-2 font-semibold items-center flex justify-center text-lg dark:bg-neutral-600/20 text-black dark:text-white rounded-md border">
+                                                    <svg className='w-6' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M5 10C3.9 10 3 10.9 3 12C3 13.1 3.9 14 5 14C6.1 14 7 13.1 7 12C7 10.9 6.1 10 5 10ZM19 10C17.9 10 17 10.9 17 12C17 13.1 17.9 14 19 14C20.1 14 21 13.1 21 12C21 10.9 20.1 10 19 10ZM12 10C10.9 10 10 10.9 10 12C10 13.1 10.9 14 12 14C13.1 14 14 13.1 14 12C14 10.9 13.1 10 12 10Z"></path></svg>
+                                                </div>
+                                                </DropdownMenuTrigger>
+                                                <DropdownMenuContent>
+                                                    <DropdownMenuItem className="cursor-pointer hover:bg-neutral-800" onClick={() => setIsPageModalOpen(true)}>
+                                                        Page Responders
+                                                    </DropdownMenuItem>
+                                                </DropdownMenuContent>
+                                            </DropdownMenu>
                                         </div>
                                     </div>
                                 </div>
@@ -508,10 +533,10 @@ export default function IncidentEr({ params }: { params: { _id: string; _inciden
                                     </div>
                                 </div>
                             </div>
-                            <div className='w-full items-center flex justify-center h-full'>
-                                <div className='w-full max-w-[1447px] px-3 h-full justify-center '>
-                                    <div className='flex-row flex justify-center mt-10 w-full h-full gap-10'>
-                                        <div className='flex flex-col h-full gap-4 w-full scroll-pb-20 pb-[20rem] overflow-y-scroll'>
+                            <div className='w-full items-center flex justify-center h-full overflow-y-scroll'>
+                                <div className='w-full max-w-[1447px] px-3 h-full justify-center relative'>
+                                    <div className='flex-row flex justify-center mt-5 w-full h-full gap-10'>
+                                        <div className='flex flex-col gap-4 w-full h-auto'>
                                             {   
                                                 response !== "investigation" && summary != "" || summary != undefined ? ( SummarySender(summary, params._incidentid, params._id)) : null
                                             }
@@ -520,7 +545,7 @@ export default function IncidentEr({ params }: { params: { _id: string; _inciden
                                             </div>
                                             <div>
                                             {activePage === "overview" ? (
-                                                <div className='flex flex-col w-full h-full'>
+                                                <div className='flex flex-col mb-[10rem] w-full h-full'>
                                                     {
                                                     // Ensure incidentlog is defined and sort it by _creationTime before mapping
                                                     incidentlog?.sort((a: any, b: any) => {
@@ -529,6 +554,8 @@ export default function IncidentEr({ params }: { params: { _id: string; _inciden
                                                         return dateA.getTime() - dateB.getTime();
                                                     }).reverse().map((log: any, index: number) => {
                                                         switch (log.action) {
+                                                        case "PagedResponders":
+                                                            return <PagedResponders key={index} log={log} />;
                                                         case "LeadResponderChanged":
                                                             return <LeadResponder key={index} log={log} />;
                                                         case "StatusChanged":
@@ -557,7 +584,8 @@ export default function IncidentEr({ params }: { params: { _id: string; _inciden
                                                 )}
                                             </div>
                                         </div>
-                                        <div className='lg:flex flex-col hidden h-full items-center gap-4 w-80 min-w-80'>
+                                        <div className='lg:flex flex-col hidden relative h-full items-center gap-4 w-80 min-w-80'>
+                                            <div className="fixed gap-4 flex flex-col max-w-80 w-80">
                                             <div className='gap-3 w-full flex flex-col border-b pb-4 border-neutral-600'>
                                                 <div className='flex justify-between w-full flex-row gap-4'>
                                                     <p className='font-medium text-neutral-400'>Lead Responder</p>
@@ -624,6 +652,7 @@ export default function IncidentEr({ params }: { params: { _id: string; _inciden
                                                 <h2 className='font-semibold text-black dark:text-white'>Incident Notes</h2>
                                                 <textarea className='resize-y border bg-transparent text-black dark:text-white rounded-md px-2 min-h-[40px]' placeholder='Incident Notes' value={filteredIncident?.description} />
                                             </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -661,6 +690,17 @@ export default function IncidentEr({ params }: { params: { _id: string; _inciden
                                     onClose={handleUpdateClose}
                                     taskProcesser={response}
                                     taskPriorityy={priority}
+                                    responders={responders}
+                                />,
+                                document.getElementById('modal-root')!
+                            )
+                        }
+                        {isPageModalOpen &&
+                            ReactDOM.createPortal(
+                                <PageSelectResponder
+                                    id={params._incidentid}
+                                    projectid={params._id}
+                                    onClose={() => setIsPageModalOpen(false)}
                                     responders={responders}
                                 />,
                                 document.getElementById('modal-root')!

@@ -22,7 +22,19 @@ const NewProjectModal = ({ onClose }) => {
       return;
     }
     try {
-      await addProject({ userId, projectName, projectDescription, projectStatus, otherusers, pinned });
+      if(projectName.length > 50){
+        console.error('Project Name is too long');
+        return;
+      } else if (projectName === '') {
+        console.error('Project Name is empty');
+        return;
+      } else if(projectDescription.length > 300){
+        console.error('Project Description is too long');
+        return;
+      } else if(projectStatus === ''){
+        console.error('Project Status is empty');
+        return;
+      } await addProject({ userId, projectName, projectDescription, projectStatus, otherusers, pinned });
       onClose(); // Close the modal after adding the project
     } catch (error) {
       console.error('Error adding project:', error);
@@ -70,6 +82,7 @@ const NewProjectModal = ({ onClose }) => {
               id="projectname"
               name="nameproject"
               value={projectName}
+              maxLength={50}
               onChange={(e) => setProjectName(e.target.value)}
               required
             />
@@ -81,6 +94,7 @@ const NewProjectModal = ({ onClose }) => {
               className="bg-transparent dark:border-neutral-500 text-black placeholder:dark:text-white placeholder:text-black dark:text-white border rounded-lg px-3 py-2"
               value={projectDescription}
               onChange={(e) => setProjectDescription(e.target.value)}
+              maxLength={300}
               required
             />
           </div>

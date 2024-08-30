@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect, useRef } from 'react';
 import { SignedOut, SignedIn, SignUp } from '@clerk/nextjs';
-import HeaderIndex from '../../components/header/header';
+import NavigationMenuMain from '../../components/header/header';
 import Footer from '../../components/footer/footer';
 import gsap from 'gsap';
 import { Critical, High, Medium, Low, Security, Feature } from '../../components/dropdowns/priorities/critical';
@@ -204,9 +204,9 @@ export default function Home() {
 
   return (
     <>
-    <HeaderIndex />
+    <NavigationMenuMain />
     <main className='md:max-w-[100%] bg-[#0B1120] flex items-center flex-col justify-center overflow-x-hidden boxtexts'>
-    <section className='bg-[#0B1120] gridthing w-full  h-full flex items-center flex-col'>
+    <section className='bg-[#0B1120] mt-5 md:mt-11 gridthing w-full h-full flex items-center flex-col'>
     <div className='flex md:px-[4.5rem] z-10 px-2 justify-between max-w-[120rem] w-[100%] flex-wrap lg:flex-nowrap flex-row gap-10 pt-[5rem] pb-40'>
       <div className='md:w-[70%] w-full flex relative flex-col justify-start gap-5'>
         <img src='/logo.png' alt='logo' className='w-[50px] h-[50px] fadein' />

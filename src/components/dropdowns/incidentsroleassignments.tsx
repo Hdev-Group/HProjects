@@ -46,11 +46,10 @@ export default function RolerAssigneeSelect({
           return;
         }
 
-        const { reporterid, responders } = filteredIncident;
+        const { responders } = filteredIncident;
 
         // Combine all user IDs and remove empty or undefined values
         const userIds = [
-          reporterid,
           ...(responders || []),
         ].filter((id) => id && id.trim() !== "");
 

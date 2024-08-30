@@ -23,9 +23,11 @@ import CommentBoxer from '../../../../../components/comments/commentboxer';
 import PriorityStatus from '../../../../../components/dropdowns/priority';
 import StatusTime from '../../../../../components/dropdowns/status';
 import QuickChat from '../../../../../components/quickchat/quickchat';
+import { useToast } from "../../../../../components/ui/use-toast";
 
 export default function TaskFullView({ params }: { params: { _id: string, _taskid: string } }) {
     const { userId, isLoaded, isSignedIn } = useAuth();
+    const {toast} = useToast();
     const { user } = useUser();
     const router = useRouter();
     const jobtitlealready = useQuery(api.getjob.get);
@@ -122,6 +124,13 @@ export default function TaskFullView({ params }: { params: { _id: string, _taski
 
     useEffect(() => {
         if (priority !== taskPriority || status !== taskStatus || description !== taskDescription) {
+            if (taskDescription.length > 500) {
+                toast({
+                    variant: "destructive",
+                    description: "Description is too long, please shorten it to 500 characters or less."
+                })
+                return;
+            }
             const currenttime = new Date().toISOString();
             const updateTask = async () => {
                 try {
@@ -332,7 +341,7 @@ export default function TaskFullView({ params }: { params: { _id: string, _taski
                                                                         <img src={creatorData?.imageUrl} className='w-8 h-8 rounded-full' alt="Assignee" />
                                                                         <div>
                                                                             <p className='font-semibold dark:text-white text-black'>{creatorData?.firstName} {creatorData?.lastName}</p>
-                                                                            <p className='text-xs text-neutral-400'>{jobtitlealready?.filter(jobtitlealready => jobtitlealready.userid === creatorData?.id)[0]?.jobtitle}</p>
+                                                                            <p className='text-xs text-neutral-400'>{jobtitlealready?.filter((jobtitlealready: any) => jobtitlealready.userid === creatorData?.id)[0]?.jobtitle}</p>
                                                                         </div>
                                                                         </div>
                                                                         <QuickChat userId={creatorData?.id} userfirst={creatorData?.firstName} />
@@ -353,6 +362,7 @@ export default function TaskFullView({ params }: { params: { _id: string, _taski
                                                                 <textarea 
                                                                     className='p-2 w-full rounded-md min-h-[10rem] dark:text-white text-black border border-neutral-700 bg-transparent' 
                                                                     id='descriptioner' 
+                                                                    maxLength={500}
                                                                     value={description}
                                                                     onChange={(e) => setDescription(e.target.value)}
                                                                 />

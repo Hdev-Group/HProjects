@@ -73,6 +73,28 @@ const IncidentPrioritychange = ({ onClose, id, projectid, taskPriorityold }) => 
   }, [taskPriority]);
 
   if (!isLoaded || !isSignedIn) return null;
+  const priorityDetails = {
+    low: {
+      text: 'Issues with minor impact. These can be resolved within hours. Most customers are unlikely to notice any problems.',
+      example: 'Example: Minor UI bug in an admin panel.',
+      style: 'text-neutral-300'
+    },
+    medium: {
+      text: 'Issues causing moderate service disruption. These may require prompt attention but are not urgent.',
+      example: 'Example: Degraded performance in a non-critical service.',
+      style: 'text-yellow-300'
+    },
+    high: {
+      text: 'Issues causing significant service disruption. Immediate action is required, though there may be workarounds to mitigate the impact.',
+      example: 'Example: A key microservice is failing, impacting a subset of users.',
+      style: 'text-red-300'
+    },
+    critical: {
+      text: 'Critical issues causing severe service disruption. Immediate response is essential.',
+      example: 'Example: Data breach or full system outage affecting all users.',
+      style: 'text-red-400'
+    }
+  };
 
   return (
     <div id="outerclickclose" className="absolute top-0 justify-center flex items-center overflow-y-hidden overflow-x-hidden min-h-[100%] h-full w-[100%] bg-neutral-950/40 z-10">
@@ -96,34 +118,13 @@ const IncidentPrioritychange = ({ onClose, id, projectid, taskPriorityold }) => 
                   value={taskPriority}
                   onChange={setTaskPriority} 
                 />
-                {taskPriority === 'low' && (
-                      <span className='text-neutral-300 mt-1 text-xs'>
-                        Issues with minor impact. These can be resolved within hours. Most customers are unlikely to notice any problems. 
-                        <br />
-                        Example: Minor UI bug in an admin panel.
-                      </span>
-                    )}
-                    {taskPriority === 'medium' && (
-                      <span className='text-yellow-300 mt-1 text-xs'>
-                        Issues causing moderate service disruption. These may require prompt attention but are not urgent. 
-                        <br />
-                        Example: Degraded performance in a non-critical service.
-                      </span>
-                    )}
-                    {taskPriority === 'high' && (
-                      <span className='text-red-300 mt-1 text-xs'>
-                        Issues causing significant service disruption. Immediate action is required, though there may be workarounds to mitigate the impact.
-                        <br />
-                        Example: A key microservice is failing, impacting a subset of users.
-                      </span>
-                    )}
-                    {taskPriority === 'critical' && (
-                      <span className='text-red-400 mt-1 text-xs'>
-                        Critical issues causing severe service disruption. Immediate response is essential.
-                        <br />
-                        Example: Data breach or full system outage affecting all users.
-                      </span>
-                    )}
+                {taskPriority && (
+                  <span className={`${priorityDetails[taskPriority].style} mt-1 text-xs`}>
+                    {priorityDetails[taskPriority].text}
+                    <br />
+                    {priorityDetails[taskPriority].example}
+                  </span>
+                )}
               </div>
             </div>
           </div>

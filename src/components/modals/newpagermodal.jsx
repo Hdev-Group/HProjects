@@ -41,17 +41,9 @@ const NewPagerModal = ({ onClose, id }) => {
       return;
     }
     try {
-
       const timestampInSeconds = Math.floor(new Date(time).getTime() / 1);
-
-      // Get the current Unix timestamp in seconds
       const currentTimestampInms = Math.floor(Date.now() / 1);
-      
-      // Calculate the difference in seconds
       const differenceInSeconds = timestampInSeconds - currentTimestampInms;
-      console.log('Time difference in ms:', differenceInSeconds);
-
-
       await addPager({ projectid: id.id, userId: taskAssignee, time, calctime: differenceInSeconds, status: 'active' });
       onClose();
     } catch (error) {

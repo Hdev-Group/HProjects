@@ -1,23 +1,20 @@
 "use client";
-import React, { useState, useEffect, useCallback, act } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '@clerk/nextjs';
 import { useMutation } from 'convex/react';
 import { api } from '../../../convex/_generated/api';
-import { ConvexClient } from "convex/browser";
-import PriorityResponse from '../dropdowns/responderp';
 import ExitModal from '../modals/exit';
-import RolerAssigneeSelect from '../dropdowns/incidentsroleassignments';
+import {PagerSelector} from '../dropdowns/pagerselector';
 
-const LeadResponderchange = ({ onClose, id, projectid }) => {
+const PageSelectResponder = ({ onClose, id, projectid, responders }: any) => {
   const { userId, isLoaded, isSignedIn } = useAuth();
   const [taskAssignee, setTaskAssignee] = useState('');
-  const [showExitModal, setShowExitModal] = useState(false); // State to control ExitModal
-  const addLeadResponder = useMutation(api.incident.editLeadResponder);
-  const addTimeStamps = useMutation(api.incident.timestamps);
+  const [showExitModal, setShowExitModal] = useState(false);
+  const IncidentPages = useMutation(api.pagerincidents.add);
+  const IncidentPusher = useMutation(api.incident.editResponder);
   const addlog = useMutation(api.incidentlogs.add);
-  const logger = useMutation(api.updater.logger);
 
-  const handleFormSubmitReal = useCallback(async (e) => {
+  const handleFormSubmitReal = useCallback(async (e: any) => {
     e.preventDefault();
     
     if (!userId) {
@@ -30,21 +27,26 @@ const LeadResponderchange = ({ onClose, id, projectid }) => {
         console.error('Task Assignee is null or empty');
         return;
       }
-      if (taskAssignee === 'none'){
-        await addLeadResponder({
+      if (!responders.includes(taskAssignee)) {
+        responders.push(taskAssignee);
+      }
+        await IncidentPusher({
+          _id: id,
+          responders: responders,
+        });
+        await IncidentPages({
+          projectid: projectid,
           incidentid: id,
-          leadresponder: null,
+          userid: userId,
+          acknowledged: false,
+          pagerid: taskAssignee,
         });
         onClose()
-      }
-      await addLeadResponder({
-        incidentid: id,
-        leadresponder: taskAssignee,
-      });
       await addlog({
         projectid: projectid,
         incidentid: id,
-        action: 'LeadResponderChanged',
+        userid: userId,
+        action: 'PagedResponders',
         description: taskAssignee,
       });
   
@@ -53,7 +55,7 @@ const LeadResponderchange = ({ onClose, id, projectid }) => {
     } catch (error) {
       console.error('Error adding incident:', error);
     }
-  }, [id, onClose, taskAssignee, addLeadResponder, addlog, userId]);
+  }, [id, onClose, taskAssignee, IncidentPages, addlog, userId]);
 
   const handleCloseModal = () => {
     if (taskAssignee) {
@@ -68,7 +70,7 @@ const LeadResponderchange = ({ onClose, id, projectid }) => {
   };
 
   useEffect(() => {
-    const handleClickOutside = (e) => {
+    const handleClickOutside = (e: any) => {
       if (e.target.id === 'outerclickclose') {
         handleCloseModal();
       }
@@ -91,7 +93,7 @@ const LeadResponderchange = ({ onClose, id, projectid }) => {
             <ExitModal onClose={() => onClose()} mainholdRemove={() => hideexitmodal()} /> 
           )}
           <div className="flex items-center flex-row px-5 justify-between border-b-neutral-600 border border-t-transparent border-x-transparent w-full h-auto py-3">
-            <h1 className="text-xl font-semibold text-black dark:text-white text-dark">Edit Roles</h1>
+            <h1 className="text-xl font-semibold text-black dark:text-white text-dark">Page Responders</h1>
             <p 
               onClick={handleCloseModal} 
               className="text-2xl text-red-600 cursor-pointer hover:text-red-400 transition-all-300">x</p>
@@ -100,21 +102,20 @@ const LeadResponderchange = ({ onClose, id, projectid }) => {
               <div className='px-4 flex flex-col'>
                 <div className="flex flex-col gap-3">
                   <div className='flex w-full flex-col'>
-                    <label htmlFor="projecttitle" className="text-md mb-2 font-bold text-black dark:text-white text-dark">Lead Responder <span className='text-neutral-500 text-sm font-normal'>(optional)</span></label>
-                    <RolerAssigneeSelect
+                    <label htmlFor="projecttitle" className="text-md mb-2 font-bold text-black dark:text-white text-dark">Who do you wish to page for this incident</label>
+                    <PagerSelector
                       id={projectid}
                       value={taskAssignee}
                       incidentid={id}
                       onValueChange={setTaskAssignee}
-                      required
                     />
                   </div>
 
               </div>
               </div>
               <div className='px-2 py-3 flex justify-end border-t-neutral-600 border border-b-transparent border-x-transparent'>
-                <button type="submit" className="bg-black font-semibold dark:text-white text-white rounded-md w-auto px-5 py-2">
-                  Add Lead Responder
+                <button type="submit" className="bg-black hover:bg-neutral-800 transition-all font-semibold dark:text-white text-white rounded-md w-auto px-5 py-2">
+                  Page Responders
                 </button>
               </div>
             </form>
@@ -124,4 +125,4 @@ const LeadResponderchange = ({ onClose, id, projectid }) => {
   );
 };
 
-export default React.memo(LeadResponderchange);
+export default PageSelectResponder

@@ -15,19 +15,40 @@ export function timesince(date: Date) {
 
     let timeinwords = '';
     if (years > 0) {
-        timeinwords = years + 'y';
+        timeinwords = years + ' years';
+        if (years > 1) {
+            timeinwords += 's';
+        }
     } else if (months > 0) {
-        timeinwords = months + 'm';
+        timeinwords = months + ' months';
+        if (months > 1) {
+            timeinwords += 's';
+        }
     } else if (weeks > 0) {
-        timeinwords = weeks + 'w';
+        timeinwords = weeks + ' weeks';
+        if (weeks > 1) {
+            timeinwords += 's';
+        }
     } else if (days > 0) {
-        timeinwords = days + 'd';
+        timeinwords = days + ' days';
+        if (days > 1) {
+            timeinwords += 's';
+        }
     } else if (hours > 0) {
-        timeinwords = hours + 'h';
+        timeinwords = hours + ' hour';
+        if (hours > 1) {
+            timeinwords += 's';
+        }
     } else if (minutes > 0) {
-        timeinwords = minutes + 'm';
+        timeinwords = minutes + ' minute';
+        if (minutes > 1) {
+            timeinwords += 's';
+        }
     } else {
-        timeinwords = seconds + 's';
+        timeinwords = seconds + ' second';
+        if (seconds > 1) {
+            timeinwords += 's';
+        }
     }
 
     return timeinwords;
@@ -47,9 +68,11 @@ function firstlettercapital(string: string) {
     return string?.charAt(0).toUpperCase() + string?.slice(1);
 }
 
+
 export function IncidentUpdate({ log }: any): JSX.Element {
-    const [userData, setUserData] = useState<any>(null); 
-    const [error, setError] = useState<any>(null); 
+    const [userData, setUserData] = useState<any>(null);
+    const [error, setError] = useState<any>(null);
+    const [remainingTime, setRemainingTime] = useState<string>('');
 
     useEffect(() => {
         async function fetchData() {
@@ -64,26 +87,66 @@ export function IncidentUpdate({ log }: any): JSX.Element {
 
         fetchData();
     }, [log?.userid]);
-    return(
+
+    useEffect(() => {
+        function calculateRemainingTime() {
+            const now = new Date();
+            const creationTime = new Date(log._creationTime);
+            const nextUpdateTime = new Date(creationTime.getTime() + log.nextupdate * 60 * 1000); // Assuming `log.nextupdate` is in minutes
+            const difference = nextUpdateTime.getTime() - now.getTime();
+
+            if (difference <= 0) {
+                setRemainingTime('now');
+                return;
+            }
+
+            const minutes = Math.floor(difference / (1000 * 60));
+            const hours = Math.floor(difference / (1000 * 60 * 60));
+            const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+
+            if (minutes < 60) {
+                setRemainingTime(`in ${minutes} minutes`);
+            } else if (hours < 48) {
+                setRemainingTime(`in ${hours} hours`);
+            } else {
+                setRemainingTime(`in ${days} days`);
+            }
+        }
+
+        // Calculate the remaining time initially and set an interval to update it
+        calculateRemainingTime();
+        const interval = setInterval(calculateRemainingTime, 60000); // Update every minute
+
+        // Cleanup interval on component unmount
+        return () => clearInterval(interval);
+    }, [log._creationTime, log.nextupdate]);
+
+    return (
         <div className="w-full h-auto gap-2 flex-row flex">
             <div className="flex flex-col items-center">
-                <img className="w-8 rounded-full h-8" src={userData?.imageUrl}></img>
+                <img className="w-8 rounded-full h-8" src={userData?.imageUrl} alt={`${userData?.firstName}'s avatar`} />
                 <div className="border-l h-full" />
             </div>
             <div className="flex flex-col h-full pb-9 w-full gap-4 justify-center">
                 <div className="flex flex-row items-center gap-3 ml-2">
-                    <p className="text-md font-normal text-black dark:text-white"><span className="font-semibold">{userData?.firstName} {userData?.lastName}</span> provided an update</p>
+                    <p className="text-md font-normal text-black dark:text-white">
+                        <span className="font-semibold">{userData?.firstName} {userData?.lastName}</span> provided an update
+                    </p>
                     <p className="text-md font-normal text-neutral-400">{timesince(new Date(log._creationTime))} ago</p>
                 </div>
-                <div className="flex flex-col bg-neutral-900/20 rounded-md gap-1 py-3 px-4 ml-2">
-                    <p className="text-neutral-300 font-semibold gap-4 flex">
+                <div className="flex flex-col bg-neutral-900/20 rounded-md gap-1 py-3 ml-2">
+                    <p className="text-white border-b pb-2 px-4 font-semibold gap-4 flex">
                         {log.description}
+                    </p>
+                    <p className="text-neutral-300 text-sm pb-2 px-4 font-semibold gap-4 flex">
+                        Next update expected {remainingTime}
                     </p>
                 </div>
             </div>
         </div>
-    )
+    );
 }
+
 
 export function FirstSend({ firstchild, reporter, incidentdetails, incidentstarted }: { firstchild?: boolean; reporter: any; incidentdetails: any, incidentstarted: any }) {
     const reportera = reporter[0];
@@ -119,6 +182,62 @@ export function FirstSend({ firstchild, reporter, incidentdetails, incidentstart
             </div>
         </div>
     );
+}
+export function PagedResponders({ log }: any): JSX.Element{
+    const [userData, setUserData] = useState<any>(null); 
+    const [pagedUserData, setPagedUserData] = useState<any>(log.description);
+    const [error, setError] = useState<any>(null); 
+    
+
+    useEffect(() => {
+        async function fetchData() {
+            try {
+                const data = await getuserdata(log?.userid);
+                setUserData(data);
+            } catch (error) {
+                setError(error);
+                console.error(error);
+            }
+        }
+
+        fetchData();
+    }, [log?.userid]);
+
+    useEffect(() => {
+        async function fetchPagedData() {
+            try {
+                const data = await getuserdata(log?.description);
+                setPagedUserData(data);
+            } catch (error) {
+                setError(error);
+                console.error(error);
+            }
+        }
+
+        fetchPagedData();
+    }, [log?.description]);
+
+
+    return(
+        <div className="w-full h-auto gap-2 flex-row flex">
+            <div className="flex flex-col items-center">
+                <img className="w-8 rounded-full h-8" src={userData?.imageUrl}></img>
+                <div className="border-l h-full" />
+            </div>
+            <div className="flex flex-col h-full pb-9 w-full gap-4 justify-center">
+                <div className="flex flex-row items-center gap-3 ml-2">
+                    <p className="text-md font-normal text-black dark:text-white"><span className="font-semibold">{userData?.firstName} {userData?.lastName}</span> has sent a pager to</p>
+                    <p className="text-md font-normal text-neutral-400">{timesince(new Date(log._creationTime))} ago</p>
+                </div>
+                <div className="flex flex-col bg-neutral-900/20 rounded-md gap-1 py-3 px-4 ml-2">
+                    <p className="text-neutral-300 font-semibold items-center gap-3 flex">
+                        <img className="w-8 h-8 rounded-full" src={pagedUserData?.imageUrl}></img>
+                        <span className="text-black dark:text-white">{pagedUserData?.firstName} {pagedUserData?.lastName}</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    )
 }
 export function StatusChanges({ log }: any): JSX.Element{
     const [userData, setUserData] = useState<any>(null); 
