@@ -127,7 +127,7 @@ const NewTaskModal = ({ onClose, id }) => {
 
   return (
     <div id="outerclickclose" className="absolute top-0 justify-center flex overflow-y-hidden overflow-x-hidden min-h-[100%] h-full w-[100%] bg-neutral-950/40 z-10">
-      <div id='innercloser' className="flex flex-col zoomin overflow-y-auto z-[10000000000000000] md:shadow-lg mt-[9rem] md:rounded-xl shadow-md rounded-md border dark:shadow-black bg-neutral-100 dark:bg-neutral-900 h-[32.3rem] md:w-[50%] w-[100%]">
+      <div id='innercloser' className="flex flex-col zoomin overflow-y-auto z-100 md:shadow-lg mt-[9rem] md:rounded-xl shadow-md rounded-md border dark:shadow-black bg-neutral-100 dark:bg-neutral-900 h-[32.3rem] md:w-[50%] w-[100%]">
           {showExitModal && (
             <ExitModal onClose={() => onClose()} mainholdRemove={() => hideexitmodal()} /> 
           )}

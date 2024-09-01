@@ -21,7 +21,7 @@ export default function IncidentProcess({ value, onValueChange }: any) {
       <SelectTrigger>
         <SelectValue className="px-2" placeholder="Process" />
       </SelectTrigger>
-      <SelectContent className="z-[100000000000000000000000]">
+      <SelectContent className="z-100">
         <SelectGroup>
           <SelectLabel>Process</SelectLabel>
           <SelectItem value="investigation">Investigation</SelectItem>

@@ -24,7 +24,7 @@ export default function TimeUpdate({ value, onValueChange }: any) {
             <SelectTrigger>
                 <SelectValue className="px-2" />
             </SelectTrigger>
-            <SelectContent className="z-[100000000000000000000000]">
+            <SelectContent className="z-100">
                 <SelectGroup>
                     <SelectLabel>Process</SelectLabel>
                     <SelectItem value="5">5 minutes</SelectItem>
