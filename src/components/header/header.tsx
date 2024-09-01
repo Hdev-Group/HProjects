@@ -5,7 +5,7 @@ import '../../styles/globals.css';
 import { useClerk } from '@clerk/clerk-react';
 import './head.css';
 
-const Header = () => {
+export default function NavigationMenuMain() {
   const { user } = useClerk();
 
   useEffect(() => {
@@ -49,17 +49,16 @@ const Header = () => {
 
   return (
     <>
-      <div
-        id="loaderbar"
-        className="h-0.5 bg-blue-600 fixed top-0 left-0 z-50"
-        style={{ width: '0%', opacity: 1 }}
-      />
-    <header className="z-70 top-0 h-auto w-[100%] text-white max-[460px]:block sm:block md:flex left-0 bg-[#0B1120] border border-transparent border-b-1 border-b-[#1f3468] right-0 z-50 flex items-center justify-center p-8 pb-5 transition-colors duration-300">
-      <div className="flex items-center gap-10  justify-between md:w-[110rem] w-[94%]">
-        <div className='flex items-center gap-8 justify-center'>
+    <div
+      id="loaderbar"
+      className="h-0.5 bg-blue-600 fixed top-0 left-0 z-50"
+      style={{ width: '0%', opacity: 1 }}
+    />
+    <div className="w-full px-2 md:px-[4.5rem] py-3  flex items-center fixed justify-center z-10 backdrop-blur-lg border-b " id="headermain">
+      <div className="max-w-[120rem] w-[100%] flex ">
         <a href='/'>
           <div className="flex items-center">
-            <Image
+            <img
               src="/logo.png"
               alt="HProjects"
               width={32}
@@ -68,41 +67,29 @@ const Header = () => {
             <h1 className="text-2xl font-bold">Projects</h1>
           </div>
         </a>
-        <nav>
-          <ul className="space-x-4 md:flex hidden">
-            <li>
-              <a href="/help/" className="ease-in-out duration-300 flex items-center justify-center  font-semibold hover:text-neutral-200">Product<svg className='height-[30px] w-4' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 16L6 10H18L12 16Z"></path></svg></a>
-            </li>
-            <li>
-              <a href="/download" className="ease-in-out duration-300 font-semibold hover:text-neutral-200">Docs</a>
-            </li>
-            <li>
-              <a href="/blog" className="ease-in-out duration-300 font-semibold hover:text-neutral-200">Changelog</a>
-            </li>
-          </ul>
-        </nav>
+
         </div>
         <nav className='max-[460px]:hidden'>
-          <ul className="flex space-x-4">
+          <ul className="flex">
             {user ? (
               <>
-                <li className='gap-5 flex items-center'>
-                  <img src={user.imageUrl} alt={user.fullName} className="w-8 h-8 rounded-full" />
+                <li className='gap-5 flex w-full items-center'>
+                  <div className='w-8 h-8 rounded-full overflow-hidden'>
+                    <img src={user.imageUrl} className="rounded-full" />
+                  </div>
                   <a href="/dashboard" className="ease-in-out duration-300 hovmain py-1 px-2 flex items-center justify-center bg-blue-600 rounded-md hover:bg-blue-800">Dashboard <svg xmlns="http://www.w3.org/2000/svg" className='h-[30px] w-5 hovericon' viewBox="0 0 24 24" fill="currentColor"><path d="M16 12L10 18V6L16 12Z"></path></svg></a>
                 </li>
               </>
             ) : (
-              <li className='gap-5 flex items-center'>
+              <li className='gap-5 flex items-center w-full'>
                 <a href="/sign-in" className="ease-in-out duration-300 rounded-2xl text-white">Login</a>
-                <a href="/sign-up" className="cursor-pointer flex pl-2 border border-white/40 hover:border-white transition-all items-center p-1 rounded-lg hover:bg-neutral-500/10 hover:ring-2 hover:ring-neutral-500/30 hovmain">Get Started <svg  xmlns="http://www.w3.org/2000/svg" className='h-[30px] w-5 hovericon' viewBox="0 0 24 24" fill="currentColor"><path d="M16 12L10 18V6L16 12Z"></path></svg></a>
+                <a href="/sign-up" className="cursor-pointer flex pl-4 border border-white/40 w-[8rem] hover:border-white transition-all items-center p-1 rounded-lg hover:bg-neutral-500/10 hover:ring-2 hover:ring-neutral-500/30 hovmain">Get Started <svg  xmlns="http://www.w3.org/2000/svg" className='h-[30px] w-5 hovericon' viewBox="0 0 24 24" fill="currentColor"><path d="M16 12L10 18V6L16 12Z"></path></svg></a>
               </li>
             )}
           </ul>
         </nav>
       </div>
-    </header>
-    </>
-  );
-};
+      </>
+  )
+}
 
-export default Header;

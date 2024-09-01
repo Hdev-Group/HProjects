@@ -17,6 +17,19 @@ export default function MessageSubmitter({ chatid, _id }: MessageSubmitterProps)
     event.preventDefault();
     const chatmsg = messageInputRef.current?.value;
 
+    // check if the input is empty
+    if (!chatmsg) {
+      return;
+    }
+    // check if the input is only spaces
+    if (chatmsg.trim() === '') {
+      return;
+    }
+    // check if input is over 2000 characters
+    if (chatmsg.length > 2000) {
+      return;
+    }
+
 
     if (messageInputRef.current) {
       messageInputRef.current.value = '';
@@ -26,12 +39,13 @@ export default function MessageSubmitter({ chatid, _id }: MessageSubmitterProps)
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-row w-full h-full" id="messagesubmitter">
+    <form onSubmit={handleSubmit} className="flex flex-row w-full items-center justify-center h-full" id="messagesubmitter">
       <input
         type="text"
         id="messageinput"
+        maxLength={2000}
         placeholder={`Type a message`}
-        className="w-full px-3 bg-transparent h-10 text-black dark:text-white placeholder:text-black placeholder:dark:text-white"
+        className="w-full px-3 bg-transparent h-full text-black dark:text-white placeholder:text-black placeholder:dark:text-white"
         ref={messageInputRef}
       />
       <button type="submit" className="h-full bg-blue-500 hover:bg-blue-600 transition-all w-10 flex items-center justify-center">

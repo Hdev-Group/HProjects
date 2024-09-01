@@ -91,7 +91,7 @@ export default function AssigneeSelect({ value, onValueChange, id }: { value: st
       <SelectTrigger>
         <SelectValue placeholder="Assignee" />
       </SelectTrigger>
-      <SelectContent className="z-[100000000000000000000000]">
+      <SelectContent className="z-50">
         <SelectGroup>
           {ownerData && renderUser(ownerData)}
         </SelectGroup>

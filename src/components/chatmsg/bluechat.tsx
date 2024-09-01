@@ -40,12 +40,8 @@ export default function BlueChat({ message, projectid }: { message: string, proj
   const { user } = useUser();
 
   // Improved regex to capture task-related URLs more reliably
-  const urlPattern = /http:\/\/localhost:3000\/projects\/([^\/]+)\/([a-zA-Z0-9]+)\b/g;
+  const urlPattern = /https:\/\/hprojects.hdev.uk\/projects\/([^\/]+)\/([a-zA-Z0-9]+)\b/g;
   const match = urlPattern.exec(message);
-
-  // Log the extracted values for debugging
-  console.log("Message:", message);
-  console.log("Matched:", match);
 
   const extractedProjectId = match ? match[1] : null;
   const taskid = match ? match[2] : null;

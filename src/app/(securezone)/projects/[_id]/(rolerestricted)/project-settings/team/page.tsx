@@ -116,11 +116,12 @@ export default function ProjectSettings({ params }: { params: { _id: string } })
     }
   }
 
-  function TeamMember({ user }: { user: { firstName: string, lastName: string, imageUrl: string, email: string, id: string } }) {
+  function TeamMember({ user }: { user: { firstName: string, lastName: string, imageUrl: string, email: string, emailAddresses: any, emailAddress: string ,id: string } }) {
     const rolefinder = getuserss?.find((usera: any) => user?.id === usera.userid && usera?.projectID === params._id);
     const [status, setTaskStatus] = useState<string>(() => {
       return rolefinder?.role || '';
     });
+    const email = user?.email;
 
     useEffect(() => {
       if (status !== rolefinder?.role) {
@@ -156,7 +157,7 @@ export default function ProjectSettings({ params }: { params: { _id: string } })
         <div className='border flex-col flex w-auto px-4 py-2 rounded-md'>
           <p className='text-neutral-400 text-sm'>{user?.firstName} {user?.lastName}</p>
           <div className='flex flex-row w-full items-center gap-10 justify-between'>
-            <p>{user?.email}</p>
+            <p>{email}</p>
             <div className='flex flex-row mt-[-15px] gap-4'>
               <Role
                 value={status}
@@ -262,7 +263,7 @@ export default function ProjectSettings({ params }: { params: { _id: string } })
                         <div className='flex flex-col gap-3'>
                           <label className='font-semibold'>Email</label>
                           <div className='flex flex-row gap-3'>
-                            <input type='text'
+                            <input type='email'
                               placeholder='your-team-member@example.com'
                               className='md:w-1/3 w-full p-2 border border-neutral-800 bg-transparent rounded-md'
                               onChange={(e) => setEmail(e.target.value)}

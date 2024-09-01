@@ -55,7 +55,6 @@ export const edit = mutation({
     handler: async (ctx, { _id, role, jobtitle, projectID, userid }) => {
         // Validate the _id
 
-        console.log(_id, role, jobtitle, projectID, userid);
 
         // Create an object only with the fields that are not null
         const userUpdates = {

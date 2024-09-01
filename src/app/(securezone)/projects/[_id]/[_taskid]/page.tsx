@@ -23,9 +23,11 @@ import CommentBoxer from '../../../../../components/comments/commentboxer';
 import PriorityStatus from '../../../../../components/dropdowns/priority';
 import StatusTime from '../../../../../components/dropdowns/status';
 import QuickChat from '../../../../../components/quickchat/quickchat';
+import { useToast } from "../../../../../components/ui/use-toast";
 
 export default function TaskFullView({ params }: { params: { _id: string, _taskid: string } }) {
     const { userId, isLoaded, isSignedIn } = useAuth();
+    const {toast} = useToast();
     const { user } = useUser();
     const router = useRouter();
     const jobtitlealready = useQuery(api.getjob.get);
@@ -122,6 +124,13 @@ export default function TaskFullView({ params }: { params: { _id: string, _taski
 
     useEffect(() => {
         if (priority !== taskPriority || status !== taskStatus || description !== taskDescription) {
+            if (taskDescription.length > 500) {
+                toast({
+                    variant: "destructive",
+                    description: "Description is too long, please shorten it to 500 characters or less."
+                })
+                return;
+            }
             const currenttime = new Date().toISOString();
             const updateTask = async () => {
                 try {
@@ -191,13 +200,13 @@ export default function TaskFullView({ params }: { params: { _id: string, _taski
         const days = Math.floor(hours / 24);
     
         if (seconds < 60) {
-            return <p className='font-semibold critical rounded-md p-1' id='loadingidassigneenames'>{seconds} {seconds === 1 ? 'second' : 'seconds'} ago</p>;
+            return <p className='font-semibold rounded-md' id='loadingidassigneenames'>{seconds} {seconds === 1 ? 'second' : 'seconds'} ago</p>;
         } else if (minutes < 20) {
-            return <p className='font-semibold critical rounded-md p-1' id='loadingidassigneenames'>{minutes} {minutes === 1 ? 'minute' : 'minutes'} ago</p>;
+            return <p className='font-semibold rounded-md' id='loadingidassigneenames'>{minutes} {minutes === 1 ? 'minute' : 'minutes'} ago</p>;
         } else if (minutes < 60) {
-            return <p className='font-semibold medium rounded-md p-1' id='loadingidassigneenames'>{minutes} {minutes === 1 ? 'minute' : 'minutes'} ago</p>;
+            return <p className='font-semibold rounded-md' id='loadingidassigneenames'>{minutes} {minutes === 1 ? 'minute' : 'minutes'} ago</p>;
         } else if (hours < 24) {
-            return <p className='font-semibold critical rounded-md p-1' id='loadingidassigneenames'>{hours} {hours === 1 ? 'hour' : 'hours'} ago</p>;
+            return <p className='font-semibold rounded-md' id='loadingidassigneenames'>{hours} {hours === 1 ? 'hour' : 'hours'} ago</p>;
         } else {
             return <span>{`${days} ${days === 1 ? 'day' : 'days'} ago`}</span>;
         }
@@ -205,6 +214,9 @@ export default function TaskFullView({ params }: { params: { _id: string, _taski
 
     const title = taskName + ' | ' + projectname + ' | Task Details';
 
+    function startincident() {
+        router.push(`/projects/${_id}/incident/?taskid=${taskid}?priority=${taskPriority}`);
+    }
     function taskunarchive() {
         const currenttime = new Date().toISOString();
         const updateTask = async () => {
@@ -237,130 +249,145 @@ export default function TaskFullView({ params }: { params: { _id: string, _taski
             <div className="h-screen bg-bglight overflow-hidden dark:bg-bgdark">
                 <div className="flex  h-full bg-bglightbars dark:bg-bgdarkbars">
                 <SideBar _id={params._id} projectname={projectname}  activeSection={activeSection} />
-                <div className={`${archived ? "border-yellow-300" : " "}flex w-full justify-center bg-bglight border mt-0.5 dark:bg-bgdark rounded-l-3xl`}>
-                    <div className="max-w-10/12 w-[100%] overflow-y-auto p-5 flex flex-col items-center">
-                    <div className="flex-row w-full px-5 justify-between mb-5 mt-5 flex">
-                                <div className='flex flex-col w-full gap-4 items-center '>
-                                    <div className="flex w-full md:w-10/12 pt-4 gap-4 flex-row justify-between">
-                                        <div className='w-full flex gap-3 flex-col'>
-                                            {archived && <div className='font-semibold medium w-full rounded-md px-5 py-2 cursor-pointer hover:bg-orange-200/30 transition-all hover:border-orange-600' onClick={taskunarchive}><h1 className="text-2xl">{taskName} is archived</h1> <p className="font-normal text-xs">Click here to unarchive</p></div>}
-                                        <div className='flex flex-row gap-3 items-center w-50'>
-                                            {!archived &&
-                                            <>
-                                            <div className="flex-row flex gap-2">
-                                            <div className='flex justify-center items-center dark:text-white text-black cursor-pointer hover:bg-neutral-500/60 flex-row  bg-neutral-500/20 border hover:border-neutral-300 h-auto p-1 px-2 rounded-sm w-auto gap-2 transition-all' onClick={edittask}>
-                                                <svg xmlns="http://www.w3.org/2000/svg" className="w-5 flex" viewBox="0 0 24 24" fill="currentColor"><path d="M15.7279 9.57627L14.3137 8.16206L5 17.4758V18.89H6.41421L15.7279 9.57627ZM17.1421 8.16206L18.5563 6.74785L17.1421 5.33363L15.7279 6.74785L17.1421 8.16206ZM7.24264 20.89H3V16.6473L16.435 3.21231C16.8256 2.82179 17.4587 2.82179 17.8492 3.21231L20.6777 6.04074C21.0682 6.43126 21.0682 7.06443 20.6777 7.45495L7.24264 20.89Z"></path></svg> <p className="md:block hidden">Edit</p>
-                                            </div>
-                                            <div className='flex justify-center items-center cursor-pointer hover:bg-red-500/60 gap-2 bg-red-500/80 border hover:border-neutral-300 h-auto p-1 px-2 rounded-sm w-auto flex-row transition-all' onClick={deletetasktrigger}>
-                                                <svg xmlns="http://www.w3.org/2000/svg" className="flex w-5" viewBox="0 0 24 24" fill="currentColor"><path d="M17 6H22V8H20V21C20 21.5523 19.5523 22 19 22H5C4.44772 22 4 21.5523 4 21V8H2V6H7V3C7 2.44772 7.44772 2 8 2H16C16.5523 2 17 2.44772 17 3V6ZM18 8H6V20H18V8ZM9 4V6H15V4H9Z"></path></svg> <p className="md:block hidden">Delete</p>
-                                            </div>
-                                            </div>
-                                            </>
-                                            }
-                                        </div>
-                                            <BreadcrumbWithCustomSeparator />
-                                            <div className='flex flex-col gap-2'>
-                                                <div className='flex flex-col'>
-                                                    <h1 className="font-bold text-3xl dark:text-white text-black text-wrap">{taskName}</h1>
-                                                </div>
-                                                
-                                                <div className='flex gap-3 mt-1 w-full flex-row'>
-                                                    {isEditing ? (
-                                                        <>
-                                                            <PriorityStatus 
-                                                                value={priority}
-                                                                onChange={setPriority}
-                                                            />
-                                                            <StatusTime
-                                                                value={status}
-                                                                onValueChange={setTaskStatus}
-                                                            />
-                                                        </>
-                                                    ) : (
-                                                        <>
-                                                            {taskPriority === 'critical' && <Critical />}
-                                                            {taskPriority === 'high' && <High />}
-                                                            {taskPriority === 'medium' && <Medium />}
-                                                            {taskPriority === 'low' && <Low />}
-                                                            {taskPriority === 'security' && <Security />}
-                                                            {taskPriority === 'Feature' && <Feature />}
-                                                            {taskStatus === 'backlog' && <BackLog />}
-                                                            {taskStatus === 'todo' && <Todo />}
-                                                            {taskStatus === 'inprogress' && <InProgress />}
-                                                            {taskStatus === 'done' && <Done />}
-                                                        </>
-                                                    )}
-                                                </div>
-                                            </div>
+                <div className="flex w-full sticky justify-center overflow-auto bg-bglight border mt-0.5 dark:bg-bgdark rounded-l-3xl">
+                        <div className="w-full bg-bglight dark:bg-bgdark rounded-l-3xl">
+                            <div className='flex flex-col'>
+                            <div className="flex-col w-full dark:border-b-neutral-800 border-b-neutral-900 border-transparent border gap-4 justify-between pb-5 mt-5 flex">
+                                <div className="px-7 flex flex-row items-center justify-between">
+                                    <div className='flex flex-row gap-2 items-center'>
+                                        <div className="p-2 dark:bg-neutral-700 text-black dark:text-white rounded-md border">
+                                        <svg className='w-6' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M5.25098 3H18.751C19.993 3 21.001 4.00737 21.001 5.25V18.75C21.001 19.992 19.9935 21 18.751 21H5.25098C4.00898 21 3.00098 19.9925 3.00098 18.75V5.25C3.00098 4.008 4.00835 3 5.25098 3ZM13.171 6.42054V12.1795C13.171 12.7762 13.6545 13.26 14.2507 13.26H17.5812C18.1776 13.26 18.661 12.7765 18.661 12.1795V6.42054C18.661 5.82384 18.1774 5.34 17.5812 5.34H14.2507C13.6543 5.34 13.171 5.82348 13.171 6.42054ZM5.34098 6.42045V16.6796C5.34098 17.2762 5.82455 17.76 6.42071 17.76H9.75125C10.3476 17.76 10.831 17.277 10.831 16.6796V6.42045C10.831 5.82375 10.3474 5.34 9.75125 5.34H6.42071C5.82428 5.34 5.34098 5.82303 5.34098 6.42045Z"></path></svg>                                        </div>
+                                        <div className='flex flex-col '>
+                                            <p className='text-sm mb-[-6px] font-medium dark:text-white text-black'>Tasks</p>
+                                            <h1 className="flex text-2xl font-bold text-black dark:text-white" id="tasksproject">{taskName}</h1>
                                         </div>
                                     </div>
-                                    <div className='w-full flex items-center justify-center pb-80'>
-                                        <div className='flex flex-col justify-start w-full md:w-10/12 gap-2 mt-3'>
-                                            <div className='flex flex-col gap-3'>
-                                                <div className='flex flex-col gap-1'>
-                                                    <p className='font-bold dark:text-white text-black'>Created:</p>
-                                                    <div className='flex items-center gap-2'>
-                                                        {formatTimeAgo(new Date(task._creationTime))}
-                                                    </div>
-                                                </div>                                        
-                                                <div className='flex flex-col gap-1'>
-                                                    <p className='font-bold dark:text-white text-black'>Task Created By:</p>
-                                                    <HoverCard>
-                                                        <HoverCardTrigger>
-                                                            <div className='flex items-center gap-2'>
-                                                                <img src={creatorData?.imageUrl} className='w-8 h-8 rounded-full' alt="Assignee" id='loadingidassignee' />
-                                                                <p className='font-semibold dark:text-white text-black' id='loadingidassigneenames'>{creatorData?.firstName} {creatorData?.lastName}</p>
-                                                            </div>
-                                                        </HoverCardTrigger>
-                                                        <HoverCardContent className='p-2 min-w-[400px] w-max'>
-                                                            <div className='flex flex-col justify-center w-full gap-5'>
-                                                                <div className="flex flex-row items-center gap-2">
-                                                                <img src={creatorData?.imageUrl} className='w-8 h-8 rounded-full' alt="Assignee" />
-                                                                <div>
-                                                                    <p className='font-semibold dark:text-white text-black'>{creatorData?.firstName} {creatorData?.lastName}</p>
-                                                                    <p className='text-xs text-neutral-400'>{jobtitlealready?.filter(jobtitlealready => jobtitlealready.userid === creatorData?.id)[0]?.jobtitle}</p>
-                                                                </div>
-                                                                </div>
-                                                                <QuickChat userId={creatorData?.id} userfirst={creatorData?.firstName} />
-                                                            </div>
-                                                        </HoverCardContent>
-                                                    </HoverCard>
-                                                </div>
-                                                <div className='flex flex-col gap-1'>
-                                                    <p className='font-bold dark:text-white text-black'>Assignee:</p>
-                                                    <div className='flex items-center gap-2'>
-                                                        <img src={assigneeData?.imageUrl} className='w-8 h-8 rounded-full' alt="Assignee" />
-                                                        <p className='font-semibold dark:text-white text-black'>{assigneeData?.firstName} {assigneeData?.lastName}</p>
-                                                    </div>
-                                                </div>
-                                                <div className='flex flex-col gap-1 w-full '>
-                                                    <p className='font-semibold dark:text-white text-black'>Task Description</p>
-                                                    <div className='w-full'>
-                                                        <textarea 
-                                                            className='p-2 w-full rounded-md min-h-[10rem] dark:text-white text-black border border-neutral-700 bg-transparent' 
-                                                            id='descriptioner' 
-                                                            value={description}
-                                                            onChange={(e) => setDescription(e.target.value)}
-                                                        />
-                                                </div>
+                                    <div className='flex flex-row gap-2'>
+                                    <div className="flex flex-row gap-3 items-center justify-center">
+                                    {!archived && 
+                                    <>
+                                        <div className='flex justify-center items-center dark:text-white text-black cursor-pointer hover:bg-neutral-500/60 flex-row  bg-neutral-500/20  font-semibold  border hover:border-neutral-300 h-auto p-1 px-2 rounded-sm w-auto gap-2 transition-all' onClick={edittask}>
+                                            <svg xmlns="http://www.w3.org/2000/svg" className="w-5 flex" viewBox="0 0 24 24" fill="currentColor"><path d="M15.7279 9.57627L14.3137 8.16206L5 17.4758V18.89H6.41421L15.7279 9.57627ZM17.1421 8.16206L18.5563 6.74785L17.1421 5.33363L15.7279 6.74785L17.1421 8.16206ZM7.24264 20.89H3V16.6473L16.435 3.21231C16.8256 2.82179 17.4587 2.82179 17.8492 3.21231L20.6777 6.04074C21.0682 6.43126 21.0682 7.06443 20.6777 7.45495L7.24264 20.89Z"></path></svg> <p className="md:block hidden">Edit</p>
                                             </div>
-                                            <div className='flex flex-col gap-4 border border-transparent border-t-neutral-700/40 pt-3'>
-                                                <p className='text-3xl dark:text-white text-black'>Comments:</p>
-                                                <div className='w-full flex flex-col'>
-                                                    <div className="w-full flex flex-col">
-                                                        <CommentBoxer taskId={taskid} />
+                                        <div className='flex justify-center items-center cursor-pointer hover:bg-red-500/60 gap-2 bg-red-500/80 border hover:border-neutral-300 dark:text-white text-black font-semibold h-auto p-1 px-2 rounded-sm w-auto flex-row transition-all' onClick={deletetasktrigger}>
+                                            <svg xmlns="http://www.w3.org/2000/svg" className="flex w-5" viewBox="0 0 24 24" fill="currentColor"><path d="M17 6H22V8H20V21C20 21.5523 19.5523 22 19 22H5C4.44772 22 4 21.5523 4 21V8H2V6H7V3C7 2.44772 7.44772 2 8 2H16C16.5523 2 17 2.44772 17 3V6ZM18 8H6V20H18V8ZM9 4V6H15V4H9Z"></path></svg> <p className="md:block hidden">Delete</p>
+                                        </div>
+                                        <div className='flex justify-center items-center cursor-pointer hover:bg-red-500/60 gap-2 bg-red-500/80 border hover:border-neutral-300 dark:text-white text-black font-semibold  h-auto p-1 px-2 rounded-sm w-auto flex-row transition-all' onClick={startincident}>
+                                            <svg className='w-6' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M4.00001 20V14C4.00001 9.58172 7.58173 6 12 6C16.4183 6 20 9.58172 20 14V20H21V22H3.00001V20H4.00001ZM6.00001 14H8.00001C8.00001 11.7909 9.79087 10 12 10V8C8.6863 8 6.00001 10.6863 6.00001 14ZM11 2H13V5H11V2ZM19.7782 4.80761L21.1924 6.22183L19.0711 8.34315L17.6569 6.92893L19.7782 4.80761ZM2.80762 6.22183L4.22183 4.80761L6.34315 6.92893L4.92894 8.34315L2.80762 6.22183Z"></path></svg>
+                                            <p className="md:block hidden">Report Incident</p>
+                                        </div>
+                                    </>
+                                    }
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="w-full dark:bg-neutral-900 bg-neutral-200 dark:border-b-neutral-800 h-full border-transparent border gap-4 justify-between py-3 px-7 flex">
+                            <div className='w-full flex gap-3 flex-col h-full'>
+                                                    <div className='flex flex-col gap-2 h-full'>
+                                                        <div className='flex gap-3 h-full items-center w-full flex-row'>
+                                                            {isEditing ? (
+                                                                <>
+                                                                    <PriorityStatus 
+                                                                        value={priority}
+                                                                        onChange={setPriority}
+                                                                    />
+                                                                    <StatusTime
+                                                                        value={status}
+                                                                        onValueChange={setTaskStatus}
+                                                                    />
+                                                                </>
+                                                            ) : (
+                                                                <>
+                                                                    {taskPriority === 'critical' && <Critical />}
+                                                                    {taskPriority === 'high' && <High />}
+                                                                    {taskPriority === 'medium' && <Medium />}
+                                                                    {taskPriority === 'low' && <Low />}
+                                                                    {taskPriority === 'security' && <Security />}
+                                                                    {taskPriority === 'Feature' && <Feature />}
+                                                                    {taskStatus === 'backlog' && <BackLog />}
+                                                                    {taskStatus === 'todo' && <Todo />}
+                                                                    {taskStatus === 'inprogress' && <InProgress />}
+                                                                    {taskStatus === 'done' && <Done />}
+                                                                </>
+                                                            )}
+                                                            <div className="flex items-center flex-row dark:text-white text-black justify-center rounded-lg dark:bg-transparent bg-white border py-1 px-4">
+                                                               <p className="flex flex-row gap-1"><svg className="w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22ZM13 12V7H11V14H17V12H13Z"></path></svg> <p className="md:block hidden">Created:</p> <code className="font-semibold">{formatTimeAgo(new Date(task._creationTime))}</code></p>
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                    <CommentBox taskId={taskid} _id={params._id} />
+                                                </div>
+                            </div>
+                        <div className={`${archived ? "border-yellow-300" : " "} flex w-full h-full  justify-center bg-bglight flex-col mt-0.5 dark:bg-bgdark `}>
+                        {archived && <div className='font-semibold medium w-full rounded-md px-7 py-2 cursor-pointer hover:bg-orange-200/30 transition-all hover:border-orange-600' onClick={taskunarchive}><h1 className="text-2xl">This task is archived</h1> <p className="font-normal text-xs">Click here to unarchive</p></div>}
+                            <div className="max-w-10/12 w-[100%] px-5 flex flex-col items-center">
+                            <div className="flex-row w-full px-5 justify-between mb-5 mt-5 flex">
+                                        <div className='flex flex-col w-full gap-4 items-center '>
+                                            <div className='w-full flex items-center justify-center pb-80'>
+                                                <div className='flex flex-col justify-start  md:w-10/12 gap-2'>
+                                                    <div className='flex flex-col gap-3'>                                      
+                                                        <div className='flex flex-col gap-1'>
+                                                            <p className='font-bold dark:text-white text-black'>Task Created By:</p>
+                                                            <HoverCard>
+                                                                <HoverCardTrigger>
+                                                                    <div className='flex items-center gap-2'>
+                                                                        <img src={creatorData?.imageUrl} className='w-8 h-8 rounded-full' alt="Assignee" id='loadingidassignee' />
+                                                                        <p className='font-semibold dark:text-white text-black' id='loadingidassigneenames'>{creatorData?.firstName} {creatorData?.lastName}</p>
+                                                                    </div>
+                                                                </HoverCardTrigger>
+                                                                <HoverCardContent className='p-2 min-w-[400px] w-max'>
+                                                                    <div className='flex flex-col justify-center w-full gap-5'>
+                                                                        <div className="flex flex-row items-center gap-2">
+                                                                        <img src={creatorData?.imageUrl} className='w-8 h-8 rounded-full' alt="Assignee" />
+                                                                        <div>
+                                                                            <p className='font-semibold dark:text-white text-black'>{creatorData?.firstName} {creatorData?.lastName}</p>
+                                                                            <p className='text-xs text-neutral-400'>{jobtitlealready?.filter((jobtitlealready: any) => jobtitlealready.userid === creatorData?.id)[0]?.jobtitle}</p>
+                                                                        </div>
+                                                                        </div>
+                                                                        <QuickChat userId={creatorData?.id} userfirst={creatorData?.firstName} />
+                                                                    </div>
+                                                                </HoverCardContent>
+                                                            </HoverCard>
+                                                        </div>
+                                                        <div className='flex flex-col gap-1'>
+                                                            <p className='font-bold dark:text-white text-black'>Assignee:</p>
+                                                            <div className='flex items-center gap-2'>
+                                                                <img src={assigneeData?.imageUrl} className='w-8 h-8 rounded-full' alt="Assignee" />
+                                                                <p className='font-semibold dark:text-white text-black'>{assigneeData?.firstName} {assigneeData?.lastName}</p>
+                                                            </div>
+                                                        </div>
+                                                        <div className='flex flex-col gap-1 w-full '>
+                                                            <p className='font-semibold dark:text-white text-black'>Task Description</p>
+                                                            <div className='w-full'>
+                                                                <textarea 
+                                                                    className='p-2 w-full rounded-md min-h-[10rem] dark:text-white text-black border border-neutral-700 bg-transparent' 
+                                                                    id='descriptioner' 
+                                                                    maxLength={500}
+                                                                    value={description}
+                                                                    onChange={(e) => setDescription(e.target.value)}
+                                                                />
+                                                        </div>
+                                                    </div>
+                                                    <div className='flex flex-col gap-4 border border-transparent border-t-neutral-700/40 pt-3'>
+                                                        <p className='text-3xl dark:text-white text-black'>Comments:</p>
+                                                        <div className='w-full flex flex-col'>
+                                                            <div className="w-full flex flex-col">
+                                                                <CommentBoxer taskId={taskid} />
+                                                            </div>
+                                                            <CommentBox taskId={taskid} _id={params._id} />
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            </div>
                         </div>
                     </div>
                 </div>
+            </div>
+            </div>
             </div>
             {showDeleteModal && <ArchiveTask onClose={closeDeleteModal} _taskid={taskid} projectid={_id} taskname={taskName}/>}
             </div>

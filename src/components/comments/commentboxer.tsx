@@ -5,6 +5,7 @@ import { useEffect, useState, useCallback, useRef } from "react";
 import DropdownCommentMenu from "../dropdowns/comment";
 import React from 'react';
 import { useUser } from "@clerk/clerk-react";
+import { useToast } from "../ui/use-toast";
 
 interface Comment {
   _id: string;
@@ -26,7 +27,7 @@ interface CommentBoxerProps {
 
 export default function CommentBoxer({ taskId }: { taskId: any }) {
   const { userId } = useAuth();
-
+  const {toast} = useToast();
   const useridentifier = userId;
   const comments = useQuery(api.getcomments.get);
   const filteredComments = comments?.filter((comment: any) => comment.taskId === taskId);
@@ -93,10 +94,10 @@ export default function CommentBoxer({ taskId }: { taskId: any }) {
           {filteredReplys.map((reply: any) => (
             <div key={reply._id} className="flex flex-col gap-3 justify-center relative">
               <div className="flex flex-row items-center gap-3">
-                <img
+              <img
                   src={commenterData[reply.userId]?.imageUrl || '/default-avatar.png'} // Provide a fallback image
-                  alt={`${commenterData[reply.userId]?.firstName} ${commenterData[reply.userId]?.lastName}`}
-                  className="w-8 h-8 z-10 rounded-full"
+                  alt={`${commenterData[reply.userId]?.firstName || 'Unknown'} ${commenterData[reply.userId]?.lastName || ''}`}
+                  className="w-8 h-8 rounded-full"
                 />
                 <h2 className="font-semibold text-xs">
                   {commenterData[reply.userId]?.firstName || 'Unknown'} {commenterData[reply.userId]?.lastName || ''}
@@ -118,6 +119,13 @@ export default function CommentBoxer({ taskId }: { taskId: any }) {
       const textarea = textareaRef.current;
       if (textarea) {
         const reply = textarea.value;
+        if (reply.length > 500) {
+          toast({
+            variant: 'destructive',
+            description: 'Reply is too long. Please keep it under 500 characters.',
+          })
+          return;
+        }
         if (reply) {
           await sendReplyMutation({ commentId: commentdata._id, taskId: commentdata.taskId, userId: userId!, CommenterMessage: reply });
           textarea.value = '';
@@ -139,6 +147,7 @@ export default function CommentBoxer({ taskId }: { taskId: any }) {
           ref={textareaRef}
           onInput={handleInput}
           id="textreplyarea"
+          maxLength={500}
           placeholder={`Reply to ${useridentifier === userId ? 'your' : `${commenterData?.firstName} ${commenterData?.lastName}'s`} comment.`}
           className="w-full p-2 break-words h-auto bg-transparent text-wrap overflow-x-hidden resize-none"
           style={{ overflow: 'hidden' }}
@@ -179,7 +188,6 @@ export default function CommentBoxer({ taskId }: { taskId: any }) {
   };
   const user = useUser();
   const userimage = user?.user?.imageUrl;
-  console.log(user);
   return (
     <div className='flex flex-col gap-4 border p-1 rounded-t-lg w-full dark:text-white text-black  '>
       <div className='flex flex-col gap-4 w-full '>

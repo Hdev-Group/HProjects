@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect, useRef } from 'react';
 import { SignedOut, SignedIn, SignUp } from '@clerk/nextjs';
-import HeaderIndex from '../../components/header/header';
+import NavigationMenuMain from '../../components/header/header';
 import Footer from '../../components/footer/footer';
 import gsap from 'gsap';
 import { Critical, High, Medium, Low, Security, Feature } from '../../components/dropdowns/priorities/critical';
@@ -9,6 +9,7 @@ import { BackLog, Todo, InProgress, Done } from '../../components/dropdowns/stat
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import '../../styles/globals.css';
 import './index.css';
+import Link from 'next/link';
 import {
   ContextMenu,
   ContextMenuContent,
@@ -25,6 +26,18 @@ export default function Home() {
     const target = document.querySelector('#datasowers');
     const target2 = document.querySelector('#datasowers2');
     const target3 = document.querySelector('#datasowers3');
+    const target4 = document.querySelector('#datasowers4');
+    const target5 = document.querySelector('#datasowers5');
+    const target6 = document.querySelector('#datasowers6');
+    const target7 = document.querySelector('#datasowers7');
+    const target8 = document.querySelector('#datasowers8');
+    const pager1 = document.querySelector('#pageroncall');
+    const pager2 = document.querySelector('#pageroncall2');
+    const pager3 = document.querySelector('#pageroncall3');
+    const incident1 = document.querySelector('#incident1');
+    const incident2 = document.querySelector('#incident2');
+    const incident3 = document.querySelector('#incident3');
+    const incident4 = document.querySelector('#incident4');
       gsap.fromTo(
         target, 
         { x: -3000 }, // Starting position
@@ -62,7 +75,172 @@ export default function Home() {
           },
         }
       );
-
+      gsap.fromTo(
+        target4, 
+        { y: -60, opacity: 0 }, // Starting position
+        {
+          y: 0, // Ending position
+          opacity: 1,
+          duration: 2.5,
+          scrollTrigger: {
+            trigger: target4,
+            start: 'top center',
+          },
+        }
+      );
+      gsap.fromTo(
+        target5, 
+        { height: 0, opacity: 0 }, // Starting position
+        {
+          height: 113, // Ending position
+          opacity: 1,
+          duration: 2.5,
+          scrollTrigger: {
+            trigger: target5,
+            start: 'top center',
+          },
+        }
+      );
+      gsap.fromTo(
+        target6, 
+        { y: -60, opacity: 0 }, // Starting position
+        {
+          y: 0, // Ending position
+          delay: 0.4,
+          opacity: 1,
+          duration: 2.5,
+          scrollTrigger: {
+            trigger: target5,
+            start: 'top center',
+          },
+        }
+      );
+      gsap.fromTo(
+        target7, 
+        { height: 0, opacity: 0 }, // Starting position
+        {
+          height: 111, // Ending position
+          delay: 0.4,
+          opacity: 1,
+          duration: 2.5,
+          scrollTrigger: {
+            trigger: target6,
+            start: 'top center',
+          },
+        }
+      );
+      gsap.fromTo(
+        target8, 
+        { y: -60, opacity: 0 }, // Starting position
+        {
+          y: 0, // Ending position
+          delay: 0.1,
+          opacity: 1,
+          duration: 2.5,
+          scrollTrigger: {
+            trigger: target7,
+            start: 'top center',
+          },
+        }
+      );
+      gsap.fromTo(
+        pager1, 
+        { y: -60, opacity: 0 }, // Starting position
+        {
+          y: 0, // Ending position
+          delay: 0.1,
+          opacity: 1,
+          duration: 2.5,
+          scrollTrigger: {
+            trigger: target4,
+            start: 'top center',
+          },
+        }
+      );
+      gsap.fromTo(
+        pager2, 
+        { y: -60, opacity: 0 }, // Starting position
+        {
+          y: 0, // Ending position
+          delay: 0.1,
+          opacity: 1,
+          duration: 2.5,
+          scrollTrigger: {
+            trigger: target6,
+            start: 'top center',
+          },
+        }
+      );
+      gsap.fromTo(
+        pager3, 
+        { y: -60, opacity: 0 }, // Starting position
+        {
+          y: 0, // Ending position
+          delay: 0.1,
+          opacity: 1,
+          duration: 2.5,
+          scrollTrigger: {
+            trigger: target8,
+            start: 'top center',
+          },
+        }
+      );
+      gsap.fromTo(
+        incident1,
+        { y: -60, opacity: 0 },
+        {
+          y: 0,
+          delay: 0.1,
+          opacity: 1,
+          duration: 2.5,
+          scrollTrigger: {
+            trigger: incident1,
+            start: 'top center',
+          },
+        }
+      );
+      gsap.fromTo(
+        incident2,
+        { y: 60, opacity: 0 },
+        {
+          y: 0,
+          delay: 0.1,
+          opacity: 1,
+          duration: 2.5,
+          scrollTrigger: {
+            trigger: incident2,
+            start: 'top center',
+          },
+        }
+      );
+      gsap.fromTo(
+        incident3,
+        { y: 60, opacity: 0 },
+        {
+          y: 0,
+          delay: 0.1,
+          opacity: 1,
+          duration: 2.5,
+          scrollTrigger: {
+            trigger: incident3,
+            start: 'top center',
+          },
+        }
+      );
+      gsap.fromTo(
+        incident4,
+        { y: 30, opacity: 0 },
+        {
+          y: 0,
+          delay: 0.1,
+          opacity: 1,
+          duration: 2.5,
+          scrollTrigger: {
+            trigger: incident4,
+            start: 'top center',
+          },
+        }
+      );
   }, []);
 
 
@@ -86,9 +264,9 @@ export default function Home() {
 
   return (
     <>
-    <HeaderIndex />
+    <NavigationMenuMain />
     <main className='md:max-w-[100%] bg-[#0B1120] flex items-center flex-col justify-center overflow-x-hidden boxtexts'>
-    <section className='bg-[#0B1120] gridthing w-full  h-full flex items-center flex-col'>
+    <section className='bg-[#0B1120] mt-5 md:mt-11 gridthing w-full h-full flex items-center flex-col'>
     <div className='flex md:px-[4.5rem] z-10 px-2 justify-between max-w-[120rem] w-[100%] flex-wrap lg:flex-nowrap flex-row gap-10 pt-[5rem] pb-40'>
       <div className='md:w-[70%] w-full flex relative flex-col justify-start gap-5'>
         <img src='/logo.png' alt='logo' className='w-[50px] h-[50px] fadein' />
@@ -98,19 +276,19 @@ export default function Home() {
               Latest Updates
             </h1>
             <h1 className='text-neutral-300 pushup font-semibold text-sm flex items-center justify-center'>
-              Just deployed HProjects 
+              HProjects is in Alpha
               <svg className='h-6' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M13.1717 12.0007L8.22192 7.05093L9.63614 5.63672L16.0001 12.0007L9.63614 18.3646L8.22192 16.9504L13.1717 12.0007Z"></path>
               </svg>
             </h1>
           </div>
-          <h1 className='font-bold text-5xl font-sans text-white pushuptext1'>Plan, Build and Push with confidence</h1>
+          <h1 className='font-bold text-5xl font-sans text-white pushuptext1'>Plan, Build, Push and Respond with confidence</h1>
           <p className='font-medium text-sm text-neutral-400 pushuptext2'>
             Build projects and communicate in real time with your team, manage incidents and tasks with ease.
           </p>
-          <div className='flex flex-col md:flex-row h-auto gap-2 md:gap-6 w-full'>
+          <div className='flex flex-col items-center md:flex-row h-auto gap-2 md:gap-6 w-full'>
           <SignedOut>
-            <div className='flex flex-row mt-6 gap-2 w-full md:w-1/2 md:gap-6 '>
+            <div className='flex flex-row gap-2 w-full md:w-1/2 md:gap-6 '>
               <a href='/sign-up'>
                 <button className='ease-in-out duration-300 hovmain py-2 px-2 flex items-center justify-center bg-blue-600 rounded-md hover:bg-blue-800'>
                   <h1 className='font-semibold  flex'>Sign up - It's free
@@ -123,7 +301,7 @@ export default function Home() {
             </div>
           </SignedOut>
           <SignedIn>
-            <div className='flex flex-row mt-2 w-full md:w-1/2 gap-2 md:gap-6 '>
+            <div className='flex flex-row w-full md:w-1/2 gap-2 md:gap-6 '>
               <a href='/dashboard' className='h-auto w-full'>
               <button className='ease-in-out duration-300 w-full hovmain py-2 px-2 flex items-center justify-center bg-blue-600 rounded-md hover:bg-blue-800'>
               <h1 className='font-semibold flex'>Dashboard 
@@ -135,17 +313,6 @@ export default function Home() {
               </a>
             </div>
           </SignedIn>
-          <div className='flex flex-row mt-2 gap-2 md:gap-6 w-full md:w-1/4'>
-              <a href='/'  className='h-auto w-full'>
-              <button className='ease-in-out duration-300 w-full hovmain py-2 px-2 flex items-center justify-center border bg-blue-600/20 hover:bg-blue-600/70 border-blue-600 rounded-md hover:border-blue-800'>
-              <h1 className='font-semibold flex'>Learn more 
-                    <svg xmlns="http://www.w3.org/2000/svg" className='w-5 hovericon' viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M16 12L10 18V6L16 12Z"></path>
-                    </svg>
-                  </h1>
-                </button>
-              </a>
-            </div>
 
           {/* Modal for SignUp */}
           {showSignUp && (
@@ -171,7 +338,7 @@ export default function Home() {
               <h1 className='text-5xl font-bold text-white md:text-left text-center '>Making tasks work for you</h1>
               <p className='text-neutral-300 text-center md:w-[39rem]'>Using other project planning tools I realized that I was using multiple different softwares. HProjects makes all that clutter into one simple software for you and your team.</p>
               <div className='flex flex-row gap-3 items-center'>
-                <img src='https://media.licdn.com/dms/image/v2/D4E03AQE8xiUVqps7_g/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1720299869628?e=1729728000&v=beta&t=9DGH8kVD2Pwi9gdvG_pW_Q15mYALpQVOD1uL1JyTq9s' alt='logo' className='w-[50px] rounded-full h-[50px]' />
+                <img src='harrycampbell.jpeg' alt='logo' className='w-[50px] rounded-full h-[50px]' />
                 <div>
                   <h4 className='font-semibold'>Harry Campbell</h4>
                   <p className='text-neutral-300 text-xs'>CEO of HProjects</p>
@@ -216,7 +383,7 @@ export default function Home() {
                                     </div>
                                     <div className='flex gap-3 pr-3 items-center'>
                                             <>
-                                                <img src='https://media.licdn.com/dms/image/v2/D4E03AQE8xiUVqps7_g/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1720299869628?e=1729728000&v=beta&t=9DGH8kVD2Pwi9gdvG_pW_Q15mYALpQVOD1uL1JyTq9s' className='w-6 h-6 rounded-full' alt="Assignee" />
+                                                <img src='harrycampbell.jpeg' className='w-6 h-6 rounded-full' alt="Assignee" />
                                             </>      
                                     </div>
                                 </div>
@@ -227,7 +394,7 @@ export default function Home() {
                                     <div className='flex gap-3 pl-4 flex-col'>
                                         <div className='flex gap-3 pr-3 items-center'>
                                                 <>
-                                                    <img src='https://media.licdn.com/dms/image/v2/D4E03AQE8xiUVqps7_g/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1720299869628?e=1729728000&v=beta&t=9DGH8kVD2Pwi9gdvG_pW_Q15mYALpQVOD1uL1JyTq9s' className='w-8 h-8 rounded-full' alt="Assignee" />
+                                                    <img src='harrycampbell.jpeg' className='w-8 h-8 rounded-full' alt="Assignee" />
                                                     <div>
                                                         <h2 className='font-semibold'>Harry Campbell</h2>
                                                         <p className='text-xs text-neutral-400'>Lead Developer</p>
@@ -340,19 +507,19 @@ export default function Home() {
             <div className='mt-5 bg-[#0B1120]/20 h-[40rem] border-b-[#1f3468] border border-transparent gridthing w-full flex items-center flex-col'>
               <div className='mt-10 relative w-full md:px-[4.5rem]flex flex-col max-w-[120rem] justify-center md:px-[4.5rem] px-2'>
               <div className='flex flex-row ml-5 w-full'>
-              <div className='flex absolute top-[2.4rem]  left-[-67px] md:left-[-7px] w-full h-full px-[4.5rem]'>
+              <div className='flex absolute top-[2.4rem]  left-[-67px] md:left-[-7px] w-full h-full px-[4.5rem]' id='datasowers4'>
                   <div className='w-[15px] h-[15px] border-2 border-neutral-400 rounded-full'></div>
                 </div>
-                <div className='flex absolute top-[3.5rem] left-[-60px] md:left-[0px] w-full h-full px-[4.5rem]'>
-                  <div className='w-[1px] h-[7rem] bg-gradient-to-b from-neutral-400 to-green-400'></div>
+                <div className='flex absolute top-[3.5rem] left-[-60px] md:left-[0px] w-full h-full px-[4.5rem]' >
+                  <div className='w-[1px] h-[7rem] bg-gradient-to-b from-neutral-400 to-green-400' id='datasowers5'></div>
                 </div>
-                <div className='flex absolute top-[10.7rem]  left-[-67px] md:left-[-7px] w-full h-full px-[4.5rem]'>
+                <div className='flex absolute top-[10.7rem]  left-[-67px] md:left-[-7px] w-full h-full px-[4.5rem]' id='datasowers6'>
                   <div className='w-[15px] h-[15px] border-2 border-green-400 rounded-full'></div>
                 </div>
                 <div className='flex absolute top-[11.85rem] left-[-60px] md:left-[0px] w-full h-full px-[4.5rem]'>
-                  <div className='w-[1px] h-[7rem] bg-gradient-to-b from-green-400 to-red-400'></div>
+                  <div className='w-[1px] h-[7rem] bg-gradient-to-b from-green-400 to-red-400' id='datasowers7'></div>
                 </div>
-                <div className='flex absolute top-[18.99rem] left-[-67px] md:left-[-7px] w-full h-full px-[4.5rem]'>
+                <div className='flex absolute top-[18.99rem] left-[-67px] md:left-[-7px] w-full h-full px-[4.5rem]' id='datasowers8'>
                   <div className='w-[15px] h-[15px] border-2 border-red-400 rounded-full'></div>
                 </div>
                 <div className='flex relative w-full flex-col'>
@@ -371,7 +538,7 @@ export default function Home() {
                 </div>
               </div>
                 <div className='w-full relative top-[5.2rem]'>
-                  <div id="pageroncall" className="w-full flex items-center justify-center">
+                  <div id="pageroncall2" className="w-full flex items-center justify-center">
                     <div className={`pr-2 border dark:border-green-400 border-green-600 bg-green-700/20 dark:bg-green-400/20 items-center h-[4rem] w-full flex rounded-lg`}>
                       <div className='pl-2 flex justify-center items-center h-full'>
                         <div className='w-1.5 h-[3rem] flex items-end justify-center rounded-lg dark:bg-green-400/20 bg-green-700/20 overflow-hidden'>
@@ -386,7 +553,7 @@ export default function Home() {
                 </div>
                 </div>
                 <div className='w-full relative top-[9.2rem]'>
-                  <div id="pageroncall" className="w-full flex items-center justify-center">
+                  <div id="pageroncall3" className="w-full flex items-center justify-center">
                     <div className={`pr-2 border dark:border-red-400 border-red-600 bg-red-700/20 dark:bg-red-400/20 items-center h-[4rem] w-full flex rounded-lg`}>
                       <div className='pl-2 flex justify-center items-center h-full'>
                         <div className='w-1.5 h-[3rem] flex items-end justify-center rounded-lg dark:bg-red-400/20 bg-red-700/20 overflow-hidden'>
@@ -399,18 +566,122 @@ export default function Home() {
                       </div>
                     </div>
                 </div>
-                </div>
-                </div>
               </div>
-              </div>
-            </div>
             </div>
           </div>
         </div>
       </div>
-    </section>
-    </main>
-    <Footer />
-    </>
+      <div className='flex flex-col w-full md:px-[4.5rem] mt-10'>
+        <img src='/logo.png' alt='logo' className='w-[50px] rounded-full p-1 bg-red-500/40 h-[50px]' />
+        <h1 className='text-md font-semibold mt-4 mb-3 text-indigo-400'>Incidents</h1>
+        <p className='text-xl font-semibold'>Update, Page, Collaborate in incidents</p>
+        <p className='text-sm text-neutral-300 mt-1'>With Incidents get on the same page even in times of chaos on your project. Using our real time Incident management system to establish leaders, call in responders and more.</p>
+        </div>
+            <div className='mt-5 bg-[#0B1120]/20 h-[40rem] border-b-[#1f3468] border border-transparent gridthing w-full flex items-center flex-col'>
+              <div className='mt-10 relative w-full md:px-[4.5rem]flex flex-col max-w-[120rem] justify-center md:px-[4.5rem] px-2'>
+              <div className='flex flex-row ml-5 w-full'>
+                <div className='flex absolute top-[2.4rem] left-[-67px] md:left-[-7px] w-full h-full px-[4.5rem]' id='datasowers4'>
+                  <div className='flex flex-col w-full'>
+                    <div id='incident1'>
+                      <div className="w-full h-auto gap-2 flex-row flex">
+                        <div className="flex flex-col items-center">
+                            <img className="w-8 h-8 rounded-full" src="/staff/jamesblackhurst.jpeg" alt={`James Blackhurst`} />
+                            <div className="border-l h-full" />
+                        </div>
+                        <div className="flex flex-col h-full pb-9 w-full gap-4 justify-center">
+                            <div className="flex flex-row items-center gap-3 ml-2">
+                                <p className="text-md font-normal text-white">
+                                    <span className="font-semibold ">James Blackhurst</span> declared an incident
+                                </p>
+                                <p className="text-md font-normal text-neutral-400"> 2 hours ago</p>
+                            </div>
+                            <div className="flex flex-col bg-neutral-900/70 rounded-md gap-1 py-3 px-4 ml-2">
+                                <p className="text-neutral-300 font-semibold gap-4 flex">Status <span className="text-white">Investigating</span></p>
+                                <p className=" text-neutral-300 font-semibold gap-4 flex">Severity <span className="text-white">High</span></p>
+                            </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div id='incident2'>
+                      <div className="w-full h-auto gap-2 flex-row flex">
+                        <div className="flex flex-col items-center">
+                            <img className="w-8 rounded-full h-8" src="/staff/jamesblackhurst.jpeg"></img>
+                            <div className="border-l h-full" />
+                        </div>
+                        <div className="flex flex-col h-full pb-9 w-full gap-4 justify-center">
+                            <div className="flex flex-row items-center gap-3 ml-2">
+                                <p className="text-md font-normal text-white"><span className="font-semibold">James Blackhurst</span> has sent a pager to</p>
+                                <p className="text-md font-normal text-neutral-400">2 hours ago</p>
+                            </div>
+                            <div className="flex flex-col bg-neutral-900/70 rounded-md gap-1 py-3 px-4 ml-2">
+                                <p className="text-neutral-300 font-semibold items-center gap-3 flex">
+                                    <img className="w-8 h-8 rounded-full" src="/harrycampbell.jpeg"></img>
+                                    <span className="text-white">Harry Campbell</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                    <div id='incident3'>
+                      <div className="w-full h-auto gap-2 flex-row flex">
+                          <div className="flex flex-col items-center">
+                              <img className="w-8 h-10 rounded-full" src="harrycampbell.jpeg" alt={`Harry Campbell`} />
+                              <div className="border-l h-full" />
+                          </div>
+                          <div className="flex flex-col h-full pb-9 w-full gap-4 justify-center">
+                              <div className="flex flex-row items-center gap-3 ml-2">
+                                  <p className="text-md font-normal text-white">
+                                      <span className="font-semibold ">Harry Campbell</span> has been appointed as the lead responder
+                                  </p>
+                                  <p className="text-md font-normal text-neutral-400">1 hour ago</p>
+                              </div>
+                          </div>
+                    </div>
+                    </div>
+                    <div id='incident4'>
+                      <div className="w-full h-auto gap-2 flex-row flex">
+                        <div className="flex flex-col items-center">
+                            <img className="w-8 rounded-full h-8" src="harrycampbell.jpeg" alt={`Harry Campbells's avatar`} />
+                            <div className="border-l h-full" />
+                        </div>
+                        <div className="flex flex-col h-full pb-9 w-full gap-4 justify-center">
+                            <div className="flex flex-row items-center gap-3 ml-2">
+                                <p className="text-md font-normal text-white">
+                                    <span className="font-semibold">Harry Campbell</span> provided an update
+                                </p>
+                                <p className="text-md font-normal text-neutral-400">1 hour ago</p>
+                            </div>
+                            <div className="flex flex-col bg-neutral-900/70 rounded-md gap-1 py-3 ml-2">
+                                <p className="text-white border-b pb-2 px-4 font-semibold gap-4 flex">
+                                    We are working on a fix for the issue, This is due to the intern force pushing updates to the main branch.
+                                </p>
+                                <p className="text-neutral-300 text-sm pb-2 px-4 font-semibold gap-4 flex">
+                                    Next update expected now
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className='flex flex-col w-full md:px-[4.5rem] mt-10'>
+        <div className='w-full flex flex-col items-center justify-center'>
+          <h1 className='font-bold text-2xl'>Lets start making your projects today with HProjects</h1>
+          <Link href='/sign-up' className='w-1/3'>
+            <button className='ease-in-out duration-300 hovmain w-full py-2 px-2 flex items-center justify-center bg-blue-600 rounded-md hover:bg-blue-800 mt-5'>Get started</button>
+          </Link>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+<Footer />
+</>
   );
 }

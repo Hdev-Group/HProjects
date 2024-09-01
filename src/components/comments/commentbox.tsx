@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useAuth } from '@clerk/nextjs';
 import { useMutation } from 'convex/react';
 import { api } from '../../../convex/_generated/api';
+import { useToast } from "../ui/use-toast";
 
 interface CommentBoxProps {
     taskId: any;
@@ -13,7 +14,7 @@ export default function CommentBox({ taskId, _id }: CommentBoxProps) {
 
     const taskident = taskId;
     const projectident = _id;
-
+    const {toast} = useToast();
     const [CommenterMessage, setCommenterMessage] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const addComment = useMutation(api.commentsender.add);
@@ -21,6 +22,14 @@ export default function CommentBox({ taskId, _id }: CommentBoxProps) {
     const handleFormSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setIsLoading(true);
+        if (CommenterMessage.length > 500) {
+            setIsLoading(false);
+            toast({
+                variant: 'destructive',
+                description: 'Comment is too long. Please keep it under 500 characters.',
+            })
+            return;
+        }
         await addComment({
             taskId,
             userId: userId!,
@@ -37,6 +46,7 @@ export default function CommentBox({ taskId, _id }: CommentBoxProps) {
                 id='descriptioner'
                 placeholder='Thanks for the task! I will get on it now.'
                 value={CommenterMessage}
+                maxLength={500}
                 onChange={(e) => setCommenterMessage(e.target.value)}
             />
             <button

@@ -79,13 +79,13 @@ import { stat } from 'fs';
                                 onDragStart={(e) => onDragStart(e, taskId)}
                                 onDragEnd={onDragEnd}
                             >
-                                <div className='flex gap-3 pl-4'>
+                                <div className='flex gap-3 px-4'>
                                     <h1 className='font-semibold'>
                                         {taskName}
                                     </h1>
                                 </div>
                                 <div className='flex justify-between'>
-                                    <div className='flex gap-3 pl-3'>
+                                    <div className='flex gap-3 px-3'>
                                         {taskPriority === 'critical' && <Critical />}
                                         {taskPriority === 'high' && <High />}
                                         {taskPriority === 'medium' && <Medium />}
@@ -97,7 +97,7 @@ import { stat } from 'fs';
                                         {taskStatus === 'inprogress' && <InProgress />}
                                         {taskStatus === 'done' && <Done />}
                                     </div>
-                                    <div className='flex gap-3 pr-3 items-center'>
+                                    <div className='flex gap-3 px-3 items-center'>
                                         {assigneeData ? (
                                             <>
                                                 <img src={assigneeData.imageUrl} className='w-6 h-6 rounded-full' alt="Assignee" />
@@ -119,7 +119,7 @@ import { stat } from 'fs';
                                                     <img src={assigneeData.imageUrl} className='w-6 h-6 rounded-full' alt="Assignee" />
                                                     <div>
                                                         <h2 className='font-semibold'>{assigneeData.firstName} {assigneeData.lastName}</h2>
-                                                        <p className='text-xs text-neutral-400'>{jobtitlealready?.filter(jobtitlealready => jobtitlealready.userid === assigneeData.id)[0]?.jobtitle}</p>
+                                                        <p className='text-xs text-neutral-400'>{jobtitlealready?.filter((jobtitlealready: any) => jobtitlealready.userid === assigneeData.id)[0]?.jobtitle}</p>
                                                     </div>
                                                 </>
                                             ) : (
@@ -159,7 +159,7 @@ import { stat } from 'fs';
                                                     <img src={assigneeData.imageUrl} className='w-8 h-8 rounded-full' alt="Assignee" />
                                                     <div>
                                                         <h2 className='font-semibold'>{assigneeData.firstName} {assigneeData.lastName}</h2>
-                                                        <p className='text-xs text-neutral-400'>{jobtitlealready?.filter(jobtitlealready => jobtitlealready.userid === assigneeData.id)[0]?.jobtitle}</p>
+                                                        <p className='text-xs text-neutral-400'>{jobtitlealready?.filter((jobtitlealready: any) => jobtitlealready.userid === assigneeData.id)[0]?.jobtitle}</p>
                                                     </div>
                                                 </>
                                             ) : (

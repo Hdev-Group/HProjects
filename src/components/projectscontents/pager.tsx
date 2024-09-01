@@ -24,12 +24,17 @@ interface Pagerr {
 }
 
 export default function PagerEl({ _id, isSidebarClosed }: any) {
+  const incidentdatbase = useQuery(api.incident.get);
   const { userId } = useAuth();
   const pagerholder = useQuery(api.pagerget.get);
-  const pagerhold = pagerholder?.find((pager: Pagerr) => pager.userId === userId);
+  const pagerhold = pagerholder?.find((pager: Pagerr) => pager.userId === userId && pager.projectid === _id);
   const [currentTime, setCurrentTime] = useState(new Date());
+  const getincident = useQuery(api.pagerincidents.get);
+  const filteredincident = getincident?.filter((inc: any) => inc.pagerid === userId && inc.acknowledged === false && inc.projectid === _id);
   const [percentage, setPercentage] = useState(0);
   const [timeRemaining, setTimeRemaining] = useState('');
+  const removeincident = useMutation(api.pagerincidents.deletepage);
+
   const paramsmain = _id
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -42,7 +47,7 @@ export default function PagerEl({ _id, isSidebarClosed }: any) {
   }, []);
 
   // if minus is detected we will remove the pager from the database
-  const deletePager = useMutation(api.pagerdelete.deletePager);
+  const deletePager = useMutation(api.pageradd.deletePager);
 
   useEffect(() => {
     if (pagerhold && timeRemaining.includes('-')) {
@@ -82,7 +87,7 @@ export default function PagerEl({ _id, isSidebarClosed }: any) {
         </div>
       </ContextMenuTrigger>
       <ContextMenuContent>
-        <Link href={`./pager?startpager=true`}>        <ContextMenuItem className='text-green-300 cursor-pointer' onClick={handleClick}>Go on Pager</ContextMenuItem>        </Link>
+        <Link href={`/projects/${encodeURI(_id)}/pager?startpager=true`}>        <ContextMenuItem className='text-green-300 cursor-pointer' onClick={handleClick}>Go on Pager</ContextMenuItem>        </Link>
       </ContextMenuContent>
     </ContextMenu>
     );
@@ -146,6 +151,99 @@ export default function PagerEl({ _id, isSidebarClosed }: any) {
       </ContextMenu>
     );
   }
+  function PagerIncident({ percentage, time }: { percentage: number, time: string, paramsmain: { _id: string } }) {
+    const { userId } = useAuth();
+    const mutatebreak = useMutation(api.pagerupdate.editpager);
+  
+    function startBreak() {
+      if (userId) {
+        mutatebreak({ id: pagerhold._id,  status: 'break'}).catch(err => console.error(err));
+      } else {
+        console.error('User ID is not available.');
+      }
+    }
+  
+  
+    function endPager() {
+    }
+    const ToastOnBreak = () => {
+      const { toast } = useToast()
+    
+      return (
+        <ContextMenuItem
+          className='text-yellow-300 cursor-pointer bg-transparent' 
+          onClick={() => {
+            startBreak();
+            toast({
+              description: "Your break has started",
+            })
+          }}
+        >
+          Start Break
+        </ContextMenuItem>
+      )
+    }
+    const filtermain = filteredincident[0]
+    function acknowledgedpager() {
+      removeincident
+      ({_id: filtermain?._id }).catch(err => console.error(err));
+    }
+    // differentiate between the time then show the appropriate message
+    function textloop() {
+      const [isCritical, setIsCritical] = useState(false);
+
+      useEffect(() => {
+        const interval = setInterval(() => {
+          setIsCritical((prevIsCritical) => !prevIsCritical);
+        }, 5000);
+
+        return () => clearInterval(interval);
+      }, []);
+
+      return (
+        <>
+          {isCritical ? (
+            <>
+              <h1 className='text-red-200 font-semibold text-md text-left'>You have been paged.</h1>
+              <p className='text-neutral-300 text-xs'>Click to go to the incident</p>
+            </>
+          ) : (
+            <>
+            <h1 className='font-semibold text-md text-left text-white'>You're on pager</h1>
+            <p className='text-neutral-300 text-xs'>For the next {time}</p>
+            </>
+          )}
+        </>
+      );
+    }
+
+
+    return (
+      <Link href={`/projects/${_id}/incident/${filtermain.incidentid}`} onClick={acknowledgedpager}>
+        <ContextMenu>
+          <ContextMenuTrigger id="pageroncall" className="w-max flex items-center justify-center animate-ping rounded-lg">
+            <div className={`${isSidebarClosed ? "pr-2" : "pr-5"} border dark:border-red-400 border-red-600 bg-red-700/20 dark:bg-red-400/20 items-center h-[4rem] w-full flex rounded-lg`}>
+            <div className='pl-2 flex justify-center items-center h-full'>
+              <div className='w-1.5 h-[3rem] flex items-end justify-center rounded-lg dark:border-red-400 border-red-600 bg-red-700/20 dark:bg-red-400/20 overflow-hidden'>
+              <div className='w-full flex items-center justify-center font-semibold text-xl' style={{ height: `${percentage}%`, backgroundColor: 'red' }}>!</div>
+              </div>
+            </div>
+            {isSidebarClosed ? null : (
+            <div className='pl-3 h-max flex justify-center flex-col text-left'>
+              {textloop()}
+            </div>
+            )}
+            </div>
+          </ContextMenuTrigger>
+          <ContextMenuContent>
+            <ToastOnBreak />
+            <ContextMenuSeparator />
+            <ContextMenuItem className='text-red-400 cursor-pointer' onClick={endPager}>End Pager</ContextMenuItem>
+          </ContextMenuContent>
+        </ContextMenu>
+      </Link>
+    );
+  }
   useEffect(() => {
     if (pagerhold) {
       const pagerStartTime = new Date(pagerhold._creationTime);
@@ -171,15 +269,17 @@ export default function PagerEl({ _id, isSidebarClosed }: any) {
       return () => clearInterval(interval); // Cleanup interval on component unmount
     }
   }, [pagerhold]);
-
   if (pagerhold && paramsmain === pagerhold.projectid) {
     if (timeRemaining.includes('-')) {
       return <PagerOff />;
+    } else if (filteredincident && filteredincident.length > 0) {
+      return <PagerIncident percentage={percentage} time={timeRemaining} paramsmain={paramsmain} />;
     } else if (pagerhold.status === 'active') {
       return <PagerOnCall percentage={percentage} time={timeRemaining} paramsmain={paramsmain} />;
     } else if (pagerhold.status === 'break') {
       return <PagerOnBreak percentage={percentage} isSidebarClosed={isSidebarClosed} />;
-    } else 
+  }
+    else 
       return <PagerOff />;
   } else {
     return <PagerOff />;

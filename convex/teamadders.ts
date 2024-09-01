@@ -26,7 +26,6 @@ export const remove = mutation({
     otherusers: v.string(), // The user to be removed from the array
   },
   handler: async (ctx, { _id, otherusers }) => {
-    console.log('remove');
     
     // Fetch the project document
     const project = await ctx.db.get(_id as any);

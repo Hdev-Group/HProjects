@@ -1,5 +1,5 @@
 "use client"
-import React, { useEffect, useState, useMemo, useCallback } from "react";
+import React, { useEffect, useState, useMemo, useCallback, useRef } from "react";
 import { useAuth } from "@clerk/nextjs";
 import { useUser } from "@clerk/clerk-react";
 import { useQuery } from "convex/react";
@@ -19,7 +19,7 @@ export default function MainDMs({ params }: { params: { _id: string, _chatid: st
   const chats = useQuery(api.getchat.get);
   const router = useRouter();
   const _id = params._id;
-
+  const scrollerRef = useRef<HTMLDivElement | null>(null);
 
 
   // Memoize the project
@@ -39,13 +39,11 @@ export default function MainDMs({ params }: { params: { _id: string, _chatid: st
     if (chat?.userId === userId || chat?.otherchatter === userId) {
       try {
         const otherchatter = chat?.userId === userId ? chat?.otherchatter : chat?.userId ;
-        console.log(`Fetching data for assignee with ID: ${otherchatter}`);
         const response = await fetch(`/api/get-user?userId=${otherchatter}`);
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
         const data = await response.json();
-        console.log("Assignee data:", data);
         setAssigneeData(data);
       } catch (error) {
         console.error('Error fetching assignee data:', error);
@@ -61,13 +59,18 @@ export default function MainDMs({ params }: { params: { _id: string, _chatid: st
       router.push('/sign-in');
     } else if (!project) {
       router.push('/projects');
-    }
+    }    
+
   }, [isLoaded, isSignedIn, projectsholder, project, userId, router]);
 
   useEffect(() => {
     fetchAssigneeData();
   }, [fetchAssigneeData]);
-
+  useEffect(() => {
+    if (scrollerRef.current) {
+      scrollerRef.current.scrollTo(0, scrollerRef.current.scrollHeight);
+    }
+  }, [chat]);
 
   if (!chat) {
     const title = `Direct Messages`;
@@ -98,6 +101,11 @@ export default function MainDMs({ params }: { params: { _id: string, _chatid: st
     );
   }
 
+  // auto scroll script to scroll right to the bottom when first opened
+  const nestedElement = document.getElementById('scrollerdown');
+  nestedElement?.scrollTo(0, nestedElement.scrollHeight);
+
+
   const title = `${assigneeData?.firstName} ${assigneeData?.lastName} | Direct Messages` || "Direct Messages";
   return (
     <>
@@ -115,12 +123,12 @@ export default function MainDMs({ params }: { params: { _id: string, _chatid: st
               <div className="flex flex-row items-center gap-4 transition-all  w-full">
                 {chat && <Chatside chat={chat} projectid={_id} />}
               </div>
-              <div className="flex-col w-full gap-4 px-5 h-full justify-between mb-5 mt-5 flex">
+              <div className="flex-col w-full gap-4 px-5 h-full overflow-hidden justify-between mb-5 mt-5 flex">
                 <div className="flex flex-col justify-end h-full">
-                  <div className="mb-5 flex flex-col h-auto w-full">
+                  <div className="mb-5 flex flex-col overflow-y-scroll h-auto w-full" id="scrollerdown" ref={scrollerRef}>
                     <ComposerChat chatId={params._chatid} projectid={params._id} assigneeData={assigneeData} />
                   </div>
-                  <div className="flex overflow-x-hidden flex-row border bg-transparent items-center border-neutral-600/40 rounded-lg w-full">
+                  <div className="flex max-h-10 h-full overflow-x-hidden flex-row justify-center border bg-transparent items-center border-neutral-600/40 rounded-lg w-full">
                     <MessageSubmitter chatid={params._chatid} _id={params._id}  />
                   </div>
                 </div>

@@ -251,23 +251,23 @@ function SenderChangelogger({ weekBlocks, ownerData, taskFilterThisWeek, _id, cu
             const task = filteredTasks?.find((task: any) => task._id === log.taskId);
             let changes = '';
             if (log.added === true) {
-              changes += `${task?.taskTitle} has been created with the assignee ${ownerData[log.taskAssignee]?.firstName} ${ownerData[log.taskAssignee]?.lastName} it is currently`;
+              changes += `${task?.taskTitle} has been created with the assignee ${ownerData[log.taskAssignee]?.firstName} ${ownerData[log.taskAssignee]?.lastName} it is currently ${task?.taskStatus}`;
             } else if (log.archived === true) {
               changes += `${task?.taskTitle} has been archived by ${ownerData[log.usercommited]?.firstName} ${ownerData[log.usercommited]?.lastName}`;
             } else if (log.action === task?.taskStatus) {
-              changes += `${task?.taskTitle} priority has changed to ${log.taskPriority}`;
-            } else if (log.taskPriority) {
-              changes += `${task?.taskTitle} status has changed to ${log.action}.`;
+              changes += `${task?.taskTitle} status has changed to ${task.taskStatus}`;
+            } else if (log.taskPriority && log.taskPriority !== task?.taskPriority) {
+              changes += `${task?.taskTitle} priority has changed to ${log.action}.`;
             }
             let hovercardchanges = '';
             if (log.added === true) {
-              hovercardchanges += `created ${task?.taskTitle} with the assignee ${ownerData[log.taskAssignee]?.firstName} ${ownerData[log.taskAssignee]?.lastName} it is currently`;
+              hovercardchanges += `created ${task?.taskTitle} with the assignee ${ownerData[log.taskAssignee]?.firstName} ${ownerData[log.taskAssignee]?.lastName} it is currently ${task?.taskStatus}`;
             } else if (log.archived === true) {
               hovercardchanges += `archived ${task?.taskTitle}.`;
             } else if (log.action === task?.taskStatus) {
-              hovercardchanges += `changed ${task?.taskTitle} priority to ${log.taskPriority} `;
-            } else if (log.taskPriority) {
-              hovercardchanges += `changed ${task?.taskTitle} status to ${log.action}.`;
+              hovercardchanges += `${task?.taskTitle} status has changed to ${task.taskStatus}`;
+            } else if (log.taskPriority && log.taskPriority !== task?.taskPriority) {
+              hovercardchanges += `${task?.taskTitle} priority has changed to ${log.action}.`;
             }
             const assignee = ownerData[log.usercommited];
             return (
@@ -300,7 +300,7 @@ function SenderChangelogger({ weekBlocks, ownerData, taskFilterThisWeek, _id, cu
                     <div className="flex flex-col">
                       <div className="flex flex-col">
                         <h1 className="font-semibold">{ownerData[log.usercommited]?.firstName} {ownerData[log.usercommited]?.lastName}</h1>
-                        <p className='text-xs text-neutral-400'>{jobtitlealready?.filter(jobtitlealready => jobtitlealready.userid === ownerData[log.usercommited]?.id)[0]?.jobtitle}</p>
+                        <p className='text-xs text-neutral-400'>{jobtitlealready?.filter((jobtitlealready: any) => jobtitlealready.userid === ownerData[log.usercommited]?.id)[0]?.jobtitle}</p>
                       </div>
                       <div>
                         <p className="flex flex-row gap-2">{ownerData[log.usercommited]?.firstName} {ownerData[log.usercommited]?.lastName} has {hovercardchanges}</p>
