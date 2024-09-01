@@ -2,7 +2,7 @@ import { query } from "./_generated/server";
 import { v } from "convex/values";
 
 export const get = query({
-  args: { _id: v.all() },
+  args: { _id: v.any() },
   handler: async (ctx, { _id }) => {
     const project = await ctx.db.query("project").filter(q => q.eq(q.field("_id"), _id)).first();
     if (!project) return null;
