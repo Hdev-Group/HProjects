@@ -1,146 +1,95 @@
-"use client"
-
-import * as React from "react"
-import Link from "next/link"
-
-import {
-  NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  NavigationMenuTrigger,
-  navigationMenuTriggerStyle,
-} from "../ui/navigation-menu"
-
-const components: { title: string; href: string; description: string }[] = [
-  {
-    title: "Pager",
-    href: "/docs/oncall",
-    description:
-      "Set up and manage your on-call schedules and rotations.",
-  },
-  {
-    title: "",
-    href: "/docs/primitives/hover-card",
-    description:
-      "For sighted users to preview content available behind a link.",
-  },
-  {
-    title: "Progress",
-    href: "/docs/primitives/progress",
-    description:
-      "Displays an indicator showing the completion progress of a task, typically displayed as a progress bar.",
-  },
-  {
-    title: "Scroll-area",
-    href: "/docs/primitives/scroll-area",
-    description: "Visually or semantically separates content.",
-  },
-  {
-    title: "Tabs",
-    href: "/docs/primitives/tabs",
-    description:
-      "A set of layered sections of content—known as tab panels—that are displayed one at a time.",
-  },
-  {
-    title: "Tooltip",
-    href: "/docs/primitives/tooltip",
-    description:
-      "A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.",
-  },
-]
+import { useEffect } from 'react';
+import Image from 'next/image';
+import Router from 'next/router';
+import '../../styles/globals.css';
+import { useClerk } from '@clerk/clerk-react';
+import './head.css';
 
 export default function NavigationMenuMain() {
+  const { user } = useClerk();
+
+  useEffect(() => {
+    const loaderbar = document.getElementById('loaderbar');
+
+    const startLoading = () => {
+      if (loaderbar) {
+        loaderbar.style.transition = 'none';
+        loaderbar.style.width = '0%';
+        setTimeout(() => {
+          loaderbar.style.transition = 'width 0.5s ease';
+          loaderbar.style.width = '100%';
+        }, 50);
+      }
+    };
+
+    const stopLoading = () => {
+      if (loaderbar) {
+        loaderbar.style.width = '100%';
+        setTimeout(() => {
+          loaderbar.style.transition = 'width 0.5s ease, opacity 0.5s ease';
+          loaderbar.style.opacity = '0';
+          setTimeout(() => {
+            loaderbar.style.width = '0%';
+            loaderbar.style.opacity = '1';
+          }, 500);
+        }, 200);
+      }
+    };
+
+    Router.events.on('routeChangeStart', startLoading);
+    Router.events.on('routeChangeComplete', stopLoading);
+    Router.events.on('routeChangeError', stopLoading);
+
+    return () => {
+      Router.events.off('routeChangeStart', startLoading);
+      Router.events.off('routeChangeComplete', stopLoading);
+      Router.events.off('routeChangeError', stopLoading);
+    };
+  }, []);
+
   return (
+    <>
+    <div
+      id="loaderbar"
+      className="h-0.5 bg-blue-600 fixed top-0 left-0 z-50"
+      style={{ width: '0%', opacity: 1 }}
+    />
     <div className="w-full px-2 md:px-[4.5rem] py-3  flex items-center fixed justify-center z-10 backdrop-blur-lg border-b " id="headermain">
       <div className="max-w-[120rem] w-[100%] flex ">
-    <NavigationMenu>
-        <div className="flex items-center">
-          <img src="/logo.png" alt="logo" className="h-10 w-10" /><p className="text-xl font-bold ml-[-3px] mr-5">Projects</p>
+        <a href='/'>
+          <div className="flex items-center">
+            <img
+              src="/logo.png"
+              alt="HProjects"
+              width={32}
+              height={32}
+            />
+            <h1 className="text-2xl font-bold">Projects</h1>
+          </div>
+        </a>
+
         </div>
-      <NavigationMenuList className="md:flex hidden">
-        <NavigationMenuItem>
-          <NavigationMenuTrigger>Getting started</NavigationMenuTrigger>
-          <NavigationMenuContent>
-            <ul className="grid gap-3 p-6 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
-              <li className="row-span-3">
-                <NavigationMenuLink asChild>
-                  <a
-                    className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md"
-                    href="/"
-                  >
-                    <img src="/logo.png" alt="logo" className="h-full w-full" />
-                    <div className="mb-2 mt-4 text-lg font-medium">
-                      HProjects
-                    </div>
-                    <p className="text-sm leading-tight text-muted-foreground">
-                      Get your projects up and running and maintained in no time with HProjects
-                    </p>
-                  </a>
-                </NavigationMenuLink>
+        <nav className='max-[460px]:hidden'>
+          <ul className="flex">
+            {user ? (
+              <>
+                <li className='gap-5 flex w-full items-center'>
+                  <div className='w-8 h-8 rounded-full overflow-hidden'>
+                    <img src={user.imageUrl} className="rounded-full" />
+                  </div>
+                  <a href="/dashboard" className="ease-in-out duration-300 hovmain py-1 px-2 flex items-center justify-center bg-blue-600 rounded-md hover:bg-blue-800">Dashboard <svg xmlns="http://www.w3.org/2000/svg" className='h-[30px] w-5 hovericon' viewBox="0 0 24 24" fill="currentColor"><path d="M16 12L10 18V6L16 12Z"></path></svg></a>
+                </li>
+              </>
+            ) : (
+              <li className='gap-5 flex items-center'>
+                <a href="/sign-in" className="ease-in-out duration-300 rounded-2xl text-white">Login</a>
+                <a href="/sign-up" className="cursor-pointer flex pl-2 border border-white/40 hover:border-white transition-all items-center p-1 rounded-lg hover:bg-neutral-500/10 hover:ring-2 hover:ring-neutral-500/30 hovmain">Get Started <svg  xmlns="http://www.w3.org/2000/svg" className='h-[30px] w-5 hovericon' viewBox="0 0 24 24" fill="currentColor"><path d="M16 12L10 18V6L16 12Z"></path></svg></a>
               </li>
-              <ListItem href="/docs/tasks" className="mb-2" title="Tasks">
-                How to create and manage tasks.
-              </ListItem>
-              <ListItem href="/docs/incidents" className="mb-2" title="Incidents">
-                How do I create and manage incidents?
-              </ListItem>
-              <ListItem href="/docs/settings/add" className="mb-2" title="Role managment">
-                How can I add people to my project?
-              </ListItem>
-            </ul>
-          </NavigationMenuContent>
-        </NavigationMenuItem>
-        <NavigationMenuItem>
-          <NavigationMenuTrigger>Features</NavigationMenuTrigger>
-          <NavigationMenuContent>
-            <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
-              {components.map((component) => (
-                <ListItem
-                  key={component.title}
-                  title={component.title}
-                  href={component.href}
-                >
-                  {component.description}
-                </ListItem>
-              ))}
-            </ul>
-          </NavigationMenuContent>
-        </NavigationMenuItem>
-        <NavigationMenuItem>
-          <Link href="/docs" legacyBehavior passHref>
-            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-              Documentation
-            </NavigationMenuLink>
-          </Link>
-        </NavigationMenuItem>
-      </NavigationMenuList>
-    </NavigationMenu>
-    </div>
-    </div>
+            )}
+          </ul>
+        </nav>
+      </div>
+      </>
   )
 }
 
-const ListItem = React.forwardRef<
-  React.ElementRef<"a">,
-  React.ComponentPropsWithoutRef<"a">
->(({ className, title, children, ...props }, ref) => {
-  return (
-    <li>
-      <NavigationMenuLink asChild>
-        <a
-          ref={ref}
-          className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md"
-          {...props}
-        >
-          <div className="text-sm font-medium leading-none">{title}</div>
-          <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-            {children}
-          </p>
-        </a>
-      </NavigationMenuLink>
-    </li>
-  )
-})
-ListItem.displayName = "ListItem"
