@@ -81,9 +81,9 @@ export default function NavigationMenuMain() {
                 </li>
               </>
             ) : (
-              <li className='gap-5 flex items-center'>
+              <li className='gap-5 flex items-center w-full'>
                 <a href="/sign-in" className="ease-in-out duration-300 rounded-2xl text-white">Login</a>
-                <a href="/sign-up" className="cursor-pointer flex pl-2 border border-white/40 hover:border-white transition-all items-center p-1 rounded-lg hover:bg-neutral-500/10 hover:ring-2 hover:ring-neutral-500/30 hovmain">Get Started <svg  xmlns="http://www.w3.org/2000/svg" className='h-[30px] w-5 hovericon' viewBox="0 0 24 24" fill="currentColor"><path d="M16 12L10 18V6L16 12Z"></path></svg></a>
+                <a href="/sign-up" className="cursor-pointer flex pl-4 border border-white/40 w-[8rem] hover:border-white transition-all items-center p-1 rounded-lg hover:bg-neutral-500/10 hover:ring-2 hover:ring-neutral-500/30 hovmain">Get Started <svg  xmlns="http://www.w3.org/2000/svg" className='h-[30px] w-5 hovericon' viewBox="0 0 24 24" fill="currentColor"><path d="M16 12L10 18V6L16 12Z"></path></svg></a>
               </li>
             )}
           </ul>
