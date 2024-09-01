@@ -16,7 +16,7 @@ export default function StatusSelect({ value, onChange }) {
       <SelectTrigger>
         <SelectValue placeholder="Project Status" />
       </SelectTrigger>
-      <SelectContent className="z-100">
+      <SelectContent className="z-50">
         <SelectGroup>
           <SelectLabel>Status</SelectLabel>
           <SelectItem value="planning">

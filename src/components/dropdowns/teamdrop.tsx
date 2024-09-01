@@ -21,7 +21,7 @@ export default function Role({ value, onValueChange }: any) {
       <SelectTrigger>
         <SelectValue className="px-2" />
       </SelectTrigger>
-      <SelectContent className="z-100">
+      <SelectContent className="z-50">
         <SelectGroup>
           <SelectLabel>Role</SelectLabel>
           <SelectItem value="member">Member</SelectItem>
