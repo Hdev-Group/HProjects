@@ -24,6 +24,7 @@ import {
     DropdownMenuTrigger,
   } from '../../../../../../components/ui/dropdown-menu';
   import { useToast } from "../../../../../../components/ui/use-toast";
+import DeleteIncident from "../../../../../../components/incidents/deleteincident";
 
 type User = {
     id: string;
@@ -273,6 +274,7 @@ export default function IncidentEr({ params }: { params: { _id: string; _inciden
     const summarychanger = useMutation(api.incident.summaryupdate);
     const projectname = project?.projectName;
     const projectUserId = project?.userId;
+    console.log(projectUserId);
     const incident = useQuery(api.incident.get);
     const {toast} = useToast();
     const currentpage = searchParams.get('tab');
@@ -289,6 +291,7 @@ export default function IncidentEr({ params }: { params: { _id: string; _inciden
     const [isPriorityModalOpen, setIsPriorityModalOpen] = useState<boolean>(false);
     const [isProcessModalOpen, setIsProcessModalOpen] = useState<boolean>(false);
     const [isPageModalOpen, setIsPageModalOpen] = useState<boolean>(false);
+    const [isDeleteModalOpen ,setIsDeleteModalOpen] = useState<boolean>(false);
     const handlePriorityOpen = () => setIsPriorityModalOpen(true);
     const handlePriorityClose = () => setIsPriorityModalOpen(false);
     const handleProcessOpen = () => setIsProcessModalOpen(true);
@@ -304,7 +307,7 @@ export default function IncidentEr({ params }: { params: { _id: string; _inciden
 
     const allUserIds = [leadresponder, reporter, ...responders].filter(Boolean).join(',');
 
-    
+    console.log(projectUserId)
 
     useEffect(() => {
         if (!isLoaded || !projectsholder) return;
@@ -520,6 +523,10 @@ export default function IncidentEr({ params }: { params: { _id: string; _inciden
                                                     <DropdownMenuItem className="cursor-pointer hover:bg-neutral-800" onClick={() => setIsPageModalOpen(true)}>
                                                         Page Responders
                                                     </DropdownMenuItem>
+                                                    <DropdownMenuSeparator />
+                                                    <DropdownMenuItem className="cursor-pointer hover:bg-neutral-800" onClick={() => setIsDeleteModalOpen(true)}>
+                                                        Delete Incident
+                                                    </DropdownMenuItem>
                                                 </DropdownMenuContent>
                                             </DropdownMenu>
                                         </div>
@@ -656,10 +663,6 @@ export default function IncidentEr({ params }: { params: { _id: string; _inciden
                                         </div>
                                     </div>
                                 </div>
-                        {isModalOpen && ReactDOM.createPortal(
-                            <LeadResponderchange id={params._incidentid} projectid={params._id} onClose={handleClose} />,
-                            document.getElementById('modal-root')!
-                        )}
                         {isPriorityModalOpen &&
                             ReactDOM.createPortal(
                             <IncidentPrioritychange 
@@ -671,6 +674,15 @@ export default function IncidentEr({ params }: { params: { _id: string; _inciden
                             document.getElementById('modal-root')!
                             )
                         }
+                        {isModalOpen && 
+                            ReactDOM.createPortal(
+                            <LeadResponderchange 
+                                id={params._incidentid} 
+                                projectid={params._id} 
+                                onClose={handleClose}
+                                />,
+                            document.getElementById('modal-root')!
+                        )}
                         {isProcessModalOpen &&
                             ReactDOM.createPortal(
                             <IncidentProcesschange 
@@ -702,6 +714,18 @@ export default function IncidentEr({ params }: { params: { _id: string; _inciden
                                     projectid={params._id}
                                     onClose={() => setIsPageModalOpen(false)}
                                     responders={responders}
+                                />,
+                                document.getElementById('modal-root')!
+                            )
+                        }
+                        {
+                            isDeleteModalOpen &&
+                            ReactDOM.createPortal(
+                                <DeleteIncident
+                                    id={params._incidentid}
+                                    projectid={params._id}
+                                    onClose={() => setIsDeleteModalOpen(false)}
+                                    projectowner={projectUserId}
                                 />,
                                 document.getElementById('modal-root')!
                             )

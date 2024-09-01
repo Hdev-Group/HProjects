@@ -56,7 +56,6 @@ export default function IncidentsPage({ params }: { params: { _id: string } }) {
 
   const title = projectname + ' | Incidents';
 
-  //                     <AddIncidentButton id={params._id} />
 
   return (
     <>
@@ -82,10 +81,9 @@ export default function IncidentsPage({ params }: { params: { _id: string } }) {
                 <div className="flex flex-col gap-4 w-full h-full justify-center items-center">
                   <div className="flex flex-row justify-between w-full items-center">
                     <AddIncidentButton id={params._id} />
-                    <input type="text" placeholder="Search Incidents" className="w-1/3 p-2 rounded-md dark:bg-neutral-600/20 dark:text-white border border-transparent focus:border-blue-500 focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50" />
                   </div>
                   <div className="w-full mt-5 justify-between flex flex-row gap-4">
-                    <IncidentMainHold id={params._id} />
+                    <IncidentMainHold id={params._id} taskFilter={null} />
                   </div>
                 </div>
                 </div>

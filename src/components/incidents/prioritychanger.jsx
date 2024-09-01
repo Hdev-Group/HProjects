@@ -58,6 +58,10 @@ const IncidentPrioritychange = ({ onClose, id, projectid, taskPriorityold }) => 
     }
   };
 
+  function hideexitmodal() {
+    setShowExitModal(false);
+  }
+
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (e.target.id === 'outerclickclose') {

@@ -13,9 +13,9 @@ const LeadResponderchange = ({ onClose, id, projectid }) => {
   const [taskAssignee, setTaskAssignee] = useState('');
   const [showExitModal, setShowExitModal] = useState(false); // State to control ExitModal
   const addLeadResponder = useMutation(api.incident.editLeadResponder);
-  const addTimeStamps = useMutation(api.incident.timestamps);
   const addlog = useMutation(api.incidentlogs.add);
-  const logger = useMutation(api.updater.logger);
+  const getusers = useMutation(api.userstab.get);
+  
 
   const handleFormSubmitReal = useCallback(async (e) => {
     e.preventDefault();
@@ -31,11 +31,8 @@ const LeadResponderchange = ({ onClose, id, projectid }) => {
         return;
       }
       if (taskAssignee === 'none'){
-        await addLeadResponder({
-          incidentid: id,
-          leadresponder: null,
-        });
         onClose()
+        return;
       }
       await addLeadResponder({
         incidentid: id,
@@ -49,7 +46,6 @@ const LeadResponderchange = ({ onClose, id, projectid }) => {
       });
   
       onClose(); // Close the modal after successful submission
-      // take them to the incident page
     } catch (error) {
       console.error('Error adding incident:', error);
     }
@@ -113,9 +109,9 @@ const LeadResponderchange = ({ onClose, id, projectid }) => {
               </div>
               </div>
               <div className='px-2 py-3 flex justify-end border-t-neutral-600 border border-b-transparent border-x-transparent'>
-                <button type="submit" className="bg-black font-semibold dark:text-white text-white rounded-md w-auto px-5 py-2">
-                  Add Lead Responder
-                </button>
+                  <button type="submit" className="bg-black font-semibold dark:text-white text-white rounded-md w-auto px-5 py-2">
+                    Add Lead Responder
+                  </button>
               </div>
             </form>
         </div>

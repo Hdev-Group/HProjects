@@ -12,7 +12,7 @@ import {
 
 
 
-export default function IncidentMainHold(projectid) {
+export default function IncidentMainHold(projectid, taskFilter) {
     const Router = useRouter();
     const [assigneeData, setAssigneeData] = useState(null);
     const incidents = useQuery(api.incident.get);
@@ -39,8 +39,13 @@ export default function IncidentMainHold(projectid) {
         fetchAssigneeData();
     }, [incidents]);
 
+
+
+
+
     const renderincidentbystatus = (status) => {
         if (!incidents) return null; // Ensure incidents are available
+        
     
         return incidents.filter(incident => incident.status === status).map((incident) => {
             function taskmainmenu(taskId) {
