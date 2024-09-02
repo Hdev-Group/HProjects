@@ -1,5 +1,8 @@
 import { clerkClient } from "@clerk/nextjs/server";
 import { NextRequest, NextResponse } from "next/server";
+import { getAuth } from '@clerk/nextjs/server';
+import { api } from '../../../../convex/_generated/api';
+import { fetchQuery } from "convex/nextjs";
 
 // Create a cache object to store the user data
 const userCache = new Map<string, any>();
@@ -7,12 +10,38 @@ const userCache = new Map<string, any>();
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const userIds = searchParams.get("userIds")?.split(',');
-
+  const projectId = searchParams.get("projectId");
+  const { userId } = getAuth(request);
+  
+  if (!userId) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
   if (!userIds) {
     return NextResponse.json({ error: "Invalid userIds" }, { status: 400 });
   }
+  console.log('User IDs:', userIds);
+  console.log('User ID:', userId);
+  if (!projectId) {
+    return NextResponse.json({ error: "Invalid projectId" }, { status: 400 });
+  }
 
   try {
+    
+    const projectsholder = await fetchQuery(api.projectsget.get);
+    
+    const isUserInProject = projectsholder?.find(
+      (project: any) => 
+        project.id === projectId && 
+        userIds.every(id => project.otherusers.includes(id)) || 
+        project.userId === userId || project.otherusers.includes(userId)
+    );    
+    console.log('User IDs:', userIds);
+    console.log(isUserInProject ? 'User is in project' : 'User is not in project');
+
+    if (!isUserInProject) {
+      return NextResponse.json({ error: "Not today, Your not in the same project as this user." }, { status: 401 });
+    }
+
     const users = await Promise.all(userIds.map(async (id) => {
       // Check if the user data is already cached
       if (userCache.has(id)) {

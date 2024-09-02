@@ -63,7 +63,7 @@ export default function ProjectSettings({ params }: { params: { _id: string } })
   const fetchUserData = useCallback(async (ids: string[]) => {
     if (ids.length > 0) {
       try {
-        const response = await fetch(`/api/getcommentuser?userIds=${ids.join(',')}`);
+        const response = await fetch(`/api/getcommentuser?userIds=${ids.join(',')}&projectId=${params._id}`);
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }

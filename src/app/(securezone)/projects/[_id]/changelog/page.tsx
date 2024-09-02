@@ -37,7 +37,7 @@ export default function ChangelogPage({ params }: { params: { _id: string } }) {
     if (assignees && assignees.length > 0) {
       try {
         const query = new URLSearchParams({ userIds: assignees.join(',') }).toString();
-        const response = await fetch(`/api/get-changeloggers?${query}`);
+        const response = await fetch(`/api/get-changeloggers?${query}&projectId=${_id}`);
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }

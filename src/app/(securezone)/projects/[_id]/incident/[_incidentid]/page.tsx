@@ -338,7 +338,7 @@ export default function IncidentEr({ params }: { params: { _id: string; _inciden
                     const nonDuplicatedUserIds = allUserIds.split(',').filter((id, index, self) => self.indexOf(id) === index);
 
                     const encodedUserIds = encodeURIComponent(nonDuplicatedUserIds.join(','));
-                    const response = await fetch(`/api/get-incidents-users?userIds=${encodedUserIds}`);
+                    const response = await fetch(`/api/get-incidents-users?userIds=${encodedUserIds}?projectId=${params._id}`);
                     if (!response.ok) {
                         throw new Error(`HTTP error! status: ${response.status}`);
                     }
