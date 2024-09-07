@@ -54,14 +54,31 @@ export function timesince(date: Date) {
     return timeinwords;
 }
 
+const usersMap = new Map();
+
 async function getuserdata(userid: string) {
-    const response = await fetch(`/api/get-user?userId=${userid}`);
-    
-    if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+    if (usersMap.has(userid)) {
+        return usersMap.get(userid);
     }
-    const data = await response.json();
-    return data;
+    const fetchPromise = fetch(`/api/get-user?userId=${userid}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            usersMap.set(userid, data); 
+            return data;
+        })
+        .catch(error => {
+            usersMap.delete(userid);
+            throw error; 
+        });
+
+    usersMap.set(userid, fetchPromise); // Temporarily store the promise in the map
+
+    return fetchPromise;
 }
 
 function firstlettercapital(string: string) {

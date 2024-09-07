@@ -32,8 +32,8 @@ export async function GET(request: NextRequest) {
   // Check if user data is in cache
   if (cache.has(userIda)) {
     const cachedUser = cache.get(userIda);
-    const { firstName, lastName, id, imageUrl } = cachedUser!.data;
-    return NextResponse.json({ firstName, lastName, id, imageUrl });
+    const { firstName, lastName, id, imageUrl, emailAddresses } = cachedUser!.data;
+    return NextResponse.json({ firstName, lastName, id, imageUrl, emailAddresses });
   }
 
   try {
@@ -42,8 +42,8 @@ export async function GET(request: NextRequest) {
     // Store user data in cache
     cache.set(userIda, { userId: userIda, data: user });
 
-    const { firstName, lastName, id, imageUrl } = user;
-    return NextResponse.json({ firstName, lastName, id, imageUrl });
+    const { firstName, lastName, id, imageUrl, emailAddresses } = user;
+    return NextResponse.json({ firstName, lastName, id, imageUrl, emailAddresses });
   } catch (error) {
     console.error("Error fetching user data:", error);
     return NextResponse.json({ error: "Error fetching user data" }, { status: 500 });

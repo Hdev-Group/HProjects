@@ -19,8 +19,6 @@ export async function GET(request: NextRequest) {
   if (!userIds) {
     return NextResponse.json({ error: "Invalid userIds" }, { status: 400 });
   }
-  console.log('User IDs:', userIds);
-  console.log('User ID:', userId);
   if (!projectId) {
     return NextResponse.json({ error: "Invalid projectId" }, { status: 400 });
   }
@@ -35,9 +33,6 @@ export async function GET(request: NextRequest) {
         userIds.every(id => project.otherusers.includes(id)) || 
         project.userId === userId || project.otherusers.includes(userId)
     );    
-    console.log('User IDs:', userIds);
-    console.log(isUserInProject ? 'User is in project' : 'User is not in project');
-
     if (!isUserInProject) {
       return NextResponse.json({ error: "Not today, Your not in the same project as this user." }, { status: 401 });
     }

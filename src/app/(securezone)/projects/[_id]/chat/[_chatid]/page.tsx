@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React, { useEffect, useState, useMemo, useCallback, useRef } from "react";
 import { useAuth } from "@clerk/nextjs";
 import { useUser } from "@clerk/clerk-react";
@@ -11,7 +11,6 @@ import Chatside from "../../../../../../components/chatbars/chatside";
 import MessageSubmitter from "../../../../../../components/quickchat/MessageSubmitter";
 import ComposerChat from "../../../../../../components/chatmsg/composerchat";
 
-
 export default function MainDMs({ params }: { params: { _id: string, _chatid: string } }) {
   const { userId, isLoaded, isSignedIn } = useAuth();
   const { user } = useUser();
@@ -20,7 +19,6 @@ export default function MainDMs({ params }: { params: { _id: string, _chatid: st
   const router = useRouter();
   const _id = params._id;
   const scrollerRef = useRef<HTMLDivElement | null>(null);
-
 
   // Memoize the project
   const project = useMemo(() => {
@@ -34,11 +32,13 @@ export default function MainDMs({ params }: { params: { _id: string, _chatid: st
 
   const [assigneeData, setAssigneeData] = useState<any | null>(null);
 
-  // Memoize fetchAssigneeData
+  // Memoize fetchAssigneeData with a condition
   const fetchAssigneeData = useCallback(async () => {
+    if (assigneeData) return; // Skip fetching if data is already available
+
     if (chat?.userId === userId || chat?.otherchatter === userId) {
       try {
-        const otherchatter = chat?.userId === userId ? chat?.otherchatter : chat?.userId ;
+        const otherchatter = chat?.userId === userId ? chat?.otherchatter : chat?.userId;
         const response = await fetch(`/api/get-user?userId=${otherchatter}`);
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
@@ -50,7 +50,7 @@ export default function MainDMs({ params }: { params: { _id: string, _chatid: st
         setAssigneeData(null);
       }
     }
-  }, [chat, userId]);
+  }, [chat, userId, assigneeData]);
 
   useEffect(() => {
     if (!isLoaded || !projectsholder) return;
@@ -59,13 +59,13 @@ export default function MainDMs({ params }: { params: { _id: string, _chatid: st
       router.push('/sign-in');
     } else if (!project) {
       router.push('/projects');
-    }    
-
+    }
   }, [isLoaded, isSignedIn, projectsholder, project, userId, router]);
 
   useEffect(() => {
     fetchAssigneeData();
   }, [fetchAssigneeData]);
+
   useEffect(() => {
     if (scrollerRef.current) {
       scrollerRef.current.scrollTo(0, scrollerRef.current.scrollHeight);
@@ -101,12 +101,8 @@ export default function MainDMs({ params }: { params: { _id: string, _chatid: st
     );
   }
 
-  // auto scroll script to scroll right to the bottom when first opened
-  const nestedElement = document.getElementById('scrollerdown');
-  nestedElement?.scrollTo(0, nestedElement.scrollHeight);
-
-
   const title = `${assigneeData?.firstName} ${assigneeData?.lastName} | Direct Messages` || "Direct Messages";
+
   return (
     <>
       <head>
@@ -129,7 +125,7 @@ export default function MainDMs({ params }: { params: { _id: string, _chatid: st
                     <ComposerChat chatId={params._chatid} projectid={params._id} assigneeData={assigneeData} />
                   </div>
                   <div className="flex max-h-10 h-full overflow-x-hidden flex-row justify-center border bg-transparent items-center border-neutral-600/40 rounded-lg w-full">
-                    <MessageSubmitter chatid={params._chatid} _id={params._id}  />
+                    <MessageSubmitter chatid={params._chatid} _id={params._id} />
                   </div>
                 </div>
               </div>

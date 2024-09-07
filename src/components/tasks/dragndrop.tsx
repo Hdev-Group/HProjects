@@ -34,26 +34,43 @@ import { stat } from 'fs';
         setShowDeleteModal(false);
     }
 
-    useEffect(() => {
-        async function fetchAssigneeData() {
-            if (taskAssignee) {
-                try {
-                    const response = await fetch(`/api/get-user?userId=${taskAssignee}`);
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! status: ${response.status}`);
-                    }
-                    const data = await response.json();
-                    setAssigneeData(data);
-                } catch (error) {
-                    console.error('Error fetching assignee data:', error);
-                    setAssigneeData(null);
+    const usersMap = new Map();
+
+    async function getuserdata(userid: string) {
+        if (usersMap.has(userid)) {
+            return usersMap.get(userid);
+        }
+        const fetchPromise = fetch(`/api/get-user?userId=${userid}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
                 }
+                return response.json();
+            })
+            .then(data => {
+                usersMap.set(userid, data); 
+                return data;
+            })
+            .catch(error => {
+                usersMap.delete(userid);
+                throw error; 
+            });
+    
+        usersMap.set(userid, fetchPromise); // Temporarily store the promise in the map
+    
+        return fetchPromise;
+    }
+    useEffect(() => {
+        async function fetchData(){
+            try{
+                const data = await getuserdata(taskAssignee);
+                setAssigneeData(data);
+            } catch (error) {
+                console.error(error);
             }
         }
-
-        fetchAssigneeData();
+        fetchData();
     }, [taskAssignee]);
-
     function taskmainmenu(taskId: string) {
         router.push(`./${taskId}`);
     }

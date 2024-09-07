@@ -274,7 +274,6 @@ export default function IncidentEr({ params }: { params: { _id: string; _inciden
     const summarychanger = useMutation(api.incident.summaryupdate);
     const projectname = project?.projectName;
     const projectUserId = project?.userId;
-    console.log(projectUserId);
     const incident = useQuery(api.incident.get);
     const {toast} = useToast();
     const currentpage = searchParams.get('tab');
@@ -307,8 +306,6 @@ export default function IncidentEr({ params }: { params: { _id: string; _inciden
 
     const allUserIds = [leadresponder, reporter, ...responders].filter(Boolean).join(',');
 
-    console.log(projectUserId)
-
     useEffect(() => {
         if (!isLoaded || !projectsholder) return;
 
@@ -338,7 +335,7 @@ export default function IncidentEr({ params }: { params: { _id: string; _inciden
                     const nonDuplicatedUserIds = allUserIds.split(',').filter((id, index, self) => self.indexOf(id) === index);
 
                     const encodedUserIds = encodeURIComponent(nonDuplicatedUserIds.join(','));
-                    const response = await fetch(`/api/get-incidents-users?userIds=${encodedUserIds}?projectId=${params._id}`);
+                    const response = await fetch(`/api/get-incidents-users?userIds=${encodedUserIds}&projectId=${params._id}`);
                     if (!response.ok) {
                         throw new Error(`HTTP error! status: ${response.status}`);
                     }
@@ -369,7 +366,7 @@ export default function IncidentEr({ params }: { params: { _id: string; _inciden
         return <div>Unauthorized</div>;
     }
 
-    const title = `: ${incidenttitle} | ${projectname}`;
+    const title = `${incidenttitle} | ${projectname}`;
 
     const handleClick = () => {
         setIsModalOpen(true);
@@ -714,6 +711,7 @@ export default function IncidentEr({ params }: { params: { _id: string; _inciden
                                     projectid={params._id}
                                     onClose={() => setIsPageModalOpen(false)}
                                     responders={responders}
+                                    incidenttitle={incidenttitle}
                                 />,
                                 document.getElementById('modal-root')!
                             )
