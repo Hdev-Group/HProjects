@@ -96,11 +96,8 @@ export async function sendpageEmail({ to, from, subject, message, pager, sentby,
     },
   };
 
-  console.log('Attempting to send email with the following params:', JSON.stringify(params, null, 2));
-
   try {
     const result = await ses.sendEmail(params).promise();
-    console.log('Email sent:', result.MessageId);
     return result.MessageId;
   } catch (error) {
     console.error('Error sending email:', JSON.stringify(error, null, 2));

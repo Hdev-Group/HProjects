@@ -44,7 +44,6 @@ export default function ProjectSettings({ params }: { params: { _id: string } })
       // Find the current user's role within the project
       const currentUserEntry = getuserss.find((user: any) => user.projectID === params._id && user.userid === userId);
       const ownerfind = projectsholder.find((project: any) => project._id === params._id && project.userId === userId);
-      console.log(ownerfind);
       if (currentUserEntry || ownerfind) {
         const currentUserRole = currentUserEntry?.role;
   
@@ -65,7 +64,6 @@ export default function ProjectSettings({ params }: { params: { _id: string } })
           });
         }
       } else {
-        console.log('Unauthorized');
         router.push('/dashboard'); 
       }
       setProjectTitle(project.projectName);
