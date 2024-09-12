@@ -11,6 +11,7 @@ import { useToast } from "../../../../../../../components/ui/use-toast";
 import StatusSelect from '../../../../../../../components/dropdowns/newprojects';
 import HeaderLinker from '../../../../../../../components/settings/headerlinker';
 import Head from 'next/head';
+import { set } from 'date-fns';
 
 export default function ProjectSettings({ params }: { params: { _id: string } }) {
   const { toast } = useToast()
@@ -22,63 +23,59 @@ export default function ProjectSettings({ params }: { params: { _id: string } })
   const projectnamemu = useMutation(api.projectname.editProject);
   const [projectTitle, setProjectTitle] = useState("");
   const getUsersQuery = useQuery(api.userstab.get);
+  const projectsholder = useQuery(api.projectsget.get);
+  const project = projectsholder?.find((project: any) => project._id === params._id);
+  const projectUserId = project?.userId;
+  const getuserss = useQuery(api.userstab.get);
 
   useEffect(() => {
-    if (!isLoaded || !projectsQuery || !getUsersQuery) return;
-
-    const checkAuthorization = async () => {
-      if (!isSignedIn) {
-        router.push('/sign-in');
-        return;
+    if (!isLoaded || !projectsholder || !getuserss) return; // Wait until all data is loaded
+  
+    if (!isSignedIn) {
+      router.push('/sign-in'); // Redirect to sign-in page if not signed in
+    } else if (!project) {
+      router.push('/projects'); 
+      toast({
+        title: "Project not found",
+        description: "Redirecting to projects page",
+        variant: "destructive",
+      });
+    } else {
+      // Find the current user's role within the project
+      const currentUserEntry = getuserss.find((user: any) => user.projectID === params._id && user.userid === userId);
+      const ownerfind = projectsholder.find((project: any) => project._id === params._id && project.userId === userId);
+      console.log(ownerfind);
+      if (currentUserEntry || ownerfind) {
+        const currentUserRole = currentUserEntry?.role;
+  
+        // Check if the user is the project owner or has the correct role
+        if (projectUserId !== userId && !project.otherusers.includes(userId)) {
+          router.push(`./personal`);
+          toast({
+            title: "Unauthorized",
+            description: "You don't have access to this project",
+            variant: "destructive",
+          });
+        } else if (!ownerfind && currentUserRole !== 'manager' && currentUserRole !== 'admin') {
+          router.push(`./personal`);
+          toast({
+            title: "Unauthorized",
+            description: "You don't have permission to access Team settings",
+            variant: "destructive",
+          });
+        }
+      } else {
+        console.log('Unauthorized');
+        router.push('/dashboard'); 
       }
-
-      const project = projectsQuery.find((project: any) => project._id === params._id);
-      if (!project) {
-        toast({
-          title: "Project not found",
-          description: "Redirecting to projects page",
-          variant: "destructive",
-        });
-        router.push('/projects');
-        return;
-      }
-
-      const currentUserEntry = getUsersQuery.find((user: any) => user.projectID === params._id && user.userid === userId);
-      if (!currentUserEntry) {
-        toast({
-          title: "Unauthorized",
-          description: "You don't have access to this project",
-          variant: "destructive",
-        });
-        router.push('/dashboard');
-        return;
-      }
-
-      const isProjectOwner = project.userId === userId;
-      const isAdminOrManager = ['admin', 'manager'].includes(currentUserEntry.role);
-
-      if (!isProjectOwner && !isAdminOrManager) {
-        toast({
-          title: "Unauthorized",
-          description: "You don't have permission to access project settings",
-          variant: "destructive",
-        });
-        router.push(`/projects/${params._id}/project-settings/personal`);
-        return;
-      }
-
       setProjectTitle(project.projectName);
       setProjectStatus(project.projectStatus);
-    };
-
-    checkAuthorization();
-  }, [isLoaded, isSignedIn, projectsQuery, getUsersQuery, userId, params._id, router, toast]);
+    }
+  }, [isLoaded, isSignedIn, projectsholder, project, projectUserId, userId, router, params._id, getuserss]);
 
   if (!isLoaded || !projectsQuery || !getUsersQuery) {
     return <div className="flex items-center justify-center h-screen">Loading...</div>;
   }
-
-  const project = projectsQuery.find((project: any) => project._id === params._id);
 
   if (!project) {
     return <div className="flex items-center justify-center h-screen">Project not found</div>;
