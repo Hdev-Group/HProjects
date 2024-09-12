@@ -33,30 +33,53 @@ export default function ProjectSettings({ params }: { params: { _id: string } })
 
   // Check authentication and authorization
   useEffect(() => {
-    if (!isLoaded || !projectsholder || !getuserss) return; // Wait until all data is loaded
-  
-    if (!isSignedIn) {
-      router.push('/sign-in'); // Redirect to sign-in page if not signed in
-    } else if (!project) {
-      router.push('/projects'); // Redirect if the project is not found
-    } else {
-      // Find the current user's role within the project
-      const currentUserEntry = getuserss.find((user: any) => user.projectID === params._id && user.userid === userId);
-      
-      if (currentUserEntry) {
-        const currentUserRole = currentUserEntry.role;
-  
-        // Check if the user is the project owner or has the correct role
-        if (projectUserId !== userId && !project.otherusers.includes(userId)) {
-          router.push(`./personal`);
-        } else if (currentUserRole !== 'manager' && currentUserRole !== 'admin' && projectUserId !== userId) {
-          router.push(`./personal`);        }
-      } else {
-        router.push('/dashboard'); 
+    if (!isLoaded || !getuserss || !projectsholder) return;
+
+    const checkAuthorization = async () => {
+      if (!isSignedIn) {
+        router.push('/sign-in');
+        return;
       }
-    }
-  }, [isLoaded, isSignedIn, projectsholder, project, projectUserId, userId, router, params._id, getuserss]);
-  
+
+      if (!project) {
+        toast({
+          title: "Project not found",
+          description: "Redirecting to projects page",
+          variant: "destructive",
+        });
+        router.push('/projects');
+        return;
+      }
+
+      const currentUserEntry = getuserss.find((user: any) => user.projectID === params._id && user.userid === userId);
+      if (!currentUserEntry) {
+        toast({
+          title: "Unauthorized",
+          description: "You don't have access to this project",
+          variant: "destructive",
+        });
+        router.push('/dashboard');
+        return;
+      }
+
+      const isProjectOwner = project.userId === userId;
+      const isAdminOrManager = ['admin', 'manager'].includes(currentUserEntry.role);
+
+      if (!isProjectOwner && !isAdminOrManager) {
+        toast({
+          title: "Unauthorized",
+          description: "You don't have permission to access team settings",
+          variant: "destructive",
+        });
+        router.push(`/projects/${params._id}/project-settings/personal`);
+        return;
+      }
+
+      setLoading(false);
+    };
+
+    checkAuthorization();
+  }, [isLoaded, isSignedIn, getuserss, projectsholder, userId, params._id, router, toast, project]);
 
 
   // Fetch user data
