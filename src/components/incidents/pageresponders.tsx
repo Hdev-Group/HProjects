@@ -72,22 +72,22 @@ const PageSelectResponder = ({ onClose, id, projectid, responders, incidenttitle
         const fetchedData = await fetchAssigneeData(taskAssignee);
         
         const email = fetchedData?.emailAddresses?.[0]?.emailAddress;
-        if (email) {
+        // if (email) {
     
-          await sendpageEmail({
-            to: email,
-            from: 'pager@hprojects.hdev.uk',
-            subject: `${incidenttitle} - You have been paged `,
-            message: 'You have been assigned as a responder to an incident.',
-            pager: fetchedData,
-            sentby: userId,
-            projectid: projectid,
-            incidentid: id,
-            title: incidenttitle,
-          });
-        } else {
-          console.error('No email addresses found.');
-        }
+        //   await sendpageEmail({
+        //     to: email,
+        //     from: 'pager@hprojects.hdev.uk',
+        //     subject: `${incidenttitle} - You have been paged `,
+        //     message: 'You have been assigned as a responder to an incident.',
+        //     pager: fetchedData,
+        //     sentby: userId,
+        //     projectid: projectid,
+        //     incidentid: id,
+        //     title: incidenttitle,
+        //   });
+        // } else {
+        //   console.error('No email addresses found.');
+        // }
     
         // Update incident and logs
         await IncidentPusher({

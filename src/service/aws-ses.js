@@ -1,14 +1,23 @@
-import AWS from 'aws-sdk';
+const AWS = require('aws-sdk');
+require('dotenv').config({ path: '.env' });
 
-AWS.config.update({ 
-  region: 'eu-north-1',  
-  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY, 
+
+console.log('AWS_ACCESS_KEY_ID:', process.env.AWS_ACCESS_KEY_ID);
+console.log('AWS_SECRET_ACCESS_KEY:', process.env.AWS_SECRET_ACCESS_KEY);
+AWS.config.update({
+  region: 'eu-north-1',
+  credentials: {
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+  },
 });
 
-const ses = new AWS.SES({ apiVersion: 'latest' });
-
 export async function sendpageEmail({ to, from, subject, message, pager, sentby, projectid, incidentid, title }) {
+  console.log('AWS_ACCESS_KEY_ID:', process.env.AWS_ACCESS_KEY_ID);
+  console.log('AWS_SECRET_ACCESS_KEY:', process.env.AWS_SECRET_ACCESS_KEY);
+
+  
+  const ses = new AWS.SES({ apiVersion: 'latest' });
   const timestampUTC = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '').split(' ')[0].split('-').reverse().join('/') + ' ' + new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '').split(' ')[1] + ' (UTC)';
   const params = {
     Source: from,
