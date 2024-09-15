@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { api } from '../../../convex/_generated/api';
 import { useMutation } from 'convex/react';
+import { set } from 'date-fns';
 
 function DeleteProject({ id, onClose, pname }) {
     const [inputValue, setInputValue] = useState('');
     const [isButtonDisabled, setIsButtonDisabled] = useState(true);
+    const [isloading , setIsLoading] = useState(false);
     const deleteProjectMutation = useMutation(api.deleteProject.deleteProject);
 
     useEffect(() => {
@@ -31,8 +33,10 @@ function DeleteProject({ id, onClose, pname }) {
 
     const handleDeleteProject = async () => {
         try {
+            setIsLoading(true);
             await deleteProjectMutation({ id });
             onClose();
+            setIsLoading(false);
         } catch (error) {
             console.error(`Failed to delete project with ID ${id}:`, error);
         }
@@ -40,7 +44,7 @@ function DeleteProject({ id, onClose, pname }) {
 
     return (
         <div className="fixed inset-0 z-50 bg-black bg-opacity-50 flex items-center justify-center">
-            <div className="bg-[#09090B] border-neutral-900 border w-1/3 h-1/4 rounded-lg flex flex-col">
+            <div className="bg-[#09090B] border-neutral-900 border md:w-1/3 md:h-1/4 rounded-lg flex flex-col">
                 <div className="p-4 flex justify-between flex-col h-full w-full">
                     <div>
                         <h2 className="text-2xl font-bold">Delete Project - {pname}</h2>
@@ -62,7 +66,7 @@ function DeleteProject({ id, onClose, pname }) {
                             onClick={handleDeleteProject}
                             disabled={isButtonDisabled}
                         >
-                            Delete
+                            {isloading ? 'Deleting...' : 'Delete'}
                         </button>
                         <button className="bg-neutral-500 text-white px-4 py-2 rounded-lg" onClick={onClose}>Cancel</button>
                     </div>

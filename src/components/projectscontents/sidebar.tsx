@@ -12,6 +12,18 @@ interface SideBarProps {
 
 function SideBar({ activeSection, _id, projectname }: SideBarProps) {
   const [isSidebarClosed, setIsSidebarClosed] = useState(true);
+
+  // check screen width if it is less than 524px then close the sidebar
+  useEffect(() => {
+    function handleResize() {
+      if (window.innerWidth < 524) {
+        setIsSidebarClosed(true);
+      }
+    }
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   const [prevIsSidebarClosed, setPrevIsSidebarClosed] = useState(true);
   function sidebarcloser() {
     const newSidebarClosedState = !isSidebarClosed;
@@ -57,7 +69,7 @@ function SideBar({ activeSection, _id, projectname }: SideBarProps) {
 
   return (
     <article data-closed={isSidebarClosed}
-    className={`${!isSidebarClosed ? "w-full justify-center openedsidebar" : "closedsidebar"} z-100 hidden max-w-[248px] sticky overflow-x-hidden sm:flex h-full flex-col justify-between bg-bglightbars dark:bg-bgdarkbars !rounded-none overflow-auto p-2 border-transparent border-r-neutral-600/40`}>
+    className={`${!isSidebarClosed ? "w-full justify-center openedsidebar" : "closedsidebar"} z-100 max-w-[248px] sticky overflow-x-hidden flex h-full flex-col justify-between bg-bglightbars dark:bg-bgdarkbars !rounded-none overflow-auto p-2 border-transparent border-r-neutral-600/40`}>
       <ProgressBar
         height="1px"
         color="#89bff8"
@@ -69,7 +81,7 @@ function SideBar({ activeSection, _id, projectname }: SideBarProps) {
           {!isSidebarClosed &&
             <a href='/dashboard' className='hover:bg-neutral-500/50 transition-all p-1 rounded-md px-2'><h1 className='w-full font-semibold overflow-clip flex-nowrap'>{projectname}</h1></a>
           }
-            <button onClick={sidebarcloser} className="w-6 bg-neutral-500/20 p-0.5 dark:bg-neutral-500/20 dark:hover:bg-neutral-200/20 transition-all hover:bg-neutral-700/20 rounded-md flex items-center justify-center">
+            <button onClick={sidebarcloser} className="w-6 hidden sm:flex bg-neutral-500/20 p-0.5 dark:bg-neutral-500/20 dark:hover:bg-neutral-200/20 transition-all hover:bg-neutral-700/20 rounded-md items-center justify-center">
               {!isSidebarClosed ? (<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M10.071 4.92902L11.4852 6.34323L6.82834 11.0001L16.0002 11.0002L16.0002 13.0002L6.82839 13.0001L11.4852 17.6569L10.071 19.0712L2.99994 12.0001L10.071 4.92902ZM18.0001 19V5.00003H20.0001V19H18.0001Z"></path>
               </svg>) : (
