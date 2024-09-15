@@ -69,7 +69,7 @@ function SideBar({ activeSection, _id, projectname }: SideBarProps) {
 
   return (
     <article data-closed={isSidebarClosed}
-    className={`${!isSidebarClosed ? "w-full justify-center openedsidebar" : "closedsidebar"} z-100 max-w-[248px] sticky overflow-x-hidden flex h-full flex-col justify-between bg-bglightbars dark:bg-bgdarkbars !rounded-none overflow-auto p-2 border-transparent border-r-neutral-600/40`}>
+    className={`${!isSidebarClosed ? "w-full justify-center openedsidebar" : "closedsidebar"} z-100 min-w-[45px] flex max-w-[248px] sticky overflow-x-hidden h-full flex-col justify-between bg-bglightbars dark:bg-bgdarkbars !rounded-none overflow-auto p-2 border-transparent border-r-neutral-600/40`}>
       <ProgressBar
         height="1px"
         color="#89bff8"
