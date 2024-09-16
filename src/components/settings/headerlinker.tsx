@@ -4,7 +4,7 @@ export default function HeaderLinker({_id, currentpage}: { _id: any, currentpage
     return(
         <>
         <div className='w-16 items-center justify-center flex flex-row relative'>
-            <Link href={`/projects/${encodeURI(_id)}/project-settings/`} className={`${currentpage === "project" ? "text-white" : "text-neutral-500 rounded-md hover:bg-neutral-600/20 p-1"} w-full transition-all items-center justify-center flex`}>
+            <Link href={`/projects/${encodeURI(_id)}/project-settings/project/`} className={`${currentpage === "project" ? "text-white" : "text-neutral-500 rounded-md hover:bg-neutral-600/20 p-1"} w-full transition-all items-center justify-center flex`}>
                 <p>Project</p>
                 { currentpage === "project" && <div className='bg-white w-full h-0.5 bottom-[-9px] absolute'></div> }
             </Link>
@@ -16,7 +16,7 @@ export default function HeaderLinker({_id, currentpage}: { _id: any, currentpage
             </Link>
             </div>
             <div className='w-16 items-center justify-center flex relative'>
-            <Link href={`/projects/${encodeURI(_id)}/project-settings/personal`} className={`${currentpage === "personal" ? "text-white" : "text-neutral-500 rounded-md hover:bg-neutral-600/20 p-1"} w-full transition-all items-center justify-center flex`}>
+            <Link href={`/projects/${encodeURI(_id)}/project-settings/`} className={`${currentpage === "personal" ? "text-white" : "text-neutral-500 rounded-md hover:bg-neutral-600/20 p-1"} w-full transition-all items-center justify-center flex`}>
                 <p>Personal</p>
                 { currentpage === "personal" && <div className='bg-white w-full h-0.5 bottom-[-9px] absolute'></div> }
                 </Link>

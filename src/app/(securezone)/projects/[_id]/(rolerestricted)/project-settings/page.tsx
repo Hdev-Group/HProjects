@@ -7,10 +7,9 @@ import { useMutation, useQuery } from "convex/react";
 import { api } from '../../../../../../../convex/_generated/api';
 import React, { useEffect, useState } from "react";
 import SideBar from "../../../../../../components/projectscontents/sidebar";
-import { useToast } from "../../../../../../components/ui/use-toast";
-import Link from 'next/link';
-import StatusSelect from '../../../../../../components/dropdowns/newprojects';
 import HeaderLinker from '../../../../../../components/settings/headerlinker';
+import { useToast } from "../../../../../../components/ui/use-toast";
+import TimeZoner from '../../../../../../components/dropdowns/TimeZoner';
 
 
 export default function ProjectSettings({ params }: { params: { _id: string } }) {
@@ -18,46 +17,34 @@ export default function ProjectSettings({ params }: { params: { _id: string } })
   const { userId, isLoaded, isSignedIn } = useAuth();
   const { user } = useUser();
   const router = useRouter();
-  const [projectStatus, setProjectStatus] = useState('');
   const projectsholder = useQuery(api.projectsget.get);
-  const projectnamemu = useMutation(api.projectname.editProject);
+  const jobtitlealready = useQuery(api.getjob.get);
   const project = projectsholder?.find((project: any) => project._id === params._id);
   const projectUserId = project?.userId;
-  const [ProjectTitle, setProjectTitle] = useState("");
-  const getuserss = useQuery(api.userstab.get);
-  const idfinder = getuserss?.find((user: any) => user.userid === userId && user.projectID === params._id);
+  const [jobtitle, setJobTitle] = useState("");
+  const [timezone, setTimezone] = useState("");
+  const addJobTitle = useMutation(api.users.addjobtitle);
+  const addtimezone = useMutation(api.users.addtimezone);
 
   useEffect(() => {
-    if (!isLoaded || !projectsholder || !getuserss) return; // Wait until all data is loaded
-  
+    if (!isLoaded || !projectsholder || !jobtitlealready) return; // Wait until all data is loaded
+
     if (!isSignedIn) {
       router.push('/sign-in'); // Redirect to sign-in page if not signed in
     } else if (!project) {
-      router.push('/projects'); // Redirect if the project is not found
-    } else {
-      // Find the current user's role within the project
-      const currentUserEntry = getuserss.find((user: any) => user.projectID === params._id && user.userid === userId);
-      
-      if (currentUserEntry) {
-        const currentUserRole = currentUserEntry.role;
-  
-        // Check if the user is the project owner or has the correct role
-        if (projectUserId !== userId && !project.otherusers.includes(userId)) {
-          router.push(`./project-settings/personal`);
-        } else if (currentUserRole !== 'manager' && currentUserRole !== 'admin' && projectUserId !== userId) {
-          router.push(`./project-settings/personal`);
-        }
-      } else {
-        router.push('/dashboard'); 
-      }
+      router.push('/dashboard');
+    } else if (projectUserId !== userId && !project.otherusers.includes(userId)) {
+      router.push('/dashboard');
     }
-    if (project) {
-      setProjectTitle(project.projectName);
+
+    // Find the job title for the current user
+    const job = jobtitlealready.find((jobtitle: any) => jobtitle.userid === userId && jobtitle.projectID === params._id);
+    if (job) {
+      setJobTitle(job.jobtitle);
+      setTimezone(job.timezone);
     }
-    if (project) {
-      setProjectStatus(project.projectStatus);
-    }
-  }, [isLoaded, isSignedIn, projectsholder, project, projectUserId, userId, router, params._id, getuserss]);
+
+  }, [isLoaded, isSignedIn, projectsholder, project, projectUserId, userId, router, jobtitlealready]);
 
   if (!isLoaded || !projectsholder) {
     return <div>Loading...</div>;
@@ -71,40 +58,33 @@ export default function ProjectSettings({ params }: { params: { _id: string } })
     return <div>Project not found</div>;
   }
 
-
   if (!(projectUserId === userId || project.otherusers.includes(userId))) {
     return <div>Unauthorized</div>;
   }
 
   const title = project.projectName + ' | Settings';
+  const fullname = user?.firstName + ' ' + user?.lastName;
 
-  function saveProjectName() {
-    if (ProjectTitle.length > 40) {
+  function saveJobTitle() {
+    if (jobtitle.length < 25) {
       toast({
-        description: 'Project title saved',
+        description: 'Job title saved',
       });
-      projectnamemu({
-        _id: params._id,
-        projectName: ProjectTitle,
-      });
-    }else {
+      addJobTitle({ userid: userId, jobtitle, projectID: params._id });
+    } else {
       toast({
         variant: 'destructive',
-        description: 'Error saving project title - must be less than 40 characters',
+        description: 'Job title must be less than 25 characters',
       });
     }
   }
-  function saveProjectStatus() {
+
+  function saveTimeZone() {
     toast({
-      description: 'Project status saved',
+      description: 'Time-Zone saved',
     });
-    projectnamemu({
-      _id: params._id,
-      projectStatus: projectStatus,
-    });
+    addtimezone({ userid: userId, timezone: timezone, projectID: params._id });
   }
-
-
   return (
     <>
       <head>
@@ -124,56 +104,49 @@ export default function ProjectSettings({ params }: { params: { _id: string } })
                 <h1 className="flex text-2xl font-bold text-black dark:text-white" id="tasksproject">Settings</h1>
               </div>
               </div>
-                <div className='w-full px-6 flex flex-row pb-2 mb-5 gap-3 border border-transparent border-b-neutral-700'>
-                  <HeaderLinker _id={params._id} currentpage={"project"} />
-                  </div>
-                  <div className='px-6 flex flex-col gap-3'>
-                  <div className='flex flex-col gap-3 overflow-hidden rounded-md border'>
+              
+              <div className='w-full px-6 flex flex-row pb-2 mb-5 gap-3 border border-transparent border-b-neutral-700'>
+                <HeaderLinker _id={params._id} currentpage={"personal"} />
+                </div>
+                <div className='px-6 flex flex-col gap-3'>
+                  <div className='flex flex-col  gap-3 overflow-hidden rounded-md border'>
                     <div className='bg-neutral-800/20 border border-b-neutral-800 border-transparent px-4 py-2'>
-                      <h2 className='font-semibold text-lg'>Project Name</h2>
+                      <h2 className='font-semibold text-lg'>User Settings</h2>
                     </div>
                     <div>
                       <div className='px-4 pb-2'>
-
-                        <h3 className='font-semibold mb-1'>Project Name</h3>
+                        <h3 className='font-semibold mb-1'>Job Title</h3>
                         <div className='flex flex-row gap-3'>
                           <input type='text'
                             className='border rounded-md w-auto bg-transparent text-black dark:text-white p-1'
-                            onChange={(e) => setProjectTitle(e.target.value)}
-                            value={ProjectTitle}
-                            maxLength={40}
+                            onChange={(e) => setJobTitle(e.target.value)}
+                            value={jobtitle}
+                            maxLength={25}
                           />
-                          <button onClick={saveProjectName} className='border rounded-md bg-transparent text-black dark:text-white px-6 py-1 hover:bg-neutral-500/40 transition-all'>Save</button>
+                          <button onClick={saveJobTitle} className='border rounded-md bg-transparent text-black dark:text-white px-6 py-1 hover:bg-neutral-500/40 transition-all'>Save</button>
                         </div>
                       </div>
                     </div>
                   </div>
-                    <div className='flex flex-col gap-3 mt-3 overflow-hidden rounded-md border'>
+                  <div className='flex flex-col  gap-3 overflow-hidden rounded-md border'>
                     <div className='bg-neutral-800/20 border border-b-neutral-800 border-transparent px-4 py-2'>
-                      <h2 className='font-semibold text-lg'>Project Status</h2>
+                      <h2 className='font-semibold text-lg'>Time-Zone</h2>
                     </div>
                     <div>
                       <div className='px-4 pb-2'>
-
-                        <h3 className='font-semibold mb-1'>Project Status</h3>
+                        <h3 className='font-semibold mb-1'>Time-Zone</h3>
                         <div className='flex flex-row gap-3'>
-                          <div className='w-[11rem]'>
-                          <StatusSelect 
-                            value={projectStatus}
-                            onChange={(value: string) => setProjectStatus(value)}
-                          />
-                          </div>
-                          <button onClick={saveProjectStatus} className='border rounded-md bg-transparent text-black dark:text-white px-6 py-1 hover:bg-neutral-500/40 transition-all'>Save</button>
+                          <TimeZoner value={timezone} onValueChange={setTimezone} />
+                          <button onClick={saveTimeZone} className='border rounded-md bg-transparent text-black dark:text-white px-6 py-1 hover:bg-neutral-500/40 transition-all'>Save</button>
                         </div>
                       </div>
                     </div>
-                  </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-
+          </div>
     </>
   );
 }

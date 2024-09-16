@@ -1,35 +1,95 @@
 "use client";
 import React, { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '@clerk/nextjs';
-import { useMutation } from 'convex/react';
+import { useMutation, useQuery } from 'convex/react';
 import { api } from '../../../convex/_generated/api';
 import ExitModal from '../modals/exit';
-import {PagerSelector} from '../dropdowns/pagerselector';
+import { PagerSelector } from '../dropdowns/pagerselector';
+import { sendpageEmail } from '../../service/aws-ses';
+import { useToast } from '../ui/use-toast';
 
-const PageSelectResponder = ({ onClose, id, projectid, responders }: any) => {
+const PageSelectResponder = ({ onClose, id, projectid, responders, incidenttitle }: any) => {
   const { userId, isLoaded, isSignedIn } = useAuth();
+  const { toast } = useToast()
   const [taskAssignee, setTaskAssignee] = useState('');
   const [showExitModal, setShowExitModal] = useState(false);
   const IncidentPages = useMutation(api.pagerincidents.add);
   const IncidentPusher = useMutation(api.incident.editResponder);
   const addlog = useMutation(api.incidentlogs.add);
+  const pagercallscheck = useQuery(api.pagerincidents.get)
+  const filteredpagercalls = pagercallscheck?.filter((pagercall: any) => pagercall.incidentid === id && taskAssignee === pagercall.userid);
 
-  const handleFormSubmitReal = useCallback(async (e: any) => {
-    e.preventDefault();
-    
-    if (!userId) {
-      console.error('User is not authenticated');
-      return;
+  const fetchAssigneeData = async (taskAssignee: string) => {
+    if (taskAssignee) {
+      try {
+        const response = await fetch(`/api/get-user?userId=${taskAssignee}`);
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return await response.json();
+      } catch (error) {
+        console.error('Error fetching assignee data:', error);
+        return null;
+      }
     }
+    return null;
+  };
   
-    try {
-      if (!taskAssignee) {
-        console.error('Task Assignee is null or empty');
+
+
+
+    const handleFormSubmitReal = useCallback(async (e: any) => {
+      e.preventDefault();
+    
+      if (!userId) {
+        console.error('User is not authenticated');
         return;
       }
-      if (!responders.includes(taskAssignee)) {
-        responders.push(taskAssignee);
-      }
+      try {
+        if (!taskAssignee) {
+          console.error('Task Assignee is null or empty');
+          return;
+        }
+              // check if user has already been paged
+        if (filteredpagercalls && filteredpagercalls.length > 0) {
+          toast({
+            variant: 'destructive',
+            description: 'User has already been paged',
+          });
+          return;
+        } else if (taskAssignee === userId) {
+          toast({
+            variant: 'destructive',
+            description: 'You cannot page yourself',
+          });
+          return;
+        } 
+        if (!responders.includes(taskAssignee)) {
+          responders.push(taskAssignee);
+        }
+    
+        // Fetch assignee data
+        const fetchedData = await fetchAssigneeData(taskAssignee);
+        
+        const email = fetchedData?.emailAddresses?.[0]?.emailAddress;
+        // if (email) {
+    
+        //   await sendpageEmail({
+        //     to: email,
+        //     from: 'pager@hprojects.hdev.uk',
+        //     subject: `${incidenttitle} - You have been paged `,
+        //     message: 'You have been assigned as a responder to an incident.',
+        //     pager: fetchedData,
+        //     sentby: userId,
+        //     projectid: projectid,
+        //     incidentid: id,
+        //     title: incidenttitle,
+        //   });
+        // } else {
+        //   console.error('No email addresses found.');
+        // }
+    
+        // Update incident and logs
         await IncidentPusher({
           _id: id,
           responders: responders,
@@ -41,21 +101,20 @@ const PageSelectResponder = ({ onClose, id, projectid, responders }: any) => {
           acknowledged: false,
           pagerid: taskAssignee,
         });
-        onClose()
-      await addlog({
-        projectid: projectid,
-        incidentid: id,
-        userid: userId,
-        action: 'PagedResponders',
-        description: taskAssignee,
-      });
-  
-      onClose(); // Close the modal after successful submission
-      // take them to the incident page
-    } catch (error) {
-      console.error('Error adding incident:', error);
-    }
-  }, [id, onClose, taskAssignee, IncidentPages, addlog, userId]);
+        await addlog({
+          projectid: projectid,
+          incidentid: id,
+          userid: userId,
+          action: 'PagedResponders',
+          description: taskAssignee,
+        });
+    
+        onClose(); // Close the modal after successful submission
+      } catch (error) {
+        console.error('Error adding incident:', error);
+      }
+    }, [userId, taskAssignee, id, projectid, responders, IncidentPusher, IncidentPages, addlog, onClose]);
+
 
   const handleCloseModal = () => {
     if (taskAssignee) {
@@ -75,7 +134,7 @@ const PageSelectResponder = ({ onClose, id, projectid, responders }: any) => {
         handleCloseModal();
       }
     };
-    
+
     document.addEventListener('click', handleClickOutside);
 
     return () => {
@@ -98,31 +157,30 @@ const PageSelectResponder = ({ onClose, id, projectid, responders }: any) => {
               onClick={handleCloseModal} 
               className="text-2xl text-red-600 cursor-pointer hover:text-red-400 transition-all-300">x</p>
           </div>
-              <form onSubmit={handleFormSubmitReal} className="flex flex-col gap-4 mt-4">
-              <div className='px-4 flex flex-col'>
-                <div className="flex flex-col gap-3">
-                  <div className='flex w-full flex-col'>
-                    <label htmlFor="projecttitle" className="text-md mb-2 font-bold text-black dark:text-white text-dark">Who do you wish to page for this incident</label>
-                    <PagerSelector
-                      id={projectid}
-                      value={taskAssignee}
-                      incidentid={id}
-                      onValueChange={setTaskAssignee}
-                    />
-                  </div>
-
+          <form onSubmit={handleFormSubmitReal} className="flex flex-col gap-4 mt-4">
+            <div className='px-4 flex flex-col'>
+              <div className="flex flex-col gap-3">
+                <div className='flex w-full flex-col'>
+                  <label htmlFor="projecttitle" className="text-md mb-2 font-bold text-black dark:text-white text-dark">Who do you wish to page for this incident</label>
+                  <PagerSelector
+                    id={projectid}
+                    value={taskAssignee}
+                    incidentid={id}
+                    onValueChange={setTaskAssignee}
+                  />
+                </div>
               </div>
-              </div>
-              <div className='px-2 py-3 flex justify-end border-t-neutral-600 border border-b-transparent border-x-transparent'>
-                <button type="submit" className="bg-black hover:bg-neutral-800 transition-all font-semibold dark:text-white text-white rounded-md w-auto px-5 py-2">
-                  Page Responders
-                </button>
-              </div>
-            </form>
+            </div>
+            <div className='px-2 py-3 flex justify-end border-t-neutral-600 border border-b-transparent border-x-transparent'>
+              <button type="submit" className="bg-black hover:bg-neutral-800 transition-all font-semibold dark:text-white text-white rounded-md w-auto px-5 py-2">
+                Page Responders
+              </button>
+            </div>
+          </form>
         </div>
       </div>
     </>
   );
 };
 
-export default PageSelectResponder
+export default PageSelectResponder;

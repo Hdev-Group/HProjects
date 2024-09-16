@@ -15,6 +15,7 @@ const NewTaskModal = ({ onClose, id }) => {
   const [taskTitle, setTaskTitle] = useState('');
   const [taskDescription, setTaskDescription] = useState('');
   const [taskPriority, setTaskPriority] = useState('');
+  const [isloading, setIsLoading] = useState(false);
   const [taskStatus, setTaskStatus] = useState('');
   const [taskAssignee, setTaskAssignee] = useState('');
   const [taskId, setTaskId] = useState('');
@@ -59,6 +60,7 @@ const NewTaskModal = ({ onClose, id }) => {
         document.getElementById('descriptioninvalidatorr').classList.remove('hidden');
         return;
       }
+      setIsLoading(true);
       const response = await addTask({
         projectid: id.id,
         userId,
@@ -87,6 +89,7 @@ const NewTaskModal = ({ onClose, id }) => {
       }
 
       onClose();
+      setIsLoading(false);
     } catch (error) {
       console.error('Error adding task:', error);
     }
@@ -199,7 +202,7 @@ const NewTaskModal = ({ onClose, id }) => {
           </div>
           <div className='px-2 py-3 flex justify-end border-t-neutral-600 border border-b-transparent border-x-transparent'>
             <button type="submit" className="bg-black font-semibold dark:text-white text-white rounded-md w-auto px-5 py-2">
-              Add Task
+              {isloading ? 'Adding Task...' : 'Add Task'}
             </button>
           </div>
         </form>

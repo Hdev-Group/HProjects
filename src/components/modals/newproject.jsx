@@ -10,6 +10,7 @@ const NewProjectModal = ({ onClose }) => {
   const [projectName, setProjectName] = useState('');
   const [projectDescription, setProjectDescription] = useState('');
   const [projectStatus, setProjectStatus] = useState('');
+  const [isloading, setIsLoading] = useState(false);
   const [pinned, setPinned] = useState(false); // Fixed useState call
   const [otherusers, setOtherUsers] = useState([]);
   const [githubRepoUrl, setGithubRepoUrl] = useState('');
@@ -34,8 +35,11 @@ const NewProjectModal = ({ onClose }) => {
       } else if(projectStatus === ''){
         console.error('Project Status is empty');
         return;
-      } await addProject({ userId, projectName, projectDescription, projectStatus, otherusers, pinned });
+      } 
+      setIsLoading(true);
+      await addProject({ userId, projectName, projectDescription, projectStatus, otherusers, pinned });
       onClose(); // Close the modal after adding the project
+      setIsLoading(false);
     } catch (error) {
       console.error('Error adding project:', error);
     }
@@ -113,7 +117,7 @@ const NewProjectModal = ({ onClose }) => {
           </div>
           <div className='px-2 py-3 flex justify-end  border-t-neutral-600 border border-b-transparent border-x-transparent'>
           <button type="submit" className="bg-black font-semibold dark:text-white  text-white rounded-md w-auto px-5 py-2">
-            Add Project
+            {isloading ? 'Adding Project...' : 'Add Project'}
           </button>
           </div>
         </form>

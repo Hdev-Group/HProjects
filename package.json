@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@aws-sdk/client-sns": "^3.651.1",
     "@clerk/clerk-sdk-node": "github:clerk/clerk-sdk-node",
     "@clerk/nextjs": "^5.1.6",
     "@clerk/themes": "^2.1.10",
@@ -28,12 +29,14 @@
     "@radix-ui/react-toast": "^1.2.1",
     "@radix-ui/react-tooltip": "^1.1.2",
     "@types/jquery": "^3.5.30",
+    "aws-sdk": "^2.1687.0",
     "axios": "^1.7.5",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "convex": "^1.12.2",
     "crypto-js": "^4.2.0",
     "date-fns": "^3.6.0",
+    "dotenv": "^16.4.5",
     "jsonwebtoken": "^9.0.2",
     "lodash.debounce": "^4.0.8",
     "lru-cache": "^11.0.0",
