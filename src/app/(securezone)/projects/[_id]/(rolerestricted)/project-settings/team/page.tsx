@@ -12,6 +12,7 @@ import Link from 'next/link';
 import StatusSelect from '../../../../../../../components/dropdowns/newprojects';
 import HeaderLinker from '../../../../../../../components/settings/headerlinker';
 import Role from '../../../../../../../components/dropdowns/teamdrop';
+import { set } from 'date-fns';
 
 export default function ProjectSettings({ params }: { params: { _id: string } }) {
   const { toast } = useToast();
@@ -25,11 +26,15 @@ export default function ProjectSettings({ params }: { params: { _id: string } })
   const getuserss = useQuery(api.userstab.get);
   const adderr = useMutation(api.userstab.edit);
   const removeusers = useMutation(api.teamadders.remove);
+  const checkinvites = useQuery(api.invitegetter.get);
   const removerr = useMutation(api.userstab.remove);
   const project = projectsholder?.find((project: any) => project._id === params._id);
+  const checkinvitesproject = checkinvites?.find((project: any) => project.projectid === params._id);
   const projectUserId = project?.userId;
   const [adderEmail, setEmail] = useState("");
   const [loading, setLoading] = useState(true);
+  const [validationchecks, setValidationChecks] = useState(false);
+  const [removechecks, SetRemoveChecks] = useState(false);
 
   // Check authentication and authorization
   useEffect(() => {
@@ -104,6 +109,7 @@ export default function ProjectSettings({ params }: { params: { _id: string } })
   }, [project, fetchUserData]);
 
   function removeuser({ userid }: { userid: any }) {
+    SetRemoveChecks(true);
     // check the role priority if its an admin that a manager is removing do not allow it goes owner > admin > manager > member
     const idfindera = getuserss?.find((user: any) => user.userid === userid && user.projectID === params._id);
     // check what user is being removed and the role of that user
@@ -111,22 +117,26 @@ export default function ProjectSettings({ params }: { params: { _id: string } })
     // if its a manager being removed only the project owner and admins can remove them
     // if its a member being removed only the project owner, admins and managers can remove them
     if (idfindera?.role === 'admin' && project.userId !== userId) {
+      SetRemoveChecks(false);
       return toast({
         description: 'Only the project owner can remove an admin',
         variant: "destructive"
       });
     } else if (idfindera?.role === 'manager' && project.userId !== userId) {
+      SetRemoveChecks(false);
       return toast({
         description: 'Only the project owner and admins can remove a manager',
         variant: "destructive"
       });
     } else if (idfindera?.role === 'member' && project.userId !== userId) {
+      SetRemoveChecks(false);
       return toast({
         description: 'Only the project owner, admins and managers can remove a member',
         variant: "destructive"
       });
     }
     else if (project.userId === userId) {
+    SetRemoveChecks(false);
     removeusers({ _id: params._id, otherusers: userid });
     removerr({ _id: idfindera?._id });
     }
@@ -212,6 +222,7 @@ export default function ProjectSettings({ params }: { params: { _id: string } })
 
   async function inviteuser() {
     // check if its an manager or admin that is inviting
+    setValidationChecks(true);
     if (project.userId !== userId) {
       return toast({
         description: 'Only the project owner can invite team members',
@@ -224,15 +235,25 @@ export default function ProjectSettings({ params }: { params: { _id: string } })
       }
       const data = await response.json();
       if (project.otherusers.includes(data.id) || project.userId === data.id) {
+        setValidationChecks(false);
         return toast({
           description: 'User already in the team',
         });
       }
+      if (checkinvitesproject && data.id === checkinvitesproject.teamadderid) {
+        setValidationChecks(false);
+        return toast({
+          description: 'User already invited',
+        });
+      }
       if (!data) {
+        setValidationChecks(false);
         return toast({
           description: 'User not found',
         });
       }
+      console.log("end")
+      setValidationChecks(false);
       await teamadders({ projectid: params._id, teamadderid: data.id });
       return toast({
         description: `${data.firstName} ${data.lastName} invited to join the team.`,
@@ -284,7 +305,7 @@ export default function ProjectSettings({ params }: { params: { _id: string } })
                               className='md:w-1/3 w-full p-2 border border-neutral-800 bg-transparent rounded-md'
                               onChange={(e) => setEmail(e.target.value)}
                             />
-                            <button className='bg-blue-500 px-4 p-2 rounded-md text-white' onClick={inviteuser}>Invite</button>
+                            <button className='bg-blue-500 px-4 p-2 rounded-md text-white' onClick={inviteuser}>{validationchecks ? "Inviting" : "Invite"}</button>
                           </div>
                         </div>
                         <div className='flex flex-col w-full'>
