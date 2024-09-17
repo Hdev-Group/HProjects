@@ -25,7 +25,7 @@ export default function IncidentsPage({ params }: { params: { _id: string } }) {
   useEffect(() => {
     if (document.getElementById('incidentsproject')) {
       setActiveSection('incident');
-    }
+    } 
   }, []);
 
   useEffect(() => {

@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import { useQuery, useMutation } from "convex/react";
 import { useUser, useAuth } from "@clerk/nextjs";
 import { api } from '../../../../../../convex/_generated/api';
+import { Button } from "../../../../../components/ui/button"
 import {
     Critical, High, Medium, Low, Security, Feature,
 } from '../../../../../components/dropdowns/priorities/critical';
@@ -215,7 +216,7 @@ export default function TaskFullView({ params }: { params: { _id: string, _taski
     const title = taskName + ' | ' + projectname + ' | Task Details';
 
     function startincident() {
-        router.push(`/projects/${_id}/incident/?taskid=${taskid}?priority=${taskPriority}`);
+        router.push(`/projects/${_id}/incident/?startincident=true&taskid=${encodeURIComponent(taskid)}&priority=${encodeURIComponent(taskPriority)}&title=${encodeURIComponent(taskName)}`);
     }
     function taskunarchive() {
         const currenttime = new Date().toISOString();
@@ -266,16 +267,30 @@ export default function TaskFullView({ params }: { params: { _id: string, _taski
                                     <div className="flex flex-row gap-3 items-center justify-center">
                                     {!archived && 
                                     <>
-                                        <div className='flex justify-center items-center dark:text-white text-black cursor-pointer hover:bg-neutral-500/60 flex-row  bg-neutral-500/20  font-semibold  border hover:border-neutral-300 h-auto p-1 px-2 rounded-sm w-auto gap-2 transition-all' onClick={edittask}>
-                                            <svg xmlns="http://www.w3.org/2000/svg" className="w-5 flex" viewBox="0 0 24 24" fill="currentColor"><path d="M15.7279 9.57627L14.3137 8.16206L5 17.4758V18.89H6.41421L15.7279 9.57627ZM17.1421 8.16206L18.5563 6.74785L17.1421 5.33363L15.7279 6.74785L17.1421 8.16206ZM7.24264 20.89H3V16.6473L16.435 3.21231C16.8256 2.82179 17.4587 2.82179 17.8492 3.21231L20.6777 6.04074C21.0682 6.43126 21.0682 7.06443 20.6777 7.45495L7.24264 20.89Z"></path></svg> <p className="md:block hidden">Edit</p>
-                                            </div>
-                                        <div className='flex justify-center items-center cursor-pointer hover:bg-red-500/60 gap-2 bg-red-500/80 border hover:border-neutral-300 dark:text-white text-black font-semibold h-auto p-1 px-2 rounded-sm w-auto flex-row transition-all' onClick={deletetasktrigger}>
-                                            <svg xmlns="http://www.w3.org/2000/svg" className="flex w-5" viewBox="0 0 24 24" fill="currentColor"><path d="M17 6H22V8H20V21C20 21.5523 19.5523 22 19 22H5C4.44772 22 4 21.5523 4 21V8H2V6H7V3C7 2.44772 7.44772 2 8 2H16C16.5523 2 17 2.44772 17 3V6ZM18 8H6V20H18V8ZM9 4V6H15V4H9Z"></path></svg> <p className="md:block hidden">Delete</p>
-                                        </div>
-                                        <div className='flex justify-center items-center cursor-pointer hover:bg-red-500/60 gap-2 bg-red-500/80 border hover:border-neutral-300 dark:text-white text-black font-semibold  h-auto p-1 px-2 rounded-sm w-auto flex-row transition-all' onClick={startincident}>
-                                            <svg className='w-6' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M4.00001 20V14C4.00001 9.58172 7.58173 6 12 6C16.4183 6 20 9.58172 20 14V20H21V22H3.00001V20H4.00001ZM6.00001 14H8.00001C8.00001 11.7909 9.79087 10 12 10V8C8.6863 8 6.00001 10.6863 6.00001 14ZM11 2H13V5H11V2ZM19.7782 4.80761L21.1924 6.22183L19.0711 8.34315L17.6569 6.92893L19.7782 4.80761ZM2.80762 6.22183L4.22183 4.80761L6.34315 6.92893L4.92894 8.34315L2.80762 6.22183Z"></path></svg>
-                                            <p className="md:block hidden">Report Incident</p>
-                                        </div>
+                                        <Button onClick={edittask} variant="outline" className="gap-2">
+                                            <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                                            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                                            </svg>
+                                            <span className="hidden md:inline">Edit</span>
+                                        </Button>
+                                        <Button onClick={deletetasktrigger} variant="destructive" className="gap-2">
+                                            <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                            <polyline points="3 6 5 6 21 6"></polyline>
+                                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                                            <line x1="10" y1="11" x2="10" y2="17"></line>
+                                            <line x1="14" y1="11" x2="14" y2="17"></line>
+                                            </svg>
+                                            <span className="hidden md:inline">Delete</span>
+                                        </Button>
+                                        <Button onClick={startincident} variant="destructive" className="gap-2">
+                                            <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                                            <line x1="12" y1="9" x2="12" y2="13"></line>
+                                            <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                                            </svg>
+                                            <span className="hidden md:inline">Report Incident</span>
+                                        </Button>
                                     </>
                                     }
                                     </div>
@@ -327,7 +342,7 @@ export default function TaskFullView({ params }: { params: { _id: string, _taski
                                                 <div className='flex flex-col justify-start  md:w-10/12 gap-2'>
                                                     <div className='flex flex-col gap-3'>                                      
                                                         <div className='flex flex-col gap-1'>
-                                                            <p className='font-bold dark:text-white text-black'>Task Created By:</p>
+                                                            <p className='font-medium dark:text-white text-black'>Task Created By:</p>
                                                             <HoverCard>
                                                                 <HoverCardTrigger>
                                                                     <div className='flex items-center gap-2'>
@@ -349,8 +364,8 @@ export default function TaskFullView({ params }: { params: { _id: string, _taski
                                                                 </HoverCardContent>
                                                             </HoverCard>
                                                         </div>
-                                                        <div className='flex flex-col gap-1'>
-                                                            <p className='font-bold dark:text-white text-black'>Assignee:</p>
+                                                        <div className='flex flex-col gap-1 pb-4 pt-2'>
+                                                            <p className='font-medium dark:text-white text-black'>Assignee:</p>
                                                             <div className='flex items-center gap-2'>
                                                                 <img src={assigneeData?.imageUrl} className='w-8 h-8 rounded-full' alt="Assignee" />
                                                                 <p className='font-semibold dark:text-white text-black'>{assigneeData?.firstName} {assigneeData?.lastName}</p>
@@ -369,8 +384,7 @@ export default function TaskFullView({ params }: { params: { _id: string, _taski
                                                         </div>
                                                     </div>
                                                     <div className='flex flex-col gap-4 border border-transparent border-t-neutral-700/40 pt-3'>
-                                                        <p className='text-3xl dark:text-white text-black'>Comments:</p>
-                                                        <div className='w-full flex flex-col'>
+                                                        <h3 className='text-xl font-semibold text-black dark:text-white'>Comments</h3>                                                        <div className='w-full flex flex-col'>
                                                             <div className="w-full flex flex-col">
                                                                 <CommentBoxer taskId={taskid} />
                                                             </div>

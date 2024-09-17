@@ -7,12 +7,17 @@ import { ConvexClient } from "convex/browser";
 import PriorityResponse from '../dropdowns/responderp';
 import ExitModal from './exit';
 
-const NewIncidentModal = ({ onClose, id }) => {
+const NewIncidentModal = ({ onClose, id, priority, title }) => {
+  console.log(title, priority);
+
   const client = new ConvexClient(process.env.NEXT_PUBLIC_CONVEX_URL);
   const { userId, isLoaded, isSignedIn } = useAuth();
-  const [taskTitle, setTaskTitle] = useState('');
+  if (priority !== "low" && priority !== "medium" && priority !== "high" && priority !== "critical") {
+    priority = "low";
+  }
+  const [taskTitle, setTaskTitle] = useState(title);
   const [taskDescription, setTaskDescription] = useState('');
-  const [taskPriority, setTaskPriority] = useState('low');
+  const [taskPriority, setTaskPriority] = useState(priority);
   const [taskStatus, setTaskStatus] = useState('');
   const [taskAssignee, setTaskAssignee] = useState('');
   const [incidentid, setincidentid] = useState('');

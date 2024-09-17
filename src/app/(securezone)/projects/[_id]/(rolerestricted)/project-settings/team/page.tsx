@@ -104,7 +104,7 @@ export default function ProjectSettings({ params }: { params: { _id: string } })
 
   useEffect(() => {
     if (project) {
-      fetchUserData([project.userId, ...project.otherusers]);
+      fetchUserData([...project.otherusers]);
     }
   }, [project, fetchUserData]);
 

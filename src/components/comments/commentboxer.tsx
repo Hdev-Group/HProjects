@@ -89,21 +89,23 @@ export default function CommentBoxer({ taskId }: { taskId: any }) {
     if (!filteredReplys || filteredReplys.length === 0) return null;
   
     return (
-      <div className="flex flex-col gap-4 relative ml-3 p-1 pl-5 w-full dark:text-white text-black">
-        <div className="flex flex-col gap-4 w-full overflow-y-auto replys">
+      <div className="flex flex-col gap-4 relative ml-3 p-1 pb-5 w-full dark:text-white text-black">
+        <div className="flex flex-col gap-4 w-full overflow-y-auto">
+        <div className="absolute top-[18px] left-[-35px] w-[50px] h-0.5 border-b" />
           {filteredReplys.map((reply: any) => (
-            <div key={reply._id} className="flex flex-col gap-3 justify-center relative">
+            <div key={reply._id} className="flex flex-col gap-1 justify-center relative">
               <div className="flex flex-row items-center gap-3">
               <img
                   src={commenterData[reply.userId]?.imageUrl || '/default-avatar.png'} // Provide a fallback image
                   alt={`${commenterData[reply.userId]?.firstName || 'Unknown'} ${commenterData[reply.userId]?.lastName || ''}`}
                   className="w-8 h-8 rounded-full"
                 />
+                
                 <h2 className="font-semibold text-xs">
                   {commenterData[reply.userId]?.firstName || 'Unknown'} {commenterData[reply.userId]?.lastName || ''}
                 </h2>
               </div>
-              <p className="ml-11">{reply.CommenterMessage}</p>
+              <p className="ml-11 flex-wrap">{reply.CommenterMessage}</p>
             </div>
           ))}
         </div>
@@ -190,59 +192,62 @@ export default function CommentBoxer({ taskId }: { taskId: any }) {
   const userimage = user?.user?.imageUrl;
   return (
     <div className='flex flex-col gap-4 border p-1 rounded-t-lg w-full dark:text-white text-black  '>
-      <div className='flex flex-col gap-4 w-full '>
-        {filteredComments?.map((comment: any) => (
-          <div key={comment._id} className='p-4 flex gap-4 bg-neutral-800/10 w-full flex-col justify-center rounded-md hover:border-neutral-200 transition-all'>
-            <div className="flex gap-4 items-center justify-between relative replygrabber">
-              <div className="flex items-center gap-2 relative ">
-                <img src={commenterData[comment.userId]?.imageUrl} alt={commenterData[comment.userId]?.firstName} className='w-8 h-8 rounded-full ' />
-                <p className='text-xs dark:text-neutral-200 text-neutral-900 font-semibold'>{commenterData[comment.userId]?.firstName} {commenterData[comment.userId]?.lastName}</p>
-              </div>
-              <div className="flex gap-4">
-                <p className="text-xs dark:text-neutral-500 text-neutral-500">{formatTime(comment._creationTime)}</p>
-                <DropdownCommentMenu commentid={comment._id} commentdata={comment} />
-              </div>
+      <div className='flex flex-col w-full '>
+      {filteredComments?.map((comment: any) => (
+        <div key={comment._id} className='px-4 first:pt-4 last:pb-4 flex gap-4 bg-neutral-800/10 w-full flex-col justify-center rounded-md hover:border-neutral-200 transition-all'>
+        <div className="w-full h-auto gap-1 flex-row flex">
+            <div className="flex flex-col items-center">
+                <img className="w-8 rounded-full h-8" src={commenterData[comment.userId]?.imageUrl} alt={`${commenterData[comment.userId]?.lastName}`} />
+                <div className="border-l h-full" />
             </div>
-            <div className="gap-3 flex flex-col ml-10">
-            <p>{comment.CommenterMessage}</p>
-            <div className="flex flex-row gap-3">
-              <div className="flex border justify-center items-center rounded-md p-1 gap-2">
-                <p>😀 1</p>
-              </div>
-              <div className="flex border justify-center items-center rounded-md p-1 gap-2">
-                <p>😎 1</p>
-              </div>
-            </div>
-            <div className="flex gap-5 relative">
-              <button
-                id={comment._id}
-                onClick={() => replydropdown(comment._id)}
-                className={`text-sm dark:text-neutral-500 text-black dark:hover:text-white hover:text-black transition-all ${showReplyDropdown === comment._id ? 'dark:text-white text-black' : ''}`}
-              >
-                Reply
-              </button>
-              {showEmojiPicker && <EmojiPicker />}
-              <button
-                id={comment._id}
-                onClick={emojipopup}
-                className="text-sm dark:text-neutral-500  text-black dark:hover:text-white hover:text-black transition-all beforeitemcommentreact"
-              >
-                React
-              </button>
-              </div>
-            </div>
-            {showReplyDropdown === comment._id && (
-              <div className="flex flex-row gap-3">
-                <div className="mt-1 beforetoperreply">
-                  <img src={userimage} alt={`${commenterData?.firstName} ${commenterData?.lastName}`} className='w-8 h-8 rounded-full' />
+            <div className="flex flex-col gap-2 w-full">
+            <div className="flex flex-col h-full pb-3 w-full gap-4 justify-center">
+                <div className="flex flex-row justify-between items-center gap-3 ml-2">
+                    <p className="text-md font-normal text-black dark:text-white">
+                        <span className="font-semibold">{commenterData[comment.userId]?.firstName} {commenterData[comment.userId]?.lastName}</span> 
+                    </p>
+                    <div className="flex flex-row gap-5">
+                      <p className="text-md font-normal">{formatTime(comment._creationTime)}</p>
+                      <DropdownCommentMenu comment={comment} />
+                    </div>
                 </div>
-                <CommentReply commentdata={comment} />
-              </div>
-            )}
-            {/* checking for replys */}
-            <ReplyChecker commentdata={comment} />
-          </div>
-        ))}
+                <div className="flex flex-col border justify-center rounded-md gap-1 py-3">
+                    <p className="text-white px-4 font-semibold gap-4 flex">
+                      {comment.CommenterMessage}
+                    </p>
+                  </div>
+                    <div className="flex gap-5 relative">
+                      <button
+                        id={comment._id}
+                        onClick={() => replydropdown(comment._id)}
+                        className={`text-sm dark:text-neutral-500 text-black dark:hover:text-white hover:text-black transition-all ${showReplyDropdown === comment._id ? 'dark:text-white text-black' : ''}`}
+                      >
+                        Reply
+                      </button>
+                      {showEmojiPicker && <EmojiPicker />}
+                      <button
+                        id={comment._id}
+                        onClick={emojipopup}
+                        className="text-sm dark:text-neutral-500  text-black dark:hover:text-white hover:text-black transition-all beforeitemcommentreact"
+                      >
+                        React
+                      </button>
+                      </div>
+                    </div>
+                    {showReplyDropdown === comment._id && (
+                      <div className="flex flex-row gap-3">
+                        <div className="mt-1 beforetoperreply">
+                          <img src={userimage} alt={`${commenterData?.firstName} ${commenterData?.lastName}`} className='w-8 h-8 rounded-full' />
+                        </div>
+                        <CommentReply commentdata={comment} />
+                      </div>
+                    )}
+                    {/* checking for replys */}
+                    <ReplyChecker commentdata={comment} />
+                  </div>
+                  </div>
+            </div>
+            ))}
         {filteredComments?.length === 0 && (
           <div className='border-2 border-neutral-700 bg-neutral-700/40 flex justify-center items-center rounded-md min-h-[10rem]'>
             <p className='font-semibold text-lg dark:text-white text-black'>No comments yet, be the first to comment on this task</p>
