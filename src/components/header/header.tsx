@@ -4,6 +4,7 @@ import Router from 'next/router';
 import '../../styles/globals.css';
 import { useClerk } from '@clerk/clerk-react';
 import './head.css';
+import Link from 'next/link';
 
 export default function NavigationMenuMain() {
   const { user } = useClerk();
@@ -54,23 +55,29 @@ export default function NavigationMenuMain() {
       className="h-0.5 bg-blue-600 fixed top-0 left-0 z-50"
       style={{ width: '0%', opacity: 1 }}
     />
-    <div className="w-full px-2 md:px-[4.5rem] py-3  flex items-center fixed justify-center z-10 backdrop-blur-lg border-b " id="headermain">
-      <div className="max-w-[120rem] w-[100%] flex ">
-        <a href='/'>
-          <div className="flex items-center">
-            <img
-              src="/logo.png"
-              alt="HProjects"
-              width={32}
-              height={32}
-            />
-            <h1 className="text-2xl font-bold">Projects</h1>
-          </div>
-        </a>
-
+    <header className="w-full px-2 md:px-[4.5rem] py-3  flex items-center fixed justify-center z-10 border-b bg-neutral-600/20 backdrop-blur supports-[backdrop-filter]:bg-background/10" id="headermain">
+    <div className="w-full flex h-14 items-center">
+        <div className="mr-4 hidden md:flex">
+          <Link href="/" className="mr-6 flex items-center space-x-2">
+            <Image src="/logo.png" alt="HProjects Logo" width={32} height={32} />
+            <span className="hidden font-bold sm:inline-block">
+              Projects
+            </span>
+          </Link>
+          <nav className="flex items-center space-x-6 text-sm font-medium">
+            <Link href="/features" className="transition-colors hover:text-foreground/80 text-foreground/60">
+              Features
+            </Link>
+            <Link href="/pricing" className="transition-colors hover:text-foreground/80 text-foreground/60">
+              Pricing
+            </Link>
+            <Link href="/docs" className="transition-colors hover:text-foreground/80 text-foreground/60">
+              Docs
+            </Link>
+          </nav>
         </div>
-        <nav className='max-[460px]:hidden'>
-          <ul className="flex">
+        <div className="flex flex-1 items-center justify-between space-x-2 md:justify-end">
+          <div className="w-full flex-1 md:w-auto md:flex-none">
             {user ? (
               <>
                 <li className='gap-5 flex w-full items-center'>
@@ -83,12 +90,13 @@ export default function NavigationMenuMain() {
             ) : (
               <li className='gap-5 flex items-center w-full'>
                 <a href="/sign-in" className="ease-in-out duration-300 rounded-2xl text-white">Login</a>
-                <a href="/sign-up" className="cursor-pointer flex pl-4 border border-white/40 w-[8rem] hover:border-white transition-all items-center p-1 rounded-lg hover:bg-neutral-500/10 hover:ring-2 hover:ring-neutral-500/30 hovmain">Get Started <svg  xmlns="http://www.w3.org/2000/svg" className='h-[30px] w-5 hovericon' viewBox="0 0 24 24" fill="currentColor"><path d="M16 12L10 18V6L16 12Z"></path></svg></a>
+                <a href="/sign-up" className="cursor-pointer flex pl-4 border border-white/40 w-full hover:border-white transition-all items-center p-1 rounded-lg hover:bg-neutral-500/10 hover:ring-2 hover:ring-neutral-500/30 hovmain">Get Started <svg  xmlns="http://www.w3.org/2000/svg" className='h-[30px] w-5 hovericon' viewBox="0 0 24 24" fill="currentColor"><path d="M16 12L10 18V6L16 12Z"></path></svg></a>
               </li>
             )}
-          </ul>
-        </nav>
-      </div>
+          </div>
+        </div>
+        </div>
+      </header>
       </>
   )
 }

@@ -43,7 +43,7 @@ export default function Home() {
         { x: -3000 }, // Starting position
         {
           x: 0, // Ending position
-          duration: 2.5,
+          duration: 1.5,
           scrollTrigger: {
             trigger: target,
             start: 'top center',
@@ -55,7 +55,7 @@ export default function Home() {
         { x: 3000 }, // Starting position
         {
           x: 0, // Ending position
-          duration: 2.5,
+          duration: 1.5,
           scrollTrigger: {
             trigger: target2,
             start: 'top center',
@@ -68,7 +68,7 @@ export default function Home() {
         {
           y: 0, // Ending position
           opacity: 1,
-          duration: 2.5,
+          duration: 1.5,
           scrollTrigger: {
             trigger: target3,
             start: 'top center',
@@ -81,7 +81,7 @@ export default function Home() {
         {
           y: 0, // Ending position
           opacity: 1,
-          duration: 2.5,
+          duration: 1.5,
           scrollTrigger: {
             trigger: target4,
             start: 'top center',
@@ -94,7 +94,7 @@ export default function Home() {
         {
           height: 113, // Ending position
           opacity: 1,
-          duration: 2.5,
+          duration: 1.5,
           scrollTrigger: {
             trigger: target5,
             start: 'top center',
@@ -108,7 +108,7 @@ export default function Home() {
           y: 0, // Ending position
           delay: 0.4,
           opacity: 1,
-          duration: 2.5,
+          duration: 1.5,
           scrollTrigger: {
             trigger: target5,
             start: 'top center',
@@ -122,7 +122,7 @@ export default function Home() {
           height: 111, // Ending position
           delay: 0.4,
           opacity: 1,
-          duration: 2.5,
+          duration: 1.5,
           scrollTrigger: {
             trigger: target6,
             start: 'top center',
@@ -136,7 +136,7 @@ export default function Home() {
           y: 0, // Ending position
           delay: 0.1,
           opacity: 1,
-          duration: 2.5,
+          duration: 1.5,
           scrollTrigger: {
             trigger: target7,
             start: 'top center',
@@ -150,7 +150,7 @@ export default function Home() {
           y: 0, // Ending position
           delay: 0.1,
           opacity: 1,
-          duration: 2.5,
+          duration: 1.5,
           scrollTrigger: {
             trigger: target4,
             start: 'top center',
@@ -164,7 +164,7 @@ export default function Home() {
           y: 0, // Ending position
           delay: 0.1,
           opacity: 1,
-          duration: 2.5,
+          duration: 1.5,
           scrollTrigger: {
             trigger: target6,
             start: 'top center',
@@ -178,7 +178,7 @@ export default function Home() {
           y: 0, // Ending position
           delay: 0.1,
           opacity: 1,
-          duration: 2.5,
+          duration: 1.5,
           scrollTrigger: {
             trigger: target8,
             start: 'top center',
@@ -192,7 +192,7 @@ export default function Home() {
           y: 0,
           delay: 0.1,
           opacity: 1,
-          duration: 2.5,
+          duration: 1.5,
           scrollTrigger: {
             trigger: incident1,
             start: 'top center',
@@ -206,7 +206,7 @@ export default function Home() {
           y: 0,
           delay: 0.1,
           opacity: 1,
-          duration: 2.5,
+          duration: 1.5,
           scrollTrigger: {
             trigger: incident2,
             start: 'top center',
@@ -220,7 +220,7 @@ export default function Home() {
           y: 0,
           delay: 0.1,
           opacity: 1,
-          duration: 2.5,
+          duration: 1.5,
           scrollTrigger: {
             trigger: incident3,
             start: 'top center',
@@ -234,7 +234,7 @@ export default function Home() {
           y: 0,
           delay: 0.1,
           opacity: 1,
-          duration: 2.5,
+          duration: 1.5,
           scrollTrigger: {
             trigger: incident4,
             start: 'top center',
