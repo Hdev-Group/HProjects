@@ -55,7 +55,7 @@ export default function NavigationMenuMain() {
       className="h-0.5 bg-blue-600 fixed top-0 left-0 z-50"
       style={{ width: '0%', opacity: 1 }}
     />
-    <header className="w-full px-2 md:px-[4.5rem] py-3  flex items-center fixed justify-center z-10 border-b bg-neutral-600/20 backdrop-blur supports-[backdrop-filter]:bg-background/10" id="headermain">
+    <header className="w-full px-2 md:px-[4.5rem] py-3 flex items-center fixed justify-center z-50 border-b bg-neutral-600/20 backdrop-filter backdrop-blur-md" id="headermain">
     <div className="w-full flex h-14 items-center">
         <div className="mr-4 hidden md:flex">
           <Link href="/" className="mr-6 flex items-center space-x-2">
@@ -67,9 +67,6 @@ export default function NavigationMenuMain() {
           <nav className="flex items-center space-x-6 text-sm font-medium">
             <Link href="/features" className="transition-colors hover:text-foreground/80 text-foreground/60">
               Features
-            </Link>
-            <Link href="/pricing" className="transition-colors hover:text-foreground/80 text-foreground/60">
-              Pricing
             </Link>
             <Link href="/docs" className="transition-colors hover:text-foreground/80 text-foreground/60">
               Docs
