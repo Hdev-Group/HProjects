@@ -23,6 +23,19 @@ const NewTaskModal = ({ onClose, id }) => {
   const addTask = useMutation(api.taskssender.add);
   const logger = useMutation(api.updater.logger);
 
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const title = urlParams.get('title');
+    const description = urlParams.get('description');
+
+    if (title) {
+      setTaskTitle(title);
+    }
+    if (description) {
+      setTaskDescription(description);
+    }
+  }, []);
+
   const handleFormSubmit = useCallback(async (e) => {
     e.preventDefault();
 

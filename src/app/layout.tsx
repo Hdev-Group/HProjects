@@ -77,7 +77,7 @@ export default function RootLayout({
           <meta name="robots" content="index, follow" />
           <meta name="revisit-after" content="7 days" />
           <meta name="distribution" content="global" />
-          <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+          <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
           </head>
           <body
         className={cn(

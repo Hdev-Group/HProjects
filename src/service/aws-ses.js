@@ -2,8 +2,6 @@ const AWS = require('aws-sdk');
 require('dotenv').config({ path: '.env' });
 
 
-console.log('AWS_ACCESS_KEY_ID:', process.env.AWS_ACCESS_KEY_ID);
-console.log('AWS_SECRET_ACCESS_KEY:', process.env.AWS_SECRET_ACCESS_KEY);
 AWS.config.update({
   region: 'eu-north-1',
   credentials: {
@@ -13,8 +11,6 @@ AWS.config.update({
 });
 
 export async function sendpageEmail({ to, from, subject, message, pager, sentby, projectid, incidentid, title }) {
-  console.log('AWS_ACCESS_KEY_ID:', process.env.AWS_ACCESS_KEY_ID);
-  console.log('AWS_SECRET_ACCESS_KEY:', process.env.AWS_SECRET_ACCESS_KEY);
 
   
   const ses = new AWS.SES({ apiVersion: 'latest' });

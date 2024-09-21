@@ -246,13 +246,12 @@ export default function ProjectSettings({ params }: { params: { _id: string } })
           description: 'User already invited',
         });
       }
-      if (!data) {
+      if (data.error) {
         setValidationChecks(false);
         return toast({
           description: 'User not found',
         });
       }
-      console.log("end")
       setValidationChecks(false);
       await teamadders({ projectid: params._id, teamadderid: data.id });
       return toast({

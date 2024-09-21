@@ -45,7 +45,7 @@ export default function MessageSubmitter({ chatid, _id }: MessageSubmitterProps)
         id="messageinput"
         maxLength={2000}
         placeholder={`Type a message`}
-        className="w-full px-3 bg-transparent h-full text-black dark:text-white placeholder:text-black placeholder:dark:text-white"
+        className="w-full mr-12 px-3 bg-transparent h-full text-black dark:text-white placeholder:text-black placeholder:dark:text-white"
         ref={messageInputRef}
       />
       <button type="submit" className="h-full bg-blue-500 hover:bg-blue-600 transition-all w-10 flex items-center justify-center">

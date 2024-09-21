@@ -110,18 +110,17 @@ export default function MainDMs({ params }: { params: { _id: string, _chatid: st
         <meta name="description" content="Plan, Build and Push with confidence" />
         <meta name="keywords" content="HProjects, Projects, Build, Plan, Push" />
       </head>
-      <div className="h-screen overflow-hidden bg-bglight dark:bg-bgdark" id="modal-root">
-        <div className="flex h-full bg-bglightbars dark:bg-bgdarkbars">
+      <div className="h-screen overflow-hidden items-end bg-bglight dark:bg-bgdark" id="modal-root">
+        <div className="flex w-full h-full bg-bglightbars  dark:bg-bgdarkbars">
           <SideBar _id={params._id} activeSection="Chat" projectname={project?.projectName} />
           <div className="flex w-full bg-black border mt-0.5 gap-2 rounded-l-3xl">
-            <SideBarChat user={user} id={params._id} />
-            <div className="max-w-10/12 w-[100%] flex flex-col bg-bglight  dark:bg-bgdark border-neutral-600/40 border rounded-3xl items-center overflow-y-auto">
-              <div className="flex flex-row items-center gap-4 transition-all  w-full">
+            <div className="flex flex-col bg-bglight w-auto dark:bg-bgdark border-neutral-600/40 border rounded-3xl items-center overflow-y-auto">
+              <div className="flex flex-row items-center gap-4 transition-all w-full">
                 {chat && <Chatside chat={chat} projectid={_id} />}
               </div>
-              <div className="flex-col w-full gap-4 px-5 h-full overflow-hidden justify-between mb-5 mt-5 flex">
+              <div className="flex-col w-full  gap-4 px-5 h-full overflow-hidden justify-between mb-5 mt-5 flex">
                 <div className="flex flex-col justify-end h-full">
-                  <div className="mb-5 flex flex-col overflow-y-scroll h-auto w-full" id="scrollerdown" ref={scrollerRef}>
+                  <div className="mb-5 flex flex-col overflow-y-scroll overflow-x-auto h-auto" id="scrollerdown" ref={scrollerRef}>
                     <ComposerChat chatId={params._chatid} projectid={params._id} assigneeData={assigneeData} />
                   </div>
                   <div className="flex max-h-10 h-full overflow-x-hidden flex-row justify-center border bg-transparent items-center border-neutral-600/40 rounded-lg w-full">

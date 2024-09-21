@@ -20,6 +20,7 @@ import type * as deleteIncident from "../deleteIncident.js";
 import type * as deleteProject from "../deleteProject.js";
 import type * as deleteTask from "../deleteTask.js";
 import type * as draganddrop from "../draganddrop.js";
+import type * as feedback from "../feedback.js";
 import type * as getchat from "../getchat.js";
 import type * as getcomments from "../getcomments.js";
 import type * as getdm from "../getdm.js";
@@ -68,6 +69,7 @@ declare const fullApi: ApiFromModules<{
   deleteProject: typeof deleteProject;
   deleteTask: typeof deleteTask;
   draganddrop: typeof draganddrop;
+  feedback: typeof feedback;
   getchat: typeof getchat;
   getcomments: typeof getcomments;
   getdm: typeof getdm;

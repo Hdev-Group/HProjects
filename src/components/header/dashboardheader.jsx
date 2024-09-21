@@ -1,14 +1,19 @@
 import { useEffect } from 'react';
 import Image from 'next/image';
-import { useClerk, useUser, UserButton } from '@clerk/clerk-react';
+import { useClerk, useUser, UserButton,useAuth } from '@clerk/clerk-react';
 import Link from 'next/link';
 import Router from 'next/router';
 import { AppProgressBar as ProgressBar } from 'next-nprogress-bar';
+import { api } from '../../../convex/_generated/api';
+import { useMutation, useQuery } from 'convex/react';
 
 
 import '../../styles/globals.css';
 
 const DashboardHeader = ({ activeSection, onSectionChange }) => {
+  const { userId } = useAuth();
+  const addtoteam = useQuery(api.invitegetter.get);
+  const addtoteamcheck = addtoteam?.filter(project => project.teamadderid.includes(userId)) || [];
 
   const { user } = useClerk();
   const { isLoaded, isSignedIn, user: userInfo } = useUser();
@@ -29,7 +34,7 @@ const DashboardHeader = ({ activeSection, onSectionChange }) => {
         options={{ showSpinner: true }}
         shallowRouting
       />
-    <header className={`fixed flex-col top-[0px] max-[460px]:block  border-b pb-12 bg-bglightbars dark:bg-bgdarkbars sm:block md:flex left-0 right-0 z-50 flex items-center justify-center p-8 transition-colors  duration-300 ${user ? '' : ''}`}>
+    <header className={`fixed flex-col top-[0px] max-[460px]:block  border-b  bg-bglightbars dark:bg-bgdarkbars sm:block md:flex left-0 right-0 z-50 flex items-center justify-center p-8 transition-colors  duration-300 ${user ? '' : ''}`}>
       <div className="flex flex-row items-center gap-10 justify-between md:w-[100%]">
         <div className="flex items-center justify-center g-5">
           <a href='/'>
@@ -64,7 +69,10 @@ const DashboardHeader = ({ activeSection, onSectionChange }) => {
         <Link href="/dashboard" className={`cursor-pointer text-[13px] font-medium ${activeSection === 'projects' ? 'text-white  underline underline-offset-8 decoration-2 font-bold' : 'text-gray-500'}`}>
             <strong>{activeSection === 'projectspage' ? 'Projects' : 'Projects'}</strong>
           </Link>
-          <Link href="/teams" className={`cursor-pointer text-[13px] font-medium ${activeSection === 'teams' ? 'text-white underline underline-offset-8 decoration-2 font-bold' : 'text-gray-500'}`}>
+          <Link href="/teams" className={`cursor-pointer text-[13px] font-medium ${activeSection === 'teams' ? 'text-white underline underline-offset-8 decoration-2 font-bold' : 'text-gray-500'} relative`}>
+            {
+              addtoteamcheck.length > 0 && <div className='absolute rounded-full bg-blue-500 w-2 h-2 top-[-5px] right-[-6px] animate-ping'/>
+            }
             <strong>{activeSection === 'teams' ? 'Teams' : 'Teams'}</strong>
           </Link>
           <Link href="/settings" className={`cursor-pointer text-[13px] font-medium ${activeSection === 'settings' ? 'text-white underline underline-offset-8 decoration-2 font-bold' : 'text-gray-500'}`}>

@@ -69,7 +69,7 @@ function SideBar({ activeSection, _id, projectname }: SideBarProps) {
 
   return (
     <article data-closed={isSidebarClosed}
-    className={`${!isSidebarClosed ? "w-full justify-center openedsidebar" : "closedsidebar"} z-100 min-w-[45px] flex max-w-[248px] sticky overflow-x-hidden h-full flex-col justify-between bg-bglightbars dark:bg-bgdarkbars !rounded-none overflow-auto p-2 border-transparent border-r-neutral-600/40`}>
+    className={`${!isSidebarClosed ? "w-full justify-center openedsidebar min-w-[248px]" : "closedsidebar min-w-[48px]"} z-100  w-full flex  sticky overflow-x-hidden h-full flex-col justify-between bg-bglightbars dark:bg-bgdarkbars !rounded-none overflow-auto p-2 border-transparent border-r-neutral-600/40`}>
       <ProgressBar
         height="1px"
         color="#89bff8"
@@ -111,6 +111,10 @@ function SideBar({ activeSection, _id, projectname }: SideBarProps) {
             <Link href={`/projects/${encodeURIComponent(_id)}/changelog`} className={getItemClass("changelog")}>
               <svg className='w-6' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M6 4V8H18V4H20.0066C20.5552 4 21 4.44495 21 4.9934V21.0066C21 21.5552 20.5551 22 20.0066 22H3.9934C3.44476 22 3 21.5551 3 21.0066V4.9934C3 4.44476 3.44495 4 3.9934 4H6ZM9 17H7V19H9V17ZM9 14H7V16H9V14ZM9 11H7V13H9V11ZM16 2V6H8V2H16Z"></path></svg>
               {!isSidebarClosed && <p>Changelog</p>}
+            </Link>
+            <Link href={`/projects/${encodeURIComponent(_id)}/feedback`} className={getItemClass("feedback")}>
+              <svg className='w-6'  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M6.45455 19L2 22.5V4C2 3.44772 2.44772 3 3 3H21C21.5523 3 22 3.44772 22 4V18C22 18.5523 21.5523 19 21 19H6.45455ZM4 18.3851L5.76282 17H20V5H4V18.3851ZM11 13H13V15H11V13ZM11 7H13V12H11V7Z"></path></svg>
+              {!isSidebarClosed && <p>Feedback</p>}
             </Link>
             <Link href={`/projects/${encodeURIComponent(_id)}/chat`} className={getItemClass("Chat")}>
               <svg className='w-6' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M10 3H14C18.4183 3 22 6.58172 22 11C22 15.4183 18.4183 19 14 19V22.5C9 20.5 2 17.5 2 11C2 6.58172 5.58172 3 10 3Z"></path></svg>

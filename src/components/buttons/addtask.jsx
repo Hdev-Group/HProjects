@@ -14,6 +14,15 @@ const AddTaskButton = (id) => {
   };
 
   useEffect(() => {
+    // check url for query params
+    const urlParams = new URLSearchParams(window.location.search);
+    const addTask = urlParams.get('addTask');
+    if (addTask) {
+      handleClick();
+    }
+  }, []);
+
+  useEffect(() => {
     const handleKeyDown = (event) => {
       if (event.altKey && event.key === 'n') {
         handleClick();

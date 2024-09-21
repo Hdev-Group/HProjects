@@ -8,7 +8,6 @@ import PriorityResponse from '../dropdowns/responderp';
 import ExitModal from './exit';
 
 const NewIncidentModal = ({ onClose, id, priority, title }) => {
-  console.log(title, priority);
 
   const client = new ConvexClient(process.env.NEXT_PUBLIC_CONVEX_URL);
   const { userId, isLoaded, isSignedIn } = useAuth();
