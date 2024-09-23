@@ -10,16 +10,17 @@ import Link from 'next/link'
 export default function FeedBackMain({ projectid }: { projectid: any }) {
   console.log(projectid)
   const feedbacks = useQuery(api.feedback.get, { projectid: projectid })
+  const feedbackfilter = feedbacks?.filter((feedback) => feedback.projectid === projectid)
   const [searchTerm, setSearchTerm] = useState('')
   const deleteFeedbackMutation = useMutation(api.feedback.deleteFeedBack);
 
-  if (!feedbacks) {
+  if (!feedbackfilter) {
     return <div>Loading...</div>
   }
 
   const searchResults = !searchTerm
-    ? feedbacks
-    : feedbacks.filter((feedback) =>
+    ? feedbackfilter
+    : feedbackfilter.filter((feedback) =>
         feedback.title.toLowerCase().includes(searchTerm.toLowerCase())
     )
 
