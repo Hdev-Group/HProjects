@@ -176,17 +176,15 @@ export default function NavigationMenuMain() {
               >
                 {
                   isWhite ? (
-                    <Image src="/darkh.png" alt="logo" width={40} height={40} />
+                    <img src="/darkh.png" alt="logo" width={40} height={40} />
                   ) : (
-                    <Image src="/logo.png" alt="logo" width={40} height={40} />
+                    <img src="/logo.png" alt="logo" width={40} height={40} />
                   )
                 }
               </Link>
               </ContextMenuTrigger>
                 <ContextMenuContent>
-                  <ContextMenuItem>HProjects</ContextMenuItem>
-                  <ContextMenuItem>HSpace</ContextMenuItem>
-                  <ContextMenuItem>HCyber</ContextMenuItem>
+                  <ContextMenuItem ><a href='https://hprojects.hdev.uk/'>HProjects</a></ContextMenuItem>
                 </ContextMenuContent>
               </ContextMenu>
               <Link
