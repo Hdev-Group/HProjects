@@ -91,7 +91,6 @@ const AddAPI = (id) => {
   };
 
   function CurlCommand(id) {
-    console.log(id);
     // Assuming id.id.id.projectid is a valid way to extract projectId
     const idd = id.id.id;
   
