@@ -95,7 +95,7 @@ const AddAPI = (id) => {
     const idd = id.id.id.projectid;
   
     // Construct the curl command with proper string interpolation
-    const codeString = `curl -X POST http://localhost:3000/api/feedback -H "Content-Type: application/json" -d "{\\"projectId\\": \\"${idd}\\", \\"feedback\\": \\"You should add a pinned message\\", \\"title\\": \\"Pinned Message Feature\\", \\"name\\": \\"James Blackhurst\\", \\"email\\": \\"test@example.com\\", \\"label\\": \\"featureRequest\\"}"`;
+    const codeString = `curl -X POST https://hprojects.hdev.uk/api/feedback -H "Content-Type: application/json" -d "{\\"projectId\\": \\"${idd}\\", \\"feedback\\": \\"You should add a pinned message\\", \\"title\\": \\"Pinned Message Feature\\", \\"name\\": \\"James Blackhurst\\", \\"email\\": \\"test@example.com\\", \\"label\\": \\"featureRequest\\"}"`;
   
     // Copy to clipboard function
     const CopytoClipboard = () => {
@@ -109,7 +109,7 @@ const AddAPI = (id) => {
         `;
       }, 1000);
     
-      const curlCommand = `curl -X POST http://localhost:3000/api/feedback -H "Content-Type: application/json" -d "{\\"projectId\\": \\"${idd}\\", \\"feedback\\": \\"You should add a pinned message\\", \\"title\\": \\"Pinned Message Feature\\", \\"name\\": \\"James Blackhurst\\", \\"email\\": \\"test@example.com\\", \\"label\\": \\"featureRequest\\"}"`;
+      const curlCommand = `curl -X POST https://hprojects.hdev.uk/api/feedback -H "Content-Type: application/json" -d "{\\"projectId\\": \\"${idd}\\", \\"feedback\\": \\"You should add a pinned message\\", \\"title\\": \\"Pinned Message Feature\\", \\"name\\": \\"James Blackhurst\\", \\"email\\": \\"test@example.com\\", \\"label\\": \\"featureRequest\\"}"`;
     
       // Write the properly escaped curl command to the clipboard
       navigator.clipboard.writeText(curlCommand);
