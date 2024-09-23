@@ -91,8 +91,9 @@ const AddAPI = (id) => {
   };
 
   function CurlCommand(id) {
+    console.log(id);
     // Assuming id.id.id.projectid is a valid way to extract projectId
-    const idd = id.id.id.projectid;
+    const idd = id.id.id;
   
     // Construct the curl command with proper string interpolation
     const codeString = `curl -X POST https://hprojects.hdev.uk/api/feedback -H "Content-Type: application/json" -d "{\\"projectId\\": \\"${idd}\\", \\"feedback\\": \\"You should add a pinned message\\", \\"title\\": \\"Pinned Message Feature\\", \\"name\\": \\"James Blackhurst\\", \\"email\\": \\"test@example.com\\", \\"label\\": \\"featureRequest\\"}"`;
@@ -143,7 +144,7 @@ const AddAPI = (id) => {
   
 
   function CodeAPI(id){
-    const idd = id.id.id.projectid;
+    const idd = id.id.id;
     const codeString = `await fetch("https://hprojects.hdev.uk/api/feedback", {
     method: "POST",
     headers: {
