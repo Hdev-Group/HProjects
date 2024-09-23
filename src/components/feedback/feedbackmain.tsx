@@ -1,34 +1,37 @@
 'use client'
 
 import { useState } from 'react'
-import { Search, ChevronDown, MoreHorizontal, Edit, Trash,Send } from 'lucide-react'
+import { Search, Send, Trash } from 'lucide-react'
 import { api } from '../../../convex/_generated/api'
 import { useQuery, useMutation } from 'convex/react'
 import AddAPI from "../buttons/feedback";
 import Link from 'next/link'
 
-
-export default function FeedBackMain(projectid: any) {
-    const feedbacks = useQuery(api.feedback.get, { projectid: projectid.projectid })
+export default function FeedBackMain({ projectid }: { projectid: any }) {
+  console.log(projectid)
+  const feedbacks = useQuery(api.feedback.get, { projectid: projectid })
   const [searchTerm, setSearchTerm] = useState('')
+  const deleteFeedbackMutation = useMutation(api.feedback.deleteFeedBack);
+
+  if (!feedbacks) {
+    return <div>Loading...</div>
+  }
+
+  const searchResults = !searchTerm
+    ? feedbacks
+    : feedbacks.filter((feedback) =>
+        feedback.title.toLowerCase().includes(searchTerm.toLowerCase())
+    )
 
   function timeChanger(time: string) {
     const date = new Date(time)
     return date.toLocaleString()
   }
-const deleteFeedbackMutation = useMutation(api.feedback.deleteFeedBack);
 
-function deleteFeedback({ id }: { id: any}) {
-    console.log(id);
-    return async () => {
-        await deleteFeedbackMutation({ id: id });
-    }
-}
-
-
-  if (!feedbacks) {
-    return <div>Loading...</div>
+  const deleteFeedback = async (id: any) => {
+    await deleteFeedbackMutation({ id });
   }
+
   return (
     <div className="min-h-screen text-gray-100 p-8">
       <div className="">
@@ -74,7 +77,7 @@ function deleteFeedback({ id }: { id: any}) {
               </tr>
             </thead>
             <tbody>
-              {feedbacks.map((feedback) => (
+              {searchResults.map((feedback) => (
                 <tr key={feedback.id} className="border-b border-gray-700">
                   <td className="px-6 py-4 whitespace-nowrap text-blue-400">{feedback.title}</td>
                   <td className="px-6 py-4 whitespace-nowrap">{feedback.name}</td>
@@ -92,11 +95,11 @@ function deleteFeedback({ id }: { id: any}) {
                   <td className="px-6 py-4 whitespace-nowrap">{timeChanger(feedback._creationTime)}</td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                     <Link href={`/projects/${projectid.projectid}/tasks?addTask=true&title=${feedback.title}&description=${feedback.feedback}`}>
-                        <button className="text-gray-400 hover:text-gray-100 mr-2">
+                      <button className="text-gray-400 hover:text-gray-100 mr-2">
                         <Send size={20} />
-                        </button>
+                      </button>
                     </Link>
-                    <button onClick={deleteFeedback({id: feedback._id})} className="text-gray-400 hover:text-red-500">
+                    <button onClick={() => deleteFeedback(feedback._id)} className="text-gray-400 hover:text-red-500">
                       <Trash size={20} />
                     </button>
                   </td>

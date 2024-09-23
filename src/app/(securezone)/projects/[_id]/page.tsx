@@ -8,12 +8,28 @@ import { useQuery } from "convex/react";
 import { api } from '../../../../../convex/_generated/api';
 import { useRouter } from 'next/navigation';
 import SideBar from "../../../../components/projectscontents/sidebar";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../../../../components/ui/table';
 import ClientLayout from './ClientLayout'; 
+import { ScrollArea } from "../../../../components/ui/scroll-area";
+import { AlertTriangle, AlertCircle, ArrowUpCircle, Circle, CheckCircle2, Home } from 'lucide-react';
+import Image from 'next/image';
+
 interface Project {
   _id: string;
   userId: string;
   otherusers: string[];
   projectName: string;
+}
+
+interface Task {
+  _id: string;
+  projectid: string;
+  taskAssignee: string;
+  taskTitle: string;
+  taskPriority: 'critical' | 'high' | 'medium' | 'low' | 'security' | 'Feature';
+  taskStatus: 'backlog' | 'todo' | 'inprogress' | 'done';
+  dueDate: string;
+  archived: boolean;
 }
 export default function ProjectPage({ params }: { params: { _id: string } }) {
   const { userId, isLoaded, isSignedIn } = useAuth();
@@ -25,7 +41,21 @@ export default function ProjectPage({ params }: { params: { _id: string } }) {
   const router = useRouter();
   const projectname = project?.projectName;
   const tasks = useQuery(api.tasks.get);
-
+  const priorityIcons = {
+    critical: <AlertTriangle className="h-5 w-5 text-red-500" />,
+    high: <AlertCircle className="h-5 w-5 text-orange-500" />,
+    medium: <ArrowUpCircle className="h-5 w-5 text-yellow-500" />,
+    low: <Circle className="h-5 w-5 text-blue-500" />,
+    security: <AlertTriangle className="h-5 w-5 text-purple-500" />,
+    Feature: <CheckCircle2 className="h-5 w-5 text-green-500" />
+  };
+  
+  const statusLabels = {
+    backlog: 'Backlog',
+    todo: 'To Do',
+    inprogress: 'In Progress',
+    done: 'Done'
+  };
   useEffect(() => {
     if (!isLoaded || !projectsholder) return; // Wait until authentication state and project data are loaded
 
@@ -43,25 +73,25 @@ export default function ProjectPage({ params }: { params: { _id: string } }) {
       setActiveSection('Dashboard');
     }
   }, []);
-
+  
   if (!isLoaded || !projectsholder) {
-    return <div>Loading...</div>;
+    return <div className="flex items-center justify-center h-screen">Loading...</div>;
   }
 
   if (!isSignedIn) {
-    return <div>Unauthorized</div>;
+    return <div className="flex items-center justify-center h-screen">Unauthorized. Please sign in.</div>;
   }
 
   if (!project) {
-    return <div>Project not found</div>;
+    return <div className="flex items-center justify-center h-screen">Project not found.</div>;
   }
 
   if (!(projectUserId === userId || project.otherusers.includes(userId))) {
-    return <div>Unauthorized</div>;
+    return <div className="flex items-center justify-center h-screen">You do not have access to this project.</div>;
   }
 
   if (!tasks) {
-    return <div>Loading tasks...</div>;
+    return <div className="flex items-center justify-center h-screen">Loading tasks...</div>;
   }
 
   const projectTasks = tasks.filter(task => {
@@ -71,7 +101,12 @@ export default function ProjectPage({ params }: { params: { _id: string } }) {
     if (task.taskStatus === 'done') {
       return false;
     }
-
+    if (task.archived) {
+      return false
+    }
+    if (task.length === 0) {
+      return ("No tasks found")
+    }
     return isProjectMatch && isAssigneeMatch;
   });
 
@@ -102,58 +137,57 @@ export default function ProjectPage({ params }: { params: { _id: string } }) {
               </div>
               <div className='px-5 w-full mt-2'>
               <div className="w-full flex flex-col py-5 px-5 gap-3 dark:border-neutral-800 border-neutral-300 bg-neutral-300 dark:bg-neutral-900 border rounded">
-                <h2 className="text-lg font-semibold ">Hello {user?.firstName}! Your work queue.</h2>
-                <div className="overflow-y-auto w-full">
-                  <table className="min-w-[40rem] w-full text-sm mt-5">
-                    <thead className="border-b border-neutral-100">
-                      <tr className="group transition-colors hover:bg-transparent">
-                        <th className="py-2 text-left">Task</th>
-                        <th className="py-2 text-left">Assigned To</th>
-                        <th className="py-2 text-left">Priority</th>
-                        <th className="py-2 text-left">Status</th>
-                        <th className="py-2 text-left">Due Date</th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-neutral-100/10 px-2">
-                      {projectTasks.map(task => {
-                        if (task.archived) {
-                          return null; 
-                        }
-                        return (
-                          <tr key={task._id} onClick={() => taskMainMenu(task._id)} className="group transition-colors  hover:bg-neutral-500/30 cursor-pointer">
-                            <td className="py-2 px-2 text-left ml-2">{task.taskTitle}</td>
-                            <td className="py-2 text-left flex items-center gap-3">
-                              <img src={user?.imageUrl} className='h-7 w-7 rounded-full' alt="Assignee" />
-                              You
-                            </td>
-                            <td className="py-2 text-left">
-                              {task.taskPriority === 'critical' && <Critical />}
-                              {task.taskPriority === 'high' && <High />}
-                              {task.taskPriority === 'medium' && <Medium />}
-                              {task.taskPriority === 'low' && <Low />}
-                              {task.taskPriority === 'security' && <Security />}
-                              {task.taskPriority === 'Feature' && <Feature />}
-                            </td>
-                            <td className="py-2 text-left">
-                              {task.taskStatus === 'backlog' && <BackLog />}
-                              {task.taskStatus === 'todo' && <Todo />}
-                              {task.taskStatus === 'inprogress' && <InProgress />}
-                              {task.taskStatus === 'done' && <Done />}
-                            </td>
-                            <td className="py-2 text-left">{task.dueDate}</td>
-                          </tr>
-                        );
-                      })}
-                    </tbody>
-                  </table>
-                </div>
+              <h2 className="text-lg font-semibold mb-4">Hello {user?.firstName}! Your work queue.</h2>
+                <ScrollArea className="h-[calc(100vh-300px)]">
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Task</TableHead>
+                        <TableHead>Assigned To</TableHead>
+                        <TableHead>Priority</TableHead>
+                        <TableHead>Status</TableHead>
+                        <TableHead>Due Date</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {projectTasks.map((task: Task) => (
+                        <TableRow 
+                          key={task._id} 
+                          onClick={() => taskMainMenu(task._id)}
+                          className="cursor-pointer hover:bg-muted/50"
+                        >
+                          <TableCell>{task.taskTitle}</TableCell>
+                          <TableCell>
+                            <div className="flex items-center space-x-2">
+                              <img 
+                                src={user?.imageUrl || '/placeholder.svg'}
+                                alt={`${user?.firstName}'s avatar`}
+                                width={28}
+                                height={28}
+                                className="rounded-full"
+                              />
+                              <span>You</span>
+                            </div>
+                          </TableCell>
+                          <TableCell>
+                            <span className="flex items-center space-x-2">
+                              {priorityIcons[task.taskPriority]}
+                              <span className="sr-only">{task.taskPriority}</span>
+                            </span>
+                          </TableCell>
+                          <TableCell>{statusLabels[task.taskStatus]}</TableCell>
+                          <TableCell>{task.dueDate}</TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </ScrollArea>
               </div>
-            </div>
-          </div>
+              </div>
+              </div>
           </div>
         </div>
       </div>
-
     </>
   );
 }

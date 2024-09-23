@@ -20,7 +20,7 @@ function WaitingLoader({ projectid }) {
   const [isLoading, setIsLoading] = useState(true);
   const [showSuccess, setShowSuccess] = useState(!isLoading);
   const [currentMessage, setCurrentMessage] = useState(randomemessageswhenloading[0]);
-  const checkfeedback = useQuery(api.feedback.get, { projectid: projectid.id.projectid});
+  const checkfeedback = useQuery(api.feedback.get, { projectid: projectid.id});
 
   useEffect(() => {
     if (checkfeedback && checkfeedback.length > 0) {

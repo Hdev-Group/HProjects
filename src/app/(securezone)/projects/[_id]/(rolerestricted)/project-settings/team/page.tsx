@@ -43,7 +43,7 @@ export default function ProjectSettings({ params }: { params: { _id: string } })
     if (!isSignedIn) {
       router.push('/sign-in'); // Redirect to sign-in page if not signed in
     } else if (!project) {
-      router.push('/projects'); 
+      router.push('../'); 
       toast({
         title: "Project not found",
         description: "Redirecting to projects page",
@@ -58,14 +58,14 @@ export default function ProjectSettings({ params }: { params: { _id: string } })
   
         // Check if the user is the project owner or has the correct role
         if (projectUserId !== userId && !project.otherusers.includes(userId)) {
-          router.push(`./personal`);
+          router.push(`../`);
           toast({
             title: "Unauthorized",
             description: "You don't have access to this project",
             variant: "destructive",
           });
         } else if (!ownerfind && currentUserRole !== 'manager' && currentUserRole !== 'admin') {
-          router.push(`./personal`);
+          router.push(`../`);
           toast({
             title: "Unauthorized",
             description: "You don't have permission to access Team settings",
