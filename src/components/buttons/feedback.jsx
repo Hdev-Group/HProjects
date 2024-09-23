@@ -21,7 +21,7 @@ function WaitingLoader({ projectid }) {
   const [showSuccess, setShowSuccess] = useState(!isLoading);
   const [currentMessage, setCurrentMessage] = useState(randomemessageswhenloading[0]);
   const checkfeedback = useQuery(api.feedback.get, { projectid: projectid.id});
-  const filteredfeedback = checkfeedback.filter((feedback) => feedback.projectId === projectid.id);
+  const filteredfeedback = checkfeedback.filter((feedback) => feedback.projectid === projectid.id);
 
   useEffect(() => {
     if (filteredfeedback && filteredfeedback.length > 0) {
