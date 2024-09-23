@@ -9,6 +9,7 @@ import ExitModal from './exit';
 
 const NewIncidentModal = ({ onClose, id, priority, title }) => {
 
+  console.log(id);
   const client = new ConvexClient(process.env.NEXT_PUBLIC_CONVEX_URL);
   const { userId, isLoaded, isSignedIn } = useAuth();
   if (priority !== "low" && priority !== "medium" && priority !== "high" && priority !== "critical") {
@@ -52,7 +53,7 @@ const NewIncidentModal = ({ onClose, id, priority, title }) => {
 
     try {
       const response = await addIncident({
-        projectid: id.id,
+        projectid: id,
         title: taskTitle,
         reporterid: userId,
         leadresponder: "",

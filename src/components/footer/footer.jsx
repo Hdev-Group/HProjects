@@ -12,7 +12,7 @@ export default function Footer() {
     }, []);
 
     return (
-        <footer className="bg-gray-900 text-gray-300">
+        <footer className="bg-[#070608] text-gray-300">
             <div className="max-w-[1900px] mx-auto px-4 sm:px-6 lg:px-8 py-12">
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
                     <div className="space-y-4">
@@ -46,7 +46,7 @@ export default function Footer() {
                         </ul>
                     </div>
                 </div>
-                <div className="mt-12 pt-8 border-t border-gray-800 text-sm text-start">
+                <div className="mt-12 pt-8 border-t border-neutral-400 text-sm text-start">
                     <p>&copy; {new Date().getFullYear()} HProjects. All rights reserved.</p>
                 </div>
             </div>

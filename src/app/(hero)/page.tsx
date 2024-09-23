@@ -10,678 +10,435 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import '../../styles/globals.css';
 import './index.css';
 import Link from 'next/link';
+import { Inter } from 'next/font/google'
+import Head from 'next/head';
+import { Shield, Lock, Users, Eye, Server, RefreshCw } from 'lucide-react'
 import {
-  ContextMenu,
-  ContextMenuContent,
-  ContextMenuItem,
-  ContextMenuTrigger,
-} from "../../components/ui/context-menu";
-import { HoverCard, HoverCardContent, HoverCardTrigger } from "../../components/ui/hover-card";
-
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '../../components/ui/dropdown-menu';
+import { Card, CardContent } from "../../components/ui/card"
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "../../components/ui/carousel"
+const inter = Inter({
+  subsets: ['latin'],
+  weight: ['400', '600', '700'], // Customize weights here
+});
 
 gsap.registerPlugin(ScrollTrigger);
 
 export default function Home() {
-  useEffect(() => {
-    const target = document.querySelector('#datasowers');
-    const target2 = document.querySelector('#datasowers2');
-    const target3 = document.querySelector('#datasowers3');
-    const target4 = document.querySelector('#datasowers4');
-    const target5 = document.querySelector('#datasowers5');
-    const target6 = document.querySelector('#datasowers6');
-    const target7 = document.querySelector('#datasowers7');
-    const target8 = document.querySelector('#datasowers8');
-    const pager1 = document.querySelector('#pageroncall');
-    const pager2 = document.querySelector('#pageroncall2');
-    const pager3 = document.querySelector('#pageroncall3');
-    const incident1 = document.querySelector('#incident1');
-    const incident2 = document.querySelector('#incident2');
-    const incident3 = document.querySelector('#incident3');
-    const incident4 = document.querySelector('#incident4');
-      gsap.fromTo(
-        target, 
-        { x: -3000 }, // Starting position
-        {
-          x: 0, // Ending position
-          duration: 1.5,
-          scrollTrigger: {
-            trigger: target,
-            start: 'top center',
-          },
-        }
-      );
-      gsap.fromTo(
-        target2, 
-        { x: 3000 }, // Starting position
-        {
-          x: 0, // Ending position
-          duration: 1.5,
-          scrollTrigger: {
-            trigger: target2,
-            start: 'top center',
-          },
-        }
-      );
-      gsap.fromTo(
-        target3, 
-        { y: -30, opacity: 0 }, // Starting position
-        {
-          y: 0, // Ending position
-          opacity: 1,
-          duration: 1.5,
-          scrollTrigger: {
-            trigger: target3,
-            start: 'top center',
-          },
-        }
-      );
-      gsap.fromTo(
-        target4, 
-        { y: -60, opacity: 0 }, // Starting position
-        {
-          y: 0, // Ending position
-          opacity: 1,
-          duration: 1.5,
-          scrollTrigger: {
-            trigger: target4,
-            start: 'top center',
-          },
-        }
-      );
-      gsap.fromTo(
-        target5, 
-        { height: 0, opacity: 0 }, // Starting position
-        {
-          height: 113, // Ending position
-          opacity: 1,
-          duration: 1.5,
-          scrollTrigger: {
-            trigger: target5,
-            start: 'top center',
-          },
-        }
-      );
-      gsap.fromTo(
-        target6, 
-        { y: -60, opacity: 0 }, // Starting position
-        {
-          y: 0, // Ending position
-          delay: 0.4,
-          opacity: 1,
-          duration: 1.5,
-          scrollTrigger: {
-            trigger: target5,
-            start: 'top center',
-          },
-        }
-      );
-      gsap.fromTo(
-        target7, 
-        { height: 0, opacity: 0 }, // Starting position
-        {
-          height: 111, // Ending position
-          delay: 0.4,
-          opacity: 1,
-          duration: 1.5,
-          scrollTrigger: {
-            trigger: target6,
-            start: 'top center',
-          },
-        }
-      );
-      gsap.fromTo(
-        target8, 
-        { y: -60, opacity: 0 }, // Starting position
-        {
-          y: 0, // Ending position
-          delay: 0.1,
-          opacity: 1,
-          duration: 1.5,
-          scrollTrigger: {
-            trigger: target7,
-            start: 'top center',
-          },
-        }
-      );
-      gsap.fromTo(
-        pager1, 
-        { y: -60, opacity: 0 }, // Starting position
-        {
-          y: 0, // Ending position
-          delay: 0.1,
-          opacity: 1,
-          duration: 1.5,
-          scrollTrigger: {
-            trigger: target4,
-            start: 'top center',
-          },
-        }
-      );
-      gsap.fromTo(
-        pager2, 
-        { y: -60, opacity: 0 }, // Starting position
-        {
-          y: 0, // Ending position
-          delay: 0.1,
-          opacity: 1,
-          duration: 1.5,
-          scrollTrigger: {
-            trigger: target6,
-            start: 'top center',
-          },
-        }
-      );
-      gsap.fromTo(
-        pager3, 
-        { y: -60, opacity: 0 }, // Starting position
-        {
-          y: 0, // Ending position
-          delay: 0.1,
-          opacity: 1,
-          duration: 1.5,
-          scrollTrigger: {
-            trigger: target8,
-            start: 'top center',
-          },
-        }
-      );
-      gsap.fromTo(
-        incident1,
-        { y: -60, opacity: 0 },
-        {
-          y: 0,
-          delay: 0.1,
-          opacity: 1,
-          duration: 1.5,
-          scrollTrigger: {
-            trigger: incident1,
-            start: 'top center',
-          },
-        }
-      );
-      gsap.fromTo(
-        incident2,
-        { y: 60, opacity: 0 },
-        {
-          y: 0,
-          delay: 0.1,
-          opacity: 1,
-          duration: 1.5,
-          scrollTrigger: {
-            trigger: incident2,
-            start: 'top center',
-          },
-        }
-      );
-      gsap.fromTo(
-        incident3,
-        { y: 60, opacity: 0 },
-        {
-          y: 0,
-          delay: 0.1,
-          opacity: 1,
-          duration: 1.5,
-          scrollTrigger: {
-            trigger: incident3,
-            start: 'top center',
-          },
-        }
-      );
-      gsap.fromTo(
-        incident4,
-        { y: 30, opacity: 0 },
-        {
-          y: 0,
-          delay: 0.1,
-          opacity: 1,
-          duration: 1.5,
-          scrollTrigger: {
-            trigger: incident4,
-            start: 'top center',
-          },
-        }
-      );
-  }, []);
+  function textloop() {
+    const [isCritical, setIsCritical] = useState(false);
 
+    useEffect(() => {
+      const interval = setInterval(() => {
+        setIsCritical((prevIsCritical) => !prevIsCritical);
+      }, 5000);
 
-  const [showSignUp, setShowSignUp] = useState(false);
-  const [pagerDuration, setPagerDuration] = useState('');
-  useEffect(() => {
-    const hours = Math.floor(Math.random() * 24) + 1;
-    const minutes = Math.floor(Math.random() * 60) + 1;
-    setPagerDuration(`${hours}h, ${minutes}m`);
-  }, []);
+      return () => clearInterval(interval);
+    }, []);
 
-  const handleCloseModal = () => {
-    setShowSignUp(false);
-  };
-
-  const handleModalClick = ({e}: any) => {
-    if (e.target === e.currentTarget) {
-      handleCloseModal();
-    }
-  };
+    return (
+      <>
+        {isCritical ? (
+          <>
+            <h1 className='text-red-200 font-semibold text-md text-left'>You have been paged.</h1>
+            <p className='text-neutral-300 text-xs'>Click to go to the incident</p>
+          </>
+        ) : (
+          <>
+          <h1 className='font-semibold text-md text-left text-white'>You're on pager</h1>
+          <p className='text-neutral-300 text-xs'>For the next 2h 40m</p>
+          </>
+        )}
+      </>
+    );
+  }
 
   return (
     <>
+    <Head>
+      <link rel="preconnect" href="https://fonts.googleapis.com" />
+      <link rel="preconnect" href="https://fonts.gstatic.com"  />
+      <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+    </Head>
     <NavigationMenuMain />
-    <main className='md:max-w-[100%] bg-[#0B1120] flex items-center flex-col justify-center overflow-x-hidden boxtexts'>
-    <section className='bg-[#0B1120] mt-5 md:mt-11 max-w-[1900px] gridthing w-full h-full flex items-center flex-col'>
-    <div className='flex md:px-[4.5rem] z-10 px-2 justify-between max-w-[120rem] w-[100%] flex-wrap lg:flex-nowrap flex-row gap-10 pt-[5rem] pb-40'>
-      <div className='md:w-[70%] w-full flex relative flex-col justify-start gap-5'>
-        <img src='/logo.png' alt='logo' className='w-[50px] h-[50px] fadein' />
-        <div className='flex flex-col  gap-4'>
-          <div className='flex items-center gap-4'>
-            <h1 className='bg-indigo-600/30 border pushdown border-indigo-500/40 ping-purple text-indigo-400 font-semibold text-sm rounded-xl max-w-[8rem] flex items-center justify-center px-2 py-1'>
-              Latest Updates
-            </h1>
-            <h1 className='text-neutral-300 pushup font-semibold text-sm flex items-center justify-center'>
-              HProjects is in Alpha
-              <svg className='h-6' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M13.1717 12.0007L8.22192 7.05093L9.63614 5.63672L16.0001 12.0007L9.63614 18.3646L8.22192 16.9504L13.1717 12.0007Z"></path>
-              </svg>
-            </h1>
-          </div>
-          <h1 className='font-bold text-5xl font-sans text-white pushuptext1'>Plan, Build, Push and Respond with confidence</h1>
-          <p className='font-medium text-sm text-neutral-400 pushuptext2'>
-            Build projects and communicate in real time with your team, manage incidents and tasks with ease.
-          </p>
-          <div className='flex flex-col items-center md:flex-row h-auto gap-2 md:gap-6 w-full'>
-          <SignedOut>
-            <div className='flex flex-row gap-2 w-full md:w-1/2 md:gap-6 '>
-              <a href='/sign-up'>
-                <button className='ease-in-out duration-300 hovmain py-2 px-2 flex items-center justify-center bg-blue-600 rounded-md hover:bg-blue-800'>
-                  <h1 className='font-semibold  flex'>Sign up - It's free
-                    <svg xmlns="http://www.w3.org/2000/svg" className=' w-5 hovericon' viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M16 12L10 18V6L16 12Z"></path>
-                    </svg>
-                  </h1>
-                </button>
-              </a>
-            </div>
-          </SignedOut>
-          <SignedIn>
-            <div className='flex flex-row w-full md:w-1/2 gap-2 md:gap-6 '>
-              <a href='/dashboard' className='h-auto w-full'>
-              <button className='ease-in-out duration-300 w-full hovmain py-2 px-2 flex items-center justify-center bg-blue-600 rounded-md hover:bg-blue-800'>
-              <h1 className='font-semibold flex'>Dashboard 
-                    <svg xmlns="http://www.w3.org/2000/svg" className='w-5 hovericon' viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M16 12L10 18V6L16 12Z"></path>
-                    </svg>
-                  </h1>
-                </button>
-              </a>
-            </div>
-          </SignedIn>
-
-          {/* Modal for SignUp */}
-          {showSignUp && (
-            <div onClick={handleModalClick} className='fixed top-0 left-0 right-0 bottom-0 bg-black/50 z-50 flex items-center justify-center'>
-              <div className="flex items-center justify-center h-[100%]">
-                <SignUp  />
-              </div>
-            </div>
-          )}
-          </div>
-        </div>
-      </div>
-      <div>
-        <img src='/indexmainphoto.png' alt='mainphoto' className='w-[100%]  pushright h-[100%] rounded-[0.5rem] border' />
-      </div>
-    </div>
-    </section>
-    <section className='bg-[#0B1120] w-full border  border-transparent border-t-[#1f3468]'>
-      <div className='py-5 w-full my-10 flex itmes-center justify-center'>
-        <div className='w-full flex flex-col gap-5'>
-          <div className='w-full items-start flex-col flex justify-start'>
-            <div className='flex md:px-[4.5rem] flex-col gap-3 w-full items-center mb-10 justify-center mt-10'>
-              <h1 className='text-5xl font-bold text-white md:text-left text-center '>Making tasks work for you</h1>
-              <p className='text-neutral-300 text-center md:w-[39rem]'>Using other project planning tools I realized that I was using multiple different softwares. HProjects makes all that clutter into one simple software for you and your team.</p>
-              <div className='flex flex-row gap-3 items-center'>
-                <img src='harrycampbell.jpeg' alt='logo' className='w-[50px] rounded-full h-[50px]' />
-                <div>
-                  <h4 className='font-semibold'>Harry Campbell</h4>
-                  <p className='text-neutral-300 text-xs'>CEO of HProjects</p>
-                </div>
-              </div>
-            </div>
-            <div className='gap-4 flex-col w-full mt-10  items-center flex'>
-            <div className='flex flex-col w-full justify-center md:px-[4.5rem] px-2 '>
-              <img src='/8.png' alt='logo' className='w-[50px] rounded-full p-1 bg-indigo-500/40 h-[50px]' />
-              <h1 className='text-md font-semibold mt-4 mb-3 text-indigo-400'>Task Management</h1>
-              <p className='text-xl font-semibold'>A real time task management system.</p>
-              <p className='text-sm text-neutral-300 mt-1'>Lead your next project into production with HProjects with our real time system so you can instantly stay up to date with who is updating what.</p>
-            </div>
-            <div className='mt-5 bg-[#0B1120]/20 h-[40rem] border-b-[#1f3468] border border-transparent gridthing w-full flex items-center flex-col'>
-              <div className='mt-14 md:px-[4.5rem] flex items-center justify-center w-full flex-col gap-5'>
-                <div className='flex flex-row items-center justify-center gap-5 w-full' id='datasowers'>
-                  <Critical /> <High /> <Medium /> <Low /> <Security /> <Feature />
-                </div>
-                <div className='flex flex-row gap-5 items-center justify-center w-full' id='datasowers2'>
-                  <BackLog /> <Todo /> <InProgress /> <Done />
-                </div>
-              </div>
-              <div className='flex flex-col items-center w-full md:px-[4.5rem] px-2 mt-10' id='datasowers3'>
-                <h1 className='text-3xl font-semibold md:text-left text-center'>Simple but <span className='text-cyan-400'>effective</span> task labelling</h1>
-                <div className='flex flex-col w-full md:w-1/3 mt-5 gap-5'>
-                <ContextMenu>
-                <ContextMenuTrigger>
-                    <HoverCard>
-                        <HoverCardTrigger>
-                            <div
-                                className='dark:border-neutral-800 border-neutral-200 bg-white dark:bg-neutral-900/60 text-black dark:text-white cursor-pointer hover:border-neutral-300 transition-all py-2 border gap-3 flex flex-col rounded-md w-full'
-                            >
-                                <div className='flex gap-3 pl-4'>
-                                    <h1 className='font-semibold'>
-                                        Payments Integration
-                                    </h1>
-                                </div>
-                                <div className='flex justify-between'>
-                                    <div className='flex gap-3 pl-3'>
-                                        <High />
-                                        <InProgress />
-                                    </div>
-                                    <div className='flex gap-3 pr-3 items-center'>
-                                            <>
-                                                <img src='harrycampbell.jpeg' className='w-6 h-6 rounded-full' alt="Assignee" />
-                                            </>      
-                                    </div>
-                                </div>
-                            </div>
-                        </HoverCardTrigger>
-                        <HoverCardContent>
-                                <div className='border-neutral-800 cursor-pointer hover:border-neutral-300 transition-all py-2 gap-3 flex flex-col rounded-md w-full'>
-                                    <div className='flex gap-3 pl-4 flex-col'>
-                                        <div className='flex gap-3 pr-3 items-center'>
-                                                <>
-                                                    <img src='harrycampbell.jpeg' className='w-8 h-8 rounded-full' alt="Assignee" />
-                                                    <div>
-                                                        <h2 className='font-semibold'>Harry Campbell</h2>
-                                                        <p className='text-xs text-neutral-400'>Lead Developer</p>
-                                                    </div>
-                                                </>
-
-                                        </div>
-                                        <h1 className='font-bold'>
-                                          Payments Integration
-                                        </h1>
-                                    </div>
-                                    <div className='flex justify-between'>
-                                        <div className='flex gap-3 pl-3'>
-                                            <High /> <InProgress />
-                                        </div>
-                                    </div>
-                                    <div className='flex gap-3 pl-4'>
-                                        <p className='text-sm max-w-[500px] text-wrap'>
-                                            Payments Integration is a task that needs to be completed by the end of the week. It is a high priority task that needs to be completed by the end of the week.
-                                        </p>
-                                    </div>
-                                    
-                                </div>
-                        </HoverCardContent>
-                    </HoverCard>
-                </ContextMenuTrigger>
-                <ContextMenuContent>
-                    <ContextMenuItem className='cursor-pointer hover:bg-yellow-400/20 text-yellow-200'>
-                        Archive 
-                    </ContextMenuItem>
-                </ContextMenuContent>
-            </ContextMenu>
-            <ContextMenu>
-                <ContextMenuTrigger>
-                    <HoverCard>
-                        <HoverCardTrigger>
-                            <div
-                                className='dark:border-neutral-800 border-neutral-200 bg-white dark:bg-neutral-900/60 text-black dark:text-white cursor-pointer hover:border-neutral-300 transition-all py-2 border gap-3 flex flex-col rounded-md w-full'
-                            >
-                                <div className='flex gap-3 pl-4'>
-                                    <h1 className='font-semibold'>
-                                        Users dont like the new UI changes
-                                    </h1>
-                                </div>
-                                <div className='flex justify-between'>
-                                    <div className='flex gap-3 pl-3'>
-                                        <Medium />
-                                        <Done />
-                                    </div>
-                                    <div className='flex gap-3 pr-3 items-center'>
-                                            <>
-                                                <img src='/staff/jamesblackhurst.jpeg' className='w-6 h-6 rounded-full' alt="Assignee" />
-                                            </>      
-                                    </div>
-                                </div>
-                            </div>
-                        </HoverCardTrigger>
-                        <HoverCardContent>
-                                <div className='border-neutral-800 cursor-pointer hover:border-neutral-300 transition-all py-2 gap-3 flex flex-col rounded-md w-full'>
-                                    <div className='flex gap-3 pl-4 flex-col'>
-                                        <div className='flex gap-3 pr-3 items-center'>
-                                                <>
-                                                    <img src='/staff/jamesblackhurst.jpeg' className='w-8  h-8 rounded-full' alt="Assignee" />
-                                                    <div>
-                                                        <h2 className='font-semibold'>James Blackhurst</h2>
-                                                        <p className='text-xs text-neutral-400'>UI / UX Engineer</p>
-                                                    </div>
-                                                </>
-
-                                        </div>
-                                        <h1 className='font-bold'>
-                                          Users dont like the new UI changes
-                                        </h1>
-                                    </div>
-                                    <div className='flex justify-between'>
-                                        <div className='flex gap-3 pl-3'>
-                                          <Medium />
-                                          <Done />
-                                        </div>
-                                    </div>
-                                    <div className='flex gap-3 pl-4'>
-                                        <p className='text-sm max-w-[500px] text-wrap'>
-                                        Users have been complaining about the new UI changes that have been made. We need to revert back to the old UI changes or deploy updates to fix the issues.
-                                        </p>
-                                    </div> 
-                                    <div className='flex gap-3 pl-4'>
-                                        <p className='text-sm max-w-[500px] w-auto text-wrap border border-green-400 bg-green-500/20 p-1 rounded-md font-semibold flex px-2'>
-                                            Task Completed - This task will be archived in 30 days.
-                                        </p>
-                                    </div>
-                                </div>
-                        </HoverCardContent>
-                    </HoverCard>
-                </ContextMenuTrigger>
-                <ContextMenuContent>
-                    <ContextMenuItem className='cursor-pointer hover:bg-yellow-400/20 text-yellow-200'>
-                        Archive 
-                    </ContextMenuItem>
-                </ContextMenuContent>
-            </ContextMenu>
-                </div>
-              </div>
-            </div>
-            <div className='flex flex-col w-full md:px-[4.5rem] mt-10'>
-              <img src='/logo.png' alt='logo' className='w-[50px] rounded-full p-1 bg-green-500/40 h-[50px]' />
-              <h1 className='text-md font-semibold mt-4 mb-3 text-indigo-400'>Pager</h1>
-              <p className='text-xl font-semibold'>Get people where they need to be if a service goes down.</p>
-              <p className='text-sm text-neutral-300 mt-1'>Pager is a system that lets you know when a service goes down. It will alert you and whoever is on call to let you know that a service is down and needs to be fixed.</p>
-            </div>
-            <div className='mt-5 bg-[#0B1120]/20 h-[40rem] border-b-[#1f3468] border border-transparent gridthing w-full flex items-center flex-col'>
-              <div className='mt-10 relative w-full md:px-[4.5rem]flex flex-col max-w-[120rem] justify-center md:px-[4.5rem] px-2'>
-              <div className='flex flex-row ml-5 w-full'>
-              <div className='flex absolute top-[2.4rem]  left-[-67px] md:left-[-7px] w-full h-full px-[4.5rem]' id='datasowers4'>
-                  <div className='w-[15px] h-[15px] border-2 border-neutral-400 rounded-full'></div>
-                </div>
-                <div className='flex absolute top-[3.5rem] left-[-60px] md:left-[0px] w-full h-full px-[4.5rem]' >
-                  <div className='w-[1px] h-[7rem] bg-gradient-to-b from-neutral-400 to-green-400' id='datasowers5'></div>
-                </div>
-                <div className='flex absolute top-[10.7rem]  left-[-67px] md:left-[-7px] w-full h-full px-[4.5rem]' id='datasowers6'>
-                  <div className='w-[15px] h-[15px] border-2 border-green-400 rounded-full'></div>
-                </div>
-                <div className='flex absolute top-[11.85rem] left-[-60px] md:left-[0px] w-full h-full px-[4.5rem]'>
-                  <div className='w-[1px] h-[7rem] bg-gradient-to-b from-green-400 to-red-400' id='datasowers7'></div>
-                </div>
-                <div className='flex absolute top-[18.99rem] left-[-67px] md:left-[-7px] w-full h-full px-[4.5rem]' id='datasowers8'>
-                  <div className='w-[15px] h-[15px] border-2 border-red-400 rounded-full'></div>
-                </div>
-                <div className='flex relative w-full flex-col'>
-                <div className='w-full relative top-[1rem]'>
-                  <div id="pageroncall" className="w-full flex items-center justify-center">
-                    <div className={`pr-2 border dark:border-neutral-400 border-neutral-600 dark:bg-neutral-400/20 bg-neutral-700 items-center h-[4rem] w-full flex rounded-lg`}>
-                      <div className='pl-2 flex justify-center items-center h-full'>
-                        <div className='w-1.5 h-[3rem] flex items-end justify-center rounded-lg dark:bg-neutral-400/20 bg-neutral-700 overflow-hidden'>
-                          <div className='w-full' style={{ height: `0%`, backgroundColor: 'green' }}></div>
-                        </div>
-                      </div>
-                      <div className='pl-3 h-max flex justify-center flex-col text-left'>
-                        <h1 className='font-semibold text-md text-left text-white'>You're off pager</h1>
-                      </div>
-                    </div>
-                </div>
-              </div>
-                <div className='w-full relative top-[5.2rem]'>
-                  <div id="pageroncall2" className="w-full flex items-center justify-center">
-                    <div className={`pr-2 border dark:border-green-400 border-green-600 bg-green-700/20 dark:bg-green-400/20 items-center h-[4rem] w-full flex rounded-lg`}>
-                      <div className='pl-2 flex justify-center items-center h-full'>
-                        <div className='w-1.5 h-[3rem] flex items-end justify-center rounded-lg dark:bg-green-400/20 bg-green-700/20 overflow-hidden'>
-                          <div className='w-full' style={{ height: `80%`, backgroundColor: 'green' }}></div>
-                        </div>
-                      </div>
-                      <div className='pl-3 h-max flex justify-center flex-col text-left'>
-                        <h1 className='font-semibold text-md text-left text-white'>You're on pager</h1>
-                        <p className='text-neutral-300 text-xs'>For the next 2 hours 40 mins</p>
-                      </div>
-                    </div>
-                </div>
-                </div>
-                <div className='w-full relative top-[9.2rem]'>
-                  <div id="pageroncall3" className="w-full flex items-center justify-center">
-                    <div className={`pr-2 border dark:border-red-400 border-red-600 bg-red-700/20 dark:bg-red-400/20 items-center h-[4rem] w-full flex rounded-lg`}>
-                      <div className='pl-2 flex justify-center items-center h-full'>
-                        <div className='w-1.5 h-[3rem] flex items-end justify-center rounded-lg dark:bg-red-400/20 bg-red-700/20 overflow-hidden'>
-                          <div className='w-full flex items-center justify-center font-semibold text-xl' style={{ height: `100%`, backgroundColor: 'red' }}>!</div>
-                        </div>
-                      </div>
-                      <div className='pl-3 h-max flex justify-center flex-col text-left'>
-                        <h1 className='font-semibold text-md text-left text-white'>Incident Reported!</h1>
-                        <p className='text-neutral-300 text-xs'>Service: Log in</p>
-                      </div>
-                    </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div className='flex flex-col w-full md:px-[4.5rem] mt-10'>
-        <img src='/logo.png' alt='logo' className='w-[50px] rounded-full p-1 bg-red-500/40 h-[50px]' />
-        <h1 className='text-md font-semibold mt-4 mb-3 text-indigo-400'>Incidents</h1>
-        <p className='text-xl font-semibold'>Update, Page, Collaborate in incidents</p>
-        <p className='text-sm text-neutral-300 mt-1'>With Incidents get on the same page even in times of chaos on your project. Using our real time Incident management system to establish leaders, call in responders and more.</p>
-        </div>
-            <div className='mt-5 bg-[#0B1120]/20 h-[40rem] border-b-[#1f3468] border border-transparent gridthing w-full flex items-center flex-col'>
-              <div className='mt-10 relative w-full md:px-[4.5rem]flex flex-col max-w-[120rem] justify-center md:px-[4.5rem] px-2'>
-              <div className='flex flex-row ml-5 w-full'>
-                <div className='flex absolute top-[2.4rem] left-[-67px] md:left-[-7px] w-full h-full px-[4.5rem]' id='datasowers4'>
-                  <div className='flex flex-col w-full'>
-                    <div id='incident1'>
-                      <div className="w-full h-auto gap-2 flex-row flex">
-                        <div className="flex flex-col items-center">
-                            <img className="w-8 h-8 rounded-full" src="/staff/jamesblackhurst.jpeg" alt={`James Blackhurst`} />
-                            <div className="border-l h-full" />
-                        </div>
-                        <div className="flex flex-col h-full pb-9 w-full gap-4 justify-center">
-                            <div className="flex flex-row items-center gap-3 ml-2">
-                                <p className="text-md font-normal text-white">
-                                    <span className="font-semibold ">James Blackhurst</span> declared an incident
-                                </p>
-                                <p className="text-md font-normal text-neutral-400"> 2 hours ago</p>
-                            </div>
-                            <div className="flex flex-col bg-neutral-900/70 rounded-md gap-1 py-3 px-4 ml-2">
-                                <p className="text-neutral-300 font-semibold gap-4 flex">Status <span className="text-white">Investigating</span></p>
-                                <p className=" text-neutral-300 font-semibold gap-4 flex">Severity <span className="text-white">High</span></p>
-                            </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div id='incident2'>
-                      <div className="w-full h-auto gap-2 flex-row flex">
-                        <div className="flex flex-col items-center">
-                            <img className="w-8 rounded-full h-8" src="/staff/jamesblackhurst.jpeg"></img>
-                            <div className="border-l h-full" />
-                        </div>
-                        <div className="flex flex-col h-full pb-9 w-full gap-4 justify-center">
-                            <div className="flex flex-row items-center gap-3 ml-2">
-                                <p className="text-md font-normal text-white"><span className="font-semibold">James Blackhurst</span> has sent a pager to</p>
-                                <p className="text-md font-normal text-neutral-400">2 hours ago</p>
-                            </div>
-                            <div className="flex flex-col bg-neutral-900/70 rounded-md gap-1 py-3 px-4 ml-2">
-                                <p className="text-neutral-300 font-semibold items-center gap-3 flex">
-                                    <img className="w-8 h-8 rounded-full" src="/harrycampbell.jpeg"></img>
-                                    <span className="text-white">Harry Campbell</span>
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                    </div>
-                    <div id='incident3'>
-                      <div className="w-full h-auto gap-2 flex-row flex">
-                          <div className="flex flex-col items-center">
-                              <img className="w-8 h-10 rounded-full" src="harrycampbell.jpeg" alt={`Harry Campbell`} />
-                              <div className="border-l h-full" />
-                          </div>
-                          <div className="flex flex-col h-full pb-9 w-full gap-4 justify-center">
-                              <div className="flex flex-row items-center gap-3 ml-2">
-                                  <p className="text-md font-normal text-white">
-                                      <span className="font-semibold ">Harry Campbell</span> has been appointed as the lead responder
-                                  </p>
-                                  <p className="text-md font-normal text-neutral-400">1 hour ago</p>
-                              </div>
-                          </div>
-                    </div>
-                    </div>
-                    <div id='incident4'>
-                      <div className="w-full h-auto gap-2 flex-row flex">
-                        <div className="flex flex-col items-center">
-                            <img className="w-8 rounded-full h-8" src="harrycampbell.jpeg" alt={`Harry Campbells's avatar`} />
-                            <div className="border-l h-full" />
-                        </div>
-                        <div className="flex flex-col h-full pb-9 w-full gap-4 justify-center">
-                            <div className="flex flex-row items-center gap-3 ml-2">
-                                <p className="text-md font-normal text-white">
-                                    <span className="font-semibold">Harry Campbell</span> provided an update
-                                </p>
-                                <p className="text-md font-normal text-neutral-400">1 hour ago</p>
-                            </div>
-                            <div className="flex flex-col bg-neutral-900/70 rounded-md gap-1 py-3 ml-2">
-                                <p className="text-white border-b pb-2 px-4 font-semibold gap-4 flex">
-                                    We are working on a fix for the issue, This is due to the intern force pushing updates to the main branch.
-                                </p>
-                                <p className="text-neutral-300 text-sm pb-2 px-4 font-semibold gap-4 flex">
-                                    Next update expected now
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div className='flex flex-col w-full md:px-[4.5rem] mt-10'>
-        <div className='w-full flex flex-col items-center justify-center'>
-          <h1 className='font-bold text-2xl'>Lets start making your projects today with HProjects</h1>
-          <Link href='/sign-up' className='w-1/3'>
-            <button className='ease-in-out duration-300 hovmain w-full py-2 px-2 flex items-center justify-center bg-blue-600 rounded-md hover:bg-blue-800 mt-5'>Get started</button>
+    <main className='flex flex-col bg-neutral-200 h-auto'>
+      <section className='bg-gradient-to-r from-[#1E3A8A] h-auto to-[#3B82F6] mx-auto w-full rounded-b-[5rem] px-2 pb-[12rem] md:px-[4.5rem] py-3' id='home'>
+        <div className='flex flex-col mt-[120px] gap-3 items-center'>
+        <h1 style={{ fontFamily: 'Inter, sans-serif' }} className='text-5xl text-center md:text-6xl'>
+          Seamless Planning. Instant Response. Total Control.
+        </h1>
+        <p style={{ fontFamily: 'Inter, sans-serif' }} className='text-md md:text-lg mt-5 font-lg md:w-[40rem] text-[#F9FAFB] text-center'>
+          Plan smarter, push tasks faster, respond instantly, and stay connected with user feedback. Everything you need, all in one place.
+        </p>
+        <div className='flex gap-3 mt-5'>
+          <Link href='/sign-up'>
+            <div style={{ fontFamily: 'Inter, sans-serif' }} className='bg-[#F9FAFB] shadow-md backdrop-blur-lg transition-all hover:text-white hover:shadow-[#fff] hover:bg-[#f9fafb62] text-[#060507] px-10 py-4 text-xl rounded-3xl'>Get Started</div>
           </Link>
         </div>
-      </div>
-    </div>
-  </div>
-</section>
-</main>
-<Footer />
-</>
+        <div className='flex lg:flex-row flex-col mt-[100px] gap-4'>
+          <div className='flex flex-col justify-between gap-3'> 
+            <div className="pr-5 border dark:border-green-400 backdrop-blur-lg  dark:bg-green-400/20 items-center h-[4rem] w-auto flex rounded-lg">
+              <div className='pl-2 flex justify-center items-center h-full'>
+                <div className='w-1.5 h-[3rem] flex items-end justify-center rounded-lg dark:bg-green-400/20 bg-green-700/20 overflow-hidden'>
+                  <div className='w-full' style={{ height: `35%`, backgroundColor: 'green' }}></div>
+                </div>
+              </div>
+              <div className='pl-3 h-max flex justify-center flex-col text-left'>
+                <h1 className='font-semibold text-md text-left text-white'>You're on pager</h1>
+                <p className='text-neutral-300 text-xs'>For the next 2h 40m</p>
+              </div>
+            </div>
+            <div id="pageroncall" className="w-max hidden lg:flex items-center justify-center animate-ping rounded-lg">
+              <div className={`pr-5 border dark:border-red-400 border-red-600 bg-red-700/20 dark:bg-red-400/20 items-center h-[4rem] w-full flex rounded-lg`}>
+                <div className='pl-2 flex justify-center items-center h-full'>
+                  <div className='w-1.5 h-[3rem] flex items-end justify-center rounded-lg dark:border-red-400 border-red-600 bg-red-700/20 dark:bg-red-400/20 overflow-hidden'>
+                    <div className='w-full flex items-center justify-center font-semibold text-xl' style={{ height: `35%`, backgroundColor: 'red' }}>!</div>
+                  </div>
+                </div>
+                <div className='pl-3 h-max flex justify-center flex-col text-left'>
+                  <h1 className='text-red-200 font-semibold text-md text-left'>You have been paged.</h1>
+                  <p className="text-xs font-normal text-neutral-200">Click to go to the incident</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className='flex flex-col bg-neutral-300/25 lg:w-[50rem] h-[30rem] backdrop-blur-lg border border-white/40 rounded-xl  gap-5'>
+          <div className="flex-col w-full  border-b-neutral-100 border-transparent border gap-4 justify-between pb-5 mt-5 flex">
+            <div className="px-7 flex flex-row items-center justify-between">
+                <div className='flex flex-row gap-2 items-center'>
+                    <div className="p-2 dark:bg-red-500 text-white rounded-md ">
+                        <svg className='w-6' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M4.00001 20V14C4.00001 9.58172 7.58173 6 12 6C16.4183 6 20 9.58172 20 14V20H21V22H3.00001V20H4.00001ZM6.00001 14H8.00001C8.00001 11.7909 9.79087 10 12 10V8C8.6863 8 6.00001 10.6863 6.00001 14ZM11 2H13V5H11V2ZM19.7782 4.80761L21.1924 6.22183L19.0711 8.34315L17.6569 6.92893L19.7782 4.80761ZM2.80762 6.22183L4.22183 4.80761L6.34315 6.92893L4.92894 8.34315L2.80762 6.22183Z"></path></svg>
+                    </div>
+                    <div className='flex flex-col'>
+                        <p className='text-sm mb-[-6px] font-medium'>Incidents</p>
+                        <h1 className="flex text-2xl font-bold text-white gap-2" id="tasksproject">IND-16 <span className='md:flex hidden'>Sign-in Flow Failed</span></h1>
+                    </div>
+                </div>
+                <div className='flex flex-row gap-2'>
+
+                    <DropdownMenu>
+                        <DropdownMenuTrigger>
+                        <div className="p-2 font-semibold items-center flex justify-center text-lg  text-white rounded-md ">
+                            <svg className='w-6' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M5 10C3.9 10 3 10.9 3 12C3 13.1 3.9 14 5 14C6.1 14 7 13.1 7 12C7 10.9 6.1 10 5 10ZM19 10C17.9 10 17 10.9 17 12C17 13.1 17.9 14 19 14C20.1 14 21 13.1 21 12C21 10.9 20.1 10 19 10ZM12 10C10.9 10 10 10.9 10 12C10 13.1 10.9 14 12 14C13.1 14 14 13.1 14 12C14 10.9 13.1 10 12 10Z"></path></svg>
+                        </div>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent>
+                            <DropdownMenuItem className="cursor-pointer hover:bg-neutral-800">
+                                Page Responders
+                            </DropdownMenuItem>
+                            <DropdownMenuSeparator />
+                            <DropdownMenuItem className="cursor-pointer hover:bg-neutral-800">
+                                Delete Incident
+                            </DropdownMenuItem>
+                        </DropdownMenuContent>
+                    </DropdownMenu>
+                </div>
+            </div>
+        </div>
+        <div className='flex flex-col px-5'>
+
+        <div className="w-full h-auto gap-2 flex-row flex">
+            <div className="flex flex-col items-center">
+          <img className="w-8 h-8 rounded-full" src="/staff/jamesblackhurst.jpeg" alt={`James Blackhurst`} />
+          <div className="border-l h-full" />
+            </div>
+            <div className="flex flex-col h-full pb-9 w-full gap-4 justify-center">
+          <div className="flex flex-row items-center gap-3 ml-2">
+          <div className="text-md font-normal text-black dark:text-white">
+            <span className="font-semibold">James Blackhurst</span> declared an incident
+          </div>
+              <p className="text-md font-normal sm:flex hidden text-neutral-200"> 46 seconds ago</p>
+          </div>
+          <div className="flex flex-col bg-neutral-400/20 rounded-md gap-1 py-3 px-4 ml-2">
+              <p className="text-neutral-800 dark:text-neutral-300 font-semibold gap-4 flex">Status <span className="text-black dark:text-white">Investigating</span></p>
+              <div className=" text-neutral-800 dark:text-neutral-300 font-semibold gap-4 flex flex-row">Severity <Critical /></div>
+          </div>
+          </div>
+            </div>
+            <div className="w-full h-auto gap-2 flex-row flex">
+            <div className="flex flex-col items-center">
+                <img className="w-8 rounded-full h-8" src="/staff/jamesblackhurst.jpeg"></img>
+            </div>
+            <div className="flex flex-col h-full pb-9 w-full gap-4 justify-center">
+                <div className="flex flex-row items-center gap-3 ml-2">
+                    <p className="text-md font-normal text-black dark:text-white"><span className="font-semibold">James Blackhurst</span> has sent a pager to</p>
+                    <p className="text-md font-normal text-neutral-200 sm:flex hidden">23 seconds ago</p>
+                </div>
+                <div className="flex flex-col bg-neutral-400/20 rounded-md gap-1 py-3 px-4 ml-2">
+                    <div className="text-neutral-300 font-semibold items-center gap-3 flex">
+                        <img className="w-8 h-8 rounded-full" src="/harrycampbell.jpeg"></img>
+                        <span className="text-black dark:text-white">Harry Campbell</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+          </div>
+          </div>
+          <div id="pageroncall" className="w-full lg:hidden flex items-center justify-center animate-ping rounded-lg">
+              <div className={`pr-5 border dark:border-red-400 border-red-600 bg-red-700/20 dark:bg-red-400/20 items-center h-[4rem] w-full flex rounded-lg`}>
+              <div className='pl-2 flex justify-center items-center h-full'>
+                <div className='w-1.5 h-[3rem] flex items-end justify-center rounded-lg dark:border-red-400 border-red-600 bg-red-700/20 dark:bg-red-400/20 overflow-hidden'>
+                <div className='w-full flex items-center justify-center font-semibold text-xl' style={{ height: `35%`, backgroundColor: 'red' }}>!</div>
+                </div>
+              </div>
+              <div className='pl-3 h-max flex justify-center flex-col text-left'>
+                <h1 className='text-red-200 font-semibold text-md text-left'>You have been paged.</h1>
+                <p className='text-neutral-300 text-xs'>Click to go to the incident</p>
+              </div>
+              </div>
+            </div>
+          <div className='flex lg:flex-col flex-col gap-3 justify-between'>
+          <div className='flex flex-row justify-between bg-neutral-300/25 futuristicbounce  w-full h-[7rem] backdrop-blur-lg border border-white/40 rounded-xl px-5 py-5 gap-5'>
+            <div className='flex flex-col justify-between gap-3'>
+              <h1 className='font-medium text-md'>Refactor Code for Performance</h1>
+              <div className='flex flex-row gap-2'>
+                <Critical />
+                <BackLog />
+              </div>
+            </div>
+            <div className='flex flex-col items-end justify-end h-full'>
+              <div className='w-7 h-7 rounded-full bg-red-500'>
+                <img src='/staff/jamesblackhurst.jpeg' className='rounded-full' />
+              </div>
+            </div>
+          </div>
+          <div className='flex flex-row justify-between bg-neutral-300/25 invertedfuturisticbounce w-full h-[7rem] backdrop-blur-lg border border-white/40 rounded-xl px-5 py-5 gap-5'>
+            <div className='flex flex-col justify-between gap-3'>
+              <h1 className='font-medium text-md'>Fix API Rate Limiting</h1>
+              <div className='flex flex-row gap-2'>
+                <High />
+                <Todo />
+              </div>
+            </div>
+            <div className='flex flex-col items-end justify-end h-full'>
+              <div className='w-7 h-7 rounded-full bg-red-500'>
+                <img src='harrycampbell.jpeg' className='rounded-full' />
+              </div>
+            </div>
+          </div>
+          </div>
+        </div>
+        </div>
+      </section>
+      <section className=' mx-auto px-2 lg:mx-40 items-center flex justify-center w-full text-black pb-[12rem] pt-[12rem] md:px-[4.5rem] py-3 white' id='products'>
+        <div className='max-w-[1900px] flex items-center justify-center flex-col w-full'>
+          <div className='w-full flex items-start justify-start'>
+            <h1 style={{ fontFamily: 'Inter, sans-serif' }} className='text-4xl md:text-5xl'>One Project,<br/> Multiple Branches</h1>
+          </div>
+          <div className='flex flex-col md:flex-row gap-5 mt-9'>
+            <div className='border-t md:w-[25%] border-neutral-950 px-4 py-3'>
+              <h1 className='font-semibold text-lg'>Start a project</h1>
+              <p>Add team members, Design, Push and Respond if something goes down.</p>
+            </div>
+
+            <div className='border-t md:w-[25%] border-neutral-950 px-4 py-3'>
+              <h1 className='font-semibold text-lg'>Manage Incidents</h1>
+              <p>Identify and address issues immediately. Collaborate with team members in real-time to solve problems.</p>
+            </div>
+            <div className='border-t md:w-[25%] border-neutral-950 px-4 py-3'>
+              <h1 className='font-semibold text-lg'>Receive Feedback</h1>
+              <p>Submit and view feedback from stakeholders and users to continuously improve the project.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+      <SectionUses />
+      <SecuritySection />
+      <SignupBaseSection />
+    </main>
+    <Footer />
+    </>
   );
+}
+
+function SignupBaseSection() {
+  return(
+    <section
+      className="bg-blue-400 px-2 items-center flex justify-center w-full text-white pb-[6rem] pt-[6rem] md:px-[4.5rem] py-3"
+
+    >
+      <div className="flex items-center justify-center flex-col h-full w-full">
+        <div className="w-full flex items-center h-full flex-col gap-8 justify-center">
+          <h1
+            style={{ fontFamily: "Inter, sans-serif" }}
+            className="text-4xl md:text-5xl"
+          >
+            Get your team together and start your project.
+          </h1>
+          <Link
+            href={"/sign-up"}
+            className="flex items-center overflow-hidden"
+          >
+            <button>
+              <div
+                className="bg-[#F9FAFB] shadow-md backdrop-blur-lg transition-all hover:text-white hover:shadow-[#fff] hover:bg-[#f9fafb62] text-[#060507] mb-10 px-10 py-4 text-xl rounded-3xl"
+              >
+                Get Started
+              </div>
+            </button>
+            </Link>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+function SecuritySection() {
+  const securityFeatures = [
+    {
+      icon: <Shield className="w-8 h-8 text-[#7DF9FF]" />,
+      title: "Encrypted Data",
+      description: "Your data is protected with state-of-the-art encryption algorithms, ensuring confidentiality at rest and in transit."
+    },
+    {
+      icon: <Lock className="w-8 h-8 text-[#7DF9FF]" />,
+      title: "Secure Authentication",
+      description: "Multi-factor authentication and secure password policies protect your account from unauthorized access."
+    },
+    {
+      icon: <Users className="w-8 h-8 text-[#7DF9FF]" />,
+      title: "Role-Based Access Control",
+      description: "Granular permissions and role management ensure team members only access what they need."
+    },
+    {
+      icon: <Eye className="w-8 h-8 text-[#7DF9FF]" />,
+      title: "Activity Monitoring",
+      description: "Real-time logs and alerts keep you informed of all activities within your projects."
+    },
+    {
+      icon: <Server className="w-8 h-8 text-[#7DF9FF]" />,
+      title: "Secure Infrastructure",
+      description: "Our systems are hosted on industry-leading cloud providers with multiple layers of security."
+    },
+    {
+      icon: <RefreshCw className="w-8 h-8 text-[#32dee7]" />,
+      title: "Regular Security Updates",
+      description: "We continuously update our systems to protect against the latest security threats and vulnerabilities."
+    }
+  ]
+
+  return (
+    <section className='bg-gradient-to-tr from-teal-500 to-blue-500 px-4 h-screen flex justify-center w-full text-white py-24 md:px-12' id='security'>
+      <div className='max-w-7xl mx-auto'>
+        <div className='text-center mb-16'>
+          <h2 style={{ fontFamily: 'Inter, sans-serif' }} className='text-4xl md:text-5xl font-bold mb-4'>
+            Engineered for <span className="text-[#7DF9FF]">Uncompromising Security</span>
+          </h2>
+          <p className="text-xl text-gray-300 max-w-3xl mx-auto">
+            Your projects and team deserve the highest level of protection. Our platform is built from the ground up with security at its core.
+          </p>
+        </div>
+        <div className='grid grid-cols-1 pt-12 md:grid-cols-2 lg:grid-cols-3 gap-8'>
+          {securityFeatures.map((feature, index) => (
+            <div key={index} className='bg-neutral-100/20 backdrop-blur-lg border border-white/40 rounded-lg p-6 shadow-lg hover:bg-neutral-300/40 transition-colors duration-300'>
+              <div className="flex items-center mb-4">
+                {feature.icon}
+                <h3 className='font-semibold text-xl ml-3'>{feature.title}</h3>
+              </div>
+              <p className="text-gray-100">{feature.description}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+function SectionUses() {
+  const scrollRef = useRef<HTMLDivElement>(null)
+  const [isDragging, setIsDragging] = useState(false)
+  const [startX, setStartX] = useState(0)
+  const [scrollLeft, setScrollLeft] = useState(0)
+
+  useEffect(() => {
+    const scrollContainer = scrollRef.current
+    if (scrollContainer) {
+      const handleWheel = (e: WheelEvent) => {
+        e.preventDefault()
+        scrollContainer.scrollLeft += e.deltaY
+      }
+
+      const handleMouseDown = (e: MouseEvent) => {
+        setIsDragging(true)
+        setStartX(e.pageX - scrollContainer.offsetLeft)
+        setScrollLeft(scrollContainer.scrollLeft)
+      }
+
+      const handleMouseUp = () => {
+        setIsDragging(false)
+      }
+
+      const handleMouseMove = (e: MouseEvent) => {
+        if (!isDragging) return
+        e.preventDefault()
+        const x = e.pageX - scrollContainer.offsetLeft
+        const walk = (x - startX) * 2
+        scrollContainer.scrollLeft = scrollLeft - walk
+      }
+
+      scrollContainer.addEventListener('wheel', handleWheel)
+      scrollContainer.addEventListener('mousedown', handleMouseDown)
+      window.addEventListener('mouseup', handleMouseUp)
+      window.addEventListener('mousemove', handleMouseMove)
+
+      return () => {
+        scrollContainer.removeEventListener('wheel', handleWheel)
+        scrollContainer.removeEventListener('mousedown', handleMouseDown)
+        window.removeEventListener('mouseup', handleMouseUp)
+        window.removeEventListener('mousemove', handleMouseMove)
+      }
+    }
+  }, [isDragging, startX, scrollLeft])
+
+  return (
+    <section className='bg-black mx-auto w-full pt-32 h-screen px-4 pb-24 md:px-12' id='functions'>
+      <h1 style={{ fontFamily: 'Inter, sans-serif' }} className='text-4xl text-center md:text-5xl text-white'>
+        The project management tool that <br /> makes <b>you</b> deploy on time
+      </h1>
+      <p className='text-center mt-4 text-lg text-gray-300'>
+        Get up to date on your project with our software to ensure that you and your team can deploy on time.
+      </p>
+      <div 
+        ref={scrollRef}
+        className='w-full overflow-x-auto no-scrollbar mt-24 scrollbar-hide'
+        style={{
+          scrollBehavior: 'smooth',
+          WebkitOverflowScrolling: 'touch',
+          cursor: isDragging ? 'grabbing' : 'grab'
+        }}
+      >
+        <div className='flex gap-6 pt-12 px-4 md:px-0' style={{ width: 'max-content' }}>
+          {[
+            { title: "Software Development", description: "HProjects make it easy to plan, develop, and push with your agile team, allowing for efficient management of code deployment, sprints, and incident resolution during software lifecycle stages." },
+            { title: "Construction", description: "In construction, HProjects helps streamline resource allocation, track progress, and manage safety incidents, ensuring that complex, multi-phase projects are delivered on time." },
+            { title: "IT Services", description: "HProjects enables IT teams to manage infrastructure upgrades, software rollouts, and quickly respond to incidents like server outages or security breaches, all within a structured agile framework." },
+            { title: "Telecommunications", description: "Telecommunications firms can use HProjects to manage network expansions, customer service operations, and address incidents such as network downtime, ensuring seamless connectivity." },
+            { title: "Healthcare", description: "HProjects helps healthcare organizations manage complex medical projects, coordinate patient care, and quickly resolve incidents related to patient safety or medical data breaches." },
+            { title: "Finance", description: "Financial institutions can leverage HProjects to manage compliance projects, develop financial products, and respond swiftly to security incidents or regulatory changes." }
+          ].map((card, index) => (
+            <Card key={index} className='w-80 flex-shrink-0 bg-gray-800 text-white'>
+              <CardContent className="flex aspect-square w-full p-6 select-none">
+                <div className='flex flex-col gap-2'>
+                  <h2 className='font-semibold text-lg'>{card.title}</h2>
+                  <p className='text-gray-100 text-sm'>{card.description}</p>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
 }
