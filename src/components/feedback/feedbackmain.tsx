@@ -95,7 +95,7 @@ export default function FeedBackMain({ projectid }: { projectid: any }) {
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">{timeChanger(feedback._creationTime)}</td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                    <Link href={`/projects/${projectid.projectid}/tasks?addTask=true&title=${feedback.title}&description=${feedback.feedback}`}>
+                    <Link href={`/projects/${projectid}/tasks?addTask=true&title=${feedback.title}&description=${feedback.feedback}`}>
                       <button className="text-gray-400 hover:text-gray-100 mr-2">
                         <Send size={20} />
                       </button>
