@@ -78,7 +78,7 @@ export default function FeedBackMain({ projectid }: { projectid: any }) {
               </tr>
             </thead>
             <tbody>
-              {searchResults.reverse().map((feedback) => (
+              {searchResults.map((feedback) => (
                 <tr key={feedback.id} className="border-b border-gray-700">
                   <td className="px-6 py-4 whitespace-nowrap text-blue-400">{feedback.title}</td>
                   <td className="px-6 py-4 whitespace-nowrap">{feedback.name}</td>
