@@ -77,8 +77,8 @@ export default function FeedBackPage({ params }: { params: { _id: string, slug: 
                                     <h1 className="flex text-2xl font-bold text-black dark:text-white" id="tasksproject">Feedback</h1>
                                 </div>
                             </div>
-                                <div className='w-full h-full flex flex-col  px-5'>
-                                    <div className='flex flex-col gap-4'>
+                                <div className='w-full h-screen flex flex-col overflow-scroll pb-10 px-5'>
+                                    <div className='flex flex-col gap-4 '>
                                         {/* here we will add all the feedbacks */}
                                         <FeedBackMain projectid={params._id} />
                                     </div>

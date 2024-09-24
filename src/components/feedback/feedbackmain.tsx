@@ -50,8 +50,8 @@ export default function FeedBackMain({ projectid }: { projectid: any }) {
           <AddAPI id={projectid} />
         </div>
 
-        <div className="bg-neutral-900 rounded-lg overflow-hidden">
-          <table className="w-full">
+        <div className="bg-neutral-900 rounded-lg ">
+          <table className="w-full ">
             <thead>
               <tr className="border-b border-gray-700">
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
@@ -78,7 +78,7 @@ export default function FeedBackMain({ projectid }: { projectid: any }) {
               </tr>
             </thead>
             <tbody>
-              {searchResults.map((feedback) => (
+              {searchResults.reverse().map((feedback) => (
                 <tr key={feedback.id} className="border-b border-gray-700">
                   <td className="px-6 py-4 whitespace-nowrap text-blue-400">{feedback.title}</td>
                   <td className="px-6 py-4 whitespace-nowrap">{feedback.name}</td>
