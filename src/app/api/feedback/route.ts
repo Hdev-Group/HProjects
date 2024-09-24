@@ -2,28 +2,54 @@ import { NextRequest, NextResponse } from 'next/server';
 import { api } from '../../../../convex/_generated/api';
 import { fetchMutation } from "convex/nextjs";
 
+// In-memory store for rate limits
+const rateLimitStore = new Map<string, { count: number; timestamp: number }>();
 
+// Custom rate limiter function
+function rateLimit(request: NextRequest, limit: number, windowMs: number) {
+    const ip = request.ip || request.headers.get('x-forwarded-for') || '127.0.0.1';
+    const now = Date.now();
+
+    if (!rateLimitStore.has(ip)) {
+        rateLimitStore.set(ip, { count: 1, timestamp: now });
+    } else {
+        const rateData = rateLimitStore.get(ip)!;
+        const timePassed = now - rateData.timestamp;
+
+        if (timePassed > windowMs) {
+            // Reset the window
+            rateLimitStore.set(ip, { count: 1, timestamp: now });
+        } else {
+            // Increase the count and check the limit
+            rateData.count += 1;
+            if (rateData.count > limit) {
+                return false; // Rate limit exceeded
+            }
+        }
+    }
+    return true; // Allowed request
+}
+
+// Apply custom rate limiter
 export async function POST(request: NextRequest) {
-    // rate limiting 3 requests per 2 seconds
-    const rateLimit = require('express-rate-limit');
-    const limiter = rateLimit({
-        windowMs: 2000,
-        max: 3
-    });
-    // Apply the rate limiter to the request
-    limiter(request, NextResponse);
+    const limit = 3;
+    const windowMs = 2000; // 2 seconds
+
+    if (!rateLimit(request, limit, windowMs)) {
+        return NextResponse.json({ error: 'Too many requests, please try again later.' }, { status: 429 });
+    }
+
     try {
-        console.log('Request received:', request);
         // Parse the incoming JSON data from the request body
         const { projectId, feedback, email, name, label, title } = await request.json();
 
         // Validate required fields
-        if (!projectId) return createErrorResponse('Missing projectId.'); 
+        if (!projectId) return createErrorResponse('Missing projectId.');
         if (!feedback) return createErrorResponse('Missing feedback.');
 
         // Define the allowed values for the label field
         const allowedLabels = ["idea", "issue", "question", "complaint", "featureRequest", "other"];
-        
+
         // Validate label or set default
         const validLabel = allowedLabels.includes(label) ? label : 'featureRequest';
 
@@ -56,5 +82,3 @@ export async function POST(request: NextRequest) {
 function createErrorResponse(message: string) {
     return NextResponse.json({ error: message }, { status: 400 });
 }
-
-// testing curl cmd curl -X POST http://localhost:3000/api/feedback -H "Content-Type: application/json" -d "{\"projectId\":\"j5798g6sntj6y5trs7ecrxtzad6w8sy1\",\"feedback\":\"You should add a pinned message\",\"title\":\"Pinned Message Feature\",\"name\":\"James Blackhurst\",\"email\":\"test@example.com\",\"label\":\"featureRequest\"}"
