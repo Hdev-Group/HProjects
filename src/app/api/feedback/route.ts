@@ -4,8 +4,14 @@ import { fetchMutation } from "convex/nextjs";
 
 
 export async function POST(request: NextRequest) {
-    // adding some rate limiting
-
+    // rate limiting 3 requests per 2 seconds
+    const rateLimit = require('express-rate-limit');
+    const limiter = rateLimit({
+        windowMs: 2000,
+        max: 3
+    });
+    // Apply the rate limiter to the request
+    limiter(request, NextResponse);
     try {
         console.log('Request received:', request);
         // Parse the incoming JSON data from the request body
