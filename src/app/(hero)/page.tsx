@@ -84,7 +84,7 @@ export default function Home() {
         </p>
         <div className='flex gap-3 mt-5'>
           <Link href='/sign-up'>
-            <div style={{ fontFamily: 'Inter, sans-serif' }} className='bg-[#F9FAFB] shadow-md backdrop-blur-lg transition-all hover:text-white hover:shadow-[#fff] hover:bg-[#f9fafb62] text-[#060507] px-10 py-4 text-xl rounded-3xl'>Get Started</div>
+            <div style={{ fontFamily: 'Inter, sans-serif' }} className='bg-[#F9FAFB] backdrop-blur-lg transition-all hover:text-white  hover:bg-[#f9fafb62] text-[#060507] px-10 py-4 text-xl rounded-3xl'>Get Started</div>
           </Link>
         </div>
         <div className='flex lg:flex-row flex-col mt-[100px] gap-4'>
@@ -283,7 +283,7 @@ function SignupBaseSection() {
           >
             <button>
               <div
-                className="bg-[#F9FAFB] shadow-md backdrop-blur-lg transition-all hover:text-white hover:shadow-[#fff] hover:bg-[#f9fafb62] text-[#060507] mb-10 px-10 py-4 text-xl rounded-3xl"
+                className="bg-[#F9FAFB] backdrop-blur-lg transition-all hover:text-white  hover:bg-[#f9fafb62] text-[#060507] mb-10 px-10 py-4 text-xl rounded-3xl"
               >
                 Get Started
               </div>

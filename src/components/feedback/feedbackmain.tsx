@@ -84,9 +84,29 @@ export default function FeedBackMain({ projectid }: { projectid: any }) {
                   <td className="px-6 py-4 whitespace-nowrap">{feedback.name}</td>
                   <td className="px-6 py-4 whitespace-nowrap">{feedback.email}</td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-700">
-                      {feedback.label}
-                    </span>
+                    {
+                      feedback.label === 'issue' ? (
+                        <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-600">
+                          Issue
+                        </span>
+                      ) : feedback.label === 'featureRequest' ? (
+                        <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-600">
+                          Feature Request
+                        </span>
+                      ) : feedback.label === 'question' ? (
+                        <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-600">
+                          Question
+                        </span>
+                      ) : feedback.label === 'complaint' ? (
+                        <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-600">
+                          Complaint
+                        </span>
+                      ) : feedback.label === 'other' ? (
+                        <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-600">
+                          Other
+                        </span>
+                      ) : null
+                    }
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-600">
