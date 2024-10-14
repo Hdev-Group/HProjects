@@ -330,7 +330,7 @@ function SecuritySection() {
   ]
 
   return (
-    <section className='bg-gradient-to-tr from-teal-500 to-blue-500 px-4 h-screen flex justify-center w-full text-white py-24 md:px-12' id='security'>
+    <section className='bg-gradient-to-tr from-teal-500 to-blue-500 px-4 h-auto flex justify-center w-full text-white py-24 md:px-12' id='security'>
       <div className='max-w-7xl mx-auto'>
         <div className='text-center mb-16'>
           <h2 style={{ fontFamily: 'Inter, sans-serif' }} className='text-4xl md:text-5xl font-bold mb-4'>
@@ -403,7 +403,7 @@ function SectionUses() {
   }, [isDragging, startX, scrollLeft])
 
   return (
-    <section className='bg-black mx-auto w-full pt-32 h-screen px-4 pb-24 md:px-12' id='functions'>
+    <section className='bg-black mx-auto w-full pt-32 h-auto px-4 pb-24 md:px-12' id='functions'>
       <h1 style={{ fontFamily: 'Inter, sans-serif' }} className='text-4xl text-center md:text-5xl text-white'>
         The project management tool that <br /> makes <b>you</b> deploy on time
       </h1>
