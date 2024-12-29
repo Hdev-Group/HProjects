@@ -29,7 +29,7 @@ const DashboardHeader = ({ activeSection, onSectionChange }) => {
         options={{ showSpinner: true }}
         shallowRouting
       />
-    <header className={`fixed flex-col top-[0px] max-[460px]:block  border-b pb-12 bg-bglightbars dark:bg-bgdarkbars sm:block md:flex left-0 right-0 z-50 flex items-center justify-center p-8 transition-colors  duration-300 ${user ? '' : ''}`}>
+    <header className={`fixed flex-col top-[0px] max-[460px]:block  border-b pb-12 bg-bglightbars dark:bg-bgdarkbars sm:block md:flex left-0 right-0 z-50 flex items-center justify-center p-8 transition-colors  duration-300`}>
       <div className="flex flex-row items-center gap-10 justify-between md:w-[100%]">
         <div className="flex items-center justify-center g-5">
           <a href='/'>
@@ -62,13 +62,13 @@ const DashboardHeader = ({ activeSection, onSectionChange }) => {
       <div className="flex items-center gap-1 w-[100%] mt-7 mb-[-26px]">
         <div className="flex items-center justify-center gap-5">
         <Link href="/dashboard" className={`cursor-pointer text-[13px] font-medium ${activeSection === 'projects' ? 'text-white  underline underline-offset-8 decoration-2 font-bold' : 'text-gray-500'}`}>
-            <strong>{activeSection === 'projectspage' ? 'Projects' : 'Projects'}</strong>
+            <strong>Projects</strong>
           </Link>
           <Link href="/teams" className={`cursor-pointer text-[13px] font-medium ${activeSection === 'teams' ? 'text-white underline underline-offset-8 decoration-2 font-bold' : 'text-gray-500'}`}>
-            <strong>{activeSection === 'teams' ? 'Teams' : 'Teams'}</strong>
+            <strong>Teams</strong>
           </Link>
           <Link href="/settings" className={`cursor-pointer text-[13px] font-medium ${activeSection === 'settings' ? 'text-white underline underline-offset-8 decoration-2 font-bold' : 'text-gray-500'}`}>
-            <strong>{activeSection === 'settings' ? 'Settings' : 'Settings'}</strong>
+            <strong>Settings</strong>
           </Link>
 
         </div>
