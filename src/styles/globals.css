@@ -133,11 +133,10 @@
     height: 30px !important;
     width: 30px !important;
   }
-   utilities {
-    .text-balance {
-      text-wrap: balance;
-    }
+  .text-balance {
+    text-wrap: balance;
   }
+
 
   .grid-background {
     background-image: linear-gradient(to right, rgba(255, 255, 255, 0.95) 1px, transparent 1px),
