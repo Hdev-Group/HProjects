@@ -189,33 +189,37 @@ export default function PagerEl({ _id, isSidebarClosed }: any) {
       ({_id: filtermain?._id }).catch(err => console.error(err));
     }
     // differentiate between the time then show the appropriate message
-    function textloop() {
-      const [isCritical, setIsCritical] = useState(false);
+function Textloop() {
+  const [isCritical, setIsCritical] = useState(false);
 
-      useEffect(() => {
-        const interval = setInterval(() => {
-          setIsCritical((prevIsCritical) => !prevIsCritical);
-        }, 5000);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setIsCritical((prevIsCritical) => !prevIsCritical);
+    }, 5000);
 
-        return () => clearInterval(interval);
-      }, []);
+    return () => clearInterval(interval);
+  }, []);
 
-      return (
+  return (
+    <>
+      {isCritical ? (
         <>
-          {isCritical ? (
-            <>
-              <h1 className='text-red-200 font-semibold text-md text-left'>You have been paged.</h1>
-              <p className='text-neutral-300 text-xs'>Click to go to the incident</p>
-            </>
-          ) : (
-            <>
-            <h1 className='font-semibold text-md text-left text-white'>You're on pager</h1>
-            <p className='text-neutral-300 text-xs'>For the next {time}</p>
-            </>
-          )}
+          <h1 className="text-red-200 font-semibold text-md text-left">
+            You have been paged.
+          </h1>
+          <p className="text-neutral-300 text-xs">Click to go to the incident</p>
         </>
-      );
-    }
+      ) : (
+        <>
+          <h1 className="font-semibold text-md text-left text-white">
+            You're on pager
+          </h1>
+          <p className="text-neutral-300 text-xs">For the next {time}</p>
+        </>
+      )}
+    </>
+  );
+}
 
 
     return (
@@ -230,7 +234,7 @@ export default function PagerEl({ _id, isSidebarClosed }: any) {
             </div>
             {isSidebarClosed ? null : (
             <div className='pl-3 h-max flex justify-center flex-col text-left'>
-              {textloop()}
+              {Textloop()}
             </div>
             )}
             </div>
