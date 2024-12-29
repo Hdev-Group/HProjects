@@ -101,7 +101,7 @@ export default function MainDMs({ params }: { params: { _id: string, _chatid: st
     );
   }
 
-  const title = `${assigneeData?.firstName} ${assigneeData?.lastName} | Direct Messages` || "Direct Messages";
+  const title = `${assigneeData?.firstName} ${assigneeData?.lastName} | Direct Messages`;
 
   return (
     <>
