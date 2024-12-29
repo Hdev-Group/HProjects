@@ -427,7 +427,7 @@ export default function IncidentEr({ params }: { params: { _id: string; _inciden
             const summaryinfovalue = summary.value.trim(); // Trim whitespace
             summaryinfo = summaryinfovalue; // Update global summaryinfo
 
-            const responders = [...filteredIncident?.responders]; // Create a copy of responders array        // Append the user id to the responders array if it's not already present
+            const responders = [...(filteredIncident?.responders || [])];  // Create a copy of responders array        // Append the user id to the responders array if it's not already present
             if (!responders.includes(user?.id)) {
                 responders.push(user?.id);
             }
